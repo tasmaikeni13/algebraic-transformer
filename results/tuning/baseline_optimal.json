@@ -1,0 +1,12 @@
+{
+  "learning_rate": 0.001,
+  "warmup_steps": 57,
+  "weight_decay": 0.1,
+  "beta1": 0.9,
+  "beta2": 0.98,
+  "sink_omega": 0.5,
+  "gamma": 2.0,
+  "min_lr": 5e-05,
+  "schedule": "cosine",
+  "max_grad_norm": 1.0
+}

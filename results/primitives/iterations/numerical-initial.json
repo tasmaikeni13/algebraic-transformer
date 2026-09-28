@@ -1,0 +1,18 @@
+{
+  "samples": 100003,
+  "metrics": {
+    "reflection": 0.0,
+    "backward_autodiff": 4.440892098500626e-16,
+    "backward_numpy": 4.440892098500626e-16,
+    "lipschitz": 1.0443310539518174,
+    "inflection": 0.0
+  },
+  "limits": {
+    "reflection": 1e-15,
+    "backward_autodiff": 5e-16,
+    "backward_numpy": 5e-16,
+    "lipschitz": 1.05,
+    "inflection": 1e-15
+  },
+  "passed": true
+}

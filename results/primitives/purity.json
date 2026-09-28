@@ -1,0 +1,74 @@
+{
+  "source_violations": [],
+  "regex_hits": [],
+  "graphs": {
+    "alu_forward": {
+      "pjit": 3,
+      "custom_vjp_call": 1,
+      "mul": 6,
+      "add": 2,
+      "rsqrt": 1,
+      "lt": 2,
+      "sub": 1,
+      "convert_element_type": 1,
+      "broadcast_in_dim": 1,
+      "select_n": 2,
+      "div": 1
+    },
+    "alu_vjp": {
+      "mul": 4,
+      "sub": 1,
+      "add": 1
+    },
+    "avn_forward": {
+      "pjit": 1,
+      "custom_vjp_call": 1,
+      "mul": 3,
+      "reduce_sum": 1,
+      "broadcast_in_dim": 1,
+      "add": 1,
+      "rsqrt": 1
+    },
+    "avn_vjp": {
+      "mul": 4,
+      "reduce_sum": 1,
+      "broadcast_in_dim": 1,
+      "sub": 1
+    },
+    "alu_grad": {
+      "pjit": 4,
+      "mul": 10,
+      "add": 3,
+      "rsqrt": 1,
+      "lt": 2,
+      "sub": 2,
+      "convert_element_type": 1,
+      "broadcast_in_dim": 2,
+      "select_n": 2,
+      "div": 1,
+      "reduce_sum": 1
+    },
+    "avn_grad": {
+      "pjit": 2,
+      "mul": 7,
+      "reduce_sum": 3,
+      "broadcast_in_dim": 3,
+      "add": 1,
+      "rsqrt": 1,
+      "sub": 1
+    }
+  },
+  "graph_violations": {
+    "alu_forward": [],
+    "alu_vjp": [],
+    "avn_forward": [],
+    "avn_vjp": [],
+    "alu_grad": [],
+    "avn_grad": []
+  },
+  "backward_violations": {
+    "alu_vjp": [],
+    "avn_vjp": []
+  },
+  "passed": true
+}

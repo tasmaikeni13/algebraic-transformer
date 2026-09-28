@@ -1,0 +1,183 @@
+{
+  "study": 4,
+  "gate_version": 1,
+  "environment": {
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "platform": "Linux-5.19.0-1022-gcp-x86_64-with-glibc2.35",
+    "hostname": "t1v-n-49ba2866-w-0",
+    "jax": "0.6.2",
+    "jaxlib": "0.6.2",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "git_commit": "a79de941f108066baac6a6abb3a30563da1f29ac",
+    "git_dirty": true,
+    "source_sha256": {
+      "formal/AlgebraicTheory/Gate.lean": "1372e78d076a59a436da23b48bc81f2e7540f2448aaa98e9b73db8eeb95f61e9",
+      "formal/AlgebraicTheory/Variance.lean": "18f15e5bc1a88ca8466d519ae7759267961180a76651a016d27dd8823278ff15",
+      "formal/lake-manifest.json": "7d58ba349761bf73989bf1908d646e3c1a2549cd96362ba89513ad355e09d2c4",
+      "formal/lakefile.toml": "2817369ee31b6398f4da29a91629ab47d90cfd9df5cbe98a6eb629bea6352cb6",
+      "formal/lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+      "pytest.ini": "6a96ba0e2d5a8296fb90f474da9d2f0173d3e41eba18965513f711104155f913",
+      "requirements-tpu.txt": "f18692d6a965b40a88c992986517edd25020ff568192045b8fbb7279a29e9e15",
+      "requirements.txt": "509b55f548b3934bb2b8e1dde76964c4a0b2f187eb0654f18458f70cc8198848",
+      "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scripts/audit_primitives.py": "6576a6fb39e461a6339d5c27e03c33a0cf7e238a83384cbf66d97c5411d142c2",
+      "scripts/launch_primitives_tpu.py": "45b6b39979f385acd723e1c1d9b625ee0418d8ea692698cb1acfc44cc8f273e8",
+      "scripts/primitives_experiments.py": "0b9b83f048289076fd12f801d5239f74b8a4cf2e881ce6d3bba37b08c01aece0",
+      "scripts/primitives_records.py": "d4063fa54dcda34a2d4aac9ecc58ce752bb6dc54080a10d87cd0c30cc6b5e3f1",
+      "scripts/run_primitives_tpu.py": "a74e8c6e8633f99174287b302b3ddc28926265c6c8ebca21e335441e8eda578c",
+      "scripts/run_verify_primitives.py": "3fd9a9238621a7663d9fd7cb4659a0ad0989732be055e7c31d5c0872ba2ddb9a",
+      "src/__init__.py": "5d9fede4ddd4f7daa2f88da2c6a43763d0f99e0b7b3735afa634c6b074f091f7",
+      "src/primitives.py": "6c40d9312f70c05422c116186a5e04407382b8d55886bfc38357ad8ed536ebbb",
+      "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests/conftest.py": "e51b6a53d68c856ac8d64764107dafc10ef1319358e6eeaec13df1a42a1d7209",
+      "tests/reference_primitives.py": "fee82b0cef2e6d8dab94785f562e3adfd911bd5499f5335e964f08b03ff732a1",
+      "tests/test_primitives_records.py": "0656bd9fe8b1c5203784f2d8df2e66762a18302235b61816a31f508c310c2e9b",
+      "tests/test_primitives.py": "7045962476f1bb01a4609048745889bcf26d9d570f8d203d7e46364ad2d6554b",
+      "formal/AlgebraicTheory/Kernel.lean": "a933646e02901e8d913f8e3b981de08c2f3c551e790ed4fb9c9d9961ecc0030c",
+      "scripts/launch_attention_tpu.py": "2ef00e5ec9c4782a91287dd0005d2b2e279a7dfd3b84172b8865b67cb5a16675",
+      "scripts/attention_counterexamples.py": "f4c6f240438d67fd31c81b15014a8586a60a03b55b3f65b99f4d5e6121e7615e",
+      "scripts/attention_experiments.py": "c5622adc540ba77f2f66dc12bc0d97ddddeed72cd1aadb6e17ea358aecbb0c3d",
+      "scripts/attention_records.py": "77440c0dea54109d34dc4ab14adf88c7834f892b4045a62d3de28956009455b6",
+      "scripts/run_attention_tpu.py": "3df75d5c0ca2cffba30e1de6882222f6c6708ec69b9feb5d42b239c0d1cca127",
+      "scripts/run_verify_attention.py": "5c4a3146fefc10b65c9e25f9cb521c25f48b8e57c5e165ee4627c834781a361f",
+      "src/attention.py": "91c46503d1e2d3272b7cbcd3cecd5d50232979078a0349e9ca198c954c16c60d",
+      "tests/reference_attention.py": "4fe0808730099e41c5e15684e0db1928379b48c7cdf90ac6751fec10e69cc4c7",
+      "tests/test_attention.py": "3e3eb35de837517bddd13b46b6576d797f4d536a37e3f0086080a0d7462161bd",
+      "formal/AlgebraicTheory/Cayley.lean": "bd975dd2e4825b366a6ed991e799f2b178aa84cdb860ec5d1a82db0571aa0cde",
+      "scripts/launch_positions_tpu.py": "a3ffaa34f9eccc5aa677715959021a6ec8293ec197d14fb081390a2cb69345a0",
+      "scripts/positions_experiments.py": "8d202b93e06a24d5b266695da45bf28ca506d8b2a733710648fa00c8463982f7",
+      "scripts/positions_records.py": "b73b0ec8092c1dd855eba9f2fa03264a6b5d66f12c8c4b0305dbe172809b6db5",
+      "scripts/run_positions_tpu.py": "57c6116a4805e2a600b81c029f5abe7b76b5783d63bd0e6ef4f4eb81e3ec808c",
+      "scripts/run_verify_ago.py": "9a6a5452c9420da1700507d411fb02f0fd8245d237b5c894e8b7a36c10d113bd",
+      "tests/reference_ago.py": "013ca58cec4711e4621f77fd24718d6ace66be6d57c0af58a5b4cbefbb22ea8c",
+      "tests/test_ago.py": "05d48cc0b1df173a53572d36961f20484c0dad1ede8e5acc57b32c1b4426cbbd",
+      "formal/AlgebraicTheory/Loss.lean": "7f9f3739a9ce93bb227e78531674bf9da5bd252c7c5bb9407a1788ccfd81ad89",
+      "scripts/launch_loss_tpu.py": "6f8644f5766c48acc92005c05c026f46c8920298df6a159731002f77930d301f",
+      "scripts/loss_experiments.py": "f07cb3de4b684ad9724bbef463e247aced06d6cff365150016c359ae83c3bf11",
+      "scripts/loss_records.py": "a26e4c2a66be6faf4d962d2cdcc42b8a7ff75aa8bcbe5aa05f02684bbed0b6d0",
+      "scripts/run_loss_tpu.py": "5d23fe0a140943b2da1bb4c5ff78707ac8d1b7759fdce82dc4117bcb4ed34d59",
+      "scripts/run_verify_loss.py": "ff10299ac4377bf6ef790217c317e0cbc0fb1c9938c50af2dd47ba34914f17e9",
+      "src/loss.py": "02c99d85c450343db5a2c15a25f2b744a1e7b2676c177d8a495ae5398a53a6f4",
+      "tests/reference_loss.py": "f28f2b824f7c7c67e625a783032959a13b619752a2c209e269f57a4fa292eb88",
+      "tests/test_loss.py": "ca70c4779ee8aac6d2edbbd4beade80ebbc20e1c87d7e0faa0b9de2fc2af4929"
+    }
+  },
+  "command": [
+    "scripts/run_verify_loss.py"
+  ],
+  "dependencies": {
+    "primitives_metrics_exist": true,
+    "primitives_pass_exists": true,
+    "attention_metrics_exist": true,
+    "attention_pass_exists": true,
+    "positions_metrics_exist": true,
+    "positions_pass_exists": true,
+    "passed": true
+  },
+  "formal": {
+    "passed": true,
+    "proof_scan_violations": []
+  },
+  "unit_tests": {
+    "passed": true
+  },
+  "purity": {
+    "source_violations": [],
+    "regex_hits": [],
+    "graph_violations": {},
+    "passed": true
+  },
+  "monte_carlo_label_noise": {
+    "trials": 100000,
+    "classes": 10,
+    "noise_range": [
+      0.0,
+      0.3
+    ],
+    "gradient_domain": "logits",
+    "finite": true,
+    "analytical_vs_autodiff_max_error": 1.1102230246251565e-15,
+    "consistency_tolerance": 2e-12,
+    "variance_ce_norm": 0.07474887787395343,
+    "variance_oace_norm": 0.17029243698976398,
+    "variance_ratio_descriptive": 2.2781938917788507,
+    "summary_ce_norm": {
+      "n": 100000,
+      "mean": 0.6111756233250409,
+      "sem": 0.0008645786567467827,
+      "ci95": [
+        0.6094810597854153,
+        0.6128701868646665
+      ],
+      "min": 0.020171588570197383,
+      "max": 1.3925282817003208
+    },
+    "summary_oace_norm": {
+      "n": 100000,
+      "mean": 0.7999086653532168,
+      "sem": 0.0013049679686918114,
+      "ci95": [
+        0.7973509441755449,
+        0.8024663865308888
+      ],
+      "min": 0.04229943274335325,
+      "max": 3.341056672982123
+    },
+    "passed": true
+  },
+  "simplex_boundary_stability": {
+    "points": 1000,
+    "pk_min": 1e-09,
+    "pk_max": 0.999999999,
+    "has_nan": false,
+    "has_inf": false,
+    "probability_gradient_at_boundary": 13335214308.298025,
+    "probability_gradient_max_scaled_error": 5.771218529500068e-16,
+    "score_gradient_max_magnitude": 6794.725126733753,
+    "score_gradient_all_finite": true,
+    "note": "dL/dp is singular as p approaches zero; AVN+A-Softmax makes the composed score gradient finite",
+    "passed": true
+  },
+  "fisher_information_ratio": {
+    "samples": 100000,
+    "dimension": 10,
+    "mean_ratio": 2.0,
+    "max_error_vs_two": 0.0,
+    "tolerance": 1e-11,
+    "passed": true
+  },
+  "strict_propriety_and_monotonicity": {
+    "samples": 100000,
+    "dimension": 10,
+    "max_abs_score_at_truth": 5.329070518200751e-15,
+    "minimum_random_competitor_regret": 0.009974488339189236,
+    "max_stationarity_error": 2.220446049250313e-16,
+    "strictly_decreasing": true,
+    "passed": true
+  },
+  "benchmark": {
+    "steps": 300,
+    "label_noise_level": 0.15,
+    "ce": {
+      "final_loss": 1.2889057397842407,
+      "test_accuracy": 0.7525,
+      "mean_grad_variance": 0.0187407060698024
+    },
+    "oace": {
+      "final_loss": 3.1611220836639404,
+      "test_accuracy": 0.7475,
+      "mean_grad_variance": 0.48998625405365603
+    },
+    "accuracy_delta": 0.004999999999999893,
+    "passed": true
+  },
+  "hardware": {
+    "passed": true,
+    "source_matches": true,
+    "inventory_matches": true,
+    "path": "/home/tas_ken_rt25/algebraic-intelligence/results/loss/tpu/metrics.json"
+  },
+  "passed": true,
+  "status": "PASS"
+}

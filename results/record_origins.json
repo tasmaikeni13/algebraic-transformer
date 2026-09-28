@@ -1,0 +1,292 @@
+{
+  "results/attention/counterexamples.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "256e84895bfa48ac2f00426778147b9fe8c954131c47ba1c34b0e17746cf26d8",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/attention/iterations/original-gates.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "60d3c9e4b8d8bd33fedb35be52c85ff94069b0d830c7f2b6208966d725bb9bbf",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/attention/iterations/scale-sink-sweep.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "a669bb32aa7b08f9e74d91b04c5de4aa1d2a7e7774c0b5b4325fd53d423493b4",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/attention/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "208027c18f395ec94fa41f1a02b2942e8995925309b74b3142b52848d8c34664",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/attention/tpu/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "8405093930f91a0c2137929e9cb53f5fbc66bddc45a9864aa64f9d8b70f03543",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/attention/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "f2470820a69a4ff9a22d8bc15234960c6817de249850e6b39a81112f5af3c40d",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/kernels/benchmark_results.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "398b96e51880b59f891e122d45fdf3e93db4469154bfe392f4b1e56894faa553",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/loss/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "6dbfc2b3ab51b5a7bcf15937a4656b10054df1e58abfd9714ca94b4156db4df6",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/loss/tpu/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "cd00a3606f4afef6ad1fa85b769a45e9658092b8e263343f20617997e8e450ca",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/loss/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "029cbc8a6d82fa16066c4d4fb01629dcf2ba6c1f60ad608ae609dec9a07e46ee",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/optimizer/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "70b16451cdbd12e49e7b299db637958a799b5cb4d2fd3387e223fecb0025b95b",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/optimizer/tpu/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "8c66b2913e8352182f523163ccc1f4f81c4c473af67d04690950f373c4832966",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/optimizer/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "c1571075fca716c9798c51e128242edf3b3e4e8f0ec9c5c8d5fcc847e3a3bbe8",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pilot/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "83eee2530cdc22fb34acb2c8141476d077d07a014619e4ba1ca244bceaae411d",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pilot/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "e42edae80d4f370b61efcde3b6d889325d6940273228013e5d0fa13d6fca12d0",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/positions/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "fb213ecb9535e943a8b3fb6ed424058e027fd05e66ac42a8d80b6feae2c3b487",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/positions/tpu/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "3285ef62f3c5acf0ebc0d11d9eace6b0f7fcfdb7cb570ccc5228c47051dabbd7",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/positions/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "f4b397136ea28e15e802534f70688c5ccdb581c9879d3a9f076170bbf9bc30b3",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/algebraic-42/benchmarks.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "dee07eb37569a4f6b862d70d28f41cb8453433fe484d32eeff08ecc9a0d914d6",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/algebraic-42/run_metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "13067de15d36c250617cadc2eab3f961a1910273607d24d7ef4f4c5a6f191961",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/algebraic-43/benchmarks.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "8b2247751434d5f58d7086d44365cc7fab48d2c5c30fc3f84ee703eb1b3f344c",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/algebraic-43/run_metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "51649632e2b1d9f44bab5022fd49dfa3cc8c9dd1758753b8ed0b0a4a960ea692",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/algebraic-44/benchmarks.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "e25f4d7b3aa984d6112ebeae69b40beb9b4d3f01ddbe6d25393b9fa5eb5a66fa",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/algebraic-44/run_metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "b9625fc247976ffeaffb09abe7786284ecd2844a39aa3e2fa74f06e17dedd48f",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "9ed694b92057f4b91129517777b544b4841acf2aaa422c5d7ff8e41ac908f5f4",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/pretraining_ledger.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "d61f1f092a90d00e39eef64aaba7e56e4f3f44e3a3f731e49f3ed67f64c8f2d3",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/standard-42/benchmarks.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "4c68ff92a19389c85d0cdb9b647895857f78e17580b8905f5730e001d64520a2",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/standard-42/run_metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "a4093cb73f43cc476ea568cd90c8fffbaa73cea037cca05737524de84eb01e74",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/standard-43/benchmarks.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "49429228a5a713c9434b54e2b22cab4dfed6e1b828f77538d77e442ffa44f95b",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/standard-43/run_metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "d42d80a14352b96be250253ffc26ee408712191c4301ae38799a6e1dc4f225b9",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/standard-44/benchmarks.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "5078cdb98aeae95f8c5ee3cc9076d56daf6cb4be519e007299ca9d5c1e8d7890",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/pretraining/standard-44/run_metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "924fef7c2a78d79937d986eca1f317919a354d1398813f9359c13ab442241256",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/cluster.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "549e91547d9203e1695b7e379e4e9a607b78b37e9276349807df302076dd30fe",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/deep-pilot.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "7c171c41baeb0e17aaaa6c5701469deb937749b970e1a6add78e4580a0ef6f18",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/deep-unattenuated.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "8239fc4b0fe138ece6971f471e7eb17f07eddd55272fa235b66357ea8770f679",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/full-cpu-initial/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "15db11886c1ef6d9e6e8d3b4aa0873d28e8397ca1b61df0379df6120ef3f14d4",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/full-cpu-width128/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "0d09f88d4bce29a74bd93ca56edac14b87bc41a945a8105565d5dd8890156057",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/monte_carlo-initial.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "c858795723d697a13884d490e4e8355b39413fb6ed2129a7851175f8ad0a5c5e",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/numerical-initial.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "93b1eb949ebd1b300d3710307db5e211eb830d54eabb4a23253be27ab3788001",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/tpu-collection-failure/recovered/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "9cd867e2399b642e2f863b481ad0ffd8e1bb6c726dbae8f5d38a98e1fce4dedc",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/tpu-collection-failure/recovered/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "5ab21f4b23627f126a4e131f5c37d55a8c69156e15a33479703714dfea38a21c",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/iterations/variance-v1.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "a569dcd9fd80aa37e9e69a3728261a659fa29baf9cfea22ff8d487d6d92bcb5e",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "fd49c6575fa5de17df1172571904b55f9a4238ddcee0610ec460287454dd98e7",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/purity.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "27778a654a8e4527be2f42647e5225cc9a25ff8aecf43bfd3328e877c8095b4b",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/tpu/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "1a5e986d8e999c5cb2a9418c9fc7194a2d1d8acfd4757a08dad965142e3165a9",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/primitives/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "541f6209a9237a9e81d38ffc097d692ef59109cce22d6486766641a8f23171b5",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tpu_kernels/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "045711438a3815a4bc33527f5175812d1aa954296b9b3bb0c31243c35db63596",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tpu_kernels/tpu/latencies.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "9572044d7c41bd63d7f42c4d0f1a6fcb121210e85468c41d7822d5806457ba52",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tpu_kernels/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "e6293d99b283ab3e9aeb395ecc6c89b3c67776331714b15c37d01d572db1f8b8",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/algebraic_optimal.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "cecb290502687908c5c94b96e80c253a56ce11a927ecda160848b0c16bfb4a62",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/baseline_optimal.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "c73519eefb0688478c02c16af9d3deefbc6519f8cbd6f3e55ea101e19f345d6d",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "4453d862a1182c1dbf536addae9a82902830e01c5b56cf46c1d8b5550446796e",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/sweep_ledger.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "111660d44b931826a7da1648bdbe4b90f9f772939fbc83b61b5cec8f6d88312b",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/tpu/algebraic_optimal.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "cecb290502687908c5c94b96e80c253a56ce11a927ecda160848b0c16bfb4a62",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/tpu/baseline_optimal.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "c73519eefb0688478c02c16af9d3deefbc6519f8cbd6f3e55ea101e19f345d6d",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/tpu/metrics.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "4453d862a1182c1dbf536addae9a82902830e01c5b56cf46c1d8b5550446796e",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/tpu/sweep_ledger.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "111660d44b931826a7da1648bdbe4b90f9f772939fbc83b61b5cec8f6d88312b",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  },
+  "results/tuning/verification.json": {
+    "git_commit": "9cb44b727d63365cd49f5d971103e43ae14b1233",
+    "sha256": "a817809c5db93cc1096a047d6a58b6eaa7bfb8c21f42727682e4baad3bbde9cd",
+    "note": "The original record is available in the named Git commit. Source path labels in this release are descriptive aliases; source hashes refer to the recorded run."
+  }
+}

@@ -1,0 +1,3 @@
+# TPU workers extend the shared environment with the TPU runtime.
+-r requirements.txt
+libtpu==0.0.17

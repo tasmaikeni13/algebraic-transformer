@@ -1,0 +1,84 @@
+{
+  "algebraic": [
+    {
+      "name": "alg_reference",
+      "learning_rate": 0.0006,
+      "warmup_steps": 28,
+      "weight_decay": 0.01,
+      "beta1": 0.9,
+      "beta2": 0.99,
+      "sink_omega": 0.5,
+      "gamma": 2.0,
+      "min_lr": 0.00001,
+      "schedule": "ards",
+      "max_grad_norm": 1.0
+    },
+    {
+      "name": "alg_lower_lr",
+      "learning_rate": 0.0003,
+      "warmup_steps": 28,
+      "weight_decay": 0.05,
+      "beta1": 0.9,
+      "beta2": 0.99,
+      "sink_omega": 0.25,
+      "gamma": 1.5,
+      "min_lr": 0.00001,
+      "schedule": "ards",
+      "max_grad_norm": 1.0
+    },
+    {
+      "name": "alg_high_lr",
+      "learning_rate": 0.001,
+      "warmup_steps": 57,
+      "weight_decay": 0.01,
+      "beta1": 0.9,
+      "beta2": 0.98,
+      "sink_omega": 1.0,
+      "gamma": 2.0,
+      "min_lr": 0.00001,
+      "schedule": "ards",
+      "max_grad_norm": 1.0
+    }
+  ],
+  "baseline": [
+    {
+      "name": "base_reference",
+      "learning_rate": 0.0006,
+      "warmup_steps": 28,
+      "weight_decay": 0.01,
+      "beta1": 0.9,
+      "beta2": 0.99,
+      "sink_omega": 0.5,
+      "gamma": 2.0,
+      "min_lr": 0.00005,
+      "schedule": "cosine",
+      "max_grad_norm": 1.0
+    },
+    {
+      "name": "base_lower_lr",
+      "learning_rate": 0.0003,
+      "warmup_steps": 28,
+      "weight_decay": 0.05,
+      "beta1": 0.9,
+      "beta2": 0.99,
+      "sink_omega": 0.5,
+      "gamma": 2.0,
+      "min_lr": 0.00001,
+      "schedule": "cosine",
+      "max_grad_norm": 1.0
+    },
+    {
+      "name": "base_high_lr",
+      "learning_rate": 0.001,
+      "warmup_steps": 57,
+      "weight_decay": 0.1,
+      "beta1": 0.9,
+      "beta2": 0.98,
+      "sink_omega": 0.5,
+      "gamma": 2.0,
+      "min_lr": 0.00005,
+      "schedule": "cosine",
+      "max_grad_norm": 1.0
+    }
+  ]
+}

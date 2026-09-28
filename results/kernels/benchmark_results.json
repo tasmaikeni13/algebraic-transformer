@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-09-22T03:24:07Z",
+  "attention_2048": {
+    "seq_len": 2048,
+    "unfused_standard_ms": 145.03,
+    "unfused_algebraic_ms": 95.52,
+    "unfused_speedup": 1.52,
+    "fused_flash_attn_ms": 348.37,
+    "fused_octic_afa_ms": 367.78,
+    "fused_speedup": 0.95,
+    "unfused_algebraic_tok_s": 21440.1,
+    "fused_octic_afa_tok_s": 5568.6
+  },
+  "attention_8192": {
+    "seq_len": 8192,
+    "unfused_standard_ms": 2108.74,
+    "unfused_algebraic_ms": 1637.5,
+    "unfused_speedup": 1.29,
+    "fused_flash_attn_ms": 5631.04,
+    "fused_octic_afa_ms": 5605.67,
+    "fused_speedup": 1.0,
+    "unfused_algebraic_tok_s": 5002.8,
+    "fused_octic_afa_tok_s": 1461.4
+  },
+  "loss_projection": {
+    "num_tokens": 512,
+    "vocab_size": 50257,
+    "training_batch_materialized_gb": 98.2,
+    "fused_working_memory_mb": 12.3,
+    "memory_reduction_ratio": 8192.0,
+    "unfused_standard_ce_ms": 57.82,
+    "fused_standard_ce_ms": 87.06,
+    "fused_algebraic_oace_ms": 120.73,
+    "speedup_vs_unfused": 0.48,
+    "speedup_vs_fused_standard": 0.72,
+    "fused_oace_tok_s": 4240.9
+  },
+  "ssm_linear_recurrence": [
+    {
+      "context_length": 1024,
+      "step_time_microseconds": 47.16,
+      "memory_per_step_bytes": 66820,
+      "complexity": "O(1) memory & O(1) time per token"
+    },
+    {
+      "context_length": 2048,
+      "step_time_microseconds": 36.51,
+      "memory_per_step_bytes": 66820,
+      "complexity": "O(1) memory & O(1) time per token"
+    },
+    {
+      "context_length": 4096,
+      "step_time_microseconds": 40.1,
+      "memory_per_step_bytes": 66820,
+      "complexity": "O(1) memory & O(1) time per token"
+    },
+    {
+      "context_length": 8192,
+      "step_time_microseconds": 41.69,
+      "memory_per_step_bytes": 66820,
+      "complexity": "O(1) memory & O(1) time per token"
+    }
+  ],
+  "scope": "historical_microbenchmark_superseded",
+  "valid_for_pretraining_claims": false
+}

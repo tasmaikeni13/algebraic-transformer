@@ -1,0 +1,15 @@
+name = "algebraic_theory"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["AlgebraicTheory"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+
+[[lean_lib]]
+name = "AlgebraicTheory"

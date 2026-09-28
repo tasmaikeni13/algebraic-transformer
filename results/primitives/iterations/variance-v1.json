@@ -1,0 +1,18 @@
+{
+  "seed": 42,
+  "samples": 1000000,
+  "sigma": 0.1,
+  "eps": 1e-05,
+  "variance": 0.9990019521851182,
+  "required": [
+    0.9999,
+    1.0001
+  ],
+  "passed": false,
+  "command": "JAX_PLATFORMS=cpu .venv/bin/python scripts/run_verify_primitives.py --cpu-only",
+  "minimal_repro": "x = np.random.default_rng(42).normal(size=1000000) * .1; y = x / np.sqrt(np.mean(x*x) + 1e-5); print(np.var(y))",
+  "python": "3.10.12",
+  "numpy": "2.2.6",
+  "git_commit": "680827bdcc0909dfe9800b849d578ef7cbbe4b30",
+  "root_cause": "Gate assumes eps=0 and zero mean; regularized uncentered AVN cannot satisfy it for all inputs."
+}

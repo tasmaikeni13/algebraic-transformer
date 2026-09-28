@@ -1,0 +1,275 @@
+{
+  "study": 7,
+  "gate_version": 1,
+  "environment": {
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "platform": "Linux-5.19.0-1022-gcp-x86_64-with-glibc2.35",
+    "hostname": "t1v-n-0974eafe-w-2",
+    "jax": "0.6.2",
+    "jaxlib": "0.6.2",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "git_commit": "3659ffed4225c1bb91c74fe71ac36e9e4b285fa6",
+    "git_dirty": false,
+    "source_sha256": {
+      "formal/AlgebraicTheory/Gate.lean": "1372e78d076a59a436da23b48bc81f2e7540f2448aaa98e9b73db8eeb95f61e9",
+      "formal/AlgebraicTheory/Variance.lean": "18f15e5bc1a88ca8466d519ae7759267961180a76651a016d27dd8823278ff15",
+      "formal/lake-manifest.json": "7d58ba349761bf73989bf1908d646e3c1a2549cd96362ba89513ad355e09d2c4",
+      "formal/lakefile.toml": "2817369ee31b6398f4da29a91629ab47d90cfd9df5cbe98a6eb629bea6352cb6",
+      "formal/lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+      "pytest.ini": "6a96ba0e2d5a8296fb90f474da9d2f0173d3e41eba18965513f711104155f913",
+      "requirements-tpu.txt": "f18692d6a965b40a88c992986517edd25020ff568192045b8fbb7279a29e9e15",
+      "requirements.txt": "d63a664305f69790dd4e6c020a5b0ea18c3eb51bb840d90d79038a0c25de682c",
+      "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scripts/audit_primitives.py": "6576a6fb39e461a6339d5c27e03c33a0cf7e238a83384cbf66d97c5411d142c2",
+      "scripts/launch_primitives_tpu.py": "45b6b39979f385acd723e1c1d9b625ee0418d8ea692698cb1acfc44cc8f273e8",
+      "scripts/primitives_experiments.py": "0b9b83f048289076fd12f801d5239f74b8a4cf2e881ce6d3bba37b08c01aece0",
+      "scripts/primitives_records.py": "d4063fa54dcda34a2d4aac9ecc58ce752bb6dc54080a10d87cd0c30cc6b5e3f1",
+      "scripts/run_primitives_tpu.py": "a74e8c6e8633f99174287b302b3ddc28926265c6c8ebca21e335441e8eda578c",
+      "scripts/run_verify_primitives.py": "3fd9a9238621a7663d9fd7cb4659a0ad0989732be055e7c31d5c0872ba2ddb9a",
+      "src/__init__.py": "5d9fede4ddd4f7daa2f88da2c6a43763d0f99e0b7b3735afa634c6b074f091f7",
+      "src/primitives.py": "6c40d9312f70c05422c116186a5e04407382b8d55886bfc38357ad8ed536ebbb",
+      "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests/conftest.py": "e51b6a53d68c856ac8d64764107dafc10ef1319358e6eeaec13df1a42a1d7209",
+      "tests/reference_primitives.py": "fee82b0cef2e6d8dab94785f562e3adfd911bd5499f5335e964f08b03ff732a1",
+      "tests/test_primitives_records.py": "0656bd9fe8b1c5203784f2d8df2e66762a18302235b61816a31f508c310c2e9b",
+      "tests/test_primitives.py": "7045962476f1bb01a4609048745889bcf26d9d570f8d203d7e46364ad2d6554b",
+      "formal/AlgebraicTheory/Kernel.lean": "a933646e02901e8d913f8e3b981de08c2f3c551e790ed4fb9c9d9961ecc0030c",
+      "scripts/launch_attention_tpu.py": "2ef00e5ec9c4782a91287dd0005d2b2e279a7dfd3b84172b8865b67cb5a16675",
+      "scripts/attention_counterexamples.py": "f4c6f240438d67fd31c81b15014a8586a60a03b55b3f65b99f4d5e6121e7615e",
+      "scripts/attention_experiments.py": "c5622adc540ba77f2f66dc12bc0d97ddddeed72cd1aadb6e17ea358aecbb0c3d",
+      "scripts/attention_records.py": "77440c0dea54109d34dc4ab14adf88c7834f892b4045a62d3de28956009455b6",
+      "scripts/run_attention_tpu.py": "3df75d5c0ca2cffba30e1de6882222f6c6708ec69b9feb5d42b239c0d1cca127",
+      "scripts/run_verify_attention.py": "5c4a3146fefc10b65c9e25f9cb521c25f48b8e57c5e165ee4627c834781a361f",
+      "src/attention.py": "91c46503d1e2d3272b7cbcd3cecd5d50232979078a0349e9ca198c954c16c60d",
+      "tests/reference_attention.py": "4fe0808730099e41c5e15684e0db1928379b48c7cdf90ac6751fec10e69cc4c7",
+      "tests/test_attention.py": "3e3eb35de837517bddd13b46b6576d797f4d536a37e3f0086080a0d7462161bd",
+      "formal/AlgebraicTheory/Cayley.lean": "bd975dd2e4825b366a6ed991e799f2b178aa84cdb860ec5d1a82db0571aa0cde",
+      "scripts/launch_positions_tpu.py": "a3ffaa34f9eccc5aa677715959021a6ec8293ec197d14fb081390a2cb69345a0",
+      "scripts/positions_experiments.py": "8d202b93e06a24d5b266695da45bf28ca506d8b2a733710648fa00c8463982f7",
+      "scripts/positions_records.py": "b73b0ec8092c1dd855eba9f2fa03264a6b5d66f12c8c4b0305dbe172809b6db5",
+      "scripts/run_positions_tpu.py": "57c6116a4805e2a600b81c029f5abe7b76b5783d63bd0e6ef4f4eb81e3ec808c",
+      "scripts/run_verify_ago.py": "9a6a5452c9420da1700507d411fb02f0fd8245d237b5c894e8b7a36c10d113bd",
+      "tests/reference_ago.py": "013ca58cec4711e4621f77fd24718d6ace66be6d57c0af58a5b4cbefbb22ea8c",
+      "tests/test_ago.py": "05d48cc0b1df173a53572d36961f20484c0dad1ede8e5acc57b32c1b4426cbbd",
+      "formal/AlgebraicTheory/Loss.lean": "7f9f3739a9ce93bb227e78531674bf9da5bd252c7c5bb9407a1788ccfd81ad89",
+      "scripts/launch_loss_tpu.py": "6f8644f5766c48acc92005c05c026f46c8920298df6a159731002f77930d301f",
+      "scripts/loss_experiments.py": "f07cb3de4b684ad9724bbef463e247aced06d6cff365150016c359ae83c3bf11",
+      "scripts/loss_records.py": "a26e4c2a66be6faf4d962d2cdcc42b8a7ff75aa8bcbe5aa05f02684bbed0b6d0",
+      "scripts/run_loss_tpu.py": "5d23fe0a140943b2da1bb4c5ff78707ac8d1b7759fdce82dc4117bcb4ed34d59",
+      "scripts/run_verify_loss.py": "ff10299ac4377bf6ef790217c317e0cbc0fb1c9938c50af2dd47ba34914f17e9",
+      "src/loss.py": "02c99d85c450343db5a2c15a25f2b744a1e7b2676c177d8a495ae5398a53a6f4",
+      "tests/reference_loss.py": "f28f2b824f7c7c67e625a783032959a13b619752a2c209e269f57a4fa292eb88",
+      "tests/test_loss.py": "ca70c4779ee8aac6d2edbbd4beade80ebbc20e1c87d7e0faa0b9de2fc2af4929",
+      "formal/AlgebraicTheory/Curvature.lean": "577bb49c2a71bd4e3897b82bb6cf5fb9e21fb5286f9a0fc214a4517e02d838b4",
+      "scripts/launch_optimizer_tpu.py": "bd37b34bf34d721b2b1c63c58445ed7890dacd2ef7539fb1f992f17e8a50c7cc",
+      "scripts/optimizer_experiments.py": "350b77ef8beade493b87d486c6f450f3598acc6cfdea106d9a9aade9b3907607",
+      "scripts/optimizer_records.py": "7de13d350c6f3e3fd5d6bba174500bd758c9e36dce5e41e0196ae4088111b560",
+      "scripts/run_optimizer_tpu.py": "2de4d9a1526b6012eee2c7da4b76732978270bd97777bf19a75eb26a4f6bc0ce",
+      "scripts/run_verify_optimizer.py": "f3e8b95ab6a2a49faf615d61e40b962273f7b63fc218a66c621fa4a156c91d65",
+      "src/optimizer.py": "ae03cec8f8a2bb64141318cdc6b41da310b0937af4e0a4bf378acffb7e0a0ea2",
+      "tests/reference_optimizer.py": "816305d57986159d5cf5cd689f989db113a03a698507381565298698a32360c9",
+      "tests/test_optimizer.py": "e85c309c8cbc6c3b93e7fd243ce8592f94882910ef958f93ba698ed189f2a6eb",
+      "scripts/audit_xla_hlo.py": "c7c6e7ce368fe7348491c5cdab135a230f3567bf62e3d633b5fbb24e97969db2",
+      "scripts/launch_tpu_kernels_tpu.py": "5482c1fd1a7d33c66937c2692c6f24b61cc2106e60bd4b5ba700cc779050251d",
+      "scripts/tpu_kernels_experiments.py": "f07bbc0f99633ca1c884b801fe0711904c1ac97bffbb75315710168f53db6fe0",
+      "scripts/tpu_kernels_records.py": "b905cca250db53732ce99cdc730552e0fa762c53bb4d51672ef7ede6530732f5",
+      "scripts/run_tpu_kernels_tpu.py": "632867c5603fb3acca724bede9642bc406aba3d26176febf382ff89148c4b907",
+      "scripts/run_verify_pallas.py": "f386d798519b0b241d804a4ea58317e9c47f8dee375d55dcb87a29a1dc018514",
+      "src/kernels/__init__.py": "71184fb739caef55d87eff80a401a1475ad8e684b48ddc035dbd7a665d1d7245",
+      "src/kernels/pallas_afa.py": "ef65e883e6b0fc8fde338403be277a628bf9824d6db1787c31696a8461e99076",
+      "tests/test_pallas_afa.py": "ba579f69b2563b7b9bd82cc3319b91ba2cd3c143816c4d6e21ef7fc2765a5e5a",
+      "formal/AlgebraicTheory/Composition.lean": "f6a51a78dd5f17ecec40469ebdd3579ba5e78cf847e86cf669bf713b5a0ca260",
+      "scripts/launch_pilot_tpu.py": "49cb2604ccb6b2ac8863e0d07b07dedf3d3bcd0ff976647ce30e444ce0ed3189",
+      "scripts/pilot_experiments.py": "9b83747e5d80e844a114a9c5f7c37bb869412c17d95644a2931f94295e30f5a6",
+      "scripts/pilot_records.py": "a98b703985913fc6d3c3362b1f87f37c5cd205ca011a06557714b498b1cd84fc",
+      "scripts/run_pilot_15m.py": "bdb885a703aa04787ddac9357a74c9f0a8b25038fb6088e04f52c796c4b781e3",
+      "scripts/run_verify_pilot.py": "77fd7b37bc8f668f8bd4b6435213f3e6c4f7cf7b817ec5fee6517925551b510d",
+      "src/baseline.py": "e8061f7a861fe4738af1677a63685f15abf05d1a7affa6bf09ad32e31969422d",
+      "src/dataset.py": "b9e8d3d51625ccfc69d895b74a654e2721ec48156a321143fde05090792ae421",
+      "src/kernels/fused_cross_entropy.py": "e3499a475b0bfec014cdfa31a38356e2da8dcebfd4519aa28171ef856a5b7636",
+      "src/kernels/pallas_flash_attention.py": "dc1fe17ff5158388e4e333e4e0745004983188855b27def4ac883fa20e123681",
+      "src/kernels/pallas_oace.py": "97fe0cbf8a8f5ccf71834467fab0ab8bd24c7e8d8d55e40bd8ef4a0b34e443cb",
+      "src/mesh.py": "86af2f0c2338b9547c745f18a0ffbf8566ecf3f619854a757ac0af8b0361bbdf",
+      "src/model.py": "7d0a4596e0b969cacd2de0c43b1f3fa1c66c9e0b3215d675a4ab5c994f81bcc3",
+      "tests/test_model.py": "fada1bbdfdc6a91d9d98362cc35bbeaf46fb37aec2e4d862b339e3fd75fc3d4b",
+      "tests/test_pallas_oace.py": "160e93317ee077b502ee374e9eab7b1a8dfae50bf913e8891a5a064830fb382c",
+      "tests/test_standard_kernels.py": "3ed60424d933ebc8401d366792bfa6d611f0a741ff979b431cc4905060ea463d"
+    }
+  },
+  "device_count": 16,
+  "process_count": 4,
+  "devices": [
+    {
+      "id": 0,
+      "kind": "TPU v4",
+      "process": 0
+    },
+    {
+      "id": 1,
+      "kind": "TPU v4",
+      "process": 0
+    },
+    {
+      "id": 2,
+      "kind": "TPU v4",
+      "process": 0
+    },
+    {
+      "id": 3,
+      "kind": "TPU v4",
+      "process": 0
+    },
+    {
+      "id": 4,
+      "kind": "TPU v4",
+      "process": 1
+    },
+    {
+      "id": 5,
+      "kind": "TPU v4",
+      "process": 1
+    },
+    {
+      "id": 6,
+      "kind": "TPU v4",
+      "process": 1
+    },
+    {
+      "id": 7,
+      "kind": "TPU v4",
+      "process": 1
+    },
+    {
+      "id": 8,
+      "kind": "TPU v4",
+      "process": 2
+    },
+    {
+      "id": 9,
+      "kind": "TPU v4",
+      "process": 2
+    },
+    {
+      "id": 10,
+      "kind": "TPU v4",
+      "process": 2
+    },
+    {
+      "id": 11,
+      "kind": "TPU v4",
+      "process": 2
+    },
+    {
+      "id": 12,
+      "kind": "TPU v4",
+      "process": 3
+    },
+    {
+      "id": 13,
+      "kind": "TPU v4",
+      "process": 3
+    },
+    {
+      "id": 14,
+      "kind": "TPU v4",
+      "process": 3
+    },
+    {
+      "id": 15,
+      "kind": "TPU v4",
+      "process": 3
+    }
+  ],
+  "mesh_shape": {
+    "data": 2,
+    "fsdp": 2,
+    "model": 4
+  },
+  "total_steps": 100000,
+  "batch_size_sequences": 64,
+  "context_length_tokens": 512,
+  "global_batch_size_tokens": 32768,
+  "ast_audit": {
+    "audited_files": [
+      "src/model.py",
+      "src/primitives.py",
+      "src/attention.py",
+      "src/loss.py",
+      "src/optimizer.py",
+      "src/mesh.py",
+      "src/kernels/pallas_afa.py",
+      "src/kernels/pallas_oace.py"
+    ],
+    "violations": {},
+    "passed": true
+  },
+  "pilot_pretraining": {
+    "perplexity_ratio": 1.0670973793415226,
+    "throughput_ratio": 0.9448041522620223,
+    "peak_gradient_norm": 1.0000003576278687,
+    "nan_or_inf_count": 0,
+    "loss_spike_count": 0,
+    "algebraic_results": {
+      "model_name": "AlgebraicTransformerLM",
+      "total_steps": 100000,
+      "final_loss": 10.497451782226562,
+      "valid_perplexity": 26.91902956837387,
+      "peak_gradient_norm": 1.0000003576278687,
+      "nan_or_inf_count": 0,
+      "loss_spike_count": 0,
+      "steady_state_throughput_tokens_per_sec": 2340061.6992424675
+    },
+    "baseline_results": {
+      "model_name": "StandardTransformerLM",
+      "total_steps": 100000,
+      "final_loss": 2.9112119674682617,
+      "valid_perplexity": 25.2264039716646,
+      "peak_gradient_norm": 1.000000238418579,
+      "nan_or_inf_count": 0,
+      "loss_spike_count": 0,
+      "steady_state_throughput_tokens_per_sec": 2476769.067578673
+    },
+    "gates": {
+      "execution_budget": {
+        "steps": 100000,
+        "required_steps": 100000,
+        "passed": true
+      },
+      "perplexity_parity": {
+        "algebraic_ppl": 26.91902956837387,
+        "baseline_ppl": 25.2264039716646,
+        "ratio": 1.0670973793415226,
+        "threshold": 1.08,
+        "passed": true
+      },
+      "numerical_stability": {
+        "nan_or_inf_count": 0,
+        "threshold": 0,
+        "passed": true
+      },
+      "loss_spike_anomaly": {
+        "spike_count": 0,
+        "threshold": 0,
+        "passed": true
+      },
+      "peak_gradient_norm": {
+        "peak_norm": 1.0000003576278687,
+        "threshold": 5.0,
+        "passed": true
+      },
+      "steady_state_throughput": {
+        "algebraic_tok_sec": 2340061.6992424675,
+        "baseline_tok_sec": 2476769.067578673,
+        "ratio": 0.9448041522620223,
+        "threshold": 0.9,
+        "passed": true
+      },
+      "ast_audit": {
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "passed": true
+}

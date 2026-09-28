@@ -1,0 +1,234 @@
+{
+  "study": 5,
+  "gate_version": 1,
+  "environment": {
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "platform": "Linux-5.19.0-1022-gcp-x86_64-with-glibc2.35",
+    "hostname": "t1v-n-0974eafe-w-0",
+    "jax": "0.6.2",
+    "jaxlib": "0.6.2",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "git_commit": "6af306ae88aa38590e14abcd0647f673d708ac5e",
+    "git_dirty": true,
+    "source_sha256": {
+      "formal/AlgebraicTheory/Gate.lean": "1372e78d076a59a436da23b48bc81f2e7540f2448aaa98e9b73db8eeb95f61e9",
+      "formal/AlgebraicTheory/Variance.lean": "18f15e5bc1a88ca8466d519ae7759267961180a76651a016d27dd8823278ff15",
+      "formal/lake-manifest.json": "7d58ba349761bf73989bf1908d646e3c1a2549cd96362ba89513ad355e09d2c4",
+      "formal/lakefile.toml": "2817369ee31b6398f4da29a91629ab47d90cfd9df5cbe98a6eb629bea6352cb6",
+      "formal/lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+      "pytest.ini": "6a96ba0e2d5a8296fb90f474da9d2f0173d3e41eba18965513f711104155f913",
+      "requirements-tpu.txt": "f18692d6a965b40a88c992986517edd25020ff568192045b8fbb7279a29e9e15",
+      "requirements.txt": "d63a664305f69790dd4e6c020a5b0ea18c3eb51bb840d90d79038a0c25de682c",
+      "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scripts/audit_primitives.py": "6576a6fb39e461a6339d5c27e03c33a0cf7e238a83384cbf66d97c5411d142c2",
+      "scripts/launch_primitives_tpu.py": "45b6b39979f385acd723e1c1d9b625ee0418d8ea692698cb1acfc44cc8f273e8",
+      "scripts/primitives_experiments.py": "0b9b83f048289076fd12f801d5239f74b8a4cf2e881ce6d3bba37b08c01aece0",
+      "scripts/primitives_records.py": "d4063fa54dcda34a2d4aac9ecc58ce752bb6dc54080a10d87cd0c30cc6b5e3f1",
+      "scripts/run_primitives_tpu.py": "a74e8c6e8633f99174287b302b3ddc28926265c6c8ebca21e335441e8eda578c",
+      "scripts/run_verify_primitives.py": "3fd9a9238621a7663d9fd7cb4659a0ad0989732be055e7c31d5c0872ba2ddb9a",
+      "src/__init__.py": "5d9fede4ddd4f7daa2f88da2c6a43763d0f99e0b7b3735afa634c6b074f091f7",
+      "src/primitives.py": "6c40d9312f70c05422c116186a5e04407382b8d55886bfc38357ad8ed536ebbb",
+      "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests/conftest.py": "e51b6a53d68c856ac8d64764107dafc10ef1319358e6eeaec13df1a42a1d7209",
+      "tests/reference_primitives.py": "fee82b0cef2e6d8dab94785f562e3adfd911bd5499f5335e964f08b03ff732a1",
+      "tests/test_primitives_records.py": "0656bd9fe8b1c5203784f2d8df2e66762a18302235b61816a31f508c310c2e9b",
+      "tests/test_primitives.py": "7045962476f1bb01a4609048745889bcf26d9d570f8d203d7e46364ad2d6554b",
+      "formal/AlgebraicTheory/Kernel.lean": "a933646e02901e8d913f8e3b981de08c2f3c551e790ed4fb9c9d9961ecc0030c",
+      "scripts/launch_attention_tpu.py": "2ef00e5ec9c4782a91287dd0005d2b2e279a7dfd3b84172b8865b67cb5a16675",
+      "scripts/attention_counterexamples.py": "f4c6f240438d67fd31c81b15014a8586a60a03b55b3f65b99f4d5e6121e7615e",
+      "scripts/attention_experiments.py": "c5622adc540ba77f2f66dc12bc0d97ddddeed72cd1aadb6e17ea358aecbb0c3d",
+      "scripts/attention_records.py": "77440c0dea54109d34dc4ab14adf88c7834f892b4045a62d3de28956009455b6",
+      "scripts/run_attention_tpu.py": "3df75d5c0ca2cffba30e1de6882222f6c6708ec69b9feb5d42b239c0d1cca127",
+      "scripts/run_verify_attention.py": "5c4a3146fefc10b65c9e25f9cb521c25f48b8e57c5e165ee4627c834781a361f",
+      "src/attention.py": "91c46503d1e2d3272b7cbcd3cecd5d50232979078a0349e9ca198c954c16c60d",
+      "tests/reference_attention.py": "4fe0808730099e41c5e15684e0db1928379b48c7cdf90ac6751fec10e69cc4c7",
+      "tests/test_attention.py": "3e3eb35de837517bddd13b46b6576d797f4d536a37e3f0086080a0d7462161bd",
+      "formal/AlgebraicTheory/Cayley.lean": "bd975dd2e4825b366a6ed991e799f2b178aa84cdb860ec5d1a82db0571aa0cde",
+      "scripts/launch_positions_tpu.py": "a3ffaa34f9eccc5aa677715959021a6ec8293ec197d14fb081390a2cb69345a0",
+      "scripts/positions_experiments.py": "8d202b93e06a24d5b266695da45bf28ca506d8b2a733710648fa00c8463982f7",
+      "scripts/positions_records.py": "b73b0ec8092c1dd855eba9f2fa03264a6b5d66f12c8c4b0305dbe172809b6db5",
+      "scripts/run_positions_tpu.py": "57c6116a4805e2a600b81c029f5abe7b76b5783d63bd0e6ef4f4eb81e3ec808c",
+      "scripts/run_verify_ago.py": "9a6a5452c9420da1700507d411fb02f0fd8245d237b5c894e8b7a36c10d113bd",
+      "tests/reference_ago.py": "013ca58cec4711e4621f77fd24718d6ace66be6d57c0af58a5b4cbefbb22ea8c",
+      "tests/test_ago.py": "05d48cc0b1df173a53572d36961f20484c0dad1ede8e5acc57b32c1b4426cbbd",
+      "formal/AlgebraicTheory/Loss.lean": "7f9f3739a9ce93bb227e78531674bf9da5bd252c7c5bb9407a1788ccfd81ad89",
+      "scripts/launch_loss_tpu.py": "6f8644f5766c48acc92005c05c026f46c8920298df6a159731002f77930d301f",
+      "scripts/loss_experiments.py": "f07cb3de4b684ad9724bbef463e247aced06d6cff365150016c359ae83c3bf11",
+      "scripts/loss_records.py": "a26e4c2a66be6faf4d962d2cdcc42b8a7ff75aa8bcbe5aa05f02684bbed0b6d0",
+      "scripts/run_loss_tpu.py": "5d23fe0a140943b2da1bb4c5ff78707ac8d1b7759fdce82dc4117bcb4ed34d59",
+      "scripts/run_verify_loss.py": "ff10299ac4377bf6ef790217c317e0cbc0fb1c9938c50af2dd47ba34914f17e9",
+      "src/loss.py": "02c99d85c450343db5a2c15a25f2b744a1e7b2676c177d8a495ae5398a53a6f4",
+      "tests/reference_loss.py": "f28f2b824f7c7c67e625a783032959a13b619752a2c209e269f57a4fa292eb88",
+      "tests/test_loss.py": "ca70c4779ee8aac6d2edbbd4beade80ebbc20e1c87d7e0faa0b9de2fc2af4929",
+      "formal/AlgebraicTheory/Curvature.lean": "577bb49c2a71bd4e3897b82bb6cf5fb9e21fb5286f9a0fc214a4517e02d838b4",
+      "scripts/launch_optimizer_tpu.py": "bd37b34bf34d721b2b1c63c58445ed7890dacd2ef7539fb1f992f17e8a50c7cc",
+      "scripts/optimizer_experiments.py": "350b77ef8beade493b87d486c6f450f3598acc6cfdea106d9a9aade9b3907607",
+      "scripts/optimizer_records.py": "7de13d350c6f3e3fd5d6bba174500bd758c9e36dce5e41e0196ae4088111b560",
+      "scripts/run_optimizer_tpu.py": "2de4d9a1526b6012eee2c7da4b76732978270bd97777bf19a75eb26a4f6bc0ce",
+      "scripts/run_verify_optimizer.py": "f3e8b95ab6a2a49faf615d61e40b962273f7b63fc218a66c621fa4a156c91d65",
+      "src/optimizer.py": "ae03cec8f8a2bb64141318cdc6b41da310b0937af4e0a4bf378acffb7e0a0ea2",
+      "tests/reference_optimizer.py": "816305d57986159d5cf5cd689f989db113a03a698507381565298698a32360c9",
+      "tests/test_optimizer.py": "e85c309c8cbc6c3b93e7fd243ce8592f94882910ef958f93ba698ed189f2a6eb"
+    }
+  },
+  "command": [
+    "scripts/run_verify_optimizer.py"
+  ],
+  "dependencies": {
+    "primitives_metrics_exist": true,
+    "primitives_pass_exists": true,
+    "attention_metrics_exist": true,
+    "attention_pass_exists": true,
+    "positions_metrics_exist": true,
+    "positions_pass_exists": true,
+    "loss_metrics_exist": true,
+    "loss_pass_exists": true,
+    "passed": true
+  },
+  "formal": {
+    "passed": true,
+    "proof_scan_violations": []
+  },
+  "unit_tests": {
+    "passed": true
+  },
+  "purity": {
+    "source_violations": [],
+    "regex_hits": [],
+    "graph_violations": {},
+    "passed": true
+  },
+  "ill_conditioned_sweep": {
+    "trials": 10000,
+    "dim": 8,
+    "steps": 300,
+    "min_reduction": 1.0,
+    "mean_reduction": 1.0,
+    "max_reduction": 1.0,
+    "passed": true,
+    "summary": {
+      "n": 10000,
+      "mean": 1.0,
+      "sem": 0.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "min": 1.0,
+      "max": 1.0
+    }
+  },
+  "nonconvex_benchmarks": {
+    "seeds": 200,
+    "dim": 4,
+    "noise_sigma": 0.5,
+    "total_steps": 600,
+    "rosenbrock": {
+      "cosine_mean": 1.1742554479453389,
+      "ards_mean": 1.1461635019962018,
+      "pct_diff": -2.3923198311143605,
+      "passed": true,
+      "cosine_summary": {
+        "n": 200,
+        "mean": 1.1742554479453389,
+        "sem": 0.08753680364877388,
+        "ci95": [
+          1.001636675127465,
+          1.3468742207632127
+        ],
+        "min": 0.002703421254098287,
+        "max": 3.765383781353005
+      },
+      "ards_summary": {
+        "n": 200,
+        "mean": 1.1461635019962018,
+        "sem": 0.09043120964390969,
+        "ci95": [
+          0.967837086334505,
+          1.3244899176578984
+        ],
+        "min": 0.0013967484078435048,
+        "max": 3.7780093281884897
+      }
+    },
+    "rastrigin": {
+      "cosine_mean": 1.36311422837855,
+      "ards_mean": 1.3642256641402775,
+      "pct_diff": 0.08153650945669656,
+      "passed": true,
+      "cosine_summary": {
+        "n": 200,
+        "mean": 1.36311422837855,
+        "sem": 0.06849479516629335,
+        "ci95": [
+          1.228045468803356,
+          1.498182987953744
+        ],
+        "min": 8.970487357373713e-07,
+        "max": 3.9798680874616252
+      },
+      "ards_summary": {
+        "n": 200,
+        "mean": 1.3642256641402775,
+        "sem": 0.06849117925405283,
+        "ci95": [
+          1.2291640349868895,
+          1.4992872932936654
+        ],
+        "min": 0.00013193896220542456,
+        "max": 3.988897209493935
+      }
+    },
+    "passed": true
+  },
+  "ards_properties": {
+    "max_steps": 100000,
+    "warmup": 1000,
+    "decay": 10000,
+    "alpha": 1.0,
+    "is_strictly_monotonic": true,
+    "asymptotic_limit_expected": 10.0,
+    "asymptotic_test_steps": [
+      10000,
+      50000,
+      100000,
+      500000,
+      1000000
+    ],
+    "asymptotic_ratios": [
+      0.7432941436767578,
+      0.9998001098632813,
+      1.0049871444702148,
+      1.0018028259277343,
+      1.0009509086608888
+    ],
+    "final_ratio": 1.0009509086608888,
+    "is_asymptotic_rate_correct": true,
+    "passed": true
+  },
+  "architectural_isolation": {
+    "algebraic_cfg": {
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "eps": 1e-08,
+      "weight_decay": 0.01
+    },
+    "baseline_cfg": {
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "eps": 1e-08,
+      "weight_decay": 0.01
+    },
+    "matches": true,
+    "passed": true
+  },
+  "hardware": {
+    "passed": true,
+    "source_matches": true,
+    "inventory_matches": true,
+    "path": "/home/tasma/algebraic-intelligence/results/optimizer/tpu/metrics.json"
+  },
+  "passed": true,
+  "status": "PASS"
+}

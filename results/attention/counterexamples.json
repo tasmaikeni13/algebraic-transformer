@@ -1,0 +1,118 @@
+{
+  "environment": {
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "platform": "Linux-5.19.0-1022-gcp-x86_64-with-glibc2.35",
+    "hostname": "t1v-n-49ba2866-w-0",
+    "jax": "0.6.2",
+    "jaxlib": "0.6.2",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "git_commit": "286a3588a718099fea387464d18a08b473bd3a6c",
+    "git_dirty": true,
+    "source_sha256": {
+      "formal/AlgebraicTheory/Gate.lean": "1372e78d076a59a436da23b48bc81f2e7540f2448aaa98e9b73db8eeb95f61e9",
+      "formal/AlgebraicTheory/Variance.lean": "18f15e5bc1a88ca8466d519ae7759267961180a76651a016d27dd8823278ff15",
+      "formal/lake-manifest.json": "7d58ba349761bf73989bf1908d646e3c1a2549cd96362ba89513ad355e09d2c4",
+      "formal/lakefile.toml": "2817369ee31b6398f4da29a91629ab47d90cfd9df5cbe98a6eb629bea6352cb6",
+      "formal/lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+      "pytest.ini": "6a96ba0e2d5a8296fb90f474da9d2f0173d3e41eba18965513f711104155f913",
+      "requirements-tpu.txt": "f18692d6a965b40a88c992986517edd25020ff568192045b8fbb7279a29e9e15",
+      "requirements.txt": "509b55f548b3934bb2b8e1dde76964c4a0b2f187eb0654f18458f70cc8198848",
+      "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scripts/audit_primitives.py": "4534611e8f3e08eec0352cbd18323d20321ad85d8bd301d09daa69a6a001c67f",
+      "scripts/launch_primitives_tpu.py": "45b6b39979f385acd723e1c1d9b625ee0418d8ea692698cb1acfc44cc8f273e8",
+      "scripts/primitives_experiments.py": "0b9b83f048289076fd12f801d5239f74b8a4cf2e881ce6d3bba37b08c01aece0",
+      "scripts/primitives_records.py": "d4063fa54dcda34a2d4aac9ecc58ce752bb6dc54080a10d87cd0c30cc6b5e3f1",
+      "scripts/run_primitives_tpu.py": "a74e8c6e8633f99174287b302b3ddc28926265c6c8ebca21e335441e8eda578c",
+      "scripts/run_verify_primitives.py": "3fd9a9238621a7663d9fd7cb4659a0ad0989732be055e7c31d5c0872ba2ddb9a",
+      "src/__init__.py": "eee7fdf673352a0abd8f25f3dd529d46d98004a62d7196cb3cf6c9b74a4a2783",
+      "src/primitives.py": "6c40d9312f70c05422c116186a5e04407382b8d55886bfc38357ad8ed536ebbb",
+      "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests/conftest.py": "e51b6a53d68c856ac8d64764107dafc10ef1319358e6eeaec13df1a42a1d7209",
+      "tests/reference_primitives.py": "fee82b0cef2e6d8dab94785f562e3adfd911bd5499f5335e964f08b03ff732a1",
+      "tests/test_primitives_records.py": "0656bd9fe8b1c5203784f2d8df2e66762a18302235b61816a31f508c310c2e9b",
+      "tests/test_primitives.py": "7045962476f1bb01a4609048745889bcf26d9d570f8d203d7e46364ad2d6554b",
+      "formal/AlgebraicTheory/Kernel.lean": "d37f9546c574abd1431e34d8965b4c3040c6b1dc981b93da79bba7cb5a57177e",
+      "scripts/launch_attention_tpu.py": "2ef00e5ec9c4782a91287dd0005d2b2e279a7dfd3b84172b8865b67cb5a16675",
+      "scripts/attention_counterexamples.py": "f4c6f240438d67fd31c81b15014a8586a60a03b55b3f65b99f4d5e6121e7615e",
+      "scripts/attention_experiments.py": "c5622adc540ba77f2f66dc12bc0d97ddddeed72cd1aadb6e17ea358aecbb0c3d",
+      "scripts/attention_records.py": "77440c0dea54109d34dc4ab14adf88c7834f892b4045a62d3de28956009455b6",
+      "scripts/run_attention_tpu.py": "4ad6a5d8d35aa50b0d9e5fb86ec11b1854522bb2582bba6ad6c4911566f52f27",
+      "scripts/run_verify_attention.py": "5c4a3146fefc10b65c9e25f9cb521c25f48b8e57c5e165ee4627c834781a361f",
+      "src/attention.py": "2688988d399cab90213cb55be9abcce76d4cbfe6b5c2936a4aa4694e6bf48cfc",
+      "tests/reference_attention.py": "49fec6c6dd1fb6f666d72a5d22ac8cbe26f8c21e207742d324d4280e5eb1d761",
+      "tests/test_attention.py": "3e3eb35de837517bddd13b46b6576d797f4d536a37e3f0086080a0d7462161bd"
+    }
+  },
+  "command": [
+    "scripts/attention_counterexamples.py"
+  ],
+  "seed": 42,
+  "trials": 10000,
+  "length": 64,
+  "noise_sigma": 0.05,
+  "scores": "independent N(0,1) raw scores",
+  "noise_metric": "L2 displacement with identical raw-coordinate Gaussian noise",
+  "noise_alg": {
+    "n": 10000,
+    "mean": 0.050396722653711354,
+    "sem": 0.0003286631212697971,
+    "ci95": [
+      0.04975247678809256,
+      0.05104096851933015
+    ],
+    "min": 8.582856715568732e-05,
+    "max": 0.2509779938934083
+  },
+  "noise_softmax": {
+    "n": 10000,
+    "mean": 0.008947168464623777,
+    "sem": 2.5572418564840396e-05,
+    "ci95": [
+      0.008897041377439123,
+      0.008997295551808431
+    ],
+    "min": 0.003943733681382762,
+    "max": 0.048165810311981215
+  },
+  "noise_suppression_ratio": 0.17753472832156245,
+  "required_suppression_ratio": 100,
+  "noise_ratio_above_100": false,
+  "normalized_zero_jacobian": [
+    [
+      2.0,
+      -2.0
+    ],
+    [
+      -2.0,
+      2.0
+    ]
+  ],
+  "normalized_zero_spectral_norm": 4.0,
+  "raw_zero_jacobian": [
+    [
+      632.4555320336758,
+      -632.4555320336758
+    ],
+    [
+      -632.4555320336758,
+      632.4555320336758
+    ]
+  ],
+  "tied_scores_unit_length64_noise_ratio": 0.1739866684924227,
+  "sharpness_exact_float": 103681.99999035514,
+  "two_token_distribution_counterexample": {
+    "scores": [
+      2.0,
+      0.0
+    ],
+    "algebraic": [
+      0.9998438043934538,
+      0.00010413040436416968
+    ],
+    "softmax": [
+      0.8807970779778823,
+      0.11920292202211755
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "acceleratorConfig": {
+    "topology": "2x2x4",
+    "type": "V4"
+  },
+  "acceleratorType": "v4-32",
+  "createTime": "2026-09-12T11:18:04.961584430Z",
+  "health": "HEALTHY",
+  "name": "projects/projectalgebraicai/locations/us-central2-b/nodes/my-tpu-v4",
+  "runtimeVersion": "tpu-ubuntu2204-base",
+  "state": "READY"
+}
