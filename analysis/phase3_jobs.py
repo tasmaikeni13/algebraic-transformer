@@ -37,5 +37,11 @@ def sweep(lrs=(1.5e-3, 3e-3, 6e-3)):
     return jobs
 
 
+def hybrid():
+    """The hybrid arm with the same learning-rate grid (3e-3 was run as the
+    control ``ctrl_qk_head_lr0.003``, identical configuration)."""
+    return [job(f"hyb_lr{lr:g}", "hybrid", lr) for lr in (1.5e-3, 6e-3)]
+
+
 if __name__ == "__main__":
     print(json.dumps(globals()[sys.argv[1]](), indent=1))

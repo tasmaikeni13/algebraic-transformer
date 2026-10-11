@@ -9,7 +9,7 @@ import pytest
 
 from src.sota import algebraic as A
 from src.sota import standard as S
-from src.sota.config import algebraic, algebraic_v1, standard
+from src.sota.config import algebraic, algebraic_v1, hybrid, standard
 from src.sota.evaluation import logprob_from_logits
 from src.sota.model import eval_logprobs, forward_hidden, head_loss, init_params, position_tables
 
@@ -100,7 +100,7 @@ def test_alu_and_its_vjp():
         np.testing.assert_allclose(g, g_ref, rtol=1e-9, atol=1e-12)
 
 
-@pytest.mark.parametrize("make", [standard, algebraic_v1, algebraic])
+@pytest.mark.parametrize("make", [standard, algebraic_v1, algebraic, hybrid])
 def test_tiny_models_train_step_is_finite(make):
     cfg = make("proxy", d_model=64, n_layers=2, n_heads=2, d_ff=96, vocab_size=97,
                seq_len=16, dtype="float32", remat=False)

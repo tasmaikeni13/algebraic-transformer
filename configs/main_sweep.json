@@ -1,13 +1,72 @@
 {
-  "_protocol": "125M models, 600M tokens (573 steps of 512 x 2048), seeds 42/43/44, AdamW cosine to 10% with 57 warmup steps, b1 0.9, b2 0.95, weight decay 0.1, clip 1. Same learning-rate grid for both architectures; it brackets both arms' optima found at 60M (standard ~2.7e-3, algebraic ~4.1e-3). The candidate with the lowest mean held-out NLL over the three seeds is used for the 2.5B-token main run.",
+  "_protocol": "125M models, 600M tokens (573 steps of 512 x 2048), seeds 42/43/44, AdamW cosine to 10% with 57 warmup steps, b1 0.9, b2 0.95, weight decay 0.1, clip 1. Same learning-rate grid for all architectures (standard, algebraic, and the minimal-algebra hybrid); it brackets both arms' optima found at 60M (standard ~2.7e-3, algebraic ~4.1e-3). The candidate with the lowest mean held-out NLL over the three seeds is used for the 2.5B-token main run.",
   "standard": [
-    {"name": "lr1.5e-3", "lr": 0.0015, "wd": 0.1, "warmup": 57, "min_lr_ratio": 0.1},
-    {"name": "lr3e-3", "lr": 0.003, "wd": 0.1, "warmup": 57, "min_lr_ratio": 0.1},
-    {"name": "lr6e-3", "lr": 0.006, "wd": 0.1, "warmup": 57, "min_lr_ratio": 0.1}
+    {
+      "name": "lr1.5e-3",
+      "lr": 0.0015,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    },
+    {
+      "name": "lr3e-3",
+      "lr": 0.003,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    },
+    {
+      "name": "lr6e-3",
+      "lr": 0.006,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    }
   ],
   "algebraic": [
-    {"name": "lr1.5e-3", "lr": 0.0015, "wd": 0.1, "warmup": 57, "min_lr_ratio": 0.1},
-    {"name": "lr3e-3", "lr": 0.003, "wd": 0.1, "warmup": 57, "min_lr_ratio": 0.1},
-    {"name": "lr6e-3", "lr": 0.006, "wd": 0.1, "warmup": 57, "min_lr_ratio": 0.1}
+    {
+      "name": "lr1.5e-3",
+      "lr": 0.0015,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    },
+    {
+      "name": "lr3e-3",
+      "lr": 0.003,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    },
+    {
+      "name": "lr6e-3",
+      "lr": 0.006,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    }
+  ],
+  "hybrid": [
+    {
+      "name": "lr1.5e-3",
+      "lr": 0.0015,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    },
+    {
+      "name": "lr3e-3",
+      "lr": 0.003,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    },
+    {
+      "name": "lr6e-3",
+      "lr": 0.006,
+      "wd": 0.1,
+      "warmup": 57,
+      "min_lr_ratio": 0.1
+    }
   ]
 }

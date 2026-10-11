@@ -150,5 +150,28 @@ def batch5():
     return jobs
 
 
+def ladder():
+    """How much algebra is needed: add algebraic pieces to the standard model one
+    rung at a time (3 seeds per rung). Rungs already measured elsewhere:
+    standard (4 seeds), +head+QK-norm (std+qk+head*, 3 seeds), fully algebraic
+    v2d (4 seeds)."""
+    flash = ["attn_impl=flash"]
+    head = ["head=alg_ce", "head_n=8", "head_c=2.0"]
+    rungs = {
+        "L1_head": head,                                            # + algebraic head
+        "L1b_qk": ["qk_norm=true"],                                 # QK-norm alone
+        "L3_sink": head + ["qk_norm=true", "sink=learned"],         # + sink
+        "L4_alu": head + ["qk_norm=true", "sink=learned", "ffn=alu_glu", "alu_beta=0.5"],
+        "L5_cayley": head + ["qk_norm=true", "sink=learned", "ffn=alu_glu", "alu_beta=0.5",
+                             "pos=cayley_geo"],                     # all but the attention kernel
+    }
+    jobs = []
+    for name, sets in rungs.items():
+        for seed in (0, 1, 2):
+            jobs.append(job(f"{name}_s{seed}", "standard", sets=flash + sets, extra=STD_RECIPE, seed=seed))
+    jobs.append(job("hybrid_lr0.003_s0", "hybrid", sets=flash, extra=STD_RECIPE, lr=3e-3))
+    return jobs
+
+
 if __name__ == "__main__":
     print(json.dumps(globals()[sys.argv[1]](), indent=1))

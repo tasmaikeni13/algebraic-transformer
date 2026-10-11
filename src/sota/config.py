@@ -6,6 +6,8 @@
   ALU-GLU, original Cayley grid, octic attention with sink mass 1, OACE).
 * ``algebraic``: the second-generation algebraic arm (v2d), chosen by the
   Phase 1 ablations; ``paper/theory.md`` and ``analysis/README.md`` record why.
+* ``hybrid``: the standard model plus only the algebraic pieces that matter
+  (QK-normalization and the algebraic likelihood head).
 """
 
 from dataclasses import replace
@@ -53,7 +55,19 @@ def algebraic(size: str = "proxy", **overrides) -> LMConfig:
     return replace(cfg, **overrides)
 
 
-PRESETS = {"standard": standard, "algebraic_v1": algebraic_v1, "algebraic": algebraic}
+def hybrid(size: str = "proxy", **overrides) -> LMConfig:
+    """Minimal-algebra hybrid: the standard backbone plus the two algebraic
+    pieces that carry the gain over the standard model -- QK-normalization
+    (rsqrt) and the algebraic likelihood head rho(z/2)^8. Everything else
+    (learned-gain RMSNorm, SwiGLU, RoPE, softmax attention) is standard.
+    """
+    cfg = LMConfig(**SIZES[size], norm="rms", ffn="swiglu", pos="rope", attn="softmax",
+                   sink="none", qk_norm=True, head="alg_ce", head_n=8, head_c=2.0)
+    return replace(cfg, **overrides)
+
+
+PRESETS = {"standard": standard, "algebraic_v1": algebraic_v1, "algebraic": algebraic,
+           "hybrid": hybrid}
 
 
 def build(preset: str, size: str, **overrides) -> LMConfig:

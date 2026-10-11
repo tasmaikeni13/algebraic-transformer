@@ -3,22 +3,24 @@
 
 Stages (each prints a job list for scripts/run_slice.py):
 
-* ``sweep``: every candidate in ``configs/main_sweep.json`` for both
-  architectures, seeds 42/43/44, 600M tokens from ``fineweb_sweep_600M.npy``.
+* ``sweep``: every candidate in ``configs/main_sweep.json`` for each
+  architecture in ``--archs`` (standard, algebraic, hybrid), seeds 42/43/44,
+  600M tokens from ``fineweb_sweep_600M.npy``.
 * ``select``: reads ``runs/<group>/*/result.json`` and writes
   ``configs/main_selected.json`` with the lowest mean held-out NLL candidate
   per architecture (all three seeds required and finite).
 * ``main``: the main run with the selected hyperparameters: 125M models,
   2.5B tokens, seeds 42/43/44, checkpoints every 200 steps (resumable with
-  --resume), validation every 250 steps.
+  --resume), validation every 250 steps. ``--archs standard,algebraic``
+  restricts it to the two original arms.
 
-Both arms use AdamW with a cosine schedule. Batch 512 x 2048 tokens
+All arms use AdamW with a cosine schedule. Batch 512 x 2048 tokens
 (1,048,576 per step): 573 steps for 600M tokens and 2,385 for 2.5B, as in the
 first study.
 
   python scripts/main_run.py sweep > sweep.json
   python scripts/run_slice.py sweep.json --group main_sweep
-  python scripts/main_run.py select --group main_sweep
+  python scripts/main_run.py select --group main_sweep,main_sweep_hybrid
   python scripts/main_run.py main > main.json
   python scripts/run_slice.py main.json --group main   # add --resume via args if interrupted
 """
@@ -32,7 +34,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 DATA = Path.home() / "data" / "fw25"
 SEEDS = (42, 43, 44)
-ARCHS = {"standard": "standard", "algebraic": "algebraic"}
+ARCHS = {"standard": "standard", "algebraic": "algebraic", "hybrid": "hybrid"}
 
 
 def common(tokens, train_file):
@@ -48,12 +50,13 @@ def hp_args(hp):
             "--min-lr-ratio", str(hp["min_lr_ratio"])]
 
 
-def sweep():
+def sweep(archs):
     cands = json.loads((ROOT / "configs/main_sweep.json").read_text())
     jobs = []
     for seed in SEEDS:
         for idx in range(len(cands["standard"])):
-            for arch, preset in ARCHS.items():
+            for arch in archs:
+                preset = ARCHS[arch]
                 cand = cands[arch][idx]
                 jobs.append({"name": f"{arch}_{cand['name']}_s{seed}",
                              "args": ["--preset", preset, *common(6e8, "fineweb_sweep_600M.npy"),
@@ -61,17 +64,19 @@ def sweep():
     return jobs
 
 
-def select(group):
+def select(group, archs):
     cands = json.loads((ROOT / "configs/main_sweep.json").read_text())
-    root = ROOT / "runs" / group
+    roots = [ROOT / "runs" / g for g in group.split(",")]
     chosen, table = {}, {}
-    for arch in ARCHS:
+    for arch in archs:
         rows = []
         for cand in cands[arch]:
             vals = []
             for seed in SEEDS:
-                res = root / f"{arch}_{cand['name']}_s{seed}" / "result.json"
-                if res.exists():
+                found = [r / f"{arch}_{cand['name']}_s{seed}" / "result.json" for r in roots]
+                found = [f for f in found if f.exists()]
+                res = found[0] if found else None
+                if res is not None:
                     v = json.loads(res.read_text())["final_eval_nll"]
                     if math.isfinite(v):
                         vals.append(v)
@@ -84,16 +89,20 @@ def select(group):
             raise SystemExit(f"no complete candidate for {arch}")
         mean, cand, vals, sd = min(rows, key=lambda r: r[0])
         chosen[arch] = {**cand, "sweep_mean_nll": mean, "sweep_nll": vals}
-    out = {"selected": chosen, "table": table}
-    (ROOT / "configs/main_selected.json").write_text(json.dumps(out, indent=1))
-    return out
+    path = ROOT / "configs/main_selected.json"
+    previous = json.loads(path.read_text()) if path.exists() else {"selected": {}, "table": {}}
+    previous["selected"].update(chosen)
+    previous["table"].update(table)
+    path.write_text(json.dumps(previous, indent=1))
+    return previous
 
 
-def main_jobs():
+def main_jobs(archs):
     sel = json.loads((ROOT / "configs/main_selected.json").read_text())["selected"]
     jobs = []
     for seed in SEEDS:
-        for arch, preset in ARCHS.items():
+        for arch in archs:
+            preset = ARCHS[arch]
             jobs.append({"name": f"{arch}_s{seed}",
                          "args": ["--preset", preset, *common(2.5e9, "fineweb_train_2_5B.npy"),
                                   *hp_args(sel[arch]), "--seed", str(seed), "--eval-every", "250",
@@ -104,11 +113,15 @@ def main_jobs():
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("stage", choices=("sweep", "select", "main"))
-    p.add_argument("--group", default="main_sweep")
+    p.add_argument("--group", default="main_sweep",
+                   help="run group(s) holding the sweep results, comma separated")
+    p.add_argument("--archs", default="standard,algebraic,hybrid",
+                   help="architectures to include, comma separated")
     a = p.parse_args()
+    archs = [x for x in a.archs.split(",") if x]
     if a.stage == "sweep":
-        print(json.dumps(sweep(), indent=1))
+        print(json.dumps(sweep(archs), indent=1))
     elif a.stage == "select":
-        print(json.dumps(select(a.group), indent=1))
+        print(json.dumps(select(a.group, archs), indent=1))
     else:
-        print(json.dumps(main_jobs(), indent=1))
+        print(json.dumps(main_jobs(archs), indent=1))
