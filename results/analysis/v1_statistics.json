@@ -192,8 +192,8 @@
     },
     "predicted_ards_penalty_nats": 0.11543059601395544,
     "bootstrap_penalty_ci90": [
-      0.09124598567951184,
-      0.18535968053877383
+      0.08684505488487704,
+      0.18486158342973275
     ],
     "observed_gap_nats": 0.008819357554117335,
     "caveat": "identified from two schedule configurations (573 and 2385 steps, both cosine); an extrapolation, not a measurement",

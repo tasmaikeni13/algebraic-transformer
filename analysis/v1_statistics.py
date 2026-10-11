@@ -211,7 +211,7 @@ def main():
     a1, a2 = areas(sched["final_ards"]); c1, c2 = areas(sched["final_cosine"])
     for _ in range(500):
         boot = np.empty_like(res)
-        for g in set(groups):
+        for g in sorted(set(groups)):
             idx = np.where(gid == g)[0]
             blocks = [idx[i:i + 4] for i in range(0, len(idx), 4)]
             drawn = []
