@@ -177,8 +177,8 @@ Each v1 component swapped alone into the standard model:
 | ARDS schedule + wd 0.01 | **+0.060** |
 | AVN without gains | **+0.037** |
 | octic attention (n=8, c=1, Ω=1) | +0.003 |
-| ALU-GLU (β=1) | +0.000 |
-| v1 Cayley grid | −0.009 |
+| ALU-GLU (β=1) | +0.001 |
+| v1 Cayley grid | −0.008 |
 
 Full v1: +0.14. Reverse check: replacing OACE by CE inside v1 recovers
 0.12. H4 (objective/head), H6 (schedule), H1 (gains) are confirmed;

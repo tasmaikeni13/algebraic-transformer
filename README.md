@@ -30,7 +30,10 @@ rates per arm):**
 | **algebraic (v2d)** | **3.3697** | **29.07** | 1.94M |
 
 Every algebraic run (each of its four learning rates) beat the standard's
-best run. Proxy experiments (33M parameters, 4 paired seeds) agree:
+best run.
+
+![Phase 3 training curves](results/figures/phase3_curves.png)
+![Learning-rate sensitivity](results/figures/phase3_lr.png) Proxy experiments (33M parameters, 4 paired seeds) agree:
 3.7574 ± 0.0016 vs 3.8182 ± 0.0029, paired difference −0.061 ± 0.004 nats
 (t = −14).
 
@@ -43,8 +46,10 @@ into the standard model (proxy, Δ held-out NLL):
 | rational (ARDS) schedule + weight decay 0.01 | **+0.060** |
 | normalization without learned gains | **+0.037** |
 | octic attention kernel (n=8, sink) | +0.003 |
-| ALU activation | +0.000 |
-| Cayley rotations (first-study grid) | −0.009 |
+| ALU activation | +0.001 |
+| Cayley rotations (first-study grid) | −0.008 |
+
+![First-study attribution](results/figures/v1_attribution.png)
 
 The genuinely algebraic substitutions were free; the gap came from the
 training objective, the schedule (it ended at 63% of peak learning rate), and
@@ -59,6 +64,8 @@ mathematics and proofs: [paper/theory.md](paper/theory.md).
   likelihood without evaluating a logarithm. The entrywise asinh compression
   escapes the softmax rank bottleneck (Monte Carlo: up to 18% lower KL at
   equal rank) and is the largest single source of the win.
+![Head compression and the rank bottleneck](results/figures/head_and_bottleneck.png)
+
 * **Asinh-power attention** `ρ(s/8)^16` with a learned per-head sink,
   QK-normalization, and an exact log-free max shift (`ρ(a)ρ(−b) = ρ(a ⊖ b)`);
   at 512 distractors it retrieves at least as precisely as softmax.

@@ -16,6 +16,7 @@ are in `results/analysis/`. The concise mathematics is in
 | `phase1_jobs.py` | The ablation batches (job lists for `scripts/run_queue.py`) |
 | `phase3_jobs.py` | The 60M / 1B-token comparison (job lists for `scripts/run_slice.py`) |
 | `summarize_runs.py` | Tables of held-out NLL, paired differences, and validation curves |
+| `plot_figures.py` | The figures in `results/figures/` from the recorded JSON outputs |
 
 ## 1. Statistics of the first study (`v1_statistics.py`)
 
@@ -57,7 +58,7 @@ seed-to-seed SD ≈ 0.003 nats (standard, 3 seeds: 3.8201 ± 0.0018 SE).
 
 First-study components swapped one at a time into the standard model:
 OACE head +0.080, ARDS schedule + wd 0.01 +0.060, no norm gains +0.037,
-octic attention +0.003, ALU +0.000, Cayley grid −0.009. The genuinely
+octic attention +0.003, ALU +0.001, Cayley grid −0.008. The genuinely
 algebraic substitutions are free; the gap came from the objective, the
 schedule, and the missing gains. Reverse checks inside v1: CE instead of
 OACE −0.122, gains −0.103.
@@ -127,6 +128,8 @@ algebraic model is markedly less sensitive to the learning rate. It leads
 from the first evaluation (step 200) to the end, and by a near-constant
 0.04–0.05 nats at every context position beyond the first few tokens.
 Throughput: 1.94M vs 2.70M tokens/s (0.72×).
+
+![Associative recall](../results/figures/recall.png)
 
 ## 6. Monte Carlo conclusions
 
