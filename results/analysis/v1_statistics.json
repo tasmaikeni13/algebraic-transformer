@@ -1,0 +1,214 @@
+{
+  "final_125m": {
+    "nll": {
+      "algebraic": [
+        3.25033495426178,
+        3.254469609260559,
+        3.243268275260925
+      ],
+      "standard": [
+        3.2428452014923095,
+        3.2372180223464966,
+        3.2415515422821044
+      ],
+      "paired": {
+        "differences": [
+          0.0074897527694703925,
+          0.01725158691406259,
+          0.0017167329788208008
+        ],
+        "mean": 0.008819357554117927,
+        "sd": 0.007852312293830559,
+        "se": 0.004533534616604082,
+        "ci95": [
+          -0.010686867539185576,
+          0.02832558264742143
+        ],
+        "t": 1.945360143896775,
+        "p_two_sided": 0.19114648751109442,
+        "posterior_p_algebraic_worse": 0.9044267562444528,
+        "sign_test_p_one_sided": 0.125,
+        "tost_p_by_margin": {
+          "0.005": 0.7558931112894507,
+          "0.01": 0.4094486329988792,
+          "0.02": 0.06625405656036432
+        },
+        "cohens_dz": 1.1231542027495722,
+        "paired_seeds_for_80pct_power_at_observed_effect": 9
+      }
+    },
+    "ppl_paired": {
+      "differences": [
+        0.1925061698010495,
+        0.4430844353004275,
+        0.04394035232616034
+      ],
+      "mean": 0.2265103191425458,
+      "sd": 0.20173302003556895,
+      "se": 0.1164706134219719,
+      "ci95": [
+        -0.2746222836268857,
+        0.7276429219119773
+      ],
+      "t": 1.9447851478372584,
+      "p_two_sided": 0.1912291732160547,
+      "posterior_p_algebraic_worse": 0.9043854133919726,
+      "sign_test_p_one_sided": 0.125,
+      "tost_p_by_margin": {
+        "0.1": 0.8045633841709878,
+        "0.25": 0.4294098839078566,
+        "0.5": 0.07168286612290457
+      },
+      "cohens_dz": 1.1228222286198273,
+      "paired_seeds_for_80pct_power_at_observed_effect": 9
+    },
+    "seed_sd_nll": {
+      "algebraic": 0.005664262344315849,
+      "standard": 0.002947261280226397,
+      "variance_ratio_F": 3.6935964357487054,
+      "F_test_p_two_sided": 0.4261124763021873
+    },
+    "validation_positions": 81920,
+    "throughput_ratio": 0.9610458128503258,
+    "clipped_every_step": true
+  },
+  "tuning_600m": {
+    "table": {
+      "algebraic/alg_reference": {
+        "lr": 0.0006,
+        "wd": 0.01,
+        "schedule": "ards",
+        "nll": [
+          4.1350887537002565,
+          4.1421167850494385,
+          4.128873014450074
+        ],
+        "mean_nll": 4.135359517733256,
+        "sd_nll": 0.006626035752493725
+      },
+      "algebraic/alg_lower_lr": {
+        "lr": 0.0003,
+        "wd": 0.05,
+        "schedule": "ards",
+        "nll": [
+          4.680922222137451,
+          4.662534284591675,
+          4.684127569198608
+        ],
+        "mean_nll": 4.675861358642578,
+        "sd_nll": 0.011652327643621941
+      },
+      "algebraic/alg_high_lr": {
+        "lr": 0.001,
+        "wd": 0.01,
+        "schedule": "ards",
+        "nll": [
+          3.8553006172180178,
+          3.8646321535110473,
+          3.8490089893341066
+        ],
+        "mean_nll": 3.856313920021057,
+        "sd_nll": 0.007860718901786029
+      },
+      "baseline/base_reference": {
+        "lr": 0.0006,
+        "wd": 0.01,
+        "schedule": "cosine",
+        "nll": [
+          4.370665788650513,
+          4.358902931213379,
+          4.378119039535522
+        ],
+        "mean_nll": 4.369229253133138,
+        "sd_nll": 0.009688262510976688
+      },
+      "baseline/base_lower_lr": {
+        "lr": 0.0003,
+        "wd": 0.05,
+        "schedule": "cosine",
+        "nll": [
+          4.846466493606568,
+          4.838202571868896,
+          4.839849901199341
+        ],
+        "mean_nll": 4.841506322224935,
+        "sd_nll": 0.00437388826813303
+      },
+      "baseline/base_high_lr": {
+        "lr": 0.001,
+        "wd": 0.1,
+        "schedule": "cosine",
+        "nll": [
+          4.071723890304566,
+          4.036675834655762,
+          4.004155516624451
+        ],
+        "mean_nll": 4.037518413861593,
+        "sd_nll": 0.033792066158086366
+      }
+    },
+    "best_gap_nll_alg_minus_std": -0.18120449384053616,
+    "final_gap_nll_alg_minus_std": 0.008819357554117335,
+    "note": "both arms chose the largest learning rate offered (1e-3): the optimum lies at or beyond the edge of the searched range"
+  },
+  "schedule_areas": {
+    "final_ards": {
+      "final_lr_ratio": 0.6338888622790111,
+      "mean_lr_ratio": 0.8351176584040554,
+      "S1": 1.9917556152936695,
+      "S2": 0.20813567824207663
+    },
+    "final_cosine": {
+      "final_lr_ratio": 0.05,
+      "mean_lr_ratio": 0.524412997903564,
+      "S1": 1.2507249999999965,
+      "S2": 0.6138032605438898
+    },
+    "tune_ards": {
+      "final_lr_ratio": 0.6641479840188657,
+      "mean_lr_ratio": 0.8243131340239281,
+      "S1": 0.4723314257957104,
+      "S2": 0.06319345805907516
+    },
+    "tune_cosine": {
+      "final_lr_ratio": 0.05,
+      "mean_lr_ratio": 0.5225567190226876,
+      "S1": 0.29942499999999966,
+      "S2": 0.21185647426116685
+    }
+  },
+  "annealing_law_fit_standard_arm": {
+    "params": {
+      "L0": 3.284344296614226,
+      "A": 0.18691165882571947,
+      "alpha": 1.2670348681786237,
+      "C": 0.439115598138878
+    },
+    "rmse_train_loss": 0.050795235384314734,
+    "points": 96,
+    "predicted_final_train_ce": {
+      "final_ards": 3.2710204180283884,
+      "final_cosine": 3.155589822014433
+    },
+    "predicted_ards_penalty_nats": 0.11543059601395544,
+    "bootstrap_penalty_ci90": [
+      0.08684505488487704,
+      0.18486158342973275
+    ],
+    "observed_gap_nats": 0.008819357554117335,
+    "caveat": "identified from two schedule configurations (573 and 2385 steps, both cosine); an extrapolation, not a measurement",
+    "interpretation": "predicted cross-entropy cost of the first study's ARDS schedule for a model whose loss obeys the standard arm's fitted annealing law"
+  },
+  "pilot_20m": {
+    "fraction_steps_clipped": {
+      "algebraic": 0.99999,
+      "standard": 0.00186
+    },
+    "note": "recorded norms are post-clipping; a value of 1 means the step was clipped",
+    "ppl": {
+      "algebraic": 26.919,
+      "standard": 25.226
+    },
+    "gap_nats": 0.06495714831902902
+  }
+}

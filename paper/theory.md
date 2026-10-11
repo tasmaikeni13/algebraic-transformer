@@ -1,0 +1,176 @@
+# Theory notes (living document)
+
+Short statements of the mathematics behind the algebraic Transformer, kept
+deliberately brief because the design is still being iterated. Status tags:
+**[proved]** short proof given here, **[measured]** backed by a recorded
+experiment, **[hypothesis]** awaiting Phase 1 evidence.
+
+## 0. What "algebraic" means here
+
+The training path (forward and backward of the model, attention, and training
+head) may use `+ − × ÷`, comparisons/selection, integer powers, and `rsqrt`
+(hence `sqrt x = x·rsqrt x`). No `exp, log, sin, cos, tanh, sigmoid, erf` or
+non-integer powers. Evaluation (perplexity) may use `log`. The optimizer
+schedule is exempt in the new study (cosine AdamW for both arms).
+
+## 1. The radical exponential ρ
+
+Define `ρ(x) = x + √(1+x²)`. Then `ρ(x) = e^{asinh x}`, so:
+
+* `ρ > 0`, increasing, `ρ(0) = 1`, `ρ(−x) = 1/ρ(x)`.
+* **Group law [proved].** `ρ(x)ρ(y) = ρ(x ⊕ y)` with
+  `x ⊕ y = x√(1+y²) + y√(1+x²)`.
+  *Proof:* `sinh(a+b) = sinh a cosh b + cosh a sinh b` and
+  `cosh(asinh x) = √(1+x²)`. ∎
+* Stable evaluation: `t = |x| + √(1+x²) ≥ 1`, `ρ = t` if `x ≥ 0` else `1/t`
+  (no cancellation). `ρ'(x) = ρ(x)/√(1+x²)`.
+
+`(ℝ, ⊕)` is isomorphic to `(ℝ, +)` through `sinh`, so every softmax trick
+that relies on `e^{a+b} = e^a e^b` has an exact algebraic counterpart.
+
+## 2. The asinh-power kernel κ
+
+`κ_{n,c}(s) = ρ(s/c)^n = exp(n·asinh(s/c))`, `n` a power of two (log₂ n
+squarings).
+
+* Normalizing κ over keys is **exactly softmax of the compressed logit**
+  `ℓ(s) = n·asinh(s/c)` **[proved]**.
+* Slope at 0 is `n/c` (an inverse temperature); for `|s| ≫ c`,
+  `ℓ(s) ≈ sign(s)·n·log(2|s|/c)` (logarithmic soft-cap).
+* With `c = n`: `n·asinh(s/n) = s − s³/(6n²) + O(s⁵/n⁴)` → `exp(s)` as
+  `n → ∞` **[proved, Taylor]**. The first study used `n = 8, c = 1`
+  (8× sharper than softmax near 0, compressed beyond `|s| ≈ 1`).
+* **Max shift [proved].** For `m ≥ x`: `(ρ(x)·ρ(−m))^n = ρ(x ⊖ m)^n ∈ (0, 1]`,
+  and the common factor `ρ(−m)^n` cancels in every normalized weight. Costs
+  one multiply per score; removes the overflow risk of unshifted `ρ^8`.
+* **Online (flash) rescaling [proved].** When a running maximum moves from
+  `m` to `m'`, previous numerators/denominators are multiplied by
+  `(ρ(m)·ρ(−m'))^n`. Identical structure to FlashAttention-2.
+* **Algebraic log-sum-exp [proved].** The per-row statistic
+  `σ = Z^{−1/n} = ρ(−m)·l^{−1/n}` (log₂n square roots) plays the role of
+  `logsumexp`: the backward recomputes `p = (ρ(x)·σ)^n`.
+* **No-shift accumulation [proved].** `ρ(x) ≤ 2|x|+1`, so clamping
+  `x ≤ X` with `T(2X)^n < 3.4·10^38` makes plain additive accumulation
+  overflow-free (`X ≈ 40` for n=16, `≈ 5400` for n=8 at T=2048); the clamp
+  never binds for realistic scores.
+* **Degree-n homogeneity ceiling [proved + measured].** For `|s| ≫ c`,
+  `κ(s) ≈ (2|s|/c)^n`, so normalized weights become invariant to rescaling
+  `q·k`: attention can no longer be sharpened by growing scores. Random-score
+  Monte Carlo (T=1024): the v1 kernel (n=8, c=1) saturates at entropy
+  `0.42·log T`, max weight 0.27, even at score SD 16 (softmax: 0.06, 0.86).
+  Larger `n` (with `c ≈ n`) raises the ceiling (n=32: 0.11, 0.74).
+
+## 3. Attention
+
+`p_ij = κ(s_ij) / (Σ_{j'≤i} κ(s_ij') + κ(b))`, sink logit `b` (the first study
+used a constant sink mass `Ω = κ(b)`).
+
+* **Jacobian [proved].** `∂p_i/∂s_j = (n/c)·r_j·(p_i δ_ij − p_i p_j)`,
+  `r = (1+(s/c)²)^{−1/2} ≤ 1`. Since `|p_i(δ_ij − p_j)| ≤ 1/4`, entries are
+  bounded by `n/(4c)` (= 2 for `n=8, c=1`). Softmax's analogue has
+  `r ≡ 1`: the kernel damps gradients of very large scores by `r ≈ c/|s|`.
+* Sink: visible mass `1 − κ(b)/D_i`; output norm `≤ max_j ‖v_j‖`.
+* Backward: `∂L/∂s_ij = (n/c)·r_ij·p_ij·(g_iᵀv_j − g_iᵀo_i)` — the
+  FlashAttention-2 backward with one extra `rsqrt` per score.
+
+## 4. Likelihood without logarithms
+
+**Theorem [proved].** For an algebraic head `p_j ∝ κ_{n,c}(z_j)` the exact
+log-loss gradient is algebraic:
+
+`−log p_t = −n·asinh(z_t/c) + log Σ_j κ(z_j)` ⇒
+`∂(−log p_t)/∂z_j = (n/c)·r_j·(p_j − y_j)`.
+
+Hence an algebraic model can be trained by **exact maximum likelihood** — the
+same objective it is evaluated on — without evaluating `log`. Only telemetry
+needs the loss value.
+
+**Measured.** On a misspecified linear-student problem (Monte Carlo), training
+the v1 link on OACE instead of log-loss costs ≈0.03 nats of test
+cross-entropy; the asinh link (n=c=16) is ≈0.002–0.003 nats *better* than
+softmax at equal rank — `n·asinh(Wx/c)` is not confined to the rank-(d+1)
+family of softmax log-probabilities (it can break the softmax bottleneck).
+
+**The first study's power score (OACE)** `L = γ[8 p_t^{−1/8} + (8/7)Σp^{7/8}
+− 64/7]` is strictly proper (Bregman of `−Σp^{7/8}`), but its gradient
+reweights tokens relative to log-loss by roughly `p_t^{−1/8}` (×2.4 at
+`p_t = 10⁻³`, ×1.09 at `p_t = 0.5`). Properness fixes the optimum only for a
+well-specified model; a finite model trained on OACE trades average
+log-loss for hard-token fit **[hypothesis H4]**. OACE also normalizes logits
+across the vocabulary (`ε_vocab = 100`), coupling all 50,257 logits.
+
+## 5. Positions: Cayley rotations
+
+`R(w) = [[1−w², −2w],[2w, 1−w²]]/(1+w²)` is a rotation by `θ = 2·atan w`
+(orthogonal, det 1) and `⟨R^m q, R^n k⟩ = qᵀR^{n−m}k` **[proved]**.
+
+Frequency grid matters (head dim 64, base 10⁴; pairs completing a turn
+within L tokens):
+
+| grid | L=16 | L=64 | L=256 | L=2048 |
+|---|---|---|---|---|
+| first study `w_k=(1+αk)^{-2}` | 1 | 2 | 3 | 8 |
+| RoPE `θ_k = b^{-k/32}` | 4 | 9 | 13 | 21 |
+| geometric Cayley `w_k = ½·b^{-k/32}` | 4 | 9 | 13 | 21 |
+
+Position-only selectivity (LP: best margin `s(Δ*) − max_{Δ≠Δ*} s(Δ)` with
+`Σ|a_k|+|b_k| ≤ 1`): v1 grid 0.13–0.15 for Δ*≤3 and ≈0.06 for Δ*≥8; RoPE
+0.23–0.30; geometric Cayley 0.21–0.28. **Yet at the proxy scale the v1 grid
+was not harmful (−0.006 nats)**: its 24 near-static pairs behave like
+partial rotary dimensions.
+
+`b^{−1/32}` is built from five nested square roots, so the geometric grid is
+algebraic. Tables use binary exponentiation of the unit complex number
+`(1+iw)²/(1+w²)` (error `O(log T·ε)` instead of the `O(T·ε)` scan)
+**[hypothesis H3: the first-study grid starves local attention]**.
+
+## 6. Activation
+
+`ALU_β(x) = (x/2)(1 + βx/√(1+β²x²))`,
+`ALU_β'(x) = ½(1+u) + ½·u·r²` with `u = βx·r`, `r = (1+β²x²)^{−1/2}`.
+Gate slope at 0 is `β/2`; `β = ½` matches SiLU, `β ≈ 0.8` GELU, `β = 1` was
+used before. Negative tail decays like `−1/(4β²|x|)` (heavier than SiLU's
+exponential tail).
+
+## 7. Normalization
+
+AVN is RMSNorm without gain. A per-channel gain is a multiplication (still
+algebraic); removing it removes per-channel scale control, notably the
+final-layer logit temperature (the standard model learned a final gain with
+mean square ≈ 2.1) **[hypothesis H1]**.
+
+## 8. Schedule
+
+ARDS `η_t = η·(1+((t−T_w)/(0.8T))²)^{−1/2}` ends at **0.634·η** and averages
+0.835·η over the 125M run; the cosine arm ends at 0.05·η and averages
+0.524·η **[measured from the configs]**. No annealing phase means the
+algebraic arm finished with ~12× higher terminal learning rate
+**[hypothesis H6: a large share of the 0.009-nat gap]**.
+
+## 9. Attribution of the first-study gap (Phase 1, measured)
+
+Proxy model (33M, 197M tokens, 2M held-out tokens; seed SD ≈ 0.003 nats).
+Each v1 component swapped alone into the standard model:
+
+| v1 component | Δ NLL |
+|---|---|
+| OACE head (power score + vocabulary AVN) | **+0.080** |
+| ARDS schedule + wd 0.01 | **+0.060** |
+| AVN without gains | **+0.037** |
+| octic attention (n=8, c=1, Ω=1) | +0.003 |
+| ALU-GLU (β=1) | +0.000 |
+| v1 Cayley grid | −0.009 |
+
+Full v1: +0.14. Reverse check: replacing OACE by CE inside v1 recovers
+0.12. H4 (objective/head), H6 (schedule), H1 (gains) are confirmed;
+H2, H3, H5 are rejected: the genuinely algebraic substitutions cost nothing.
+At 125M the annealing-law fit predicts ARDS alone costs 0.115 nats
+(90% CI 0.087–0.185), larger than the observed 0.009 gap, i.e. the v1
+architecture was otherwise competitive.
+
+## 10. Second-generation design (provisional, updated by Phase 1/3)
+
+Learned RMS gains · ALU-GLU · geometric Cayley rotations · asinh-power
+attention with a learned per-head sink · algebraic maximum-likelihood head
+(`ρ(z/c)^n`, exact log-loss gradient) · cosine AdamW. First proxy result:
+3.8125 vs standard 3.8201 ± 0.0030 (one seed; replication pending).

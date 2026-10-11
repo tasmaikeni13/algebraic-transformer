@@ -1,0 +1,113 @@
+{
+  "C_positional_margins": {
+    "margins": [
+      {
+        "context": 256,
+        "offset": 1,
+        "cayley_v1": 0.1501177040463142,
+        "rope": 0.24906106417626253,
+        "cayley_geometric": 0.22239930726998422
+      },
+      {
+        "context": 256,
+        "offset": 2,
+        "cayley_v1": 0.1518075566959419,
+        "rope": 0.26779330559231157,
+        "cayley_geometric": 0.24891147829437574
+      },
+      {
+        "context": 256,
+        "offset": 3,
+        "cayley_v1": 0.15359734275737347,
+        "rope": 0.2976832062733973,
+        "cayley_geometric": 0.23530692030311767
+      },
+      {
+        "context": 256,
+        "offset": 8,
+        "cayley_v1": 0.0644277651089101,
+        "rope": 0.29482531779161275,
+        "cayley_geometric": 0.22911446280222114
+      },
+      {
+        "context": 256,
+        "offset": 32,
+        "cayley_v1": 0.06580730999721911,
+        "rope": 0.24870410392747005,
+        "cayley_geometric": 0.25678095087134156
+      },
+      {
+        "context": 256,
+        "offset": 100,
+        "cayley_v1": 0.06909425533587142,
+        "rope": 0.2516294252814943,
+        "cayley_geometric": 0.2799023183204088
+      },
+      {
+        "context": 2048,
+        "offset": 1,
+        "cayley_v1": 0.1298118048587228,
+        "rope": 0.23850602098862927,
+        "cayley_geometric": 0.21283549834349633
+      },
+      {
+        "context": 2048,
+        "offset": 2,
+        "cayley_v1": 0.13424221922807686,
+        "rope": 0.24687842687509592,
+        "cayley_geometric": 0.23482233944471687
+      },
+      {
+        "context": 2048,
+        "offset": 3,
+        "cayley_v1": 0.13717580252053385,
+        "rope": 0.27325417123407386,
+        "cayley_geometric": 0.22377684646113993
+      },
+      {
+        "context": 2048,
+        "offset": 8,
+        "cayley_v1": 0.06200136803867438,
+        "rope": 0.2723638264343404,
+        "cayley_geometric": 0.21851349028130662
+      },
+      {
+        "context": 2048,
+        "offset": 32,
+        "cayley_v1": 0.06315201313689356,
+        "rope": 0.2293883474579231,
+        "cayley_geometric": 0.23995148452814924
+      },
+      {
+        "context": 2048,
+        "offset": 100,
+        "cayley_v1": 0.06525819218724027,
+        "rope": 0.23408972147040033,
+        "cayley_geometric": 0.255686727507158
+      }
+    ],
+    "spectra": {
+      "cayley_v1": {
+        "pairs_wavelength_lt_8": 1,
+        "pairs_wavelength_lt_16": 1,
+        "pairs_wavelength_lt_64": 2,
+        "pairs_wavelength_lt_256": 3,
+        "pairs_wavelength_lt_2048": 8
+      },
+      "rope": {
+        "pairs_wavelength_lt_8": 1,
+        "pairs_wavelength_lt_16": 4,
+        "pairs_wavelength_lt_64": 9,
+        "pairs_wavelength_lt_256": 13,
+        "pairs_wavelength_lt_2048": 21
+      },
+      "cayley_geometric": {
+        "pairs_wavelength_lt_8": 1,
+        "pairs_wavelength_lt_16": 4,
+        "pairs_wavelength_lt_64": 9,
+        "pairs_wavelength_lt_256": 13,
+        "pairs_wavelength_lt_2048": 21
+      }
+    }
+  }
+}

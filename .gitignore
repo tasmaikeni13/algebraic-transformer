@@ -30,3 +30,4 @@ paper/*.out
 .DS_Store
 *.swp
 *.swo
+runs/
