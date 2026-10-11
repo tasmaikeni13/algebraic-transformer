@@ -17,7 +17,8 @@ and budget hyperparameter sweep; the main run itself is left to the author).
 | 1 | Statistics, mathematics, and Monte Carlo diagnosis of the first study; ablations; a new algebraic design | done |
 | 2 | Flash attention and fused head kernels for both arms | done |
 | 3 | 60M models, FineWeb-Edu-1B, 1B tokens, one seed, both arms | done: **algebraic wins** |
-| Main | 125M, 3 seeds, 2.5B tokens | implementation done; budget sweep running; main run left to the author |
+| + | How much algebra do we really need? A minimal-algebra hybrid | done: **hybrid wins too, at 88% of standard speed** |
+| Main | 125M, 3 seeds, 2.5B tokens | implementation and budget sweep done (hybrid sweep running); main run left to the author |
 
 ## Headline results
 
@@ -28,9 +29,11 @@ rates per arm):**
 |---|---|---|---|
 | standard (RMSNorm, SwiGLU, RoPE, softmax, cross-entropy) | 3.4170 | 30.48 | 2.70M |
 | **algebraic (v2d)** | **3.3697** | **29.07** | 1.94M |
+| **hybrid (standard + QK-norm + algebraic head)** | **3.3716** | **29.13** | 2.38M |
 
 Every algebraic run (each of its four learning rates) beat the standard's
-best run.
+best run; the hybrid's best (3 learning rates) is within 0.002 of the
+algebraic model.
 
 ![Phase 3 training curves](results/figures/phase3_curves.png)
 ![Learning-rate sensitivity](results/figures/phase3_lr.png) Proxy experiments (33M parameters, 4 paired seeds) agree:
@@ -77,10 +80,26 @@ training gradient — including the Pallas kernel bodies — contains no
 exponential, logarithmic, trigonometric, hyperbolic, sigmoid or
 error-function primitive.
 
-**What transfers.** A standard backbone given the same head and QK-norm
-matches the algebraic model (proxy −0.004 ± 0.005; 60M: 3.3716 vs 3.3697):
-the algebraic backbone now ties the standard one, and the margin over the
-standard baseline is carried by the algebraic head and QK-normalization.
+## How much algebra do we really need?
+
+Algebraic pieces were added to the standard model one rung at a time (proxy
+scale, 3–4 paired seeds per rung, t 95% intervals):
+
+![How much algebra is needed](results/figures/algebra_ladder.png)
+
+| rung | Δ NLL vs standard | share of the full gain |
+|---|---|---|
+| + algebraic likelihood head | −0.036 ± 0.007 | 59% |
+| + QK-normalization (**the hybrid**) | **−0.059 ± 0.006** | **97%** |
+| + sink, ALU-GLU, Cayley rotations | −0.055 … −0.057 | 91–94% |
+| + asinh attention (fully algebraic) | −0.061 ± 0.004 | 100% |
+
+**Answer: two algebraic pieces.** The likelihood head `ρ(z/c)^n` (trained
+by its algebraic log-loss gradient) and the rsqrt QK-normalization carry
+essentially the whole gain; the other algebraic substitutions are
+quality-neutral and are only needed to make the training path entirely free
+of transcendentals. At 60M the hybrid beats the standard model by 0.045 nats
+at 88% of its throughput, against 72% for the fully algebraic model.
 
 ## Kernels (Phase 2)
 
@@ -103,21 +122,31 @@ head is included as a low-memory option. Raw numbers: `results/kernels/`.
 
 ## Running the 125M main run
 
-The budget sweep selects learning rates per architecture (three candidates ×
-three seeds × 600M tokens, `configs/main_sweep.json`) and writes
-`configs/main_selected.json`. Then, on a TPU v4-32 with hosts `w0..w3`
-reachable over SSH (see `scripts/setup_workers.sh`):
+The budget sweep (three learning rates × three seeds × 600M tokens per
+architecture, `configs/main_sweep.json`) selected **lr 3e-3 for both the
+standard and the algebraic model** (`configs/main_selected.json`):
+
+| LR | standard | algebraic |
+|---|---|---|
+| 1.5e-3 | 3.8608 ± 0.0088 | 3.7090 ± 0.0137 |
+| **3e-3** | **3.8208 ± 0.0145** | **3.6655 ± 0.0063** |
+| 6e-3 | 4.1434 ± 0.1382 | 3.7562 ± 0.0488 |
+
+(mean ± SD over seeds 42–44; the hybrid's sweep is appended to the same
+file when it completes.) Then, on a TPU v4-32 with hosts `w0..w3` reachable
+over SSH (see `scripts/setup_workers.sh`):
 
 ```bash
 python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw25 --threads 128   # 2.5B + 600M + 10M tokens
 python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals            # zero-shot tasks
-python scripts/main_run.py main > main.json         # 3 seeds x {standard, algebraic}, 2,385 steps each
+python scripts/main_run.py main > main.json         # 3 seeds x {standard, algebraic, hybrid}, 2,385 steps each
+# (add --archs standard,algebraic to run only the two original arms)
 python scripts/run_slice.py main.json --group main  # rerun the same command to resume (checkpoints every 200 steps)
 python scripts/evaluate_zero_shot.py runs/main/algebraic_s42 --out results/main/algebraic_s42_zero_shot.json
 ```
 
-Expected wall time per run: about 30 minutes (standard) and 40 minutes
-(algebraic) on 16 chips.
+Expected wall time per run on 16 chips: about 30 minutes (standard),
+35 minutes (hybrid), and 40 minutes (algebraic).
 
 ## Layout
 

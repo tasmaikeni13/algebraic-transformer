@@ -36,7 +36,7 @@ def main(group="p3"):
     best = {}
     for name, r in rows.items():
         arch = name.split("_")[0]
-        if arch in ("std", "alg") and (arch not in best or r["final_eval_nll"] < rows[best[arch]]["final_eval_nll"]):
+        if arch in ("std", "alg", "hyb") and (arch not in best or r["final_eval_nll"] < rows[best[arch]]["final_eval_nll"]):
             best[arch] = name
     out = {"runs": rows, "best": best}
     if "std" in best and "alg" in best:
@@ -47,6 +47,14 @@ def main(group="p3"):
             "ppl_ratio_alg_over_std": a["final_eval_ppl"] / s["final_eval_ppl"],
             "throughput_ratio_alg_over_std": a["tokens_per_s"] / s["tokens_per_s"],
         }
+    if "std" in best and "hyb" in best:
+        h, s = rows[best["hyb"]], rows[best["std"]]
+        out["comparison_hybrid"] = {
+            "hybrid": best["hyb"], "standard": best["std"],
+            "nll_difference_hyb_minus_std": h["final_eval_nll"] - s["final_eval_nll"],
+            "ppl_ratio_hyb_over_std": h["final_eval_ppl"] / s["final_eval_ppl"],
+            "throughput_ratio_hyb_over_std": h["tokens_per_s"] / s["tokens_per_s"],
+        }
     path = ROOT / "results" / "phase3" / "summary.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, indent=1))
@@ -54,8 +62,9 @@ def main(group="p3"):
     for name, r in sorted(rows.items()):
         print(f"{name:24s} {r['lr']:8.4g} {r['final_eval_nll']:8.4f} {r['final_eval_ppl']:8.3f} "
               f"{r['tokens_per_s']/1e6:7.2f}")
-    if "comparison" in out:
-        print(json.dumps(out["comparison"], indent=1))
+    for key in ("comparison", "comparison_hybrid"):
+        if key in out:
+            print(json.dumps(out[key], indent=1))
 
 
 if __name__ == "__main__":

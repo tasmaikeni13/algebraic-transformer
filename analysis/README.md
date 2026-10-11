@@ -120,7 +120,9 @@ optimum); results in `results/phase3/summary.json`.
 | **algebraic (best)** | 3e-3 | **3.3697** | **29.07** |
 | algebraic | 4.24e-3 | 3.3750 | 29.22 |
 | algebraic | 6e-3 | 3.3711 | 29.11 |
-| control: standard + QK-norm + algebraic head | 3e-3 | 3.3716 | 29.13 |
+| hybrid | 1.5e-3 | 3.4130 | 30.36 |
+| **hybrid (best): standard + QK-norm + algebraic head** | 3e-3 | **3.3716** | **29.13** |
+| hybrid | 6e-3 | 3.3950 | 29.82 |
 
 **The algebraic model wins: −0.047 nats, perplexity 29.07 vs 30.48 (ratio
 0.954).** Every algebraic learning rate beats the standard's best, and the
@@ -148,3 +150,24 @@ Throughput: 1.94M vs 2.70M tokens/s (0.72×).
 * Associative recall, 512 distractors (3 seeds): softmax 99.51%; first-study
   kernel 65% with seed failures; asinh n=16/c=16 99.71%, n=8/c=2 99.58%,
   n=32/c=32 99.54%.
+
+## 7. How much algebra do we really need? (`algebra_ladder.py`)
+
+Algebraic pieces added to the standard model one at a time, proxy scale,
+3–4 paired seeds per rung (`results/analysis/algebra_ladder.json`):
+
+| rung | NLL | Δ vs standard (t 95% CI half-width) | share | tokens/s (1 chip) |
+|---|---|---|---|---|
+| standard | 3.8181 | 0 | 0% | 333K |
+| + algebraic head | 3.7840 | −0.036 (0.029) | 59% | 317K |
+| QK-norm only | 3.7914 | −0.029 (0.008) | 47% | 309K |
+| **+ QK-norm = hybrid** | **3.7613** | **−0.059 (0.027)** | **97%** | **294K** |
+| + sink | 3.7647 | −0.055 (0.020) | 91% | 294K |
+| + ALU-GLU | 3.7630 | −0.057 (0.015) | 94% | 286K |
+| + Cayley rotations | 3.7642 | −0.056 (0.006) | 92% | 286K |
+| + asinh attention = algebraic | 3.7574 | −0.061 (0.014) | 100% | 249K |
+
+The head and QK-normalization carry the gain; everything after them is
+quality-neutral. The hybrid is the cheapest model that beats the standard by
+the full margin (Phase 3: −0.045 nats at 0.88× standard throughput).
+

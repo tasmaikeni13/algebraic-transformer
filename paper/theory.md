@@ -209,13 +209,14 @@ standard backbone the two backbones tie (−0.004 ± 0.005).
 
 FineWeb-Edu-1B, context 2048, 1,908 steps of 524,288 tokens, cosine AdamW,
 one seed, 8M held-out tokens. Learning rates tried per arm:
-{1.5, 2.12, 3, 6}·10⁻³ (standard) and {1.5, 3, 4.24, 6}·10⁻³ (algebraic).
+{1.5, 2.12, 3, 6}·10⁻³ (standard), {1.5, 3, 4.24, 6}·10⁻³ (algebraic),
+{1.5, 3, 6}·10⁻³ (hybrid; 3.4130, 3.3716, 3.3950).
 
 | arm | best LR | NLL | perplexity | tokens/s (16 chips) |
 |---|---|---|---|---|
 | standard | 3e-3 | 3.4170 | 30.48 | 2.70M |
 | **algebraic (v2d)** | 3e-3 | **3.3697** | **29.07** | 1.94M |
-| control: standard + QK-norm + algebraic head | 3e-3 | 3.3716 | 29.13 | 2.38M |
+| hybrid: standard + QK-norm + algebraic head | 3e-3 | 3.3716 | 29.13 | 2.38M |
 
 Algebraic − standard = −0.047 nats (perplexity ratio 0.954); every algebraic
 run (worst: 3.4058 at 1.5e-3) beats the standard's best. The algebraic NLL is
@@ -223,8 +224,8 @@ flat over 3–6·10⁻³ (3.3697–3.3750) where the standard degrades sharply a
 6·10⁻³ (3.4992). The advantage is nearly uniform over context positions
 (−0.04 to −0.05 nats from position 4 on, −0.049 at 1024–2048) and slightly
 negative only at position 0 (+0.011, the context-free unigram prediction).
-As at the proxy scale, the backbone ties a standard backbone that carries
-the same head and QK-norm (3.3697 vs 3.3716).
+As at the proxy scale, the algebraic backbone ties a standard backbone that
+carries the same head and QK-norm (the hybrid: 3.3697 vs 3.3716).
 
 ## 12. How much algebra do we really need? (measured)
 

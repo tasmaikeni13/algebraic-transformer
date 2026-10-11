@@ -50,17 +50,17 @@ def save(fig, name):
 def phase3():
     s = json.loads((ROOT / "results/phase3/summary.json").read_text())
     runs = s["runs"]
-    std, alg, ctl = runs[s["best"]["std"]], runs[s["best"]["alg"]], runs.get("ctrl_qk_head_lr0.003")
+    std, alg, ctl = runs[s["best"]["std"]], runs[s["best"]["alg"]], runs.get(s["best"].get("hyb", ""))
     tok = 524288 / 1e9
     fig, (a, b) = plt.subplots(1, 2, figsize=(11, 4.0))
-    for r, c, name in ((std, S1, "standard"), (alg, S2, "algebraic"), (ctl, S3, "std + QK-norm + alg. head")):
+    for r, c, name in ((std, S1, "standard"), (alg, S2, "algebraic"), (ctl, S3, "hybrid")):
         if r is None:
             continue
         xs = [p[0] * tok for p in r["curve"]]
         ys = [p[1] for p in r["curve"]]
         line(a, xs, ys, c, name, marker=False)
-        dy = {"standard": 9, "algebraic": -10, "std + QK-norm + alg. head": 0}[name]
-        end_label(a, xs[-1], ys[-1], f"{name.split(' ')[0] if name != 'std + QK-norm + alg. head' else 'control'} {ys[-1]:.3f}", dy)
+        dy = {"standard": 9, "algebraic": -10, "hybrid": 0}[name]
+        end_label(a, xs[-1], ys[-1], f"{name} {ys[-1]:.3f}", dy)
     a.set_xlim(right=1.3)
     a.set_xticks([0.2, 0.4, 0.6, 0.8, 1.0])
     a.set_title("Held-out NLL during training (60M, best LR each)")
@@ -68,7 +68,7 @@ def phase3():
     a.set_ylabel("validation NLL (nats)")
     a.legend(loc="upper right")
     base = {p[0]: p[1] for p in std["curve"]}
-    for r, c, name, dy in ((alg, S2, "algebraic", -6), (ctl, S3, "std + QK-norm + alg. head", 6)):
+    for r, c, name, dy in ((alg, S2, "algebraic", -6), (ctl, S3, "hybrid", 6)):
         if r is None:
             continue
         pts = [(p[0] * tok, p[1] - base[p[0]]) for p in r["curve"] if p[0] in base]
@@ -84,16 +84,10 @@ def phase3():
     save(fig, "phase3_curves.png")
 
     fig, ax = plt.subplots(figsize=(6.2, 4.0))
-    for arch, c, name in (("std", S1, "standard"), ("alg", S2, "algebraic")):
+    for arch, c, name, dy in (("std", S1, "standard", 0), ("alg", S2, "algebraic", -7), ("hyb", S3, "hybrid", 7)):
         pts = sorted((r["lr"], r["final_eval_nll"]) for n, r in runs.items() if n.startswith(arch + "_"))
         line(ax, [p[0] for p in pts], [p[1] for p in pts], c, name)
-        end_label(ax, pts[-1][0], pts[-1][1], name)
-    if ctl is not None:
-        ax.plot([ctl["lr"]], [ctl["final_eval_nll"]], "D", color=S3, ms=6, mec=SURFACE, mew=1.2,
-                label="std + QK-norm + alg. head", zorder=4)
-        ax.annotate("std + QK-norm + alg. head", (ctl["lr"], ctl["final_eval_nll"]), xytext=(0, -14),
-                    textcoords="offset points", ha="center", va="top", color=INK2, fontsize=9)
-        ax.set_ylim(bottom=ctl["final_eval_nll"] - 0.018)
+        end_label(ax, pts[-1][0], pts[-1][1], name, dy)
     ax.set_xscale("log", base=2)
     ax.set_xticks([1.5e-3, 3e-3, 6e-3])
     ax.set_xticklabels(["1.5e-3", "3e-3", "6e-3"])
