@@ -91,7 +91,10 @@ Hence an algebraic model can be trained by **exact maximum likelihood** — the
 same objective it is evaluated on — without evaluating `log`. Only telemetry
 needs the loss value.
 
-**Measured (Monte Carlo).** On a misspecified linear student (12 trials),
+**Measured (Monte Carlo).** With unconstrained logits every head (softmax,
+first-study, asinh) represents Zipf-like targets over 50,257 tokens to
+KL ≤ 5·10⁻⁴: there is no representability floor. On a misspecified linear
+student (12 trials),
 training the v1 link on OACE instead of log-loss costs 0.0289 ± 0.0009 nats of
 test cross-entropy; the asinh link (n=c=16) is 0.00226 ± 0.00008 nats *better*
 than softmax at equal rank.

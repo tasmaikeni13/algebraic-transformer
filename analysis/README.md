@@ -133,6 +133,12 @@ Throughput: 1.94M vs 2.70M tokens/s (0.72×).
 
 ## 6. Monte Carlo conclusions
 
+* Representational floor (12 Zipf-like targets over the full GPT-2 vocabulary,
+  log dynamic range 9–19 nats): every head — softmax, the first-study
+  vocabulary-normalized octic head, and the asinh head — reaches KL ≤ 5e-4
+  (mostly < 1e-5) with unconstrained logits. The first-study head's cost is
+  therefore not representability but its objective and its behavior under
+  rank-constrained logits.
 * Objective (12 trials): OACE vs log-loss on the same link +0.0289 ± 0.0009;
   first-study link vs softmax +0.0033 ± 0.0009; asinh n=c=16 link vs
   softmax −0.00226 ± 0.00008 nats.
