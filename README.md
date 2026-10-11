@@ -18,7 +18,7 @@ and budget hyperparameter sweep; the main run itself is left to the author).
 | 2 | Flash attention and fused head kernels for both arms | done |
 | 3 | 60M models, FineWeb-Edu-1B, 1B tokens, one seed, both arms | done: **algebraic wins** |
 | + | How much algebra do we really need? A minimal-algebra hybrid | done: **hybrid wins too, at 88% of standard speed** |
-| Main | 125M, 3 seeds, 2.5B tokens | implementation and budget sweep done (hybrid sweep running); main run left to the author |
+| Main | 125M, 3 seeds, 2.5B tokens | implementation and budget sweeps done for all three arms; main run left to the author |
 
 ## Headline results
 
@@ -123,18 +123,21 @@ head is included as a low-memory option. Raw numbers: `results/kernels/`.
 ## Running the 125M main run
 
 The budget sweep (three learning rates × three seeds × 600M tokens per
-architecture, `configs/main_sweep.json`) selected **lr 3e-3 for both the
-standard and the algebraic model** (`configs/main_selected.json`):
+architecture, `configs/main_sweep.json`; held-out NLL, mean ± SD over seeds
+42–44) selected **lr 3e-3 for all three architectures**
+(`configs/main_selected.json`, every run in `results/main_sweep/runs.json`):
 
-| LR | standard | algebraic |
-|---|---|---|
-| 1.5e-3 | 3.8608 ± 0.0088 | 3.7090 ± 0.0137 |
-| **3e-3** | **3.8208 ± 0.0145** | **3.6655 ± 0.0063** |
-| 6e-3 | 4.1434 ± 0.1382 | 3.7562 ± 0.0488 |
+| LR | standard | algebraic | hybrid |
+|---|---|---|---|
+| 1.5e-3 | 3.8608 ± 0.0088 | 3.7090 ± 0.0137 | 3.7475 ± 0.0095 |
+| **3e-3** | **3.8208 ± 0.0145** | **3.6655 ± 0.0063** | **3.6982 ± 0.0149** |
+| 6e-3 | 4.1434 ± 0.1382 | 3.7562 ± 0.0488 | 3.7851 ± 0.0135 |
 
-(mean ± SD over seeds 42–44; the hybrid's sweep is appended to the same
-file when it completes.) Then, on a TPU v4-32 with hosts `w0..w3` reachable
-over SSH (see `scripts/setup_workers.sh`):
+At this short budget the fully algebraic model leads the hybrid by 0.033
+nats (it also learns fastest early at 60M); by 1B tokens at 60M the two
+were within 0.002. Training throughput on 16 chips at 125M: standard 1.53M,
+hybrid 1.36M, algebraic 1.10M tokens/s. Then, on a TPU v4-32 with hosts
+`w0..w3` reachable over SSH (see `scripts/setup_workers.sh`):
 
 ```bash
 python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw25 --threads 128   # 2.5B + 600M + 10M tokens

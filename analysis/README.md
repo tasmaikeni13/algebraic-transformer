@@ -171,3 +171,17 @@ The head and QK-normalization carry the gain; everything after them is
 quality-neutral. The hybrid is the cheapest model that beats the standard by
 the full margin (Phase 3: −0.045 nats at 0.88× standard throughput).
 
+## 8. 125M budget sweep for the main run (`scripts/main_run.py`)
+
+125M parameters, 600M tokens (573 steps of 1,048,576 tokens), seeds
+42/43/44, cosine AdamW, 57 warmup steps, 8M held-out tokens. Mean ± SD:
+
+| LR | standard | algebraic | hybrid |
+|---|---|---|---|
+| 1.5e-3 | 3.8608 ± 0.0088 | 3.7090 ± 0.0137 | 3.7475 ± 0.0095 |
+| **3e-3 (selected)** | **3.8208 ± 0.0145** | **3.6655 ± 0.0063** | **3.6982 ± 0.0149** |
+| 6e-3 | 4.1434 ± 0.1382 | 3.7562 ± 0.0488 | 3.7851 ± 0.0135 |
+
+Every architecture's optimum is interior to the grid (unlike the first
+study, whose sweep selected its largest offered rate for both arms).
+
