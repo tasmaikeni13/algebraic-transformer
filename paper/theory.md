@@ -3,7 +3,7 @@
 Short statements of the mathematics behind the algebraic Transformer, kept
 deliberately brief because the design is still being iterated. Status tags:
 **[proved]** short proof given here, **[measured]** backed by a recorded
-experiment, **[hypothesis]** awaiting Phase 1 evidence.
+experiment (scripts in `analysis/`, outputs in `results/`).
 
 ## 0. What "algebraic" means here
 
@@ -110,16 +110,17 @@ where the head improved monotonically from CE to n=8, c=2.
 reweights tokens relative to log-loss by roughly `p_t^{−1/8}` (×2.4 at
 `p_t = 10⁻³`, ×1.09 at `p_t = 0.5`). Properness fixes the optimum only for a
 well-specified model; a finite model trained on OACE trades average
-log-loss for hard-token fit **[hypothesis H4]**. OACE also normalizes logits
-across the vocabulary (`ε_vocab = 100`), coupling all 50,257 logits.
+log-loss for hard-token fit. OACE also normalizes logits across the
+vocabulary (`ε_vocab = 100`), coupling all 50,257 logits **[measured: +0.080
+nats on the standard model; replacing it by CE inside v1 recovers 0.12]**.
 
 ## 5. Positions: Cayley rotations
 
 `R(w) = [[1−w², −2w],[2w, 1−w²]]/(1+w²)` is a rotation by `θ = 2·atan w`
 (orthogonal, det 1) and `⟨R^m q, R^n k⟩ = qᵀR^{n−m}k` **[proved]**.
 
-Frequency grid matters (head dim 64, base 10⁴; pairs completing a turn
-within L tokens):
+Frequency grids (head dim 64, base 10⁴; pairs completing a turn within L
+tokens):
 
 | grid | L=16 | L=64 | L=256 | L=2048 |
 |---|---|---|---|---|
@@ -135,8 +136,10 @@ partial rotary dimensions.
 
 `b^{−1/32}` is built from five nested square roots, so the geometric grid is
 algebraic. Tables use binary exponentiation of the unit complex number
-`(1+iw)²/(1+w²)` (error `O(log T·ε)` instead of the `O(T·ε)` scan)
-**[hypothesis H3: the first-study grid starves local attention]**.
+`(1+iw)²/(1+w²)` (error `O(log T·ε)` instead of the `O(T·ε)` scan). The
+hypothesis that the first-study grid starves local attention was **rejected**
+by the ablation; the geometric grid was chosen for v2d (it was 0.007 better
+under QK-norm, one seed).
 
 ## 6. Activation
 
@@ -144,22 +147,24 @@ algebraic. Tables use binary exponentiation of the unit complex number
 `ALU_β'(x) = ½(1+u) + ½·u·r²` with `u = βx·r`, `r = (1+β²x²)^{−1/2}`.
 Gate slope at 0 is `β/2`; `β = ½` matches SiLU, `β ≈ 0.8` GELU, `β = 1` was
 used before. Negative tail decays like `−1/(4β²|x|)` (heavier than SiLU's
-exponential tail).
+exponential tail). Gaussian-weighted L2 distance to SiLU is smallest at
+`β ≈ 0.6` **[measured: β=1 → ½ improved v2c by 0.012]**.
 
 ## 7. Normalization
 
 AVN is RMSNorm without gain. A per-channel gain is a multiplication (still
 algebraic); removing it removes per-channel scale control, notably the
 final-layer logit temperature (the standard model learned a final gain with
-mean square ≈ 2.1) **[hypothesis H1]**.
+mean square ≈ 2.1) **[measured: removing gains costs 0.037 on the standard
+model; restoring them in v1 recovers 0.10]**.
 
 ## 8. Schedule
 
 ARDS `η_t = η·(1+((t−T_w)/(0.8T))²)^{−1/2}` ends at **0.634·η** and averages
 0.835·η over the 125M run; the cosine arm ends at 0.05·η and averages
-0.524·η **[measured from the configs]**. No annealing phase means the
-algebraic arm finished with ~12× higher terminal learning rate
-**[hypothesis H6: a large share of the 0.009-nat gap]**.
+0.524·η. No annealing phase means the algebraic arm finished with ~12×
+higher terminal learning rate **[measured: ARDS + wd 0.01 cost 0.060 at the
+proxy scale; an annealing-law fit predicts 0.115 nats at 125M]**.
 
 ## 9. Attribution of the first-study gap (Phase 1, measured)
 
