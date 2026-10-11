@@ -65,5 +65,36 @@ monotonically better (CE 3.8208, n=c=32 3.8199, n=c=16 3.8125,
 n=8/c=2 3.7857); QK-norm 3.7910; first-study Cayley grid 3.7979;
 ALU β=0.5 3.8058; softmax attention 3.8059; attention n=c=16 3.8176.
 
-(Batch 3 — combinations, stronger heads, controls — is reported in
-`results/analysis/` and summarized in section 4 once complete.)
+## 4. Final Phase 1 design and statistics (`phase1_summary.py`)
+
+Batches 3–5 combined the winners, tuned the head and attention kernels
+under QK-normalization, and added controls. Held-out NLL (mean ± SE over
+seeds; runs with equal seeds are paired):
+
+| model | seeds | NLL |
+|---|---|---|
+| standard | 4 | 3.8182 ± 0.0029 |
+| first-study algebraic (v1) | 1 | 3.9608 |
+| v2 provisional | 3 | 3.8146 ± 0.0017 |
+| v2c (+ n=8/c=2 head, QK-norm, v1 grid, ALU β=½) | 4 | 3.7647 ± 0.0025 |
+| hybrid: v2c with softmax attention | 3 | 3.7617 ± 0.0021 |
+| **v2d: final algebraic (attention n=16/c=8, geometric grid)** | 4 | **3.7574 ± 0.0016** |
+| standard + QK-norm + algebraic head (control) | 3 | 3.7613 ± 0.0047 |
+
+* **v2d − standard = −0.061 ± 0.004 nats (t = −14.1, p = 0.0008).**
+* v2d − (standard + QK-norm + algebraic head) = −0.004 ± 0.005 (p = 0.50):
+  with the same head and QK-norm, the fully algebraic backbone (ALU-GLU,
+  Cayley rotations, asinh attention with sink) matches the standard
+  backbone. The win over the standard baseline is carried by the algebraic
+  likelihood head and QK-normalization, both of which also transfer to a
+  standard backbone (−0.059 together).
+* Around v2d, single-seed variants are within noise (sink removed −0.005,
+  ALU β 0.6/0.75 −0.003/−0.002, head c 1.5/3 ±0.001, attention n=32/c=16
+  −0.001); partial rotary (+0.009) and a lower learning rate (+0.026) hurt.
+* The algebraic head's held-out NLL was recomputed from its definition in
+  float64 NumPy from saved parameters: probabilities sum to 1 within 1e-15
+  and the NLL matches the trainer to 2e-7 (`verify_head_eval.py`).
+
+Associative recall (Monte Carlo, 512 distractors): softmax 99.5% accuracy,
+first-study kernel 65% with seed failures — the empirical face of the
+degree-8 homogeneity ceiling that motivated the n=16, c=8 kernel.

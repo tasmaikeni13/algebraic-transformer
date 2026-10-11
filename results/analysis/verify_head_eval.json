@@ -1,0 +1,13 @@
+[
+ {
+  "run": "runs/p1b4/v2c_s0_save",
+  "head": "alg_ce",
+  "head_n": 8,
+  "head_c": 2.0,
+  "tokens": 8192,
+  "nll_float64_numpy": 3.866492057660862,
+  "nll_model_eval_float32": 3.86649227142334,
+  "abs_difference": 2.1376247794080427e-07,
+  "max_abs_deviation_of_sum_from_one": 1.1102230246251565e-15
+ }
+]

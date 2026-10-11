@@ -168,9 +168,17 @@ At 125M the annealing-law fit predicts ARDS alone costs 0.115 nats
 (90% CI 0.087–0.185), larger than the observed 0.009 gap, i.e. the v1
 architecture was otherwise competitive.
 
-## 10. Second-generation design (provisional, updated by Phase 1/3)
+## 10. Second-generation design (v2d, selected by Phase 1)
 
-Learned RMS gains · ALU-GLU · geometric Cayley rotations · asinh-power
-attention with a learned per-head sink · algebraic maximum-likelihood head
-(`ρ(z/c)^n`, exact log-loss gradient) · cosine AdamW. First proxy result:
-3.8125 vs standard 3.8201 ± 0.0030 (one seed; replication pending).
+| component | choice | why |
+|---|---|---|
+| head | `p ∝ ρ(z/2)^8`, exact log-loss gradient | trains on the evaluated metric; strong compression breaks the softmax rank bottleneck (−0.035 nats on a standard backbone) |
+| attention | `ρ(s/8)^16`, learned sink, QK-norm | softmax-like for `|s|≲8`, soft-capped beyond; n=16 lifts the homogeneity ceiling; QK-norm keeps scores in range |
+| positions | geometric Cayley grid | RoPE-equivalent spectrum, algebraic construction |
+| FFN | ALU-GLU, β = ½ | matches SiLU's gate slope; β = 1 costs 0.012 |
+| norm | RMS with learned gains | gains were worth 0.04–0.10 nats |
+| optimizer | AdamW, cosine | the user-specified common optimizer |
+
+Proxy result: v2d 3.7574 ± 0.0016 vs standard 3.8182 ± 0.0029
+(paired −0.061 ± 0.004, t = −14). With the same head and QK-norm on a
+standard backbone the two backbones tie (−0.004 ± 0.005).
