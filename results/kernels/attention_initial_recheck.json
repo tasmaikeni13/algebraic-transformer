@@ -1,0 +1,52 @@
+{
+ "shape": [
+  8,
+  12,
+  2048,
+  64
+ ],
+ "results": {
+  "ours softmax 512x512": {
+   "fwd_ms": 1.6304468001180794,
+   "fwd_bwd_ms": 4.276633949848474,
+   "fwd_tflops": 31.61072630414401,
+   "fwd_bwd_tflops": 42.18004826866029
+  },
+  "ours softmax+sink 512x512": {
+   "fwd_ms": 1.6304117998515721,
+   "fwd_bwd_ms": 4.278927500126883,
+   "fwd_tflops": 31.61140489580118,
+   "fwd_bwd_tflops": 42.15743931783161
+  },
+  "ours asinh16/16 shift 512x512": {
+   "fwd_ms": 4.846097900008317,
+   "fwd_bwd_ms": 9.44210084999213,
+   "fwd_tflops": 10.635279892284377,
+   "fwd_bwd_tflops": 19.10471295507825
+  },
+  "ours asinh16/16 shift+fast 512x512": {
+   "fwd_ms": 3.9837780001107608,
+   "fwd_bwd_ms": 7.649526550085284,
+   "fwd_tflops": 12.937369389199661,
+   "fwd_bwd_tflops": 23.58167204870854
+  },
+  "ours asinh16/16 noshift+fast 512x512": {
+   "fwd_ms": 2.6116436998563586,
+   "fwd_bwd_ms": 6.323215199881815,
+   "fwd_tflops": 19.73454784618388,
+   "fwd_bwd_tflops": 28.52799101877342
+  },
+  "jax flash_attention (defaults)": {
+   "fwd_ms": 6.3494252503005555,
+   "fwd_bwd_ms": 22.13650579979003,
+   "fwd_tflops": 8.117208333078704,
+   "fwd_bwd_tflops": 8.148920523568405
+  },
+  "xla dense softmax": {
+   "fwd_ms": 3.4338261000812054,
+   "fwd_bwd_ms": 10.797363700112328,
+   "fwd_tflops": 15.0093819692212,
+   "fwd_bwd_tflops": 16.70672873880532
+  }
+ }
+}

@@ -1,0 +1,14 @@
+name = "algebraic_attention"
+version = "0.1.0"
+defaultTargets = ["AlgebraicAttention"]
+
+[leanOptions]
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "7974e751bece493b6ff508039423ca9fa2452fa8"
+
+[[lean_lib]]
+name = "AlgebraicAttention"

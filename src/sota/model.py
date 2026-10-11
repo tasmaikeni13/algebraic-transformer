@@ -148,7 +148,8 @@ def _attention(q, k, v, sink_logit, cfg: LMConfig):
     if cfg.attn_impl == "flash":
         from src.sota.kernels.flash import flash_attention
         return flash_attention(q, k, v, sink_logit, kind=cfg.attn, n=cfg.attn_n,
-                               c=cfg.attn_c, block=cfg.flash_block)
+                               c=cfg.attn_c, block=cfg.flash_block,
+                               range_guard=cfg.attn == "asinh")
     if cfg.attn == "softmax":
         return S.softmax_attention(q, k, v, sink_logit=sink_logit)
     if cfg.attn == "asinh":

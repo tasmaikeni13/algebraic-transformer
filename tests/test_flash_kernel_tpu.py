@@ -5,6 +5,7 @@ Run on a TPU host:  python -m pytest -q tests/test_flash_kernel_tpu.py
 """
 
 import math
+from functools import partial
 
 import jax
 import jax.numpy as jnp
@@ -15,6 +16,14 @@ from src.sota import algebraic as A
 from src.sota import standard as S
 
 pytestmark = pytest.mark.skipif(jax.devices()[0].platform != "tpu", reason="needs a TPU")
+
+
+@pytest.fixture(autouse=True)
+def float32_pallas_context():
+    # The component suite enables x64 for mathematical oracles. TPU Mosaic
+    # cannot lower the resulting float64 literal casts, even for float32 data.
+    with jax.experimental.enable_x64(False):
+        yield
 
 
 def reference(q, k, v, sink, kind, n, c):
@@ -58,3 +67,75 @@ def test_flash_matches_dense(kind, n, c, with_sink, shift, fast, block):
         for a, b in zip(g1, g2):
             scale = float(jnp.max(jnp.abs(b))) + 1e-6
             np.testing.assert_allclose(np.asarray(a) / scale, np.asarray(b) / scale, atol=3e-3)
+
+
+@pytest.mark.parametrize("mode", ["root", "inverse", "compact", "guarded", "polynomial"])
+@pytest.mark.parametrize("dtype", [jnp.float32, jnp.bfloat16])
+@pytest.mark.parametrize("blocks", [(128, 128), (128, 256), (256, 128)])
+def test_model_attention_statistics(mode, dtype, blocks):
+    """Actual n=16,c=8, including the learned sink's VJP and rectangular tiles."""
+    from src.sota.kernels.flash import flash_attention
+    shape = (1, 2, 512, 64)
+    keys = jax.random.split(jax.random.PRNGKey(13), 5)
+    q, k, v, g = (jax.random.normal(key, shape, dtype) for key in keys[:4])
+    sink = jax.random.normal(keys[4], (1, 2, 1, 1), jnp.float32)
+    bq, bk = blocks
+    f = lambda q, k, v, s: flash_attention(q, k, v, s, kind="asinh", n=16, c=8.,
+                                          block_q=bq, block_k=bk, shift=False,
+                                          fast_rho=True, inv_stat=mode != "root",
+                                          compact_stat=mode in ("compact", "guarded"),
+                                          range_guard=mode == "guarded", poly_rho=mode == "polynomial")
+    ref = lambda q, k, v, s: A.asinh_attention(q, k, v, n=16, c=8., sink_logit=s)
+    with jax.default_matmul_precision("highest" if dtype == jnp.float32 else "default"):
+        output = jax.jit(f)(q, k, v, sink)
+        expected = jax.jit(ref)(q, k, v, sink)
+        np.testing.assert_allclose(np.asarray(output, dtype=np.float32),
+                                   np.asarray(expected, dtype=np.float32), atol=.012, rtol=.012)
+        loss = lambda fn, q, k, v, s: jnp.sum(fn(q, k, v, s).astype(jnp.float32) * g.astype(jnp.float32))
+        got = jax.jit(jax.grad(partial(loss, f), argnums=(0, 1, 2, 3)))(q, k, v, sink)
+        want = jax.jit(jax.grad(partial(loss, ref), argnums=(0, 1, 2, 3)))(q, k, v, sink)
+        for a, b in zip(got, want):
+            a, b = np.asarray(a, dtype=np.float32), np.asarray(b, dtype=np.float32)
+            rel_l2 = np.linalg.norm(a - b) / max(np.linalg.norm(b), 1e-6)
+            assert rel_l2 < (.02 if dtype == jnp.bfloat16 else .005)
+
+
+@pytest.mark.parametrize("score_sign", [-1., 1.])
+@pytest.mark.parametrize("with_sink", [False, True])
+@pytest.mark.parametrize("magnitude", [1000., 1e7])
+def test_guarded_attention_tail(score_sign, with_sink, magnitude):
+    """Guarded fallback handles both weight overflow and whole-row underflow."""
+    from src.sota.kernels.flash import flash_attention
+    shape = (1, 1, 256, 64)
+    q = jnp.full(shape, math.sqrt(magnitude), jnp.float32)
+    k = q * score_sign
+    v = jax.random.normal(jax.random.PRNGKey(29), shape, jnp.float32)
+    sink = jnp.zeros((1,), jnp.float32) if with_sink else None
+    fn = lambda q, k, v: flash_attention(q, k, v, sink, kind="asinh", n=16, c=8.,
+                                         block=128, compact_stat=True, range_guard=True)
+    with jax.default_matmul_precision("highest"):
+        out = jax.jit(fn)(q, k, v)
+        ref = A.asinh_attention(q, k, v, n=16, c=8., sink_logit=sink)
+        assert np.isfinite(np.asarray(out)).all()
+        np.testing.assert_allclose(out, ref, atol=2e-3, rtol=2e-3)
+        grad = jax.jit(jax.grad(lambda q, k, v: fn(q, k, v).sum(), argnums=(0, 1, 2)))(q, k, v)
+        assert all(np.isfinite(np.asarray(x)).all() for x in grad)
+
+
+def test_explicit_clipping_vjp_is_zero_above_cap():
+    """A saturated score or sink is constant in the clipped primal."""
+    from src.sota.kernels.flash import flash_attention
+    shape = (1, 1, 256, 64)
+    q = jnp.full(shape, math.sqrt(1000), jnp.float32)
+    k = q
+    v = jax.random.normal(jax.random.PRNGKey(39), shape, jnp.float32)
+    g = jax.random.normal(jax.random.PRNGKey(40), shape, jnp.float32)
+    sink = jnp.full((1,), 1000., jnp.float32)
+    def loss(q, k, s):
+        o = flash_attention(q, k, v, s, kind="asinh", n=16, c=8.,
+                            block=128, shift=False, range_guard=False)
+        return jnp.sum(o * g)
+    with jax.default_matmul_precision("highest"):
+        grads = jax.jit(jax.grad(loss, argnums=(0, 1, 2)))(q, k, sink)
+        for grad in grads:
+            np.testing.assert_array_equal(grad, jnp.zeros_like(grad))

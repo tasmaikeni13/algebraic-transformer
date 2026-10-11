@@ -4,6 +4,16 @@ Every number here is produced by a script in this directory; JSON outputs
 are in `results/analysis/`. The concise mathematics is in
 `paper/theory.md`.
 
+The attention speed follow-up is tracked in
+[`paper/attention_performance.md`](../paper/attention_performance.md) and
+[`paper/attention_exact.md`](../paper/attention_exact.md). It includes
+`attention_numerics.py` (9,216 random rows and adversarial tails),
+`attention_polynomial.py` (exact rational interval certificates),
+`attention_performance.py` (randomized paired TPU rounds including Splash),
+and `attention_statistics.py` (bootstrap over independent seeds/rounds).
+The checked Lean proofs are in [`formal/`](../formal/README.md). The speed
+goal remains open; historical phase completion does not establish parity.
+
 | File | What it does |
 |---|---|
 | `v1_statistics.py` | Paired seed statistics of the first study's 125M runs, the 18-run tuning sweep, schedule areas, and an LR-annealing scaling-law fit |

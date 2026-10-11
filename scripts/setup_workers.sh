@@ -42,7 +42,7 @@ chmod +x ~/bin/chiprun ~/bin/hostrun
 for w in w1 w2 w3; do
   ssh "$w" "mkdir -p ~/bin ~/sota-algebra"
   scp -q ~/bin/chiprun ~/bin/hostrun "$w":~/bin/
-  rsync -a --delete --exclude .git --exclude runs --exclude data --exclude '__pycache__' --exclude prompt.md \
+  rsync -a --delete --exclude .git --exclude .lake --exclude runs --exclude data --exclude '__pycache__' --exclude prompt.md \
     "$ROOT"/ "$w":~/sota-algebra/
 done
 echo "workers synced"

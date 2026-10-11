@@ -103,6 +103,20 @@ at 88% of its throughput, against 72% for the fully algebraic model.
 
 ## Kernels (Phase 2)
 
+**Attention speed follow-up:** the current guarded algebraic kernel uses
+inverse-denominator statistics, compact row outputs, and a stable fallback
+for extreme scores. Fifteen paired rounds at the 125M attention shape give
+**5.94 ms algebraic vs 3.97 ms standard** for forward plus backward; at the
+60M shape, **3.95 vs 2.61 ms**. Speed parity remains open. The follow-up
+includes 55 passing TPU checks, 9,216 Monte Carlo rows, exact rational
+approximation certificates, and checked Lean proofs.
+[Measurements and rejected candidates](paper/attention_performance.md),
+[expanded attention theory](paper/attention_exact.md),
+[formal coverage](formal/README.md).
+
+The following table records the earlier Phase 2 implementation, before the
+current statistics layout and range guard:
+
 One Pallas TPU flash-attention implementation serves both arms (forward;
 fused dK/dV/dQ backward; causal tile skipping with diagonal-only masking;
 sinks). Forward + backward on one TPU v4 chip, 2048 tokens, head dim 64:

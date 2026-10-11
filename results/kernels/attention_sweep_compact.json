@@ -1,0 +1,470 @@
+{
+  "schema": 1,
+  "utc": "2026-10-11T18:20:13.575920+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "dtype": "bfloat16",
+  "causal": true,
+  "asinh_n": 16,
+  "asinh_c": 8.0,
+  "asinh_sink": 0.0,
+  "softmax_sink": null,
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "hostname": "t1v-n-79750f9f-w-2",
+  "rounds": 9,
+  "iters_per_round": 20,
+  "seed": 11,
+  "git_revision": null,
+  "kernel_sha256": "de85fa27073b719365c94570e49eb16de9a57658872d33de6af7a5b52050bf7b",
+  "results": {
+    "softmax_512x512": {
+      "forward": {
+        "compile_s": 0.6072229560013511,
+        "samples_ms": [
+          1.628418299878831,
+          1.6292388001602376,
+          1.6288132999761729,
+          1.6283918001136044,
+          1.6287657999782823,
+          1.6295018500386504,
+          1.628720799999428,
+          1.6288212998915697,
+          1.6290932999254437
+        ],
+        "median_ms": 1.6288132999761729
+      },
+      "training": {
+        "compile_s": 2.2774127629963914,
+        "samples_ms": [
+          4.277474499758682,
+          4.2712149497674545,
+          4.27864600023895,
+          4.282500450062798,
+          4.2772649499966064,
+          4.2794134500582,
+          4.27620249975007,
+          4.278050450011506,
+          4.2827985002077185
+        ],
+        "median_ms": 4.278050450011506
+      }
+    },
+    "softmax_compact_512x512": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "asinh_inv_512x512": {
+      "forward": {
+        "compile_s": 0.807676052005263,
+        "samples_ms": [
+          2.2503276999486843,
+          2.24892619989987,
+          2.2496157500427216,
+          2.2491332500067074,
+          2.2496552497614175,
+          2.2505722499772673,
+          2.2496432498883223,
+          2.250051699957112,
+          2.24932519995491
+        ],
+        "median_ms": 2.2496432498883223
+      },
+      "training": {
+        "compile_s": 2.692181503000029,
+        "samples_ms": [
+          6.343379250029102,
+          6.344063749929774,
+          6.344376199922408,
+          6.341075800082763,
+          6.3480577500740765,
+          6.342175199824851,
+          6.34480025000812,
+          6.348014250033884,
+          6.345296750077978
+        ],
+        "median_ms": 6.344376199922408
+      }
+    },
+    "asinh_compact_512x512": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "softmax_1024x1024": {
+      "forward": {
+        "compile_s": 2.1917767240011017,
+        "samples_ms": [
+          1.6412852997746086,
+          1.641096849925816,
+          1.6416758502600715,
+          1.6420652998931473,
+          1.6412098000728292,
+          1.641551300053834,
+          1.641217300129938,
+          1.6414733003330184,
+          1.641958300024271
+        ],
+        "median_ms": 1.6414733003330184
+      },
+      "training": {
+        "compile_s": 3.766089862001536,
+        "samples_ms": [
+          4.188986999724875,
+          4.191788000025554,
+          4.1900189498846885,
+          4.188041450106539,
+          4.189361500175437,
+          4.191867499685031,
+          4.192649949982297,
+          4.187976449975395,
+          4.190467999796965
+        ],
+        "median_ms": 4.1900189498846885
+      }
+    },
+    "softmax_compact_1024x1024": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "asinh_inv_1024x1024": {
+      "forward": {
+        "compile_s": 2.755813784999191,
+        "samples_ms": [
+          2.4067957001534523,
+          2.407021199906012,
+          2.4073161999695003,
+          2.4069337003311375,
+          2.407032699920819,
+          2.406447699831915,
+          2.4073512002360076,
+          2.40797919977922,
+          2.4067536996881245
+        ],
+        "median_ms": 2.407021199906012
+      },
+      "training": {
+        "error": "XlaRuntimeError: RESOURCE_EXHAUSTED: XLA:TPU compile permanent error. Ran out of memory in memory space vmem. Used 20.86M of 16.00M vmem. Exceeded vmem capacity by 4.86M.\n\nProgram vmem requirement 20.86M:\n    scoped           20.86M\n\n  Largest program allocations in vmem:\n\n  1. Size: 15.74M\n     XLA label: register allocator spill slots call depth 2\n     Allocation type: scoped\n     ==========================\n\n  2. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  3. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  4. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: f32[1024,128]{1,0:T(8,128)}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  5. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: f32[1024,128]{1,0:T(8,128)}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  6. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  7. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  8. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  9. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  10. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  11. Size: 36.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[72,128]{1,0:T(1,128)}\n     Unpadded size: 36.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  12. Size: 8.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[8192]{0}\n     Unpadded size: 8.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  13. Size: 8.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u8[8192]{0}\n     Unpadded size: 8.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  14. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  15. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  16. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  17. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  18. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  19. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  20. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  21. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  22. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  23. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  24. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  25. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  26. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  27. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  28. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  29. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=596\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(broadcast.9, copy-done.2, copy-done.1, copy.25, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[12]{0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, bf16[8,12,2048,64]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}, f32[8,12,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n"
+      }
+    },
+    "asinh_compact_1024x1024": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "softmax_512x1024": {
+      "forward": {
+        "compile_s": 1.0680912190000527,
+        "samples_ms": [
+          1.710596300108591,
+          1.7112562498368789,
+          1.7115568000008352,
+          1.711211300062132,
+          1.7106657498516142,
+          1.7109528002038132,
+          1.7112847501266515,
+          1.711717750004027,
+          1.7109667998738587
+        ],
+        "median_ms": 1.711211300062132
+      },
+      "training": {
+        "compile_s": 2.8000032090058085,
+        "samples_ms": [
+          4.359113450118457,
+          4.3608609499642625,
+          4.353537499991944,
+          4.359343500254909,
+          4.358339499958674,
+          4.3595154500508215,
+          4.36229844999616,
+          4.355688999930862,
+          4.355755950018647
+        ],
+        "median_ms": 4.359113450118457
+      }
+    },
+    "softmax_compact_512x1024": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "asinh_inv_512x1024": {
+      "forward": {
+        "compile_s": 1.3363796070043463,
+        "samples_ms": [
+          2.477377149989479,
+          2.477366699895356,
+          2.477193199956673,
+          2.4779276998742716,
+          2.477973199711414,
+          2.4776617497991538,
+          2.478239249830949,
+          2.478077200066764,
+          2.4775722002232214
+        ],
+        "median_ms": 2.4776617497991538
+      },
+      "training": {
+        "compile_s": 3.801180007001676,
+        "samples_ms": [
+          6.779084150184644,
+          6.781959700310836,
+          6.777890699959244,
+          6.777964700086159,
+          6.782370649671066,
+          6.780129199978546,
+          6.776970200007781,
+          6.777987699751975,
+          6.780537150189048
+        ],
+        "median_ms": 6.779084150184644
+      }
+    },
+    "asinh_compact_512x1024": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "softmax_1024x512": {
+      "forward": {
+        "compile_s": 1.1137111150019336,
+        "samples_ms": [
+          1.663874800215126,
+          1.66391479979211,
+          1.6636407999612857,
+          1.6637468001135858,
+          1.6636288000881905,
+          1.6635238000162644,
+          1.6629023000859888,
+          1.663977299904218,
+          1.6639923000184353
+        ],
+        "median_ms": 1.6637468001135858
+      },
+      "training": {
+        "compile_s": 2.6103048720033257,
+        "samples_ms": [
+          4.516240949669736,
+          4.514906449912814,
+          4.515243450077833,
+          4.515087899926584,
+          4.515070449997438,
+          4.5147719498345396,
+          4.513324449726497,
+          4.515842000182602,
+          4.5161809503042605
+        ],
+        "median_ms": 4.515087899926584
+      }
+    },
+    "softmax_compact_1024x512": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    },
+    "asinh_inv_1024x512": {
+      "forward": {
+        "compile_s": 1.4122043489987846,
+        "samples_ms": [
+          2.450120199864614,
+          2.4497397000232013,
+          2.449916200203006,
+          2.449986700230511,
+          2.4495572000887478,
+          2.450216199940769,
+          2.4500236999301706,
+          2.4500887000613147,
+          2.4498241997207515
+        ],
+        "median_ms": 2.449986700230511
+      },
+      "training": {
+        "compile_s": 3.7117186689938535,
+        "samples_ms": [
+          6.844939149959828,
+          6.846660700102802,
+          6.844621700292919,
+          6.844363650088781,
+          6.844516149794799,
+          6.844647150137462,
+          6.845481149866828,
+          6.8442896499618655,
+          6.845851700200001
+        ],
+        "median_ms": 6.844647150137462
+      }
+    },
+    "asinh_compact_1024x512": {
+      "forward": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      },
+      "training": {
+        "error": "MosaicError: INTERNAL: Mosaic failed to compile TPU kernel: Not implemented: Unsupported implicit dim change: from \"32,{0,0},(1,128),-1\" to none\n\n\nPlease report a bug at: https://github.com/google/jax/issues/new?assignees=apaszke\n"
+      }
+    }
+  },
+  "comparisons": {
+    "forward": {
+      "reference": "softmax_512x512",
+      "selection": "fastest measured standard; exploratory",
+      "latency_ratios": {
+        "softmax_512x512": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_512x512": {
+          "ratio": 1.3811442495433468,
+          "ci95": [
+            1.3808721629434497,
+            1.38140332603117
+          ],
+          "rounds": 9
+        },
+        "softmax_1024x1024": {
+          "ratio": 1.0077605671028247,
+          "ci95": [
+            1.0075663186156547,
+            1.0079659475872391
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_1024x1024": {
+          "ratio": 1.477761143323877,
+          "ci95": [
+            1.4774438070389684,
+            1.4780403898505987
+          ],
+          "rounds": 9
+        },
+        "softmax_512x1024": {
+          "ratio": 1.050508534559406,
+          "ci95": [
+            1.0503113120998666,
+            1.050699569504992
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_512x1024": {
+          "ratio": 1.5211286300009534,
+          "ci95": [
+            1.5208539748767405,
+            1.521392696017123
+          ],
+          "rounds": 9
+        },
+        "softmax_1024x512": {
+          "ratio": 1.0213807315876695,
+          "ci95": [
+            1.0211905667798629,
+            1.0215599617905629
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_1024x512": {
+          "ratio": 1.5040809209510038,
+          "ci95": [
+            1.5038588224570093,
+            1.5043040180640284
+          ],
+          "rounds": 9
+        }
+      }
+    },
+    "training": {
+      "reference": "softmax_1024x1024",
+      "selection": "fastest measured standard; exploratory",
+      "latency_ratios": {
+        "softmax_512x512": {
+          "ratio": 1.0210123112015053,
+          "ci95": [
+            1.0203221182700033,
+            1.0216389391992924
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_512x512": {
+          "ratio": 1.5141735685409126,
+          "ci95": [
+            1.5136412678713602,
+            1.5147429342064713
+          ],
+          "rounds": 9
+        },
+        "softmax_1024x1024": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 9
+        },
+        "softmax_512x1024": {
+          "ratio": 1.0401284603089593,
+          "ci95": [
+            1.0397477499636507,
+            1.0404630805363644
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_512x1024": {
+          "ratio": 1.6179533693147685,
+          "ci95": [
+            1.61746493455286,
+            1.6183640520634845
+          ],
+          "rounds": 9
+        },
+        "softmax_1024x512": {
+          "ratio": 1.0775768267028902,
+          "ci95": [
+            1.0771921793813717,
+            1.0779240460325785
+          ],
+          "rounds": 9
+        },
+        "asinh_inv_1024x512": {
+          "ratio": 1.6336112996568413,
+          "ci95": [
+            1.6332562193731568,
+            1.633942459307989
+          ],
+          "rounds": 9
+        }
+      }
+    }
+  }
+}

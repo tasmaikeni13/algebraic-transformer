@@ -5,6 +5,12 @@ deliberately brief because the design is still being iterated. Status tags:
 **[proved]** short proof given here, **[measured]** backed by a recorded
 experiment (scripts in `analysis/`, outputs in `results/`).
 
+The attention engineering follow-up expands the mathematics and formal
+coverage in [attention_exact.md](attention_exact.md), with paired hardware
+measurements and rejected optimizations in
+[attention_performance.md](attention_performance.md). Speed parity remains
+open. The new Lean project is in [`formal/`](../formal/README.md).
+
 ## 0. What "algebraic" means here
 
 The training path (forward and backward of the model, attention, and training
@@ -48,11 +54,16 @@ squarings).
   `(ρ(m)·ρ(−m'))^n`. Identical structure to FlashAttention-2.
 * **Algebraic log-sum-exp [proved].** The per-row statistic
   `σ = Z^{−1/n} = ρ(−m)·l^{−1/n}` (log₂n square roots) plays the role of
-  `logsumexp`: the backward recomputes `p = (ρ(x)·σ)^n`.
-* **No-shift accumulation [proved].** `ρ(x) ≤ 2|x|+1`, so clamping
-  `x ≤ X` with `T(2X)^n < 3.4·10^38` makes plain additive accumulation
-  overflow-free (`X ≈ 40` for n=16, `≈ 5400` for n=8 at T=2048); the clamp
-  never binds for realistic scores.
+  `logsumexp`: the backward recomputes `p = (ρ(x)·σ)^n`. Unshifted
+  accumulation now saves `u=1/Z` and reconstructs `p=ρ(x)^n u`, avoiding
+  the root chain. Both formulas are checked in Lean.
+* **No-shift accumulation [proved, corrected range conditions].** If
+  `|x|≤X`, including the sink, then
+  `Z≤(T+has_sink)(2X+1)^n`. Underflow and numerator overflow also need
+  bounds. The model checks actual input norms and value magnitudes before
+  choosing unclipped accumulation; otherwise it uses shifted stable rho.
+  An upper clamp alone is insufficient, and changes the link when it binds.
+  Detailed conditions and counterexamples: [attention_exact.md](attention_exact.md).
 * **Degree-n homogeneity ceiling [proved + measured].** For `|s| ≫ c`,
   `κ(s) ≈ (2|s|/c)^n`, so normalized weights become invariant to rescaling
   `q·k`: attention can no longer be sharpened by growing scores. Random-score

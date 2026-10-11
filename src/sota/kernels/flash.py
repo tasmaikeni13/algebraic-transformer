@@ -7,20 +7,23 @@ backward pass.
 * softmax: weight ``exp(s - m)``; saved statistic ``L = m + log l``;
   backward weight ``exp(s - L)``.
 * asinh:   kernel-unit score ``x = q.k / (sqrt(d) c)`` and weight
-  ``rho(x)^n``. Two numerically exact strategies:
+  ``rho(x)^n``. Two accumulation strategies:
   - ``shift=True``: running maximum ``m`` with weights ``(rho(x) rho(-m))^n``
     (``rho(a) rho(-b) = rho(a (-) b)``) and rescale ``(rho(m_old) rho(-m_new))^n``;
-  - ``shift=False``: no running maximum. ``x`` is clamped to ``[-X, X]`` with
-    ``X`` chosen so that ``T (2X)^n`` stays below the float32 range, which
-    makes plain additive accumulation safe. The clamp only binds for scores
-    beyond ``X c`` (``X ~ 79`` for n=16, T=2048).
-  The saved statistic is ``sigma = Z^(-1/n)`` (log2 n square roots per row),
-  and the backward weight is ``(rho(x) sigma)^n``. No logarithm or
-  exponential is evaluated on this path.
+  - ``shift=False``: no running maximum. A positive-score clamp bounds the
+    denominator; the negative tail can still underflow without a sink.
+    The default statistic is ``1/Z``; ``inv_stat=False`` retains the older
+    root statistic ``sigma = Z^(-1/n)``. The clamp's VJP is zero above it.
+  - ``range_guard=True``: check input norm and value bounds. In range, use
+    unclipped additive accumulation; otherwise use max shifting and stable
+    rho. The model uses this guard for algebraic attention.
+  Row statistics are stored once per row; ``compact_stat=False`` retains
+  the older 128-lane replicated output for comparison. No logarithm or
+  exponential is evaluated on the algebraic path.
   ``fast_rho`` evaluates ``rho(x) = x + sqrt(1 + x^2)`` without the
   reciprocal used for negative ``x``; its cancellation error is relative
-  ``~2 eps x^2`` and only affects weights that are negligible after
-  normalization unless a whole row has ``x << -100``.
+  ``O(eps x^2)``; whole rows far into the negative tail require stable rho.
+  ``poly_rho`` is an opt-in bounded polynomial experiment, slower on TPU v4.
 
 A sink is a key with zero value and logit ``b`` (per head). It enters through
 the initial running state. Sink-logit gradients are formed outside the kernels
@@ -42,10 +45,12 @@ import jax.numpy as jnp
 from jax.experimental import pallas as pl
 from jax.experimental.pallas import tpu as pltpu
 
+from .radical import bounded_radical
+
 F32 = jnp.float32
 LANES = 128
 NEG = -1e4                 # finite "minus infinity" in kernel units
-VMEM_LIMIT = 100 * 2 ** 20  # generous scoped-VMEM budget (TPU v4 cores)
+VMEM_LIMIT = 100 * 2 ** 20  # compiler arena limit; physical VMEM remains device-specific
 
 
 class Variant(NamedTuple):
@@ -54,6 +59,10 @@ class Variant(NamedTuple):
     shift: bool = True
     fast_rho: bool = False
     clamp: float = 0.0  # used when shift is False
+    inv_stat: bool = False  # no-shift: store 1/Z instead of Z^(-1/n)
+    compact_stat: bool = False  # save one scalar per row instead of 128 replicas
+    poly_rho: bool = False  # opt-in, bounded approximation with a stable exact tail
+    bounded_scores: bool = False  # internal: a runtime Cauchy-Schwarz guard passed
 
 
 def _rho_exact(x):
@@ -69,6 +78,10 @@ def _rho(x, fast):
         r = lax.rsqrt(rad)
         return x + rad * r, r
     return _rho_exact(x)
+
+
+def _variant_rho(x, var):
+    return bounded_radical(x) if var.poly_rho else _rho(x, var.fast_rho)
 
 
 def _ipow(x, n):
@@ -147,8 +160,10 @@ def _fwd_kernel(sink_ref, q_ref, k_ref, v_ref, o_ref, stat_ref, m_sc, l_sc, acc_
         acc_sc[...] = jnp.zeros(acc_sc.shape, F32)
         if asinh_noshift:
             if has_sink:
-                b = jnp.minimum(jnp.full(l_sc.shape, sink_ref[h], F32), var.clamp)
-                l_sc[...] = _ipow(_rho(b, var.fast_rho)[0], var.n)
+                b = jnp.full(l_sc.shape, sink_ref[h], F32)
+                if not var.bounded_scores:
+                    b = jnp.minimum(b, var.clamp)
+                l_sc[...] = _ipow(_variant_rho(b, var)[0], var.n)
             else:
                 l_sc[...] = jnp.zeros(l_sc.shape, F32)
             return
@@ -166,23 +181,31 @@ def _fwd_kernel(sink_ref, q_ref, k_ref, v_ref, o_ref, stat_ref, m_sc, l_sc, acc_
         s = lax.dot_general(q, k, TRANS_B, preferred_element_type=F32)
         mask = _causal_mask(i, j, bq, bk) if masked else None
         if asinh_noshift:
-            x = jnp.minimum(s, var.clamp)
-            p = _ipow(_rho(x, var.fast_rho)[0], var.n)
+            x = s if var.bounded_scores else jnp.minimum(s, var.clamp)
+            p = _ipow(_variant_rho(x, var)[0], var.n)
             if masked:
                 p = jnp.where(mask, p, 0.0)
             l_sc[...] = l_sc[...] + jnp.sum(p, axis=1, keepdims=True)
             acc_sc[...] = acc_sc[...] + lax.dot(p.astype(v.dtype), v, preferred_element_type=F32)
             return
-        if masked:
-            s = jnp.where(mask, s, NEG)
         m_prev = m_sc[...]
-        m_new = jnp.maximum(m_prev, jnp.max(s, axis=1, keepdims=True))
+        max_scores = jnp.where(mask, s, -jnp.inf) if masked else s
+        tile_max = jnp.max(max_scores, axis=1, keepdims=True)
+        m_new = jnp.maximum(m_prev, tile_max)
+        if not has_sink:
+            # The first nonempty tile establishes the maximum. A finite
+            # sentinel is not a valid maximum for a wholly negative row.
+            m_new = jnp.where(j == 0, tile_max, m_new)
+            # The old state is zero, so any finite rescale is equivalent.
+            # Use the new maximum to prevent inf * 0 in that rescale.
+            m_prev = jnp.where(j == 0, m_new, m_prev)
         if var.kind == "softmax":
-            p = jnp.exp(s - _bcast(m_new, bk))
+            p = jnp.exp(max_scores - _bcast(m_new, bk))
             alpha = jnp.exp(m_prev - m_new)
         else:
             shift = _rho_exact(-m_new)[0]
-            p = _ipow(_rho(s, var.fast_rho)[0] * _bcast(shift, bk), var.n)
+            safe_scores = jnp.where(mask, s, 0.0) if masked else s
+            p = _ipow(_rho(safe_scores, var.fast_rho)[0] * _bcast(shift, bk), var.n)
             alpha = _ipow(_rho_exact(m_prev)[0] * shift, var.n)
         if masked:
             p = jnp.where(mask, p, 0.0)
@@ -206,11 +229,15 @@ def _fwd_kernel(sink_ref, q_ref, k_ref, v_ref, o_ref, stat_ref, m_sc, l_sc, acc_
         l = l_sc[...]
         o_ref[0, 0] = (acc_sc[...] * _bcast(1.0 / l, head_dim)).astype(o_ref.dtype)
         if var.kind == "softmax":
-            stat_ref[0, 0] = m_sc[...] + jnp.log(l)
+            stat = m_sc[...] + jnp.log(l)
         elif asinh_noshift:
-            stat_ref[0, 0] = _inv_root(l, var.n)
+            stat = 1.0 / l if var.inv_stat else _inv_root(l, var.n)
         else:
-            stat_ref[0, 0] = _rho_exact(-m_sc[...])[0] * _inv_root(l, var.n)
+            stat = _rho_exact(-m_sc[...])[0] * _inv_root(l, var.n)
+        if var.compact_stat:
+            stat_ref[0, 0] = jnp.transpose(stat)[:1, :]
+        else:
+            stat_ref[0, 0] = stat
 
 
 def _params():
@@ -239,16 +266,17 @@ def _forward(q, k, v, sink, *, var, bq, bk, has_sink):
             ],
             out_specs=[
                 pl.BlockSpec((1, 1, bq, D), lambda b, h, i, j, *_: (b, h, i, 0)),
-                pl.BlockSpec((1, 1, bq, LANES), lambda b, h, i, j, *_: (b, h, i, 0)),
+                (pl.BlockSpec((1, 1, 1, bq), lambda b, h, i, j, *_: (b, h, 0, i)) if var.compact_stat else
+                 pl.BlockSpec((1, 1, bq, LANES), lambda b, h, i, j, *_: (b, h, i, 0))),
             ],
             scratch_shapes=[pltpu.VMEM((bq, LANES), F32), pltpu.VMEM((bq, LANES), F32),
                             pltpu.VMEM((bq, D), F32)],
         ),
         out_shape=[jax.ShapeDtypeStruct(q.shape, q.dtype),
-                   jax.ShapeDtypeStruct((B, H, T, LANES), F32)],
+                   jax.ShapeDtypeStruct((B, H, 1, T) if var.compact_stat else (B, H, T, LANES), F32)],
         compiler_params=_params(),
     )(sink, q, k, v)
-    return o, stat[..., 0]
+    return o, stat[:, :, 0, :] if var.compact_stat else stat[..., 0]
 
 
 # ---------------------------------------------------------------------------
@@ -268,17 +296,21 @@ def _tile_grads(q, k, v, do, stat, di, i, j, *, var, bq, bk, masked):
         r = None
     else:
         if not var.shift:
-            x = jnp.minimum(s, var.clamp)   # forward clamp; straight-through slope
+            x = s if var.bounded_scores else jnp.minimum(s, var.clamp)
         else:
             x = jnp.where(mask, s, 0.0) if masked else s
-        rho, r = _rho(x, var.fast_rho)
-        p = _ipow(rho * stat, var.n)
+        rho, r = _variant_rho(x, var)
+        p = _ipow(rho, var.n) * stat if var.inv_stat else _ipow(rho * stat, var.n)
     if masked:
         p = jnp.where(mask, p, 0.0)
     dp = lax.dot_general(do, v, TRANS_B, preferred_element_type=F32)
     ds = p * (dp - di)
     if r is not None:
         ds = ds * r
+        if not var.shift and not var.bounded_scores:
+            # Differentiate the function actually evaluated in forward. At the
+            # clamp kink choose the constant branch's subgradient (zero).
+            ds = jnp.where(s < var.clamp, ds, 0.0)
     return p, ds
 
 
@@ -496,9 +528,14 @@ def _sink_mass_and_slope(sink, stat, var):
     """Per-row sink probability (B, H, T) and d(kernel logit)/d(sink)."""
     if var.kind == "softmax":
         return jnp.exp(sink[None, :, None] - stat), 1.0
-    b = jnp.minimum(sink, var.clamp) if not var.shift else sink   # (H,)
-    rho, r = _rho_exact(b)
-    return _ipow(rho[None, :, None] * stat, var.n), var.n * r
+    b = jnp.minimum(sink, var.clamp) if not var.shift and not var.bounded_scores else sink
+    rho, r = bounded_radical(b) if var.poly_rho else _rho_exact(b)
+    mass = (_ipow(rho[None, :, None], var.n) * stat if var.inv_stat else
+            _ipow(rho[None, :, None] * stat, var.n))
+    slope = var.n * r
+    if not var.shift and not var.bounded_scores:
+        slope = jnp.where(sink < var.clamp, slope, 0.0)
+    return mass, slope
 
 
 @partial(jax.custom_vjp, nondiff_argnums=(4, 5, 6, 7))
@@ -526,37 +563,55 @@ _flash.defvjp(_flash_fwd, _flash_bwd)
 
 
 def make_variant(kind: str, n: int = 16, c: float = 16.0, seq_len: int = 2048,
-                 shift: Optional[bool] = None, fast_rho: Optional[bool] = None) -> Variant:
+                 shift: Optional[bool] = None, fast_rho: Optional[bool] = None,
+                 inv_stat: Optional[bool] = None, compact_stat: bool = True,
+                 poly_rho: bool = False) -> Variant:
     if kind == "softmax":
-        return Variant("softmax")
-    if n & (n - 1):
+        return Variant("softmax", compact_stat=bool(compact_stat))
+    if kind != "asinh":
+        raise ValueError(f"unknown attention kernel: {kind}")
+    if n < 2 or n & (n - 1):
         raise ValueError("asinh kernel needs n to be a power of two")
-    # Defaults: the reciprocal-free rho, and no running maximum whenever the
-    # clamp it requires sits at least 20 kernel units out (scores up to 20 c
-    # untouched; e.g. 40 c for n = 16 and 5000 c for n = 8 at T = 2048).
-    clamp = 0.25 * _root(1e38 / seq_len, n)
+    if not math.isfinite(c) or c <= 0:
+        raise ValueError("asinh scale c must be positive and finite")
+    # Invert rho exactly to bound the denominator for every supported n:
+    # rho((t - 1/t)/2) = t, (T+1)t^n = 1e37. The previous 0.25*t
+    # heuristic was unsafe for large n. Numerators need a separate value bound.
+    t = _root(1e37 / (seq_len + 1), n)
+    clamp = 0.5 * (t - 1.0 / t)
     if shift is None:
         shift = clamp < 20.0
     if fast_rho is None:
         fast_rho = True
-    return Variant("asinh", int(n), bool(shift), bool(fast_rho), float(clamp))
+    if inv_stat is None:
+        inv_stat = not shift
+    if inv_stat and shift:
+        raise ValueError("inverse-denominator statistic requires shift=False")
+    if poly_rho and (shift or n != 16):
+        raise ValueError("bounded radical approximation requires shift=False and n=16")
+    return Variant("asinh", int(n), bool(shift), bool(fast_rho), float(clamp),
+                   bool(inv_stat), bool(compact_stat), bool(poly_rho))
 
 
 def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: str = "softmax",
                     n: int = 16, c: float = 16.0, block: int = 512,
                     block_q: Optional[int] = None, block_k: Optional[int] = None,
-                    shift: Optional[bool] = None, fast_rho: Optional[bool] = None):
+                    shift: Optional[bool] = None, fast_rho: Optional[bool] = None,
+                    inv_stat: Optional[bool] = None, compact_stat: bool = True,
+                    poly_rho: bool = False, range_guard: bool = False):
     """Causal attention on (B, H, T, D). ``sink_logit`` broadcastable to (H,).
 
     For ``kind="asinh"`` the weights are ``rho(s / c)^n`` with ``s`` the
-    scaled dot product; ``n`` must be a power of two.
+    scaled dot product; ``n >= 2`` must be a power of two. ``range_guard``
+    uses an unclipped fast path and a shifted tail for n <= 32. Explicit
+    unguarded ``shift=False`` evaluates the upper-clipped link instead.
     """
     B, H, T, D = q.shape
     bq = min(block_q or block, T)
     bk = min(block_k or block, T)
     if T % bq or T % bk:
         raise ValueError(f"sequence length {T} must be divisible by blocks ({bq}, {bk})")
-    var = make_variant(kind, n, c, T, shift, fast_rho)
+    var = make_variant(kind, n, c, T, shift, fast_rho, inv_stat, compact_stat, poly_rho)
     unit = 1.0 if kind == "softmax" else float(c)
     scale = 1.0 / (math.sqrt(D) * unit)
     has_sink = sink_logit is not None
@@ -568,4 +623,26 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
     # Fold the score scale into q (exact for power-of-two scales); autodiff
     # applies the matching factor to dq outside the kernels.
     q_scaled = (q.astype(F32) * scale).astype(q.dtype)
+    if range_guard and kind == "asinh" and n <= 32:
+        if poly_rho:
+            raise ValueError("range_guard is for exact radical evaluation")
+        # Bounds the absolute dot product, including wholly negative rows.
+        # The margin covers float32 reductions for the supported head sizes.
+        # Tail scores use max-shifted stable rho instead of changing the link.
+        bound = min(16.0, var.clamp / 2)
+        q2 = jnp.max(jnp.sum(q_scaled.astype(F32) ** 2, axis=-1))
+        k2 = jnp.max(jnp.sum(k.astype(F32) ** 2, axis=-1))
+        in_range = q2 * k2 <= (bound / 1.01) ** 2
+        if has_sink:
+            in_range = in_range & (jnp.max(jnp.abs(sink)) <= bound / 1.01)
+        # Bound unnormalized numerator accumulation too. Very large values
+        # need max-shifted weights even when the scores themselves are small.
+        vmax = min(1e8, 1e37 / ((T + int(has_sink)) * (2 * bound + 1) ** n))
+        in_range = in_range & (jnp.max(jnp.abs(v.astype(F32))) <= vmax)
+        low = var._replace(shift=False, inv_stat=True, bounded_scores=True)
+        high = var._replace(shift=True, inv_stat=False, fast_rho=False, bounded_scores=False)
+        return lax.cond(in_range,
+                        lambda _: _flash(q_scaled, k, v, sink, low, bq, bk, has_sink),
+                        lambda _: _flash(q_scaled, k, v, sink, high, bq, bk, has_sink),
+                        operand=None)
     return _flash(q_scaled, k, v, sink, var, bq, bk, has_sink)
