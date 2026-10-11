@@ -60,7 +60,10 @@ def main():
         paired = np.array([res[s]["final_eval_nll"] - base[s] for s in res if s in base])
         flash_tps = [r["mean_tok_per_s"] for r in res.values()
                      if dict(kv.split("=") for kv in r["args"]["set"]).get("attn_impl") == "flash"]
+        from scipy import stats
+        tcrit = float(stats.t.ppf(0.975, len(paired) - 1)) if len(paired) > 1 else None
         row = {"rung": label, "seeds": sorted(res), "mean_nll": float(nll.mean()),
+               "t_crit_95": tcrit,
                "se": float(nll.std(ddof=1) / math.sqrt(len(nll))) if len(nll) > 1 else None,
                "paired_vs_standard": float(paired.mean()) if len(paired) else None,
                "paired_se": float(paired.std(ddof=1) / math.sqrt(len(paired))) if len(paired) > 1 else None,
@@ -89,7 +92,7 @@ def main():
     fig, (a, b) = plt.subplots(1, 2, figsize=(11.5, 4.2), gridspec_kw={"width_ratios": [1.6, 1]})
     ys = list(range(len(rows)))[::-1]
     for y, r in zip(ys, rows):
-        err = 1.96 * (r["paired_se"] or 0)
+        err = (r["t_crit_95"] or 0) * (r["paired_se"] or 0)
         a.errorbar(r["paired_vs_standard"], y, xerr=err, fmt="o", color=S2, ms=6, mec=SURFACE,
                    mew=1.2, ecolor=S2, elinewidth=1.4, capsize=3, zorder=3)
         a.annotate(f"{r['paired_vs_standard']:+.3f}", (r["paired_vs_standard"], y), xytext=(0, 9),
@@ -98,8 +101,9 @@ def main():
     a.set_yticks(ys)
     a.set_yticklabels([r["rung"] for r in rows], color=INK2)
     a.grid(axis="y", visible=False)
+    a.set_ylim(-0.6, len(rows) - 0.3)
     a.set_title("How much algebra is needed? Quality by rung")
-    a.set_xlabel("Δ validation NLL vs standard (nats; proxy, paired seeds, 95% CI)")
+    a.set_xlabel("Δ validation NLL vs standard (nats; proxy, paired seeds, t 95% CI)")
     tps = [r["tokens_per_s_one_chip"] / 1e3 if r["tokens_per_s_one_chip"] else 0 for r in rows]
     b.barh(ys, tps, height=0.6, color=S1, edgecolor=SURFACE, linewidth=1.5, zorder=3)
     for y, t in zip(ys, tps):
@@ -109,6 +113,7 @@ def main():
     b.set_yticklabels([])
     b.grid(axis="y", visible=False)
     b.set_xlim(0, max(tps) * 1.2)
+    b.set_ylim(-0.6, len(rows) - 0.3)
     b.set_title("Training throughput (one chip)")
     b.set_xlabel("tokens / s (proxy model, context 1024)")
     out_png = ROOT / "results/figures/algebra_ladder.png"

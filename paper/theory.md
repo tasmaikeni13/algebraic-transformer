@@ -226,3 +226,26 @@ negative only at position 0 (+0.011, the context-free unigram prediction).
 As at the proxy scale, the backbone ties a standard backbone that carries
 the same head and QK-norm (3.3697 vs 3.3716).
 
+## 12. How much algebra do we really need? (measured)
+
+Algebraic pieces added to the standard model one at a time (proxy scale,
+3–4 paired seeds per rung; Δ NLL vs standard with t 95% CIs, throughput on
+one chip):
+
+| rung | Δ NLL | share of full gain | tokens/s |
+|---|---|---|---|
+| standard | 0 | 0% | 333K |
+| + algebraic head | −0.036 ± 0.007 | 59% | 317K |
+| (QK-norm alone) | −0.029 ± 0.002 | 47% | 309K |
+| **+ QK-norm = hybrid** | **−0.059 ± 0.006** | **97%** | **294K** |
+| + sink | −0.055 ± 0.005 | 91% | 294K |
+| + ALU-GLU | −0.057 ± 0.004 | 94% | 286K |
+| + Cayley rotations | −0.056 ± 0.001 | 92% | 286K |
+| + asinh attention (fully algebraic) | −0.061 ± 0.004 | 100% | 249K |
+
+Two algebraic pieces — the likelihood head `ρ(z/c)^n` (whose log-loss
+gradient is algebraic) and the rsqrt QK-normalization — carry essentially the
+whole gain. The remaining substitutions are quality-neutral (their intervals
+overlap) and exist to remove every transcendental from the training path; the
+asinh attention kernel is the only one that costs noticeable throughput.
+
