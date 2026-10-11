@@ -160,12 +160,12 @@ Expected wall time per run on 16 chips: about 30 minutes (standard),
 | `analysis/` | Phase 1 statistics and Monte Carlo, ablation job lists, Phase 3 jobs and summary |
 | `scripts/` | data preparation, 16-chip job queue (`run_queue.py`), full-slice launcher (`run_slice.py`), main run (`main_run.py`), zero-shot evaluation, benchmarks, audit |
 | `configs/` | budget-sweep candidates and the selected main-run hyperparameters |
-| `results/` | first-study records (`pretraining/`, `tuning/`, `pilot/`), `analysis/`, `phase3/`, `kernels/` |
+| `results/` | `analysis/` (Phase 1 and Monte Carlo outputs), `phase3/`, `main_sweep/`, `kernels/`, `figures/`, and the first study's records (`v1/`) |
 | `paper/theory.md` | concise mathematics, proofs, and measured status of each claim |
 
-The first study's modules (`src/*.py`, `src/kernels/`, its `scripts/`,
-`tests/`, `formal/`) are still present and scheduled for removal; they are
-preserved under the `v1-original` tag.
+The first study's code, Lean certificates, paper, and microbenchmark records
+are preserved under the `v1-original` tag (and in the original repository);
+its run records used by the analysis are in `results/v1/`.
 
 ## Reproduce
 

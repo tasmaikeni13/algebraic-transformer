@@ -38,8 +38,7 @@ def load_final_runs():
     rows = {}
     for arch in ("algebraic", "standard"):
         for seed in (42, 43, 44):
-            p = find(f"results/v1/pretraining/{arch}-{seed}/run_metrics.json",
-                     f"results/pretraining/{arch}-{seed}/run_metrics.json")
+            p = find(f"results/v1/pretraining/{arch}-{seed}/run_metrics.json")
             rows[(arch, seed)] = json.loads(p.read_text())["run"]
     return rows
 
@@ -136,7 +135,7 @@ def main():
     }
 
     # 2. Tuning sweep ------------------------------------------------------------
-    ledger = json.loads(find("results/v1/tuning/sweep_ledger.json", "results/tuning/sweep_ledger.json").read_text())
+    ledger = json.loads(find("results/v1/tuning/sweep_ledger.json").read_text())
     table = {}
     for r in ledger["runs"]:
         key = f"{r['architecture']}/{r['candidate']}"
@@ -237,7 +236,7 @@ def main():
     }
 
     # 4. Pilot gradient-norm traces ------------------------------------------------
-    pilot = np.load(find("results/v1/pilot/losses.npz", "results/pilot/tpu/losses.npz"))
+    pilot = np.load(find("results/v1/pilot/losses.npz"))
     report["pilot_20m"] = {
         "fraction_steps_clipped": {
             "algebraic": float(np.mean(pilot["alg_grad_norms"] >= 0.999)),

@@ -1,16 +1,10 @@
 # Build and cache artifacts
-formal/.lake/
 **/__pycache__/
 *.pyc
 *.pyo
 *.pyd
 .pytest_cache/
 .coverage
-
-# Lean artifacts
-*.olean
-*.ilean
-*.c
 
 # Local environments
 .venv/
@@ -19,7 +13,6 @@ ENV/
 
 # Datasets and large caches
 data/
-results/pretraining/**/checkpoints/
 results/**/tpu/download/
 results/**/*.log
 paper/*.aux
