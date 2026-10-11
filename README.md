@@ -8,23 +8,36 @@ FineWeb-Edu tokens. The algebraic model lost narrowly: 25.774 vs 25.548
 validation perplexity (paired gap 0.009 nats, 95% CI [−0.011, 0.028]).
 
 This repository finds out **why it lost**, builds a **stronger algebraic
-model**, provides **Pallas TPU kernels for both architectures**, and prepares
-the **125M × 3-seed main run** (implementation and hyperparameter sweep; the
-main run itself is left to be launched by the author).
+model that beats the standard one**, provides **Pallas TPU kernels for both
+architectures**, and prepares the **125M × 3-seed main run** (implementation
+and budget hyperparameter sweep; the main run itself is left to the author).
 
 | Phase | Content | Status |
 |---|---|---|
-| 1 | Statistics, mathematics, and Monte Carlo diagnosis of the first study; ablations; a new algebraic design | done (iterating) |
+| 1 | Statistics, mathematics, and Monte Carlo diagnosis of the first study; ablations; a new algebraic design | done |
 | 2 | Flash attention and fused head kernels for both arms | done |
-| 3 | 60M models on FineWeb-Edu-1B (1B tokens), one seed, both arms | in progress |
-| Main | 125M, 3 seeds, 2.5B tokens: implementation + budget sweep | pending |
+| 3 | 60M models, FineWeb-Edu-1B, 1B tokens, one seed, both arms | done: **algebraic wins** |
+| Main | 125M, 3 seeds, 2.5B tokens | implementation done; budget sweep running; main run left to the author |
 
-## Why the first algebraic model lost
+## Headline results
 
-Proxy experiments (33M parameters, 197M tokens, 2M held-out tokens; seed SD
-≈ 0.003 nats) swap each first-study component into the standard model:
+**Phase 3 (60M parameters, 1B tokens, 16 TPU v4 chips, best of four learning
+rates per arm):**
 
-| first-study component | Δ held-out NLL |
+| model | held-out NLL | perplexity | tokens/s |
+|---|---|---|---|
+| standard (RMSNorm, SwiGLU, RoPE, softmax, cross-entropy) | 3.4170 | 30.48 | 2.70M |
+| **algebraic (v2d)** | **3.3697** | **29.07** | 1.94M |
+
+Every algebraic run (each of its four learning rates) beat the standard's
+best run. Proxy experiments (33M parameters, 4 paired seeds) agree:
+3.7574 ± 0.0016 vs 3.8182 ± 0.0029, paired difference −0.061 ± 0.004 nats
+(t = −14).
+
+**Why the first model lost** — first-study components swapped one at a time
+into the standard model (proxy, Δ held-out NLL):
+
+| first-study component | Δ NLL |
 |---|---|
 | OACE power-score head with vocabulary normalization | **+0.080** |
 | rational (ARDS) schedule + weight decay 0.01 | **+0.060** |
@@ -33,86 +46,95 @@ Proxy experiments (33M parameters, 197M tokens, 2M held-out tokens; seed SD
 | ALU activation | +0.000 |
 | Cayley rotations (first-study grid) | −0.009 |
 
-The genuinely algebraic substitutions were free. The gap came from the
-training objective, the schedule (which ended at 63% of peak learning
-rate; an annealing-law fit predicts 0.115 nats lost at 125M), and the missing
-gains. Details and every supporting analysis: [analysis/README.md](analysis/README.md);
-short mathematics and proofs: [paper/theory.md](paper/theory.md).
+The genuinely algebraic substitutions were free; the gap came from the
+training objective, the schedule (it ended at 63% of peak learning rate), and
+the missing gains. Details: [analysis/README.md](analysis/README.md); short
+mathematics and proofs: [paper/theory.md](paper/theory.md).
 
-## The second-generation algebraic model
+## The second-generation algebraic model (v2d)
 
-* **Algebraic maximum-likelihood head.** Predictive distribution
-  `p_j ∝ ρ(z_j/c)^n` with `ρ(x) = x + √(1+x²)`. The log-loss gradient of this
-  head is algebraic, `(n/c)(1+(z_j/c)²)^(−1/2)(p_j − y_j)`, so the model
-  trains on exact likelihood without ever evaluating a logarithm. With
-  strong compression (n=8, c=2) it beats the softmax head, plausibly by
-  escaping the softmax rank bottleneck.
-* **Asinh-power attention** with a learned per-head sink and an exact,
-  log-free max shift (`ρ(a)ρ(−b) = ρ(a ⊖ b)`), plus QK-normalization.
-* Learned RMS gains, ALU-GLU with β = ½, Cayley rotations, cosine AdamW.
+* **Algebraic maximum-likelihood head.** `p_j ∝ ρ(z_j/c)^n` with
+  `ρ(x) = x + √(1+x²)`, n=8, c=2. Its log-loss gradient is algebraic,
+  `(n/c)(1+(z_j/c)²)^(−1/2)(p_j − y_j)`, so the model trains on exact
+  likelihood without evaluating a logarithm. The entrywise asinh compression
+  escapes the softmax rank bottleneck (Monte Carlo: up to 18% lower KL at
+  equal rank) and is the largest single source of the win.
+* **Asinh-power attention** `ρ(s/8)^16` with a learned per-head sink,
+  QK-normalization, and an exact log-free max shift (`ρ(a)ρ(−b) = ρ(a ⊖ b)`);
+  at 512 distractors it retrieves at least as precisely as softmax.
+* Geometric Cayley rotations, ALU-GLU with β = ½, learned RMS gains,
+  cosine AdamW (as specified for the new study).
 
-Current proxy results (held-out NLL, lower is better):
+A primitive-level audit (`scripts/audit_algebraic.py`) confirms the traced
+training gradient — including the Pallas kernel bodies — contains no
+exponential, logarithmic, trigonometric, hyperbolic, sigmoid or
+error-function primitive.
 
-| model | NLL |
-|---|---|
-| standard (4 seeds) | 3.8182 ± 0.0029 |
-| first-study algebraic model | 3.9608 |
-| **second-generation algebraic (2 seeds)** | **3.7686 ± 0.0005** |
-| standard + algebraic head (control) | 3.7849 |
-| standard + QK-norm (control) | 3.7882 |
-
-The controls show what transfers: the algebraic head and QK-norm each help a
-standard backbone too. A primitive-level audit
-(`scripts/audit_algebraic.py`) confirms that the algebraic model's traced
-training gradient, including the Pallas kernel bodies, contains no
-exponential, logarithmic, trigonometric, hyperbolic, sigmoid, or error-function
-primitive.
+**What transfers.** A standard backbone given the same head and QK-norm
+matches the algebraic model (proxy −0.004 ± 0.005; 60M: 3.3716 vs 3.3697):
+the algebraic backbone now ties the standard one, and the margin over the
+standard baseline is carried by the algebraic head and QK-normalization.
 
 ## Kernels (Phase 2)
 
-One Pallas TPU flash-attention implementation serves both arms (forward,
-fused dK/dV/dQ backward, causal tile skipping, sinks). On one TPU v4 chip,
-batch 8 × 12 heads × 2048 tokens × 64 dims, forward + backward:
+One Pallas TPU flash-attention implementation serves both arms (forward;
+fused dK/dV/dQ backward; causal tile skipping with diagonal-only masking;
+sinks). Forward + backward on one TPU v4 chip, 2048 tokens, head dim 64:
 
-| kernel | ms |
-|---|---|
-| this repo, softmax | 4.31 |
-| this repo, asinh (algebraic) | 6.32 |
-| JAX `pallas.ops.tpu.flash_attention` (used by the first study) | 22.14 |
-| dense XLA softmax | 10.80 |
+| kernel | 125M shape (8 × 12 heads) | 60M shape (8 × 8 heads) |
+|---|---|---|
+| this repo, softmax | 4.28 ms | 2.72 ms |
+| this repo, asinh (algebraic) | 6.32 ms | 4.09 ms |
+| JAX `pallas.ops.tpu.flash_attention` (used by the first study) | 22.14 ms | 14.55 ms |
+| dense XLA softmax | 10.80 ms | 7.20 ms |
 
-End to end at 60M parameters the kernels give a 2.2× training speedup to both
-arms. Vocabulary heads use XLA-dense logits (the fastest option measured,
-with a lean algebraic formulation within 14% of softmax cross-entropy); a
-fused Pallas head is included as a low-memory alternative.
+End to end on 16 chips the kernels make both arms 2–2.6× faster than the
+first study (125M: standard 1.58M vs 0.60M tokens/s; algebraic 1.14M vs
+0.57M). The vocabulary head uses XLA-dense logits (the fastest measured; the
+lean algebraic head is within 14% of softmax cross-entropy); a fused Pallas
+head is included as a low-memory option. Raw numbers: `results/kernels/`.
+
+## Running the 125M main run
+
+The budget sweep selects learning rates per architecture (three candidates ×
+three seeds × 600M tokens, `configs/main_sweep.json`) and writes
+`configs/main_selected.json`. Then, on a TPU v4-32 with hosts `w0..w3`
+reachable over SSH (see `scripts/setup_workers.sh`):
+
+```bash
+python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw25 --threads 128   # 2.5B + 600M + 10M tokens
+python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals            # zero-shot tasks
+python scripts/main_run.py main > main.json         # 3 seeds x {standard, algebraic}, 2,385 steps each
+python scripts/run_slice.py main.json --group main  # rerun the same command to resume (checkpoints every 200 steps)
+python scripts/evaluate_zero_shot.py runs/main/algebraic_s42 --out results/main/algebraic_s42_zero_shot.json
+```
+
+Expected wall time per run: about 30 minutes (standard) and 40 minutes
+(algebraic) on 16 chips.
 
 ## Layout
 
 | path | contents |
 |---|---|
-| `src/sota/` | model (`model.py`), algebraic and standard components, configs, trainer (`train.py`) |
+| `src/sota/` | model (`model.py`), algebraic and standard components, presets (`config.py`), trainer with checkpoint/resume (`train.py`) |
 | `src/sota/kernels/` | Pallas flash attention (`flash.py`) and fused head (`fused_head.py`) |
-| `analysis/` | Phase 1 statistics, Monte Carlo, ablation and Phase 3 job lists |
-| `scripts/` | data preparation, 16-chip job queue (`run_queue.py`), full-slice launcher (`run_slice.py`), benchmarks, audit |
-| `results/` | first-study records (`pretraining/`, `tuning/`, `pilot/`) and new analysis outputs (`analysis/`) |
+| `analysis/` | Phase 1 statistics and Monte Carlo, ablation job lists, Phase 3 jobs and summary |
+| `scripts/` | data preparation, 16-chip job queue (`run_queue.py`), full-slice launcher (`run_slice.py`), main run (`main_run.py`), zero-shot evaluation, benchmarks, audit |
+| `configs/` | budget-sweep candidates and the selected main-run hyperparameters |
+| `results/` | first-study records (`pretraining/`, `tuning/`, `pilot/`), `analysis/`, `phase3/`, `kernels/` |
 | `paper/theory.md` | concise mathematics, proofs, and measured status of each claim |
 
-The first study's modules (`src/*.py`, `src/kernels/`, old `scripts/`,
-`tests/`, `formal/`) are still present and are scheduled for removal; they are
+The first study's modules (`src/*.py`, `src/kernels/`, its `scripts/`,
+`tests/`, `formal/`) are still present and scheduled for removal; they are
 preserved under the `v1-original` tag.
 
 ## Reproduce
 
 ```bash
 python3 -m virtualenv ~/venv && ~/venv/bin/pip install -r requirements-tpu.txt
-# data: FineWeb-Edu-1B (Phase 1/3) and the 2.5B FineWeb-Edu sample (main run)
 python scripts/prepare_fineweb_edu_1b.py --raw-dir <parquet dir> --output-dir ~/data/tok
-python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw25 --threads 128
-# tests (CPU; TPU kernel tests skip elsewhere)
-JAX_PLATFORMS=cpu python -m pytest -q tests/test_sota_components.py
-# one training run on one chip
-python -m src.sota.train --preset algebraic --size proxy --steps 3000 --out runs/demo
-# Phase 1 ablations over 16 chips, Phase 3 on the whole slice
-python analysis/phase1_jobs.py batch4 > jobs.json && python scripts/run_queue.py jobs.json --group p1
+JAX_PLATFORMS=cpu python -m pytest -q tests/test_sota_components.py   # TPU kernel tests: tests/test_*_tpu.py
+python -m src.sota.train --preset algebraic --size proxy --steps 3000 --out runs/demo   # one chip
+python analysis/phase1_jobs.py batch5 > jobs.json && python scripts/run_queue.py jobs.json --group p1
 python analysis/phase3_jobs.py sweep > p3.json && python scripts/run_slice.py p3.json --group p3
 ```

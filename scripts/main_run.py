@@ -51,9 +51,10 @@ def hp_args(hp):
 def sweep():
     cands = json.loads((ROOT / "configs/main_sweep.json").read_text())
     jobs = []
-    for arch, preset in ARCHS.items():
-        for cand in cands[arch]:
-            for seed in SEEDS:
+    for seed in SEEDS:
+        for idx in range(len(cands["standard"])):
+            for arch, preset in ARCHS.items():
+                cand = cands[arch][idx]
                 jobs.append({"name": f"{arch}_{cand['name']}_s{seed}",
                              "args": ["--preset", preset, *common(6e8, "fineweb_sweep_600M.npy"),
                                       *hp_args(cand), "--seed", str(seed), "--eval-every", "100"]})

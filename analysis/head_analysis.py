@@ -215,7 +215,7 @@ def part_c(trials=6, N=1024, V=1024, ranks=(8, 16, 32, 64)):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     which = sys.argv[1:] or ["a", "b", "c"]
-    path = OUT / "head_analysis.json"
+    path = OUT / ("head_analysis_" + "".join(which) + ".json")
     report = json.loads(path.read_text()) if path.exists() else {}
     if "a" in which:
         report["A_representational_floor"] = part_a()

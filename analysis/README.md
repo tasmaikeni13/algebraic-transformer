@@ -7,7 +7,10 @@ are in `results/analysis/`. The concise mathematics is in
 | File | What it does |
 |---|---|
 | `v1_statistics.py` | Paired seed statistics of the first study's 125M runs, the 18-run tuning sweep, schedule areas, and an LR-annealing scaling-law fit |
-| `head_analysis.py` | Monte Carlo: representational floor of each head, cost of OACE vs log-loss under misspecification, rank bottleneck of softmax vs asinh links |
+| `head_analysis.py` | Monte Carlo: representational floor of each head, cost of OACE vs log-loss under misspecification (B), rank bottleneck of softmax vs asinh links (C) |
+| `verify_head_eval.py` | Independent float64 recomputation of a saved model's held-out NLL |
+| `phase1_summary.py` | Paired-by-seed statistics of the Phase 1 headline comparisons |
+| `phase3_summary.py` | Phase 3 table, best learning rate per arm, curves |
 | `attention_analysis.py` | Monte Carlo: attention entropy at initialization per kernel, associative recall across kernels, positional-resolution linear programs |
 | `activation_analysis.py` | ALU vs SiLU/GELU: best-matching sharpness, mean-field moments, tails |
 | `phase1_jobs.py` | The ablation batches (job lists for `scripts/run_queue.py`) |
@@ -98,3 +101,41 @@ seeds; runs with equal seeds are paired):
 Associative recall (Monte Carlo, 512 distractors): softmax 99.5% accuracy,
 first-study kernel 65% with seed failures — the empirical face of the
 degree-8 homogeneity ceiling that motivated the n=16, c=8 kernel.
+
+## 5. Phase 3: 60M parameters, 1B tokens, one seed (`phase3_jobs.py`, `phase3_summary.py`)
+
+16 TPU v4 chips, FineWeb-Edu-1B, context 2048, 524,288-token batches,
+1,908 steps (1,000,341,504 tokens), cosine AdamW, 8M held-out tokens. Each
+arm received the same LR budget (four values, the fourth placed at its fitted
+optimum); results in `results/phase3/summary.json`.
+
+| run | LR | NLL | PPL |
+|---|---|---|---|
+| standard | 1.5e-3 | 3.4644 | 31.96 |
+| standard | 2.12e-3 | 3.4215 | 30.62 |
+| **standard (best)** | 3e-3 | **3.4170** | **30.48** |
+| standard | 6e-3 | 3.4992 | 33.09 |
+| algebraic | 1.5e-3 | 3.4058 | 30.14 |
+| **algebraic (best)** | 3e-3 | **3.3697** | **29.07** |
+| algebraic | 4.24e-3 | 3.3750 | 29.22 |
+| algebraic | 6e-3 | 3.3711 | 29.11 |
+| control: standard + QK-norm + algebraic head | 3e-3 | 3.3716 | 29.13 |
+
+**The algebraic model wins: −0.047 nats, perplexity 29.07 vs 30.48 (ratio
+0.954).** Every algebraic learning rate beats the standard's best, and the
+algebraic model is markedly less sensitive to the learning rate. It leads
+from the first evaluation (step 200) to the end, and by a near-constant
+0.04–0.05 nats at every context position beyond the first few tokens.
+Throughput: 1.94M vs 2.70M tokens/s (0.72×).
+
+## 6. Monte Carlo conclusions
+
+* Objective (12 trials): OACE vs log-loss on the same link +0.0289 ± 0.0009;
+  first-study link vs softmax +0.0033 ± 0.0009; asinh n=c=16 link vs
+  softmax −0.00226 ± 0.00008 nats.
+* Rank bottleneck (6 trials per rank): asinh (n=8, c=1) lowers the best
+  achievable KL to a full-rank teacher by 7.7%, 11.7%, 15.4%, 18.1% at ranks
+  8, 16, 32, 64 (paired SE ≤ 0.0013) — the mechanism behind the head's gain.
+* Associative recall, 512 distractors (3 seeds): softmax 99.51%; first-study
+  kernel 65% with seed failures; asinh n=16/c=16 99.71%, n=8/c=2 99.58%,
+  n=32/c=32 99.54%.

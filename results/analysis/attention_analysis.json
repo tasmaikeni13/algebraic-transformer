@@ -109,5 +109,305 @@
         "pairs_wavelength_lt_2048": 21
       }
     }
-  }
+  },
+  "A_init_entropy": [
+    {
+      "sigma": 0.25,
+      "score_sd": 0.06284079700708389,
+      "softmax": {
+        "entropy_over_logT": 0.9997154474258423,
+        "max_weight": 0.0011935669463127851,
+        "visible_mass": 1.0
+      },
+      "v1_octic_n8_c1_sink1": {
+        "entropy_over_logT": 0.9819050431251526,
+        "max_weight": 0.0043855998665094376,
+        "visible_mass": 0.9991405606269836
+      },
+      "asinh_n16_c16": {
+        "entropy_over_logT": 0.9997153878211975,
+        "max_weight": 0.0011935605434700847,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c4": {
+        "entropy_over_logT": 0.9954512715339661,
+        "max_weight": 0.0021369243040680885,
+        "visible_mass": 1.0
+      },
+      "asinh_n32_c32": {
+        "entropy_over_logT": 0.9997154474258423,
+        "max_weight": 0.0011935658985748887,
+        "visible_mass": 1.0
+      },
+      "asinh_n8_c2": {
+        "entropy_over_logT": 0.9954549074172974,
+        "max_weight": 0.00213452847674489,
+        "visible_mass": 1.0
+      }
+    },
+    {
+      "sigma": 0.5,
+      "score_sd": 0.25215086340904236,
+      "softmax": {
+        "entropy_over_logT": 0.9954197406768799,
+        "max_weight": 0.002149913925677538,
+        "visible_mass": 1.0
+      },
+      "v1_octic_n8_c1_sink1": {
+        "entropy_over_logT": 0.7679799795150757,
+        "max_weight": 0.06843272596597672,
+        "visible_mass": 0.9998336434364319
+      },
+      "asinh_n16_c16": {
+        "entropy_over_logT": 0.9954211115837097,
+        "max_weight": 0.002149098552763462,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c4": {
+        "entropy_over_logT": 0.9274839758872986,
+        "max_weight": 0.01611054502427578,
+        "visible_mass": 1.0
+      },
+      "asinh_n32_c32": {
+        "entropy_over_logT": 0.9954201579093933,
+        "max_weight": 0.002149709267541766,
+        "visible_mass": 1.0
+      },
+      "asinh_n8_c2": {
+        "entropy_over_logT": 0.9291062355041504,
+        "max_weight": 0.015088322572410107,
+        "visible_mass": 1.0
+      }
+    },
+    {
+      "sigma": 1.0,
+      "score_sd": 0.9936957359313965,
+      "softmax": {
+        "entropy_over_logT": 0.9292891025543213,
+        "max_weight": 0.015454058535397053,
+        "visible_mass": 1.0
+      },
+      "v1_octic_n8_c1_sink1": {
+        "entropy_over_logT": 0.46337616443634033,
+        "max_weight": 0.2353447824716568,
+        "visible_mass": 0.9999999403953552
+      },
+      "asinh_n16_c16": {
+        "entropy_over_logT": 0.9298218488693237,
+        "max_weight": 0.015112156048417091,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c4": {
+        "entropy_over_logT": 0.43517374992370605,
+        "max_weight": 0.3002983629703522,
+        "visible_mass": 1.0
+      },
+      "asinh_n32_c32": {
+        "entropy_over_logT": 0.9294245839118958,
+        "max_weight": 0.015366263687610626,
+        "visible_mass": 1.0
+      },
+      "asinh_n8_c2": {
+        "entropy_over_logT": 0.5635046362876892,
+        "max_weight": 0.1686040759086609,
+        "visible_mass": 1.0
+      }
+    },
+    {
+      "sigma": 2.0,
+      "score_sd": 4.027201175689697,
+      "softmax": {
+        "entropy_over_logT": 0.35256490111351013,
+        "max_weight": 0.4045981168746948,
+        "visible_mass": 1.0
+      },
+      "v1_octic_n8_c1_sink1": {
+        "entropy_over_logT": 0.4290577471256256,
+        "max_weight": 0.2649742364883423,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c16": {
+        "entropy_over_logT": 0.4309917092323303,
+        "max_weight": 0.3085746169090271,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c4": {
+        "entropy_over_logT": 0.22013679146766663,
+        "max_weight": 0.5396562218666077,
+        "visible_mass": 1.0
+      },
+      "asinh_n32_c32": {
+        "entropy_over_logT": 0.37503746151924133,
+        "max_weight": 0.37600743770599365,
+        "visible_mass": 1.0
+      },
+      "asinh_n8_c2": {
+        "entropy_over_logT": 0.43625888228416443,
+        "max_weight": 0.25924721360206604,
+        "visible_mass": 1.0
+      }
+    },
+    {
+      "sigma": 4.0,
+      "score_sd": 16.07748794555664,
+      "softmax": {
+        "entropy_over_logT": 0.055131737142801285,
+        "max_weight": 0.8622452616691589,
+        "visible_mass": 1.0
+      },
+      "v1_octic_n8_c1_sink1": {
+        "entropy_over_logT": 0.4179489016532898,
+        "max_weight": 0.27371421456336975,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c16": {
+        "entropy_over_logT": 0.21534030139446259,
+        "max_weight": 0.5496458411216736,
+        "visible_mass": 1.0
+      },
+      "asinh_n16_c4": {
+        "entropy_over_logT": 0.20041660964488983,
+        "max_weight": 0.5716621279716492,
+        "visible_mass": 1.0
+      },
+      "asinh_n32_c32": {
+        "entropy_over_logT": 0.11128422617912292,
+        "max_weight": 0.7420235276222229,
+        "visible_mass": 1.0
+      },
+      "asinh_n8_c2": {
+        "entropy_over_logT": 0.4184013903141022,
+        "max_weight": 0.2733486592769623,
+        "visible_mass": 1.0
+      }
+    }
+  ],
+  "B_associative_recall": [
+    {
+      "items": 32,
+      "kernel": "softmax",
+      "loss_mean": 0.002588098395790439,
+      "loss_se": 0.0004213979821703685,
+      "acc_mean": 0.9996744791666666
+    },
+    {
+      "items": 32,
+      "kernel": "v1_octic_n8_c1_sink1",
+      "loss_mean": 0.009869378368118001,
+      "loss_se": 0.002471526683176972,
+      "acc_mean": 0.9983723958333334
+    },
+    {
+      "items": 32,
+      "kernel": "asinh_n16_c16",
+      "loss_mean": 0.003658077934233006,
+      "loss_se": 0.0012536672958106368,
+      "acc_mean": 0.9993489583333334
+    },
+    {
+      "items": 32,
+      "kernel": "asinh_n16_c4",
+      "loss_mean": 0.011816596573529145,
+      "loss_se": 0.00854845749958991,
+      "acc_mean": 0.9990234375
+    },
+    {
+      "items": 32,
+      "kernel": "asinh_n32_c32",
+      "loss_mean": 0.005174207491412138,
+      "loss_se": 0.0027560302357951686,
+      "acc_mean": 0.9986979166666666
+    },
+    {
+      "items": 32,
+      "kernel": "asinh_n8_c2",
+      "loss_mean": 0.0052657922375753214,
+      "loss_se": 0.001282242988022434,
+      "acc_mean": 0.9993489583333334
+    },
+    {
+      "items": 128,
+      "kernel": "softmax",
+      "loss_mean": 0.002520559122785926,
+      "loss_se": 0.0013106896234020323,
+      "acc_mean": 0.9996744791666666
+    },
+    {
+      "items": 128,
+      "kernel": "v1_octic_n8_c1_sink1",
+      "loss_mean": 0.004036898496754778,
+      "loss_se": 0.0015238032381299136,
+      "acc_mean": 0.9993489583333334
+    },
+    {
+      "items": 128,
+      "kernel": "asinh_n16_c16",
+      "loss_mean": 0.007923707088290636,
+      "loss_se": 0.0056283943672288785,
+      "acc_mean": 0.9996744791666666
+    },
+    {
+      "items": 128,
+      "kernel": "asinh_n16_c4",
+      "loss_mean": 0.010361526772612706,
+      "loss_se": 0.00501753454493205,
+      "acc_mean": 0.9986979166666666
+    },
+    {
+      "items": 128,
+      "kernel": "asinh_n32_c32",
+      "loss_mean": 0.0059629184324876405,
+      "loss_se": 0.004273089481820141,
+      "acc_mean": 0.9993489583333334
+    },
+    {
+      "items": 128,
+      "kernel": "asinh_n8_c2",
+      "loss_mean": 0.002542085074916637,
+      "loss_se": 0.0007568132817650464,
+      "acc_mean": 0.9996744791666666
+    },
+    {
+      "items": 512,
+      "kernel": "softmax",
+      "loss_mean": 0.041720339291108154,
+      "loss_se": 0.010805047987701093,
+      "acc_mean": 0.9951171875
+    },
+    {
+      "items": 512,
+      "kernel": "v1_octic_n8_c1_sink1",
+      "loss_mean": 2.423748237391313,
+      "loss_se": 2.254067778416085,
+      "acc_mean": 0.6549479166666666
+    },
+    {
+      "items": 512,
+      "kernel": "asinh_n16_c16",
+      "loss_mean": 0.03138604927031944,
+      "loss_se": 0.0008013349029109463,
+      "acc_mean": 0.9970703125
+    },
+    {
+      "items": 512,
+      "kernel": "asinh_n16_c4",
+      "loss_mean": 0.06394893579029788,
+      "loss_se": 0.015773191325570642,
+      "acc_mean": 0.9931640625
+    },
+    {
+      "items": 512,
+      "kernel": "asinh_n32_c32",
+      "loss_mean": 0.035176465986296535,
+      "loss_se": 0.0038864863730959523,
+      "acc_mean": 0.9954427083333334
+    },
+    {
+      "items": 512,
+      "kernel": "asinh_n8_c2",
+      "loss_mean": 0.03354160706900681,
+      "loss_se": 0.008120506383157403,
+      "acc_mean": 0.9957682291666666
+    }
+  ]
 }
