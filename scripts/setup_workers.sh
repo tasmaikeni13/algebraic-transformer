@@ -1,7 +1,23 @@
 #!/bin/bash
 # Sync code and helper scripts from worker 0 to workers 1-3 of the slice.
-# Assumes ~/.ssh/config defines hosts w1..w3 and ~/venv exists on each host
-# (python3 -m virtualenv ~/venv; pip install -r requirements-tpu.txt).
+#
+# One-time setup on worker 0 of a TPU VM slice:
+#   1. Propagate an SSH key to all workers (creates ~/.ssh/google_compute_engine):
+#        gcloud compute tpus tpu-vm ssh <tpu-name> --zone <zone> --worker=all --command=hostname
+#   2. Name the workers in ~/.ssh/config (internal IPs from the TPU metadata key
+#      worker-network-endpoints, in worker order):
+#        Host w0
+#          HostName <ip of worker 0>
+#        ... w1, w2, w3 likewise ...
+#        Host w0 w1 w2 w3
+#          User <user>
+#          IdentityFile ~/.ssh/google_compute_engine
+#          StrictHostKeyChecking no
+#   3. On every worker: python3 -m virtualenv ~/venv
+#        ~/venv/bin/pip install -r requirements-tpu.txt
+#   4. Copy the token arrays to the same path on every worker (e.g. ~/data/fw25).
+# Single-chip and single-host jobs use ~/bin/chiprun and ~/bin/hostrun (below),
+# which set the TPU_* variables so a process sees only its chip(s).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 mkdir -p ~/bin
