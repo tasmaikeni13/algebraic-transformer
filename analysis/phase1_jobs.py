@@ -86,5 +86,51 @@ def batch2():
     return jobs
 
 
+def batch3():
+    """Combine the batch-2 winners; push the head link; attribution controls."""
+    flash = ["attn_impl=flash"]
+    v2b = flash + ["head_n=8", "head_c=2.0", "pos=cayley_orig", "alu_beta=0.5"]
+    jobs = [
+        job("v2b", "algebraic", sets=v2b, extra=STD_RECIPE),
+        job("v2b_s1", "algebraic", sets=v2b, extra=STD_RECIPE, seed=1),
+        job("v2b_attnsoftmax", "algebraic", sets=v2b + ["attn=softmax"], extra=STD_RECIPE),
+        job("v2b_head8x1", "algebraic", sets=v2b + ["head_c=1.0"], extra=STD_RECIPE),
+        job("v2b_head4x1", "algebraic", sets=v2b + ["head_n=4", "head_c=1.0"], extra=STD_RECIPE),
+        job("v2b_head16x4", "algebraic", sets=v2b + ["head_n=16", "head_c=4.0"], extra=STD_RECIPE),
+        job("v2b_head4x0.5", "algebraic", sets=v2b + ["head_n=4", "head_c=0.5"], extra=STD_RECIPE),
+        job("v2b_attn8x2", "algebraic", sets=v2b + ["attn_c=2.0"], extra=STD_RECIPE),
+        job("v2b_attn4x1", "algebraic", sets=v2b + ["attn_n=4"], extra=STD_RECIPE),
+        job("v2b_qknorm", "algebraic", sets=v2b + ["qk_norm=true"], extra=STD_RECIPE),
+        job("v2b_lr0.003", "algebraic", sets=v2b, extra=STD_RECIPE, lr=3e-3),
+        job("std+head8x2", "standard", sets=flash + ["head=alg_ce", "head_n=8", "head_c=2.0"], extra=STD_RECIPE),
+        job("std_lr0.003", "standard", sets=flash, extra=STD_RECIPE, lr=3e-3),
+        job("v2b_qk", "algebraic", sets=v2b + ["qk_norm=true"], extra=STD_RECIPE, seed=1),
+        job("v2b_qk_attnsoftmax", "algebraic", sets=v2b + ["qk_norm=true", "attn=softmax"], extra=STD_RECIPE),
+        job("std+qknorm", "standard", sets=flash + ["qk_norm=true"], extra=STD_RECIPE),
+    ]
+    return jobs
+
+
+def batch4():
+    """Seeds for the leaders, attention kernel under QK-norm, honest controls."""
+    flash = ["attn_impl=flash"]
+    v2c = flash + ["head_n=8", "head_c=2.0", "pos=cayley_orig", "alu_beta=0.5", "qk_norm=true"]
+    jobs = [job(f"v2c_s{s}", "algebraic", sets=v2c, extra=STD_RECIPE, seed=s) for s in (2, 3)]
+    jobs += [job(f"hyb_s{s}", "algebraic", sets=v2c + ["attn=softmax"], extra=STD_RECIPE, seed=s) for s in (1, 2)]
+    jobs += [job(f"std_flash_s{s}", "standard", sets=flash, extra=STD_RECIPE, seed=s) for s in (0, 3)]
+    for name, extra_sets in {"attn8x2": ["attn_c=2.0"], "attn16x4": ["attn_n=16", "attn_c=4.0"],
+                             "attn16x8": ["attn_n=16", "attn_c=8.0"], "attn4x1": ["attn_n=4"],
+                             "nosink": ["sink=none"], "geo": ["pos=cayley_geo"],
+                             "alu1": ["alu_beta=1.0"]}.items():
+        jobs.append(job(f"v2c_{name}", "algebraic", sets=v2c + extra_sets, extra=STD_RECIPE))
+    jobs.append(job("std+qk+head", "standard", sets=flash + ["qk_norm=true", "head=alg_ce", "head_n=8",
+                                                             "head_c=2.0"], extra=STD_RECIPE))
+    jobs.append(job("std+qk+head+sink+pos", "standard", sets=flash + [
+        "qk_norm=true", "head=alg_ce", "head_n=8", "head_c=2.0", "sink=learned", "pos=cayley_orig"],
+        extra=STD_RECIPE))
+    jobs.append(job("v2c_s0_save", "algebraic", sets=v2c, extra=STD_RECIPE + ["--save-params"]))
+    return jobs
+
+
 if __name__ == "__main__":
     print(json.dumps(globals()[sys.argv[1]](), indent=1))

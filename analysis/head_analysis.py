@@ -38,7 +38,8 @@ import numpy as np
 
 from src.sota import algebraic as A
 
-jax.config.update("jax_enable_x64", True)
+if jax.default_backend() == "cpu":
+    jax.config.update("jax_enable_x64", True)
 OUT = ROOT / "results" / "analysis"
 
 

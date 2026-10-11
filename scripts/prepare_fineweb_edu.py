@@ -52,12 +52,17 @@ def download_file(url: str, dest: Path) -> None:
     print(f"Downloaded {size_mb:.1f} MB in {dt:.1f}s ({size_mb/dt:.1f} MB/s)", flush=True)
 
 
+EOT = 50256
+
+
 def build_fineweb_dataset(
     output_dir: Path,
     target_train_tokens: int = 2_500_000_000,
     target_sweep_tokens: int = 600_000_000,
     target_val_tokens: int = 10_000_000,
     clean_raw: bool = True,
+    eot: bool = True,
+    threads: int = 32,
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     raw_dir = output_dir / "fineweb_raw"
@@ -125,11 +130,14 @@ def build_fineweb_dataset(
                 texts.extend(tbl["text"].to_pylist())
 
             # Tokenize batch
-            encoded = enc.encode_ordinary_batch(texts, num_threads=32)
+            encoded = enc.encode_ordinary_batch(texts, num_threads=threads)
             for doc_toks in encoded:
                 doc_len = len(doc_toks)
                 if doc_len == 0:
                     continue
+                if eot:
+                    doc_toks = doc_toks + [EOT]
+                    doc_len += 1
                 arr = np.array(doc_toks, dtype=np.uint16)
 
                 # First satisfy validation quota
@@ -219,6 +227,7 @@ def build_fineweb_dataset(
         "dataset": "HuggingFaceFW/fineweb-edu",
         "tokenizer": "gpt2",
         "vocab_size": 50257,
+        "document_separator": EOT if eot else None,
         "train_tokens": target_train_tokens,
         "sweep_tokens": target_sweep_tokens,
         "valid_tokens": target_val_tokens,
@@ -239,6 +248,9 @@ def main():
     parser.add_argument("--sweep-tokens", type=int, default=600_000_000)
     parser.add_argument("--valid-tokens", type=int, default=10_000_000)
     parser.add_argument("--no-clean", action="store_true")
+    parser.add_argument("--no-eot", action="store_true",
+                        help="do not append the GPT-2 end-of-text token after each document")
+    parser.add_argument("--threads", type=int, default=32)
     args = parser.parse_args()
 
     build_fineweb_dataset(
@@ -247,6 +259,8 @@ def main():
         target_sweep_tokens=args.sweep_tokens,
         target_val_tokens=args.valid_tokens,
         clean_raw=not args.no_clean,
+        eot=not args.no_eot,
+        threads=args.threads,
     )
 
 

@@ -78,6 +78,9 @@ def get_args(argv=None):
     p.add_argument("--save-params", action="store_true")
     p.add_argument("--distributed", action="store_true", help="call jax.distributed.initialize")
     p.add_argument("--profile-steps", type=int, default=0, help="time N steps then exit")
+    p.add_argument("--ckpt-every", type=int, default=0, help="save a checkpoint every N steps")
+    p.add_argument("--keep-ckpts", type=int, default=2)
+    p.add_argument("--resume", action="store_true", help="resume from the latest checkpoint in --out")
     return p.parse_args(argv)
 
 
@@ -114,6 +117,28 @@ class Prefetcher:
 
     def get(self):
         return self.q.get()
+
+
+def save_checkpoint(directory: Path, step: int, payload: dict, keep: int) -> None:
+    """Atomically write this host's copy of the (replicated) training state."""
+    import pickle
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"step-{step:07d}.pkl"
+    tmp = path.with_suffix(".tmp")
+    with tmp.open("wb") as fh:
+        pickle.dump(payload, fh, protocol=pickle.HIGHEST_PROTOCOL)
+    tmp.replace(path)
+    for old in sorted(directory.glob("step-*.pkl"))[:-keep]:
+        old.unlink()
+
+
+def latest_checkpoint(directory: Path):
+    import pickle
+    found = sorted(Path(directory).glob("step-*.pkl"))
+    if not found:
+        return None
+    with found[-1].open("rb") as fh:
+        return pickle.load(fh)
 
 
 def lr_schedule(args, total_steps):
@@ -266,6 +291,20 @@ def main(argv=None):
     rep_sharding = NamedSharding(mesh, rep)
     batch_sharding = NamedSharding(mesh, data_spec)
     eval_sharding = NamedSharding(mesh, P("data", None))
+    start_step, history, elapsed_before = 0, [], 0.0
+    ckpt_dir = out / "ckpt"
+    if args.resume:
+        saved = latest_checkpoint(ckpt_dir)
+        if saved is not None:
+            if saved["config"] != asdict(cfg) or saved["total_steps"] != total_steps:
+                raise ValueError("checkpoint configuration does not match this run")
+            params = jax.tree_util.tree_map(jnp.asarray, saved["params"])
+            opt_state = jax.tree_util.tree_map(jnp.asarray, saved["opt_state"])
+            start_step = int(saved["step"])
+            history = saved["history"]
+            elapsed_before = float(saved["elapsed"])
+            if is_main:
+                print(f"resumed from step {start_step}", flush=True)
     params = jax.device_put(params, rep_sharding)
     opt_state = jax.device_put(opt_state, rep_sharding)
 
@@ -301,16 +340,15 @@ def main(argv=None):
 
     sampler = WindowSampler(args.train, T, args.batch, args.data_seed if args.data_seed is not None else args.seed,
                             pidx, pcount)
-    prefetch = Prefetcher(sampler, 0, total_steps)
+    prefetch = Prefetcher(sampler, start_step, total_steps)
     local_rows = args.batch // pcount
     local_accum_shape = (accum, local_rows // accum, T)
     global_shape = (accum, args.batch // accum, T)
 
-    t_start = time.time()
-    t_last = t_start
+    t_start = time.time() - elapsed_before
+    t_last = time.time()
     compile_s = None
-    history = []
-    for step in range(total_steps):
+    for step in range(start_step, total_steps):
         x_np, y_np = prefetch.get()
         # rows are interleaved so every device sees a contiguous micro-batch
         x_np = x_np.reshape(local_rows // accum, accum, T).transpose(1, 0, 2)
@@ -318,9 +356,9 @@ def main(argv=None):
         x = put_global(np.ascontiguousarray(x_np), batch_sharding, global_shape)
         y = put_global(np.ascontiguousarray(y_np), batch_sharding, global_shape)
         params, opt_state, metrics = step_fn(params, opt_state, x, y)
-        if step == 0:
+        if step == start_step:
             jax.block_until_ready(metrics["loss"])
-            compile_s = time.time() - t_start
+            compile_s = time.time() - t_last
             t_last = time.time()
         if args.profile_steps and step + 1 == args.profile_steps + 1:
             jax.block_until_ready(params)
@@ -333,7 +371,7 @@ def main(argv=None):
         if (step + 1) % args.log_every == 0 or step + 1 == total_steps:
             m = {k: float(v) for k, v in metrics.items()}
             now = time.time()
-            elapsed_steps = args.log_every if step + 1 > args.log_every else step
+            elapsed_steps = min(args.log_every, step - start_step) if step > start_step else 1
             rate = tokens_per_step * max(1, elapsed_steps) / max(now - t_last, 1e-9)
             t_last = now
             rec = {"step": step + 1, "tokens": (step + 1) * tokens_per_step, **m,
@@ -346,6 +384,12 @@ def main(argv=None):
             if not math.isfinite(m["loss"]):
                 log({"error": "non-finite loss", "step": step + 1})
                 break
+        if args.ckpt_every and (step + 1) % args.ckpt_every == 0 and step + 1 < total_steps:
+            host = jax.tree_util.tree_map(lambda a: np.asarray(a.addressable_data(0)), (params, opt_state))
+            save_checkpoint(ckpt_dir, step + 1, {
+                "config": asdict(cfg), "total_steps": total_steps, "step": step + 1,
+                "params": host[0], "opt_state": host[1], "history": history,
+                "elapsed": time.time() - t_start}, args.keep_ckpts)
         if args.eval_every and (step + 1) % args.eval_every == 0 and step + 1 < total_steps:
             nll, _ = run_eval()
             log({"step": step + 1, "eval_nll": nll, "eval_ppl": math.exp(nll)})

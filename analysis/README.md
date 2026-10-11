@@ -1,0 +1,69 @@
+# Phase 1: why the first algebraic model lost, and what beats the standard
+
+Every number here is produced by a script in this directory; JSON outputs
+are in `results/analysis/`. The concise mathematics is in
+`paper/theory.md`.
+
+| File | What it does |
+|---|---|
+| `v1_statistics.py` | Paired seed statistics of the first study's 125M runs, the 18-run tuning sweep, schedule areas, and an LR-annealing scaling-law fit |
+| `head_analysis.py` | Monte Carlo: representational floor of each head, cost of OACE vs log-loss under misspecification, rank bottleneck of softmax vs asinh links |
+| `attention_analysis.py` | Monte Carlo: attention entropy at initialization per kernel, associative recall across kernels, positional-resolution linear programs |
+| `activation_analysis.py` | ALU vs SiLU/GELU: best-matching sharpness, mean-field moments, tails |
+| `phase1_jobs.py` | The ablation batches (job lists for `scripts/run_queue.py`) |
+| `phase3_jobs.py` | The 60M / 1B-token comparison (job lists for `scripts/run_slice.py`) |
+| `summarize_runs.py` | Tables of held-out NLL, paired differences, and validation curves |
+
+## 1. Statistics of the first study (`v1_statistics.py`)
+
+* 125M final runs: paired NLL gap 0.0088 nats, 95% CI [−0.011, 0.028],
+  posterior P(algebraic worse) = 0.90; 9 paired seeds would be needed for
+  80% power at the observed effect. The 81,920-token validation subset is
+  small but shared, so the paired comparison is still informative.
+* The tuning sweep picked the largest learning rate offered for both arms
+  (1e-3): the optimum lay outside the searched range.
+* The algebraic arm's ARDS schedule ends at 0.63× peak learning rate
+  (cosine: 0.05×) and averages 0.84× (cosine: 0.52×). An annealing-law fit
+  on the standard arm's traces predicts that schedule alone costs 0.115
+  nats at 125M (90% CI 0.087–0.185): larger than the observed gap.
+* In the 20M pilot the algebraic arm's gradient was clipped on 99.999% of
+  steps (standard: 0.19%): OACE's gradient scale is ~16× that of
+  cross-entropy.
+
+## 2. Mathematics and Monte Carlo of the components
+
+* **Head.** Training the first study's link on OACE instead of log-loss
+  costs ≈0.03 nats of test cross-entropy under misspecification (12-trial
+  Monte Carlo); the asinh link is slightly better than softmax at equal rank.
+  The algebraic head can be trained by exact maximum likelihood (its
+  log-loss gradient is algebraic), which removes the objective mismatch.
+* **Attention.** `ρ(s)^8` is degree-8 homogeneous for large scores, so
+  normalized weights stop sharpening as scores grow: entropy saturates at
+  0.42·log T (softmax: 0.06·log T) in the random-score Monte Carlo.
+* **Positions.** The first-study Cayley grid has 2 of 32 pairs with
+  wavelength < 64 tokens (RoPE: 9) and 2–4× smaller position-only margins,
+  yet it was not harmful in training: its static pairs act like partial
+  rotary dimensions.
+* **Activation.** ALU(β=1) is closer to GELU than SiLU (best SiLU match
+  β ≈ 0.6) with a heavy algebraic negative tail.
+
+## 3. Ablations at the proxy scale (`phase1_jobs.py`)
+
+33M-parameter proxy, context 1024, 196.6M tokens, 2M held-out tokens,
+seed-to-seed SD ≈ 0.003 nats (standard, 3 seeds: 3.8201 ± 0.0018 SE).
+
+First-study components swapped one at a time into the standard model:
+OACE head +0.080, ARDS schedule + wd 0.01 +0.060, no norm gains +0.037,
+octic attention +0.003, ALU +0.000, Cayley grid −0.009. The genuinely
+algebraic substitutions are free; the gap came from the objective, the
+schedule, and the missing gains. Reverse checks inside v1: CE instead of
+OACE −0.122, gains −0.103.
+
+Second-generation exploration (single changes to the provisional v2,
+3.8146 ± 0.0017 over 3 seeds): stronger asinh compression in the head is
+monotonically better (CE 3.8208, n=c=32 3.8199, n=c=16 3.8125,
+n=8/c=2 3.7857); QK-norm 3.7910; first-study Cayley grid 3.7979;
+ALU β=0.5 3.8058; softmax attention 3.8059; attention n=c=16 3.8176.
+
+(Batch 3 — combinations, stronger heads, controls — is reported in
+`results/analysis/` and summarized in section 4 once complete.)
