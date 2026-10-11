@@ -132,5 +132,23 @@ def batch4():
     return jobs
 
 
+def batch5():
+    """Close the backbone gap: combine the best attention kernel and grid."""
+    flash = ["attn_impl=flash"]
+    v2d = flash + ["head_n=8", "head_c=2.0", "pos=cayley_geo", "alu_beta=0.5", "qk_norm=true",
+                   "attn_n=16", "attn_c=8.0"]
+    jobs = [job(f"v2d_s{s}", "algebraic", sets=v2d, extra=STD_RECIPE, seed=s) for s in range(4)]
+    variants = {"attn32x16": ["attn_n=32", "attn_c=16.0"], "attn16x16": ["attn_c=16.0"],
+                "attn16x4": ["attn_c=4.0"], "alu0.6": ["alu_beta=0.6"], "alu0.75": ["alu_beta=0.75"],
+                "rot0.5": ["rope_fraction=0.5"], "head8x3": ["head_c=3.0"], "head8x1.5": ["head_c=1.5"],
+                "nosink": ["sink=none"]}
+    for name, extra_sets in variants.items():
+        jobs.append(job(f"v2d_{name}", "algebraic", sets=v2d + extra_sets, extra=STD_RECIPE))
+    jobs.append(job("v2d_lr0.0015", "algebraic", sets=v2d, extra=STD_RECIPE, lr=1.5e-3))
+    ctrl = flash + ["qk_norm=true", "head=alg_ce", "head_n=8", "head_c=2.0"]
+    jobs += [job(f"std+qk+head_s{s}", "standard", sets=ctrl, extra=STD_RECIPE, seed=s) for s in (1, 2)]
+    return jobs
+
+
 if __name__ == "__main__":
     print(json.dumps(globals()[sys.argv[1]](), indent=1))
