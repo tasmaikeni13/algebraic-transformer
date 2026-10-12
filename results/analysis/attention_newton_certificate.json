@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "domain_abs_x": 1.5,
+  "subintervals": 1024,
+  "probe_record_sha256": "d368052560e9741783608648ff8f20a010618cd4bd4af064641b6fe028c81494",
+  "certificate_source_sha256": "c35fe12d69061580a77edc922fdde5bf138a9b93b0e15fbd348b85640a0eb94f",
+  "arithmetic": "exact rational Bernstein bounds and 90-bit radical enclosures",
+  "machine_evaluation_certified": false,
+  "coefficient_bounds_imported_into_lean": false,
+  "newton_residual_identity_checked_in_lean": true,
+  "modes": {
+    "poly2_nr2": {
+      "coefficients_f32": [
+        0.976523756980896,
+        -0.3378107249736786,
+        0.06938841193914413
+      ],
+      "iterations": 2,
+      "seed_positive": true,
+      "initial_residual_abs_bound": 0.04752571850191137,
+      "refined_residual_abs_bound": 2.222285501772673e-06,
+      "inverse_root_relative_bound": 1.1111433682061289e-06,
+      "rho_relative_bound": 6.615929238014139e-06,
+      "weight_relative_bound": 0.00010586012043275789
+    },
+    "poly3_nr1": {
+      "coefficients_f32": [
+        0.9932811856269836,
+        -0.42723825573921204,
+        0.16876445710659027,
+        -0.029444754123687744
+      ],
+      "iterations": 1,
+      "seed_positive": true,
+      "initial_residual_abs_bound": 0.013400532422912446,
+      "refined_residual_abs_bound": 0.00013528229961738832,
+      "inverse_root_relative_bound": 6.76434376260211e-05,
+      "rho_relative_bound": 0.0004027600843915204,
+      "weight_relative_bound": 0.006463663867513291
+    },
+    "poly4_nr1": {
+      "coefficients_f32": [
+        0.9980775713920593,
+        -0.46991968154907227,
+        0.2541515827178955,
+        -0.08848263323307037,
+        0.013119528070092201
+      ],
+      "iterations": 1,
+      "seed_positive": true,
+      "initial_residual_abs_bound": 0.003851328950692892,
+      "refined_residual_abs_bound": 1.1138832449962872e-05,
+      "inverse_root_relative_bound": 5.569431734266357e-06,
+      "rho_relative_bound": 3.316130690618592e-05,
+      "weight_relative_bound": 0.0005307128915955421
+    }
+  }
+}

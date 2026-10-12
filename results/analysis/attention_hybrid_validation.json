@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "utc": "2026-10-12T06:09:34.317362+00:00",
+  "base_revision": "40cfe7606876a1e898b0b3e4302b98e97729c6c9",
+  "objective": "Pure algebraic and hybrid attention/kernel and complete optimizer-step speed parity with the fastest measured standard on the same hardware and shapes",
+  "objective_achieved": false,
+  "accepted_change": "Hybrid softmax QK learned-gain VJP uses local Pallas reductions; native forward and input VJP retained; pure attention/model operators retained",
+  "source_sha256": {
+    "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+    "src/sota/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d",
+    "scripts/audit_algebraic.py": "7c2d8638b177dee22bbcda0c3767058293a927ccaed2f2a34283cbf645b0d9f6",
+    "formal/AlgebraicAttention.lean": "f21fa5505f4f501633bd1732367705be97a42a2916d59353b78227eb788b9c5f",
+    "formal/AlgebraicAttention/Accumulation.lean": "ccbeb4a1957e288eebf8a88c8718363c401b128d1e73a984f47b03564f1bb399",
+    "formal/AlgebraicAttention/AffinePower.lean": "5b44749f96fcb63c3a08872d12ee8d81affca939ed511997db28acb2d74a0f1a",
+    "formal/AlgebraicAttention/Bounds.lean": "6d08ca459a69fa3ac1066a9be911140ab695369abacc875c2297f39b78cdd33f",
+    "formal/AlgebraicAttention/Derivatives.lean": "28c52577d78795df4251ac4f162779648fd3a3f883a95d67817aebe124910619",
+    "formal/AlgebraicAttention/Interpolation.lean": "4b010fdbd157780481be4815bf4fd72cfcaef7779ab9c7d16ea21cc1b07a6184",
+    "formal/AlgebraicAttention/Normalization.lean": "06330cf89d0cb0344577b1fd32848d3252f7bbaae4b33f16f738d994a5dbbecb",
+    "formal/AlgebraicAttention/QuadraticPower.lean": "afb1cdcbe5568b977eaa2160c9f497e1c6d2f6ba0c9672baa4c783c37fa9ea0f",
+    "formal/AlgebraicAttention/RMSGain.lean": "13f7dcb58652af569f91261c15516b83c7af9ae86665615b836c245fe61f6668",
+    "formal/AlgebraicAttention/Radical.lean": "5dfca581561228efa5e3d5e148f0bc716df250da16af55fdd1cc115887b96882",
+    "formal/AlgebraicAttention/Rational.lean": "a82281d826ec5dd7fdd20ca50d9091ef683d5e8977c35d44e6c3b04dd0399caa"
+  },
+  "tests": {
+    "tpu_joint": {
+      "artifact": "results/kernels/attention_hybrid_tpu_test_output.txt",
+      "passed": 84,
+      "seconds": 187.98
+    },
+    "tpu_final_qk": {
+      "artifact": "results/kernels/qk_norm_final_test_output.txt",
+      "passed": 13,
+      "seconds": 8.85
+    },
+    "cpu_components": {
+      "command": "JAX_PLATFORMS=cpu /home/tasma/venv/bin/python -m pytest -q tests/test_sota_components.py",
+      "passed": 15,
+      "seconds": 21.56
+    }
+  },
+  "formal": {
+    "theorems": 63,
+    "build_command": "lake build",
+    "build_exit_code": 0,
+    "jobs": 3189,
+    "warnings_in_final_build": false,
+    "compiler_or_ieee_certified": false
+  },
+  "primitive_audit": {
+    "artifact": "results/analysis/attention_hybrid_primitive_audit.json",
+    "passed": true
+  },
+  "complete_model_checks": {
+    "artifact": "results/analysis/qk_model_production_full_validation.json",
+    "passed": true,
+    "cases": 5,
+    "max_parameter_gradient_relative_l2_error": 0.0004061221843585372
+  },
+  "model_profiles": {
+    "125m": {
+      "artifact": "results/kernels/model_step_confirm_125m.json",
+      "median_ms": {
+        "standard": 156.5868854522705,
+        "hybrid_native": 178.41444810231528,
+        "hybrid_tiled_gain": 171.627410252889,
+        "algebraic": 181.2027057011922
+      },
+      "ratios_to_standard": {
+        "standard": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 3
+        },
+        "hybrid_native": {
+          "ratio": 1.1393894359496666,
+          "ci95": [
+            1.139379105865348,
+            1.1394093860839976
+          ],
+          "rounds": 3
+        },
+        "hybrid_tiled_gain": {
+          "ratio": 1.0960573859017408,
+          "ci95": [
+            1.096025481741333,
+            1.096094413447404
+          ],
+          "rounds": 3
+        },
+        "algebraic": {
+          "ratio": 1.1572064880272932,
+          "ci95": [
+            1.157176839468277,
+            1.1572265709258245
+          ],
+          "rounds": 3
+        }
+      },
+      "hybrid_change": {
+        "ratio": 0.9619690610771645,
+        "ci95": [
+          0.9619497813319227,
+          0.9619847149184355
+        ],
+        "rounds": 3
+      },
+      "scope": "three fresh seeds, one chip, randomized architecture order; initialized real AdamW step profiles, not held-out LM quality or slice throughput"
+    },
+    "60m": {
+      "artifact": "results/kernels/model_step_confirm_60m.json",
+      "median_ms": {
+        "standard": 86.98501586914062,
+        "hybrid_native": 97.05171585083008,
+        "hybrid_tiled_gain": 95.00998655954997,
+        "algebraic": 100.59221585591634
+      },
+      "ratios_to_standard": {
+        "standard": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 3
+        },
+        "hybrid_native": {
+          "ratio": 1.1156830693903335,
+          "ci95": [
+            1.115504706575504,
+            1.1158272756170382
+          ],
+          "rounds": 3
+        },
+        "hybrid_tiled_gain": {
+          "ratio": 1.0921827958726653,
+          "ci95": [
+            1.0920607082014533,
+            1.0922569319580515
+          ],
+          "rounds": 3
+        },
+        "algebraic": {
+          "ratio": 1.1563762100402208,
+          "ci95": [
+            1.1561943648977622,
+            1.1565027477982028
+          ],
+          "rounds": 3
+        }
+      },
+      "hybrid_change": {
+        "ratio": 0.9789364254397892,
+        "ci95": [
+          0.9788528939192432,
+          0.9789835056402213
+        ],
+        "rounds": 3
+      },
+      "scope": "three fresh seeds, one chip, randomized architecture order; initialized real AdamW step profiles, not held-out LM quality or slice throughput"
+    }
+  },
+  "rejected_experiments": [
+    "packed dK/dV dot is slower",
+    "alternative square-root and bit-seeded inverse-root implementations are slower",
+    "BF16 rsqrt compiler abort: no timing",
+    "polynomial inverse-root seeds are slower in the verified fast branch",
+    "quintic table lookup is slower; cubic fails a numerical gate",
+    "all-Pallas and reassociated RMS VJPs fail complete-model large-gain gates",
+    "cached head gradients are slower",
+    "lower-degree affine links miss training speed parity and fail the successful hard-retrieval control seed"
+  ],
+  "alternative_links_adopted": false,
+  "new_language_model_quality_runs": false,
+  "artifact_sha256": {
+    "results/analysis/attention_followup_statistics.json": "8e817b4a87428095d654aef0705a5fd849044857f43e477499a7698bc3006d66",
+    "results/analysis/attention_interpolation_certificate.json": "c28b07a3f13785466e5b82b47c591b242f34942fccfa2423017214a410f14c2d",
+    "results/analysis/attention_newton_certificate.json": "ff1e7fab00afd4fccc278ce7085821bfa8bae13e866cab6b6b0d569a9bee4408",
+    "results/analysis/attention_recall_probe.json": "ba9186b55b0a82fd7c61e747a0cac9578ecb1035119dfc7c37721518f8c11b67",
+    "results/analysis/qk_model_production_full_validation.json": "2861904e4cf56e13089d71c49e7894f6b77e9edfb9746b836d6bdf89d8fb0087",
+    "results/kernels/attention_hybrid_tpu_test_output.txt": "cea724320bc11512563bff54dc6ab77ea5607d688287ae5e2636e547e456c994",
+    "results/kernels/model_step_confirm_125m.json": "3e6f8fb6650e91ceb3c3bc76863a129b13586a93529c0ab5866e3098488c6246",
+    "results/kernels/model_step_confirm_60m.json": "41ed8b544afd3334d0e393df1ce8fb9a03036f5e3999e44f5b141af75ab01271",
+    "results/kernels/qk_norm_final_test_output.txt": "61a7af16a36310348bbef4d4eff36def79e2b9c5346dbe0396c753c7e561f0c9"
+  },
+  "source_provenance_note": "Profiles preserve their actual source hashes. The subsequent qk_norm.py edit changes only the unsupported-input validation message; current source also has a final 13-test run and complete-model validation."
+}

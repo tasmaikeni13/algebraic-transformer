@@ -6,3 +6,5 @@ import AlgebraicAttention.Rational
 import AlgebraicAttention.AffinePower
 import AlgebraicAttention.Accumulation
 import AlgebraicAttention.QuadraticPower
+import AlgebraicAttention.Interpolation
+import AlgebraicAttention.RMSGain

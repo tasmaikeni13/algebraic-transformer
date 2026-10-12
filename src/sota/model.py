@@ -157,6 +157,17 @@ def _attention(q, k, v, sink_logit, cfg: LMConfig):
     raise ValueError(f"unknown attention {cfg.attn!r}")
 
 
+def _qk_norm(x, gain, cfg: LMConfig):
+    # Measured hybrid training shape. Other paths retain native RMS; the
+    # algebraic attention's different compilation pipeline is timed separately.
+    if (cfg.attn_impl == "flash" and cfg.attn == "softmax" and x.dtype == jnp.bfloat16
+            and x.shape[-2:] == (2048, 64) and x.size//64 % 1024 == 0
+            and gain.dtype == F32 and cfg.eps > 0):
+        from src.sota.kernels.qk_norm import qk_rms_norm
+        return qk_rms_norm(x, gain, cfg.eps)
+    return A.rms_norm(x, gain, cfg.eps)
+
+
 def _block(cfg: LMConfig, cos, sin, x, lp):
     B, T, d = x.shape
     H, D = cfg.n_heads, cfg.head_dim
@@ -166,8 +177,8 @@ def _block(cfg: LMConfig, cos, sin, x, lp):
     k = (h @ lp["w_k"].astype(dt)).reshape(B, T, H, D).transpose(0, 2, 1, 3)
     v = (h @ lp["w_v"].astype(dt)).reshape(B, T, H, D).transpose(0, 2, 1, 3)
     if cfg.qk_norm:
-        q = A.rms_norm(q, lp["q_gain"], cfg.eps)
-        k = A.rms_norm(k, lp["k_gain"], cfg.eps)
+        q = _qk_norm(q, lp["q_gain"], cfg)
+        k = _qk_norm(k, lp["k_gain"], cfg)
     q = A.apply_rotary(q, cos, sin)
     k = A.apply_rotary(k, cos, sin)
     if cfg.sink == "learned":

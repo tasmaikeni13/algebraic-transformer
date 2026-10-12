@@ -1,0 +1,114 @@
+{
+  "utc": "2026-10-12T00:09:46.222978+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "rounds": 9,
+  "iters": 30,
+  "seed": 97,
+  "prototype": true,
+  "model_adopted": false,
+  "kernel_sha256": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+  "probe_sha256": "9eb073b2b4d469db88a96ce9029dc72549a85362295a2275cbc7ac738c95a10f",
+  "results": {
+    "standard_resident": {
+      "forward": {
+        "samples_ms": [],
+        "compile_s": 0.6762076829982107
+      },
+      "training": {
+        "samples_ms": [],
+        "compile_s": 2.1321474040014436
+      }
+    },
+    "asinh_resident": {
+      "forward": {
+        "samples_ms": [],
+        "compile_s": 1.9631949960021302
+      },
+      "training": {
+        "samples_ms": [],
+        "compile_s": 4.50019973799499
+      }
+    },
+    "sqrt_reciprocal": {
+      "forward": {
+        "samples_ms": [],
+        "compile_s": 2.2706142550014192
+      },
+      "training": {
+        "samples_ms": [],
+        "compile_s": 4.796956999998656
+      }
+    }
+  },
+  "validation": {
+    "sqrt_reciprocal": [
+      {
+        "shape": [
+          1,
+          2,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "sink": [
+          -0.35,
+          0.125
+        ],
+        "output_max_abs_error": 1.817941665649414e-06,
+        "q_k_v_sink_relative_l2_errors": [
+          6.238690275495173e-06,
+          6.014811788190855e-06,
+          3.7540880271080823e-07,
+          3.9882399960333714e-07
+        ],
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "sink": [
+          -0.35,
+          0.125
+        ],
+        "output_max_abs_error": 0.015625,
+        "q_k_v_sink_relative_l2_errors": [
+          0.004102770704776049,
+          0.004002019297331572,
+          0.00011365023237885907,
+          0.0015540466411039233
+        ],
+        "passed": true
+      }
+    ]
+  },
+  "grid_error": {
+    "sqrt_reciprocal": {
+      "points": 65536,
+      "range": [
+        -15.8,
+        15.8
+      ],
+      "rho_max_relative_error": 7.281142681025976e-05,
+      "inverse_root_max_relative_error": 1.626098572615753e-05,
+      "weight_max_relative_error": 0.0011643468646137523,
+      "weight_q99_relative_error": 0.0005383343878192171,
+      "nonpositive_rho": 0,
+      "scope": "finite TPU grid versus float64 oracle, not a uniform certificate"
+    }
+  },
+  "failures": {}
+}

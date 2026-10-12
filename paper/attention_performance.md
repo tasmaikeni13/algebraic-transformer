@@ -1,9 +1,27 @@
 # Attention kernel engineering: measured status
 
-**Speed parity is not achieved.** The mathematical model remains
+**Speed parity is not achieved for either pure algebraic or hybrid.** The pure model remains
 `rho(s/8)^16` with a learned zero-value sink. The new implementation uses
 an inverse denominator, compact row statistics, and a checked range guard.
 The fully algebraic training path passes the primitive audit.
+
+## Hybrid and complete model speed
+
+The hybrid uses the same standard softmax resident-memory FlashAttention
+as the reference model. Its learned QK normalization and algebraic head are
+also speed targets. The new hybrid kernel tiles the learned-gain reduction
+while preserving native RMS forward and input VJP calculations. Three fresh
+seeds with randomized job order confirm **171.627 ms** per hybrid optimizer
+step versus **178.414 ms** before the change, a **3.80%** reduction. Standard
+takes **156.587 ms**, and pure algebraic takes **181.203 ms** at the same
+125M training shape. The remaining full-step gaps are **9.61%** and **15.72%**.
+
+These are single-chip, micro-batch 8, context 2048, real AdamW update profiles,
+not the historical full-slice throughput or new quality runs. See
+[attention_hybrid.md](attention_hybrid.md) for the implementation choice,
+rejected RMS/head variants, complete-model numerical checks, and raw records.
+The pure model retains native QK normalization because the tiled substitution
+is slower in its full compilation pipeline.
 
 ## Latest confirmed resident-memory backend
 
@@ -47,10 +65,10 @@ score/do@V matrix products changes latency very little; doing do@V first
 is slower (`attention_overlap_probe.json`). This simple reorder did not
 resolve the nonlinear cost.
 
-**71 TPU tests pass**, including independent dense-reference resident VJPs,
+**84 TPU tests pass**, including 71 independent dense-reference resident VJP checks and 13 QK normalization/dispatch checks,
 context 2048, bfloat16, both saved-statistic formulas, sinks, automatic
 dispatch, and extreme-score fallback. The context-2048 algebraic model
-primitive audit passes. **52 Lean theorems** build successfully, covering
+primitive audit passes. **63 Lean theorems** build successfully, covering
 the original operator, accumulation identities, and experimental links.
 
 The new-link probes are documented in [attention_pade.md](attention_pade.md),
@@ -61,6 +79,39 @@ takes 4.651 ms with an exact product derivative or 4.349 ms with an approximate
 reciprocal derivative. These are isolated prototypes, with formal/Monte Carlo
 analysis and numerical checks; no language-model quality result or model
 adoption is claimed.
+
+Further experiments are archived with explicit rejection reasons:
+
+| Experiment, 125M attention shape | Forward + q/k/v backward (ms) | Result |
+|---|---:|---|
+| Pack dK/dV into a 128-column dot | 5.458 | Slower than 5.419 ms deployed asinh |
+| Native square root plus approximate reciprocal slope | 5.609 | Slower |
+| Integer-bit inverse-root seed, two/three Newton steps | 6.290–7.213 | Slower; two-step fast negative branch has large grid error |
+| Polynomial inverse-root seeds, outer bounded guard | 6.052–6.749 | Slower even when the polynomial branch is taken |
+| Direct quintic weight/derivative lookup | 11.098 | Slower; see [interpolation theory](attention_interpolation.md) |
+| Wider affine n=32,c=16, unclipped guard passed | 4.190 | Faster prototype; still 24.4% slower than standard |
+| Wider affine n=8,c=1 or c=2 | 4.132 | Faster prototype; still 22.6% slower than standard; new link |
+
+The first polynomial-seed record timed only the stable fallback, because
+the norm guard failed for the unnormalized arrays. The normalized rerun
+records the guard and proves the polynomial branch is selected in that
+specific benchmark. Its finite-grid checks and real Newton-error bounds
+are in `attention_radical_polynomial_seed_normalized_probe.json` and
+`attention_newton_certificate.json`; machine arithmetic is not certified.
+The installed compiler aborts on the BF16 rsqrt instruction; that mode
+is excluded from the default radical probe. No BF16-rsqrt timing is claimed.
+
+The wider and lower-degree affine links pass independent output/VJP checks,
+but their origin slopes and score compression differ from the deployed link.
+Positive caps avoid static cue ties up to gain eight in the new sweep; ties
+can return at gain sixteen. Rounded-denominator variants use the same rounded
+weights as the value dot but are slower. They are not model dispatch. Static
+routing is not trained retrieval or language-model quality; the learned
+recall probe and subsequent language-model gate remain distinct. At 128 items
+all tested links solve the toy retrieval task; at 512 items the n=8 and
+n=16,c=2 variants fail the successful control seed. The other two control
+seeds also fail the harder task, so the check is not a robust quality
+comparison. See [the per-seed results](attention_binomial.md).
 
 ## Confirmed measurements
 

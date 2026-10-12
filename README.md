@@ -18,6 +18,7 @@ and budget hyperparameter sweep; the main run itself is left to the author).
 | 2 | Flash attention and fused head kernels for both arms | done |
 | 3 | 60M models, FineWeb-Edu-1B, 1B tokens, one seed, both arms | done: **algebraic wins** |
 | + | How much algebra do we really need? A minimal-algebra hybrid | done: **hybrid wins too, at 88% of standard speed** |
+| Speed | Pure/hybrid kernel and complete optimizer-step parity with standard | **ongoing**; hybrid gain reduction improves 125M steps by 3.8%; parity remains open |
 | Main | 125M, 3 seeds, 2.5B tokens | implementation and budget sweeps done for all three arms; main run left to the author |
 
 ## Headline results
@@ -109,12 +110,24 @@ for extreme scores, plus resident-memory dQ accumulation at the measured
 bfloat16 model shape. Fifteen paired rounds at the 125M attention shape give
 **5.42 ms algebraic vs 3.36 ms standard** for forward plus backward; at the
 60M shape, **3.53 vs 2.21 ms**. Speed parity remains open. The follow-up
-includes 71 passing TPU checks, 9,216 numerical Monte Carlo rows, alternative
-link routing studies, exact rational certificates, and 52 checked Lean
+includes 84 passing TPU checks, 9,216 numerical Monte Carlo rows, alternative
+link routing studies, exact rational certificates, and 63 checked Lean
 theorems. Experimental links are kept separate from the deployed model.
 [Measurements and rejected candidates](paper/attention_performance.md),
 [expanded attention theory](paper/attention_exact.md),
 [formal coverage](formal/README.md).
+
+The active engineering target includes **both pure algebraic and hybrid**
+models, with kernel and full optimizer-step speed compared against the
+fastest measured standard implementation at the same shape. Hybrid retains
+softmax attention and shares the standard resident-memory FlashAttention
+kernel. A checked tiled QK gain-gradient reduction lowers hybrid optimizer
+latency by **3.8%**. Three fresh seeds with randomized job order give **156.6 ms
+standard, 171.6 ms hybrid, and 181.2 ms pure algebraic**, on one chip at the
+125M shape. The remaining full-step gaps are **9.6%** and **15.7%**; parity
+is still open. These speed profiles are not new language-model quality runs.
+See the [hybrid implementation choice](paper/attention_hybrid.md) and
+[current engineering status](paper/attention_performance.md).
 
 The following table records the earlier Phase 2 implementation, before the
 current statistics layout and range guard:

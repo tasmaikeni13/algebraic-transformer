@@ -59,6 +59,8 @@ def audit(preset: str, overrides: dict, seq_len: int = 256) -> dict:
     bad = sorted(set(counts) & FORBIDDEN)
     return {"preset": preset, "overrides": overrides, "seq_len": seq_len,
             "kernel_sha256": hashlib.sha256((ROOT / "src/sota/kernels/flash.py").read_bytes()).hexdigest(),
+            "model_sha256": hashlib.sha256((ROOT / "src/sota/model.py").read_bytes()).hexdigest(),
+            "qk_norm_sha256": hashlib.sha256((ROOT / "src/sota/kernels/qk_norm.py").read_bytes()).hexdigest(),
             "forbidden_found": bad,
             "passed": not bad, "primitive_counts": dict(sorted(counts.items()))}
 

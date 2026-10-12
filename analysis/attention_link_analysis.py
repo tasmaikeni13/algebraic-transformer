@@ -21,6 +21,11 @@ SPECS = {
     "binomial32_c32": ("binomial", 32., 32., (-.75, .75)),
     "binomial64_c64": ("binomial", 64., 64., (-.5, .75)),
     "binomial64_c32": ("binomial", 64., 32., (-.5, .75)),
+    "binomial32_c16_wide": ("binomial", 32., 16., (-.75, 3.)),
+    "binomial64_c32_wide": ("binomial", 64., 32., (-.5, 2.)),
+    "binomial16_c2_wide": ("binomial", 16., 2., (-.9375, 32.)),
+    "binomial8_c1_wide": ("binomial", 8., 1., (-.999, 64.)),
+    "binomial8_c2_wide": ("binomial", 8., 2., (-.999, 32.)),
     "quadratic16_c8": ("quadratic", 16., 8., (-1., 8.)),
 }
 
@@ -44,11 +49,12 @@ def main():
     p.add_argument("--seeds", type=int, default=8)
     p.add_argument("--rows", type=int, default=128)
     p.add_argument("--seq", type=int, default=2048)
+    p.add_argument("--gains", nargs="+", type=float, default=[1., 1.5, 2., 4., 8.])
     args = p.parse_args()
     T, d = args.seq, 64
     report = {"schema": 2, "specs": SPECS, "rows_per_seed": args.rows,
               "analysis_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-              "seeds": list(range(args.seeds)), "d": d, "distractors": T,
+              "seeds": list(range(args.seeds)), "gain_products": args.gains, "d": d, "distractors": T,
               "scope": "static normalized-sphere routing; not trained retrieval or language modeling",
               "trials": []}
     for seed in range(args.seeds):
@@ -62,7 +68,7 @@ def main():
             k *= math.sqrt(d) / np.linalg.norm(k, axis=-1, keepdims=True)
             chunks.append(np.einsum("bd,btd->bt", q, k) / math.sqrt(d))
         unit = np.concatenate(chunks)
-        for scale in (1., 1.5, 2., 4., 8.):
+        for scale in args.gains:
             s = unit * scale
             deployed = logits(s, SPECS["asinh16_c8"])
             deployed -= logsumexp(deployed, -1, keepdims=True)

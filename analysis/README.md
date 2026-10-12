@@ -20,6 +20,18 @@ goal remains open; historical phase completion does not establish parity.
 | `attention_link_probe.py` | Isolated TPU rational/affine-power kernels, independent dense output/VJP checks, and paired timing with frozen standard/asinh executables |
 | `attention_resident_probe.py` | Exact backward experiment retaining K/V and accumulating dQ in VMEM; output checks and paired timing without changing the deployed kernel |
 | `attention_link_statistics.py` | Bootstrap over independent synthetic seeds and paired within-run hardware rounds for alternative links |
+| `attention_affine_guard_probe.py` | Wider affine caps, native reciprocal slopes, deterministic unclipped branch, gain sweeps, and rounded-denominator comparison |
+| `attention_radical_probe.py` | Independent TPU radical accuracy/VJP checks and paired timing of alternative inverse-root implementations |
+| `attention_interpolation_probe.py` | Direct Hermite weight/derivative lookup, independent VJP checks, guarded exact fallback, and TPU timings |
+| `attention_interpolation_certificate.py` | Exact rational Hermite coefficient enclosures and conditional real-arithmetic weight/derivative error bounds |
+| `attention_newton_certificate.py` | Exact rational residual bounds for rounded inverse-root polynomial seeds, using the Lean-checked Newton identity |
+| `model_component_performance.py` | Paired timing of deployed standard/hybrid/pure attention preprocessing and deployed vocabulary heads |
+| `qk_normalization_probe.py`, `qk_rms_kernel.py` | Equivalent analytic and Pallas RMS VJP prototypes, including local gain-gradient partials |
+| `head_gradient_cache_probe.py` | Deployed n=8,c=2 head with alternative float32/BF16 saved-gradient residuals |
+| `model_profile.py`, `model_step_performance.py` | Real trainer optimizer-step profiles, including randomized paired seeds and explicit native QK baseline |
+| `qk_model_validation.py` | Initialized complete-model output/parameter-gradient checks, including large gains and the real 125M/60M shapes |
+| `attention_recall_probe.py` | Learned QK-normalized toy associative recall across paired seeds; independent stable-logit oracle, not language-model quality |
+| `attention_followup_statistics.py` | Independent-seed bootstrap for wider-link routing and paired toy-recall results; descriptive intervals with no multiplicity correction |
 | `v1_statistics.py` | Paired seed statistics of the first study's 125M runs, the 18-run tuning sweep, schedule areas, and an LR-annealing scaling-law fit |
 | `head_analysis.py` | Monte Carlo: representational floor of each head, cost of OACE vs log-loss under misspecification (B), rank bottleneck of softmax vs asinh links (C) |
 | `verify_head_eval.py` | Independent float64 recomputation of a saved model's held-out NLL |

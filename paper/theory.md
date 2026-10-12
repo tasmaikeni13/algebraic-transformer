@@ -268,3 +268,30 @@ whole gain. The remaining substitutions are quality-neutral (their intervals
 overlap) and exist to remove every transcendental from the training path; the
 asinh attention kernel is the only one that costs noticeable throughput.
 
+## 13. Pure and hybrid kernel speed follow-up
+
+The active target is speed parity for both model families against the
+fastest standard attention measured on the same shape and hardware. Hybrid
+retains ordinary softmax FlashAttention. Pure algebraic attention retains
+`rho(s/8)^16`; the experimental polynomial/rational links are not model
+substitutions. The numerical, formal, and performance work is recorded in
+[attention_performance.md](attention_performance.md), with the hybrid choice
+in [attention_hybrid.md](attention_hybrid.md).
+
+For QK RMS normalization, tau depends on the input and epsilon, but not the
+gain. Each row's gain derivative is `x_d*tau`; its VJP is a sum of
+`cot_d*x_d*tau` over rows. A disjoint partition into local reductions thus
+preserves the real derivative. The new hybrid implementation retains the
+original forward/input VJP and partitions only this gain sum. Lean checks
+the derivative and partition identities. Complete-model checks cover large
+gains and the actual 125M/60M shapes; differences in floating-point reduction
+order are measured separately.
+
+Three-seed randomized optimizer-step profiles give 156.6/171.6/181.2 ms for
+standard/hybrid/pure at 125M, and 87.0/95.0/100.6 ms at 60M. The accepted
+hybrid change saves 3.8% and 2.1%; neither family has achieved parity. These
+are single-chip speed profiles, not new held-out language-model results.
+Alternative-link routing and learned retrieval are evidence for further
+research only. The lower-degree links' failures on the harder retrieval
+case are reasons to retain the current pure model while optimizing it.
+

@@ -1,0 +1,300 @@
+{
+  "schema": 1,
+  "utc": "2026-10-12T06:06:08.873645+00:00",
+  "seed": 131,
+  "attention_shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "head_shape": [
+    16384,
+    768,
+    50257
+  ],
+  "dtype": "bfloat16",
+  "qk_input_rms": 0.55,
+  "qk_gains": 1.0,
+  "jax": "0.6.2",
+  "hostname": "t1v-n-79750f9f-w-2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "rounds": 9,
+  "iters": 20,
+  "scope": "component forward/VJP; no optimizer, model, data loading, or quality estimate",
+  "source_sha256": {
+    "analysis/model_component_performance.py": "f80c94fd5d42b6ea0dba76c1623433fb4c99f03a48f97bcf0e9aa821b5626f06",
+    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/sota/standard.py": "dadf67991f529267b57e4555f144c97b918b51cef065ccc5bde1ec1842ef324d",
+    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+    "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+    "src/sota/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d"
+  },
+  "results": {
+    "standard_attention_forward": {
+      "group": "attention",
+      "mode": "forward",
+      "compile_s": 0.9356826360017294,
+      "samples_ms": [
+        1.9956772499426734,
+        1.9947957502154168,
+        1.9950322493968997,
+        1.9943862498621456,
+        1.9945757499954198,
+        1.9937572498747613,
+        1.994402750278823,
+        1.9938837496738415,
+        1.9940342994232196
+      ],
+      "median_ms": 1.994402750278823
+    },
+    "standard_attention_training": {
+      "group": "attention",
+      "mode": "training",
+      "compile_s": 2.516957764994004,
+      "samples_ms": [
+        4.348250500333961,
+        4.349782499775756,
+        4.348997499619145,
+        4.348192950419616,
+        4.349694499978796,
+        4.350307000277098,
+        4.349124950385885,
+        4.3500984997081105,
+        4.3491130003531
+      ],
+      "median_ms": 4.349124950385885
+    },
+    "standard_qknorm_attention_forward": {
+      "group": "attention",
+      "mode": "forward",
+      "compile_s": 0.965756934005185,
+      "samples_ms": [
+        2.216594749916112,
+        2.2170347001519985,
+        2.216420250624651,
+        2.216390700050397,
+        2.216324250184698,
+        2.217477199883433,
+        2.2166907001519576,
+        2.216980750381481,
+        2.216939750360325
+      ],
+      "median_ms": 2.2166907001519576
+    },
+    "standard_qknorm_attention_training": {
+      "group": "attention",
+      "mode": "training",
+      "compile_s": 2.7531768580083735,
+      "samples_ms": [
+        5.568851799762342,
+        5.571609349863138,
+        5.570501349575352,
+        5.569630299578421,
+        5.569056350213941,
+        5.572750850114971,
+        5.569648800155846,
+        5.57054734963458,
+        5.57002135028597
+      ],
+      "median_ms": 5.57002135028597
+    },
+    "hybrid_attention_forward": {
+      "group": "attention",
+      "mode": "forward",
+      "compile_s": 1.0109231379901757,
+      "samples_ms": [
+        2.216709750064183,
+        2.216156749636866,
+        2.217554749950068,
+        2.2166922499309294,
+        2.216248749755323,
+        2.21646874997532,
+        2.217077699606307,
+        2.2161896995385177,
+        2.2168202500324696
+      ],
+      "median_ms": 2.2166922499309294
+    },
+    "hybrid_attention_training": {
+      "group": "attention",
+      "mode": "training",
+      "compile_s": 2.6734305170102743,
+      "samples_ms": [
+        5.570074800198199,
+        5.5719598502037115,
+        5.569267299870262,
+        5.569587850186508,
+        5.568316800054163,
+        5.571209299523616,
+        5.571042300289264,
+        5.571208350011148,
+        5.571071799931815
+      ],
+      "median_ms": 5.571042300289264
+    },
+    "hybrid_native_attention_forward": {
+      "group": "attention",
+      "mode": "forward",
+      "compile_s": 1.0104954470007215,
+      "samples_ms": [
+        2.217113749793498,
+        2.216689250053605,
+        2.2164742498716805,
+        2.216524250252405,
+        2.2167722003359813,
+        2.216187249723589,
+        2.216477200272493,
+        2.217502249550307,
+        2.216499200585531
+      ],
+      "median_ms": 2.216524250252405
+    },
+    "hybrid_native_attention_training": {
+      "group": "attention",
+      "mode": "training",
+      "compile_s": 3.074321608990431,
+      "samples_ms": [
+        5.67209879955044,
+        5.672117799986154,
+        5.672045300161699,
+        5.673175300034927,
+        5.672669799969299,
+        5.672605799918529,
+        5.672161300026346,
+        5.671002800227143,
+        5.671479299780913
+      ],
+      "median_ms": 5.672117799986154
+    },
+    "algebraic_attention_forward": {
+      "group": "attention",
+      "mode": "forward",
+      "compile_s": 2.613275384006556,
+      "samples_ms": [
+        2.9349361997446977,
+        2.9348846997891087,
+        2.934584650211036,
+        2.934978649864206,
+        2.935260150115937,
+        2.9349411503062584,
+        2.9348576499614865,
+        2.935239650105359,
+        2.935302149853669
+      ],
+      "median_ms": 2.9349411503062584
+    },
+    "algebraic_attention_training": {
+      "group": "attention",
+      "mode": "training",
+      "compile_s": 5.1868238339957315,
+      "samples_ms": [
+        5.698190299881389,
+        5.6982012996741105,
+        5.695176750305109,
+        5.698380800458835,
+        5.697496799984947,
+        5.695710799773224,
+        5.6978042994160205,
+        5.695005299639888,
+        5.696095849998528
+      ],
+      "median_ms": 5.697496799984947
+    }
+  },
+  "comparisons": {
+    "standard_attention_forward": {
+      "reference": "standard_attention_forward",
+      "ratio": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "rounds": 9
+    },
+    "standard_attention_training": {
+      "reference": "standard_attention_training",
+      "ratio": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "rounds": 9
+    },
+    "standard_qknorm_attention_forward": {
+      "reference": "standard_attention_forward",
+      "ratio": 1.1114344037284378,
+      "ci95": [
+        1.111148645424368,
+        1.111730222505732
+      ],
+      "rounds": 9
+    },
+    "standard_qknorm_attention_training": {
+      "reference": "standard_attention_training",
+      "ratio": 1.2807372465997544,
+      "ci95": [
+        1.280603677480403,
+        1.2808573653717343
+      ],
+      "rounds": 9
+    },
+    "hybrid_attention_forward": {
+      "reference": "standard_attention_forward",
+      "ratio": 1.111382342636975,
+      "ci95": [
+        1.1111560834542489,
+        1.111580388091903
+      ],
+      "rounds": 9
+    },
+    "hybrid_attention_training": {
+      "reference": "standard_attention_training",
+      "ratio": 1.2807658842296803,
+      "ci95": [
+        1.2805834173358057,
+        1.2809145141312837
+      ],
+      "rounds": 9
+    },
+    "hybrid_native_attention_forward": {
+      "reference": "standard_attention_forward",
+      "ratio": 1.1114002278281117,
+      "ci95": [
+        1.1111962805342808,
+        1.1116369815094052
+      ],
+      "rounds": 9
+    },
+    "hybrid_native_attention_training": {
+      "reference": "standard_attention_training",
+      "ratio": 1.3041571783189303,
+      "ci95": [
+        1.303971642976097,
+        1.3043483609301942
+      ],
+      "rounds": 9
+    },
+    "algebraic_attention_forward": {
+      "reference": "standard_attention_forward",
+      "ratio": 1.4715422578504231,
+      "ci95": [
+        1.4712147708051795,
+        1.4718493134982487
+      ],
+      "rounds": 9
+    },
+    "algebraic_attention_training": {
+      "reference": "standard_attention_training",
+      "ratio": 1.3098466184050923,
+      "ci95": [
+        1.309546867314118,
+        1.3101358362771307
+      ],
+      "rounds": 9
+    }
+  },
+  "failures": {}
+}

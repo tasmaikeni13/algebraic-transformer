@@ -86,7 +86,8 @@ def part_a(T=1024, d=64, samples=256):
 # B
 # ---------------------------------------------------------------------------
 
-def recall_trial(spec, n_items, seed, steps=1500, n_keys=None, d=64, batch=128, lr=3e-3):
+def recall_trial(spec, n_items, seed, steps=1500, n_keys=None, d=64, batch=128, lr=3e-3,
+                 weight_fn=None, qk_normalize=False, return_details=False):
     n_keys = n_keys or max(256, 2 * n_items)
     key = jax.random.PRNGKey(seed)
     ks = jax.random.split(key, 8)
@@ -98,6 +99,9 @@ def recall_trial(spec, n_items, seed, steps=1500, n_keys=None, d=64, batch=128, 
         "wv": jax.random.normal(ks[4], (d, d)) / math.sqrt(d),
         "wo": jax.random.normal(ks[5], (d, n_keys)) / math.sqrt(d),
     }
+    if qk_normalize:
+        p["q_gain"] = jnp.ones((d,))
+        p["k_gain"] = jnp.ones((d,))
 
     def sample(k):
         k1, k2, k3 = jax.random.split(k, 3)
@@ -111,9 +115,11 @@ def recall_trial(spec, n_items, seed, steps=1500, n_keys=None, d=64, batch=128, 
         qk = p["ek"][jnp.take_along_axis(keys, pick[:, None], 1)[:, 0]]  # (B, d)
         q = qk @ p["wq"]
         k = items @ p["wk"]
+        if qk_normalize:
+            q,k = A.rms_norm(q,p["q_gain"]),A.rms_norm(k,p["k_gain"])
         v = items @ p["wv"]
         s = jnp.einsum("bd,bnd->bn", q, k) / math.sqrt(d)
-        w = weights(s, spec)
+        w = weights(s, spec) if weight_fn is None else weight_fn(s)
         o = jnp.einsum("bn,bnd->bd", w, v)
         logits = o @ p["wo"]
         target = jnp.take_along_axis(vals, pick[:, None], 1)[:, 0]
@@ -146,6 +152,12 @@ def recall_trial(spec, n_items, seed, steps=1500, n_keys=None, d=64, batch=128, 
         keys, vals, pick = sample(jax.random.fold_in(ks[7], j))
         l, a = loss_fn(p, keys, vals, pick)
         accs.append(float(a)); losses.append(float(l))
+    if return_details:
+        detail = {"nll":float(np.mean(losses)),"accuracy":float(np.mean(accs))}
+        if qk_normalize:
+            detail["gain_statistics"] = {name:{"rms":float(jnp.sqrt(jnp.mean(p[name]**2))),
+                "min":float(jnp.min(p[name])),"max":float(jnp.max(p[name]))} for name in ("q_gain","k_gain")}
+        return detail
     return float(np.mean(losses)), float(np.mean(accs))
 
 

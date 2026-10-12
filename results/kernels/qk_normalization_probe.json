@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "utc": "2026-10-12T05:08:16.336785+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "seed": 137,
+  "rounds": 9,
+  "iters": 20,
+  "prototype": true,
+  "model_adopted": false,
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "sources": {
+    "analysis/qk_normalization_probe.py": "b73383f1f03a8122314fd16e5032f43fa789ae24e75c503b5fca33b2e9cac5ef",
+    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+  },
+  "validation": {
+    "autodiff": [
+      {
+        "dtype": "float32",
+        "x_gain_relative_l2_errors": [
+          0.0,
+          0.0
+        ],
+        "output_bitwise_equal": true,
+        "passed": true
+      },
+      {
+        "dtype": "bfloat16",
+        "x_gain_relative_l2_errors": [
+          0.0,
+          0.0
+        ],
+        "output_bitwise_equal": true,
+        "passed": true
+      }
+    ],
+    "analytic_save_x": [
+      {
+        "dtype": "float32",
+        "x_gain_relative_l2_errors": [
+          6.844867073141359e-08,
+          0.0
+        ],
+        "output_bitwise_equal": true,
+        "passed": true
+      },
+      {
+        "dtype": "bfloat16",
+        "x_gain_relative_l2_errors": [
+          2.5831210223259404e-05,
+          0.0
+        ],
+        "output_bitwise_equal": true,
+        "passed": true
+      }
+    ],
+    "analytic_save_y": [
+      {
+        "dtype": "float32",
+        "x_gain_relative_l2_errors": [
+          6.844867073141359e-08,
+          0.0
+        ],
+        "output_bitwise_equal": true,
+        "passed": true
+      },
+      {
+        "dtype": "bfloat16",
+        "x_gain_relative_l2_errors": [
+          2.5831210223259404e-05,
+          0.0
+        ],
+        "output_bitwise_equal": true,
+        "passed": true
+      }
+    ]
+  },
+  "results": {
+    "hybrid_autodiff": {
+      "samples_ms": [
+        5.673649850359652,
+        5.674214800092159,
+        5.673488350294065,
+        5.672674850211479,
+        5.673527349426877,
+        5.674380299751647,
+        5.672816299920669,
+        5.673708800168242,
+        5.6738698498520534
+      ],
+      "median_ms": 5.673649850359652,
+      "ratio_to_same_architecture": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      }
+    },
+    "hybrid_analytic_save_x": {
+      "samples_ms": [
+        5.657605799933663,
+        5.661152800166747,
+        5.6579953503387515,
+        5.658259800111409,
+        5.657982349657686,
+        5.658209350076504,
+        5.658599299931666,
+        5.657020850048866,
+        5.657656350376783
+      ],
+      "median_ms": 5.6579953503387515,
+      "ratio_to_same_architecture": {
+        "ratio": 0.9973003730682851,
+        "ci95": [
+          0.9971800232783652,
+          0.9974355771440211
+        ],
+        "rounds": 9
+      }
+    },
+    "hybrid_analytic_save_y": {
+      "samples_ms": [
+        5.6593498498841655,
+        5.658131850213977,
+        5.658419300016249,
+        5.659351299982518,
+        5.659410299995216,
+        5.658460799895693,
+        5.659335300151724,
+        5.659346850006841,
+        5.657340799371013
+      ],
+      "median_ms": 5.659335300151724,
+      "ratio_to_same_architecture": {
+        "ratio": 0.9973917315754387,
+        "ci95": [
+          0.9972611603978238,
+          0.9975132108937763
+        ],
+        "rounds": 9
+      }
+    },
+    "algebraic_autodiff": {
+      "samples_ms": [
+        5.698699349886738,
+        5.6988893498783,
+        5.696504800289404,
+        5.698381799447816,
+        5.69663229980506,
+        5.695253299927572,
+        5.69701080021332,
+        5.6987768002727535,
+        5.697057300130837
+      ],
+      "median_ms": 5.697057300130837,
+      "ratio_to_same_architecture": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      }
+    },
+    "algebraic_analytic_save_x": {
+      "samples_ms": [
+        5.692527799692471,
+        5.690288299956592,
+        5.691105349978898,
+        5.688387799455086,
+        5.690025849617086,
+        5.690325849718647,
+        5.694846850383328,
+        5.690188849985134,
+        5.689257799531333
+      ],
+      "median_ms": 5.690288299956592,
+      "ratio_to_same_architecture": {
+        "ratio": 0.9988249599739181,
+        "ci95": [
+          0.9985785043131594,
+          0.9990872270635243
+        ],
+        "rounds": 9
+      }
+    },
+    "algebraic_analytic_save_y": {
+      "samples_ms": [
+        5.69006734949653,
+        5.687975799810374,
+        5.691830800060416,
+        5.69100935026654,
+        5.691221349843545,
+        5.689743849507067,
+        5.690058300388046,
+        5.690190350287594,
+        5.691993350046687
+      ],
+      "median_ms": 5.690190350287594,
+      "ratio_to_same_architecture": {
+        "ratio": 0.9987691366779305,
+        "ci95": [
+          0.9985349365220534,
+          0.9989797290303213
+        ],
+        "rounds": 9
+      }
+    }
+  },
+  "failures": {}
+}

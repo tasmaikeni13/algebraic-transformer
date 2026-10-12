@@ -142,6 +142,73 @@ def resident_backward(q, k, v, sink, stat4, di4, do, di, *, var, bq, bk, chunk,
     return dq, dk, dv, di
 
 
+def packed_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref,
+                  dkv_ref, dq_ref, dkv_sc, dq_sc, *, var, bq, chunk, nq, nk):
+    """Pack dK/dV into one 128-column product instead of two 64-column products."""
+    i = pl.program_id(3)
+    slope = 1. if var.kind == "softmax" else float(var.n)
+
+    @pl.when(i == 0)
+    def init():
+        dkv_sc[...] = jnp.zeros(dkv_sc.shape, jnp.float32)
+    dq_sc[...] = jnp.zeros(dq_sc.shape, jnp.float32)
+
+    def chunk_body(j, unused):
+        key_slice = pl.ds(j * chunk, chunk)
+        def step(masked):
+            q, do = q_ref[0, 0], do_ref[0, 0]
+            k, v = k_ref[0, 0, key_slice, :], v_ref[0, 0, key_slice, :]
+            stat, di = jnp.expand_dims(stat_ref[0, 0, 0], -1), jnp.expand_dims(di_ref[0, 0, 0], -1)
+            p, ds = fk._tile_grads(q, k, v, do, stat, di, i, j,
+                                   var=var, bq=bq, bk=chunk, masked=masked)
+            dsb = ds.astype(q.dtype)
+            coefficients = jnp.concatenate((dsb, p.astype(q.dtype)), axis=0)
+            zeros = jnp.zeros_like(q)
+            q_pad = jnp.concatenate(((q * slope).astype(q.dtype), zeros), axis=1)
+            do_pad = jnp.concatenate((zeros, do), axis=1)
+            rhs = jnp.concatenate((q_pad, do_pad), axis=0)
+            dkv_sc[key_slice, :] += lax.dot_general(coefficients, rhs, fk.TRANS_A,
+                                                   preferred_element_type=jnp.float32)
+            dq_sc[...] += lax.dot(dsb, k, preferred_element_type=jnp.float32)
+        diag = fk._crosses_diagonal(i, j, bq, chunk)
+        @pl.when(jnp.logical_not(diag))
+        def full():
+            step(False)
+        @pl.when(diag)
+        def masked():
+            step(True)
+        return unused
+    lax.fori_loop(0, fk._last_kblock(i, bq, chunk, nk) + 1, chunk_body, None)
+    dq_ref[0, 0] = (dq_sc[...] * slope).astype(dq_ref.dtype)
+    @pl.when(i == nq - 1)
+    def finish():
+        dkv_ref[0, 0] = dkv_sc[...].astype(dkv_ref.dtype)
+
+
+def packed_backward(q, k, v, sink, stat4, di4, do, di, *, var, bq, bk, chunk, query_block=None):
+    B, H, T, D = q.shape
+    bq = min(T, query_block or bq)
+    nq, nk = T // bq, T // chunk
+    q_map = lambda b, h, j, i, *_: (b, h, i, 0)
+    kv_map = lambda b, h, j, i, *_: (b, h, 0, 0)
+    row_map = lambda b, h, j, i, *_: (b, h, 0, i)
+    dkv, dq = pl.pallas_call(
+        partial(packed_kernel, var=var, bq=bq, chunk=chunk, nq=nq, nk=nk),
+        grid_spec=pltpu.PrefetchScalarGridSpec(
+            num_scalar_prefetch=1, grid=(B, H, 1, nq),
+            in_specs=[pl.BlockSpec((1, 1, bq, D), q_map),
+                      pl.BlockSpec((1, 1, T, D), kv_map), pl.BlockSpec((1, 1, T, D), kv_map),
+                      pl.BlockSpec((1, 1, bq, D), q_map),
+                      pl.BlockSpec((1, 1, 1, bq), row_map), pl.BlockSpec((1, 1, 1, bq), row_map)],
+            out_specs=[pl.BlockSpec((1, 1, T, 2 * D), kv_map), pl.BlockSpec((1, 1, bq, D), q_map)],
+            scratch_shapes=[pltpu.VMEM((T, 2 * D), jnp.float32), pltpu.VMEM((bq, D), jnp.float32)]),
+        out_shape=[jax.ShapeDtypeStruct((B, H, T, 2 * D), q.dtype),
+                   jax.ShapeDtypeStruct(q.shape, q.dtype)],
+        compiler_params=fk._params(),
+    )(sink, q, k, v, do, stat4, di4)
+    return dq, dkv[..., :D], dkv[..., D:], di
+
+
 def validate(original, candidate, kind, dtype, *, shifted=False, seq=512):
     shape = (1, 2, seq, 64)
     q, k, v, g = [jax.random.normal(key, shape, dtype) for key in
@@ -186,6 +253,7 @@ def main():
                    default=["float32", "bfloat16"])
     p.add_argument("--tile-orders", nargs="+", choices=["original", "early", "dpfirst"],
                    default=["original"])
+    p.add_argument("--packing", nargs="+", choices=["separate", "together"], default=["separate"])
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     shape = (8, args.heads, 2048, 64)
@@ -198,6 +266,7 @@ def main():
               "validation_seq": args.validation_seq, "validation_dtypes": args.validation_dtypes,
               "query_blocks": args.query_blocks, "chunks": args.chunks,
               "tile_orders": args.tile_orders,
+              "packing": args.packing,
               "prototype": True, "operator_changed": False,
               "kernel_sha256": hashlib.sha256((ROOT / "src/sota/kernels/flash.py").read_bytes()).hexdigest(),
               "probe_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -229,12 +298,13 @@ def main():
     try:
         for kind in ("softmax", "asinh"):
             compile_case(f"{kind}_baseline", kind)
-        for query_block, chunk, order in [(b, c, o) for b in args.query_blocks
-                                          for c in args.chunks for o in args.tile_orders]:
-            candidate = partial(resident_backward, chunk=chunk, query_block=query_block)
+        for query_block, chunk, order, packing in [(b, c, o, p) for b in args.query_blocks
+                                          for c in args.chunks for o in args.tile_orders for p in args.packing]:
+            backend = resident_backward if packing == "separate" else packed_backward
+            candidate = partial(backend, chunk=chunk, query_block=query_block)
             fk._tile_grads = original_tile if order == "original" else partial(ordered_tile, order=order)
             for kind in ("softmax", "asinh"):
-                name = f"{kind}_resident_q{query_block}_k{chunk}_{order}"
+                name = f"{kind}_resident_q{query_block}_k{chunk}_{order}_{packing}"
                 checks = []
                 try:
                     for dtype in [jnp.dtype(name).type for name in args.validation_dtypes]:

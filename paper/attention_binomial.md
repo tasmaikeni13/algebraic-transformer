@@ -112,3 +112,68 @@ and 4.616 ms for either n=64 affine variant with shared powers. These paired
 results are in `results/kernels/attention_link_resident.json`. The relative
 gap to the newly improved standard remains 31% for the fastest affine case.
 The language-model quality gate still applies.
+
+## Wider caps, lower degrees, and learned retrieval
+
+The later native-reciprocal probe uses n=32,c=16 with caps `[-3/4,3]`
+and n=64,c=32 with caps `[-1/2,2]`. Both have origin slope two. At 2048
+keys the first has minimum weight `2^-64` and maximum weight `4^32`;
+values bounded by `1e8` keep its unnormalized numerator in float32 range.
+The second has the same minimum and maximum `3^64`; its permitted value
+range is smaller (a conservative `1e3`). These are stated experiment
+domains, not unrestricted overflow guarantees.
+
+A checked norm guard skips clipping when it is inactive. The guard passes
+for n=32 at gain one and n=64 at gains one and 1.5 in the normalized benchmark.
+At larger gains the original intrinsic clipping is evaluated. At the 125M
+shape the n=32 training time is **4.190 ms** in the unclipped branch and
+**4.420 ms** in the clipped branch; n=64 takes **4.415/4.591 ms**. Standard
+takes **3.367 ms**, and deployed asinh takes **5.422 ms**. Same-link
+denominators that sum the weights after BF16 rounding are slower. Raw data
+are `results/kernels/attention_affine_guard_probe.json`.
+
+The lower-degree variants have wider positive limits:
+
+| n,c | Kernel-unit caps | Origin slope | Forward (ms) | Forward + q/k/v backward (ms) |
+|---|---|---:|---:|---:|
+| 16,2 | [-0.9375,32] | 8 | 1.525 | 4.253 |
+| 8,1 | [-0.999,64] | 8 | 1.485 | 4.132 |
+| 8,2 | [-0.999,32] | 4 | 1.485 | 4.132 |
+| Standard resident control | — | 1 | 1.567 | 3.369 |
+
+These prototypes pass the independent output/VJP checks. Their forward
+comparison is with the paired resident control; it does not establish a
+forward ranking against every maintained implementation. Combined backward
+still misses standard by at least 22.6%. Raw measurements and checked
+branch/value domains are in `attention_affine_lower_degree_probe.json`.
+
+The static routing study now covers eight seeds, 128 rows per seed, and
+gain products 1/1.5/2/4/8/16. Wider caps eliminate cue ties through gain eight
+for the new links; at gain sixteen they return. For n=32,c=16, gain-one
+TV to the deployed link is 0.0506; n=64,c=32 is 0.0179. The n=8 and n=16,c=2
+variants have larger temperature/shape changes. Exact per-seed summaries
+are in `attention_link_wide_analysis.json` and
+`attention_followup_statistics.json`.
+
+The learned retrieval check trains a shared d=64 student with learned QK
+RMS gains for 1500 updates, three paired seeds, and a common softmax output
+classifier. A stable conceptual-logit oracle avoids squared-denominator
+overflow; this is not the Pallas training path or a language-model experiment.
+At 128 items every link reaches 100% accuracy. At 512 items results are
+strongly split by seed:
+
+| Link | Seed 211 accuracy | Seed 223 | Seed 227 |
+|---|---:|---:|---:|
+| Standard | 99.22% | 0.10% | 0.20% |
+| Deployed asinh | 99.02% | 0.20% | 0.10% |
+| Wide affine n=32,c=16 | 98.83% | 0.29% | 0.20% |
+| Wide affine n=16,c=2 | 0.29% | 0.29% | 0.20% |
+| Wide affine n=8,c=1 | 10.84% | 0.00% | 0.29% |
+
+Chance is about 0.10% among 1024 output classes. The lowest-degree links
+fail to match the successful control seed under this budget, and the other
+two seeds do not provide a successful hard-task control. The n=32 candidate
+is plausible for further investigation; this toy check does not authorize
+model adoption or establish a language-model NLL result. Raw trials, learned
+gain statistics, and paired descriptive intervals are retained. No new link
+is used by the deployed model.
