@@ -170,25 +170,43 @@ hybrid 1.36M, algebraic 1.10M tokens/s. Then, on a TPU v4-32 with hosts
 
 ```bash
 python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw25 --threads 128   # 2.5B + 600M + 10M tokens
-python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals            # zero-shot tasks
+python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals            # eight public tasks
+python scripts/prepare_recall_benchmarks.py --output-dir ~/data/recall         # needle and recall matrix
 python scripts/main_run.py main > main.json         # 3 seeds x {standard, algebraic, hybrid}, 2,385 steps each
 # (add --archs standard,algebraic to run only the two original arms)
 python scripts/run_slice.py main.json --group main  # rerun the same command to resume (checkpoints every 200 steps)
-python scripts/evaluate_zero_shot.py runs/main/algebraic_s42 --out results/main/algebraic_s42_zero_shot.json
+# After all nine main runs finish, evaluate on one chip on w0:
+~/bin/chiprun 0 scripts/evaluate_main.py --resume
 ```
 
 Expected wall time per run on 16 chips: about 30 minutes (standard),
 35 minutes (hybrid), and 40 minutes (algebraic).
+
+### Post-training benchmarks
+
+All three architectures, seeds 42–44, receive **ARC-Easy, ARC-Challenge,
+HellaSwag, PIQA, OpenBookQA, WinoGrande, BoolQ, and LAMBADA**, plus
+**needle-in-a-haystack, associative recall, multiple-needle retrieval, and
+latest-value recall**. Recall covers 256/512/1,024/2,048-token total budgets
+and five evidence positions, with short-context and absent-evidence controls.
+The 2,048-token budget includes 16 answer tokens; evidence is never truncated.
+
+The evaluator writes per-example predictions, mean ± SD across training
+seeds, paired differences from standard, and needle heatmaps. Hybrid's recall
+preservation will be measured by this comparison. Main training remains for
+the author; `python scripts/evaluate_main.py --dry-run` prepares the evaluation
+plan without loading weights or starting training. Full task definitions,
+scoring conventions and commands: [post-training evaluation protocol](paper/post_training_evaluation.md).
 
 ## Layout
 
 | path | contents |
 |---|---|
 | `src/sota/` | model (`model.py`), algebraic and standard components, presets (`config.py`), trainer with checkpoint/resume (`train.py`) |
-| `src/sota/kernels/` | Pallas flash attention (`flash.py`) and fused head (`fused_head.py`) |
+| `src/sota/kernels/` | Pallas flash attention (`flash.py`), QK gain-gradient kernel (`qk_norm.py`), and fused head (`fused_head.py`) |
 | `analysis/` | Phase 1 statistics and Monte Carlo, ablation job lists, Phase 3 jobs and summary |
-| `scripts/` | data preparation, 16-chip job queue (`run_queue.py`), full-slice launcher (`run_slice.py`), main run (`main_run.py`), zero-shot evaluation, benchmarks, audit |
-| `configs/` | budget-sweep candidates and the selected main-run hyperparameters |
+| `scripts/` | data preparation, 16-chip job queue (`run_queue.py`), full-slice launcher (`run_slice.py`), main run (`main_run.py`), public/recall evaluation (`evaluate_main.py`), benchmarks, audit |
+| `configs/` | budget-sweep candidates, selected main-run hyperparameters, and frozen post-training evaluation matrix |
 | `results/` | `analysis/` (Phase 1 and Monte Carlo outputs), `phase3/`, `main_sweep/`, `kernels/`, `figures/`, and the first study's records (`v1/`) |
 | `paper/theory.md` | concise mathematics, proofs, and measured status of each claim |
 
