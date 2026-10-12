@@ -2,3 +2,7 @@ import AlgebraicAttention.Radical
 import AlgebraicAttention.Normalization
 import AlgebraicAttention.Derivatives
 import AlgebraicAttention.Bounds
+import AlgebraicAttention.Rational
+import AlgebraicAttention.AffinePower
+import AlgebraicAttention.Accumulation
+import AlgebraicAttention.QuadraticPower

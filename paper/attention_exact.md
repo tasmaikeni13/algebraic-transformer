@@ -6,6 +6,15 @@ weight `kappa(b)`. Define `Z=sum_visible kappa(s_j)+kappa(b)`, `p_j=kappa(s_j)/Z
 and `o=sum_visible p_j v_j`. All comparisons of implementation accuracy below
 use this definition. Comparisons with softmax concern a different model.
 
+The resident backward changes the accumulation schedule while preserving
+this definition. For each query/component, summing disjoint key blocks gives
+the same real dQ contraction; the common integer slope can be applied after
+the sum. `Accumulation.lean` checks both identities. The TPU implementation
+retains FP32 accumulation and stores the final bfloat16 gradient once.
+Floating-point association and compiler correctness require numerical checks;
+they are not consequences of the real identities alone. The automatic
+dispatch is restricted to the measured context-2048/head-dimension-64 shape.
+
 ## 1. Algebra and the online invariant
 
 `rho(x)=exp(asinh(x))`, `rho(-x)=1/rho(x)`, and

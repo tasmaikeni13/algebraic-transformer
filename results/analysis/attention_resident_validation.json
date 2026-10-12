@@ -1,0 +1,53 @@
+{
+  "utc": "2026-10-12T00:06:39.645786+00:00",
+  "validated_parent_revision": "25c0831f81379bef24b1c6b2d4109c79d38cd5dd",
+  "source_sha256": {
+    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+    "src/sota/kernels/radical.py": "6d4beb8359b8386959c76c2dce570a739961d873c607728ae8fd44b2f595e23c",
+    "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+    "tests/test_flash_kernel_tpu.py": "ac793ab15e605fd8e41b6ccb791f08a73545ed6122730e50467a585d761ef33b",
+    "scripts/audit_algebraic.py": "c5fa1d315b7fa2a0c19b1fac1e4ffb7c8519e1eb01ef8c8655c7bcf1d01d1add",
+    "formal/AlgebraicAttention.lean": "2b0a5a72a9b0e5313ed98586e1b3df52b037cae03b8c348514df7939f0308e7f",
+    "formal/lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+    "formal/lake-manifest.json": "3bcbf4c8daf6fa9f49744f3a3ac017867e163c1f415bed86667d6568287be30b",
+    "formal/lakefile.toml": "4082f04993bb6fd7910dce47c869e46d7e8211421fb0fd0ae59ae516d4c286da",
+    "formal/AlgebraicAttention/Accumulation.lean": "ccbeb4a1957e288eebf8a88c8718363c401b128d1e73a984f47b03564f1bb399",
+    "formal/AlgebraicAttention/AffinePower.lean": "5b44749f96fcb63c3a08872d12ee8d81affca939ed511997db28acb2d74a0f1a",
+    "formal/AlgebraicAttention/Bounds.lean": "6d08ca459a69fa3ac1066a9be911140ab695369abacc875c2297f39b78cdd33f",
+    "formal/AlgebraicAttention/Derivatives.lean": "28c52577d78795df4251ac4f162779648fd3a3f883a95d67817aebe124910619",
+    "formal/AlgebraicAttention/Normalization.lean": "06330cf89d0cb0344577b1fd32848d3252f7bbaae4b33f16f738d994a5dbbecb",
+    "formal/AlgebraicAttention/QuadraticPower.lean": "afb1cdcbe5568b977eaa2160c9f497e1c6d2f6ba0c9672baa4c783c37fa9ea0f",
+    "formal/AlgebraicAttention/Radical.lean": "5dfca581561228efa5e3d5e148f0bc716df250da16af55fdd1cc115887b96882",
+    "formal/AlgebraicAttention/Rational.lean": "a82281d826ec5dd7fdd20ca50d9091ef683d5e8977c35d44e6c3b04dd0399caa"
+  },
+  "checks": [
+    {
+      "command": "ssh w1 ~/bin/chiprun 0 -m pytest -q -x --tb=short tests/test_flash_kernel_tpu.py",
+      "result": "71 passed in 173.39s",
+      "artifact": "results/kernels/attention_resident_tpu_test_output.txt",
+      "scope": "TPU v4 float32/bfloat16; dense-reference outputs and q/k/v/sink VJPs; forced and automatic resident backward; shifted extreme-score tails"
+    },
+    {
+      "command": "cd formal && lake build",
+      "result": "Build completed successfully (3187 jobs).",
+      "project_theorems": 52,
+      "scope": "real arithmetic; includes experimental link and reciprocal-error claims; no IEEE/compiler/performance certification"
+    },
+    {
+      "command": "JAX_PLATFORMS=cpu python scripts/audit_algebraic.py --set attn_impl=flash --seq-len 2048",
+      "result": "passed; forbidden_found=[]",
+      "artifact": "results/analysis/attention_resident_primitive_audit.json"
+    }
+  ],
+  "confirmed_timings": [
+    "results/kernels/attention_resident_confirm_125m.json",
+    "results/kernels/attention_resident_confirm_60m.json"
+  ],
+  "prototype_timings": [
+    "results/kernels/attention_link_resident.json",
+    "results/kernels/attention_quadratic_probe.json",
+    "results/kernels/attention_quadratic_reciprocal.json"
+  ],
+  "routing_analysis": "results/analysis/attention_link_analysis.json",
+  "status": "goal open; exact asinh retained; alternative links not adopted"
+}

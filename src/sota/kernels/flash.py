@@ -29,10 +29,11 @@ A sink is a key with zero value and logit ``b`` (per head). It enters through
 the initial running state. Sink-logit gradients are formed outside the kernels
 from the saved statistic.
 
-Forward grid (B, H, q blocks, k blocks); the backward uses a dK/dV kernel
-(grid over k blocks, q inner) and a dQ kernel (q blocks, k inner). Causal
-tiles strictly above the diagonal are neither computed nor fetched, and the
-causal mask is only evaluated on tiles that cross the diagonal.
+Forward grid (B, H, q blocks, k blocks). Backward normally accumulates dK/dV
+and writes dQ partials per key block. For the measured bfloat16 model shape,
+resident backward retains K/V in VMEM and accumulates dQ before writing it
+once. Other shapes retain the partial-reduction backend. Causal tiles above
+the diagonal are skipped; only tiles crossing it evaluate a mask.
 """
 
 from functools import partial
@@ -63,6 +64,7 @@ class Variant(NamedTuple):
     compact_stat: bool = False  # save one scalar per row instead of 128 replicas
     poly_rho: bool = False  # opt-in, bounded approximation with a stable exact tail
     bounded_scores: bool = False  # internal: a runtime Cauchy-Schwarz guard passed
+    resident_bwd: bool = False  # retain full K/V and accumulate dQ in VMEM
 
 
 def _rho_exact(x):
@@ -465,12 +467,95 @@ def _backward_fused(q, k, v, sink, stat4, di4, do, di, *, var, bq, bk):
     return dq, dk, dv, di
 
 
+def _resident_bwd_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref,
+                         dk_ref, dv_ref, dq_ref, dk_sc, dv_sc, dq_sc, *,
+                         var, bq, bk, nq, nk):
+    """Keep one head's K/V/dK/dV in VMEM; reduce dQ before its only store."""
+    i = pl.program_id(3)
+
+    @pl.when(i == 0)
+    def _init_kv():
+        dk_sc[...] = jnp.zeros(dk_sc.shape, F32)
+        dv_sc[...] = jnp.zeros(dv_sc.shape, F32)
+
+    dq_sc[...] = jnp.zeros(dq_sc.shape, F32)
+
+    def chunk_body(j, unused):
+        key_slice = pl.ds(j * bk, bk)
+
+        def step(masked):
+            q, do = q_ref[0, 0], do_ref[0, 0]
+            k, v = k_ref[0, 0, key_slice, :], v_ref[0, 0, key_slice, :]
+            stat = jnp.expand_dims(stat_ref[0, 0, 0], -1)
+            di = jnp.expand_dims(di_ref[0, 0, 0], -1)
+            p, ds = _tile_grads(q, k, v, do, stat, di, i, j,
+                                var=var, bq=bq, bk=bk, masked=masked)
+            dsb = ds.astype(q.dtype)
+            dv_sc[key_slice, :] += lax.dot_general(
+                p.astype(do.dtype), do, TRANS_A, preferred_element_type=F32)
+            dk_sc[key_slice, :] += lax.dot_general(
+                dsb, q, TRANS_A, preferred_element_type=F32)
+            dq_sc[...] += lax.dot(dsb, k, preferred_element_type=F32)
+
+        diag = _crosses_diagonal(i, j, bq, bk)
+
+        @pl.when(jnp.logical_not(diag))
+        def _full():
+            step(False)
+
+        @pl.when(diag)
+        def _masked():
+            step(True)
+        return unused
+
+    lax.fori_loop(0, _last_kblock(i, bq, bk, nk) + 1, chunk_body, None)
+    slope = 1.0 if var.kind == "softmax" else float(var.n)
+    dq_ref[0, 0] = (dq_sc[...] * slope).astype(dq_ref.dtype)
+
+    @pl.when(i == nq - 1)
+    def _fin_kv():
+        dk_ref[0, 0] = (dk_sc[...] * slope).astype(dk_ref.dtype)
+        dv_ref[0, 0] = dv_sc[...].astype(dv_ref.dtype)
+
+
+def _backward_resident(q, k, v, sink, stat4, di4, do, di, *, var):
+    B, H, T, D = q.shape
+    bq = bk = 512
+    nq, nk = T // bq, T // bk
+    q_map = lambda b, h, j, i, *_: (b, h, i, 0)
+    kv_map = lambda b, h, j, i, *_: (b, h, 0, 0)
+    row_map = lambda b, h, j, i, *_: (b, h, 0, i)
+    dk, dv, dq = pl.pallas_call(
+        partial(_resident_bwd_kernel, var=var, bq=bq, bk=bk, nq=nq, nk=nk),
+        grid_spec=pltpu.PrefetchScalarGridSpec(
+            num_scalar_prefetch=1,
+            grid=(B, H, 1, nq),
+            in_specs=[pl.BlockSpec((1, 1, bq, D), q_map),
+                      pl.BlockSpec((1, 1, T, D), kv_map),
+                      pl.BlockSpec((1, 1, T, D), kv_map),
+                      pl.BlockSpec((1, 1, bq, D), q_map),
+                      pl.BlockSpec((1, 1, 1, bq), row_map),
+                      pl.BlockSpec((1, 1, 1, bq), row_map)],
+            out_specs=[pl.BlockSpec((1, 1, T, D), kv_map),
+                       pl.BlockSpec((1, 1, T, D), kv_map),
+                       pl.BlockSpec((1, 1, bq, D), q_map)],
+            scratch_shapes=[pltpu.VMEM((T, D), F32), pltpu.VMEM((T, D), F32),
+                            pltpu.VMEM((bq, D), F32)]),
+        out_shape=[jax.ShapeDtypeStruct(k.shape, k.dtype), jax.ShapeDtypeStruct(v.shape, v.dtype),
+                   jax.ShapeDtypeStruct(q.shape, q.dtype)],
+        compiler_params=_params(),
+    )(sink, q, k, v, do, stat4, di4)
+    return dq, dk, dv, di
+
+
 def _backward(q, k, v, sink, o, stat, do, *, var, bq, bk, fused=True):
     B, H, T, D = q.shape
     nq, nk = T // bq, T // bk
     di = jnp.sum(do.astype(F32) * o.astype(F32), axis=-1)            # (B, H, T)
     stat4 = stat[:, :, None, :]
     di4 = di[:, :, None, :]
+    if var.resident_bwd:
+        return _backward_resident(q, k, v, sink, stat4, di4, do, di, var=var)
     if fused:
         return _backward_fused(q, k, v, sink, stat4, di4, do, di, var=var, bq=bq, bk=bk)
 
@@ -598,13 +683,17 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
                     block_q: Optional[int] = None, block_k: Optional[int] = None,
                     shift: Optional[bool] = None, fast_rho: Optional[bool] = None,
                     inv_stat: Optional[bool] = None, compact_stat: bool = True,
-                    poly_rho: bool = False, range_guard: bool = False):
+                    poly_rho: bool = False, range_guard: bool = False,
+                    resident_bwd: Optional[bool] = None):
     """Causal attention on (B, H, T, D). ``sink_logit`` broadcastable to (H,).
 
     For ``kind="asinh"`` the weights are ``rho(s / c)^n`` with ``s`` the
     scaled dot product; ``n >= 2`` must be a power of two. ``range_guard``
     uses an unclipped fast path and a shifted tail for n <= 32. Explicit
     unguarded ``shift=False`` evaluates the upper-clipped link instead.
+    ``resident_bwd=None`` selects resident accumulation for compact-statistic
+    bfloat16 inputs at T=2048,D=64 and 512-square forward tiles. Explicit True
+    also supports T=512/1024; False retains per-key-block dQ partials.
     """
     B, H, T, D = q.shape
     bq = min(block_q or block, T)
@@ -612,6 +701,15 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
     if T % bq or T % bk:
         raise ValueError(f"sequence length {T} must be divisible by blocks ({bq}, {bk})")
     var = make_variant(kind, n, c, T, shift, fast_rho, inv_stat, compact_stat, poly_rho)
+    resident_supported = (T in (512, 1024, 2048) and D == 64 and
+                          q.dtype == k.dtype == v.dtype == jnp.bfloat16 and not poly_rho and
+                          (kind == "softmax" or n == 16))
+    if resident_bwd is True and not resident_supported:
+        raise ValueError("resident backward needs bfloat16, T=512/1024/2048, D=64, "
+                         "and softmax or exact asinh n=16")
+    use_resident = (resident_supported and T == 2048 and bq == bk == 512 and compact_stat
+                    if resident_bwd is None else bool(resident_bwd))
+    var = var._replace(resident_bwd=use_resident)
     unit = 1.0 if kind == "softmax" else float(c)
     scale = 1.0 / (math.sqrt(D) * unit)
     has_sink = sink_logit is not None

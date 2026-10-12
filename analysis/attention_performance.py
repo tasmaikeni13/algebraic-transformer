@@ -67,15 +67,19 @@ def main():
             continue
         for family in args.families.split(","):
             kw = dict(block_q=bq, block_k=bk)
-            if family in ("softmax", "softmax_compact"):
-                kw.update(kind="softmax", compact_stat=family == "softmax_compact")
+            if family in ("softmax", "softmax_compact", "softmax_partial"):
+                kw.update(kind="softmax", compact_stat=family != "softmax")
+                if family == "softmax_partial":
+                    kw.update(resident_bwd=False)
                 s = None
-            elif family in ("asinh", "asinh_inv", "asinh_exact", "asinh_compact", "asinh_poly", "asinh_poly_compact", "asinh_guarded"):
+            elif family in ("asinh", "asinh_inv", "asinh_exact", "asinh_compact", "asinh_poly", "asinh_poly_compact", "asinh_guarded", "asinh_guarded_partial"):
                 kw.update(kind="asinh", n=16, c=8., shift=False,
                           fast_rho=family != "asinh_exact", inv_stat=family != "asinh",
-                          compact_stat=family in ("asinh_compact", "asinh_poly_compact", "asinh_guarded"),
+                          compact_stat=family in ("asinh_compact", "asinh_poly_compact", "asinh_guarded", "asinh_guarded_partial"),
                           poly_rho=family in ("asinh_poly", "asinh_poly_compact"),
-                          range_guard=family == "asinh_guarded")
+                          range_guard=family in ("asinh_guarded", "asinh_guarded_partial"))
+                if family == "asinh_guarded_partial":
+                    kw.update(resident_bwd=False)
                 s = sink
             else:
                 raise ValueError(f"unknown family {family}")

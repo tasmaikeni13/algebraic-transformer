@@ -16,6 +16,10 @@ goal remains open; historical phase completion does not establish parity.
 
 | File | What it does |
 |---|---|
+| `attention_link_analysis.py` | Static normalized-sphere routing, clipping/tie diagnostics, and temperature-matched KL for alternative algebraic links; does not establish trained quality |
+| `attention_link_probe.py` | Isolated TPU rational/affine-power kernels, independent dense output/VJP checks, and paired timing with frozen standard/asinh executables |
+| `attention_resident_probe.py` | Exact backward experiment retaining K/V and accumulating dQ in VMEM; output checks and paired timing without changing the deployed kernel |
+| `attention_link_statistics.py` | Bootstrap over independent synthetic seeds and paired within-run hardware rounds for alternative links |
 | `v1_statistics.py` | Paired seed statistics of the first study's 125M runs, the 18-run tuning sweep, schedule areas, and an LR-annealing scaling-law fit |
 | `head_analysis.py` | Monte Carlo: representational floor of each head, cost of OACE vs log-loss under misspecification (B), rank bottleneck of softmax vs asinh links (C) |
 | `verify_head_eval.py` | Independent float64 recomputation of a saved model's held-out NLL |

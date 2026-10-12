@@ -105,11 +105,13 @@ at 88% of its throughput, against 72% for the fully algebraic model.
 
 **Attention speed follow-up:** the current guarded algebraic kernel uses
 inverse-denominator statistics, compact row outputs, and a stable fallback
-for extreme scores. Fifteen paired rounds at the 125M attention shape give
-**5.94 ms algebraic vs 3.97 ms standard** for forward plus backward; at the
-60M shape, **3.95 vs 2.61 ms**. Speed parity remains open. The follow-up
-includes 55 passing TPU checks, 9,216 Monte Carlo rows, exact rational
-approximation certificates, and checked Lean proofs.
+for extreme scores, plus resident-memory dQ accumulation at the measured
+bfloat16 model shape. Fifteen paired rounds at the 125M attention shape give
+**5.42 ms algebraic vs 3.36 ms standard** for forward plus backward; at the
+60M shape, **3.53 vs 2.21 ms**. Speed parity remains open. The follow-up
+includes 71 passing TPU checks, 9,216 numerical Monte Carlo rows, alternative
+link routing studies, exact rational certificates, and 52 checked Lean
+theorems. Experimental links are kept separate from the deployed model.
 [Measurements and rejected candidates](paper/attention_performance.md),
 [expanded attention theory](paper/attention_exact.md),
 [formal coverage](formal/README.md).

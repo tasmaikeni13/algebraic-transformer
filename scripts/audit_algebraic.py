@@ -12,6 +12,7 @@ graph and is not part of the training path.
 
 import argparse
 from collections import Counter
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -56,7 +57,9 @@ def audit(preset: str, overrides: dict, seq_len: int = 256) -> dict:
 
     counts = primitives(jax.make_jaxpr(jax.grad(objective))(params))
     bad = sorted(set(counts) & FORBIDDEN)
-    return {"preset": preset, "overrides": overrides, "forbidden_found": bad,
+    return {"preset": preset, "overrides": overrides, "seq_len": seq_len,
+            "kernel_sha256": hashlib.sha256((ROOT / "src/sota/kernels/flash.py").read_bytes()).hexdigest(),
+            "forbidden_found": bad,
             "passed": not bad, "primitive_counts": dict(sorted(counts.items()))}
 
 
@@ -65,9 +68,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--preset", default="algebraic")
     p.add_argument("--set", action="append", default=[])
+    p.add_argument("--seq-len", type=int, default=256)
     p.add_argument("--out", type=Path)
     a = p.parse_args()
-    res = audit(a.preset, parse_overrides(a.set))
+    res = audit(a.preset, parse_overrides(a.set), seq_len=a.seq_len)
     print(json.dumps({k: v for k, v in res.items() if k != "primitive_counts"}, indent=1))
     if a.out:
         a.out.parent.mkdir(parents=True, exist_ok=True)

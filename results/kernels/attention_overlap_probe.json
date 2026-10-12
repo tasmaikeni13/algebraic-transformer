@@ -1,0 +1,590 @@
+{
+  "utc": "2026-10-11T23:45:36.642972+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "rounds": 9,
+  "iters": 30,
+  "seed": 37,
+  "validation_seq": 2048,
+  "validation_dtypes": [
+    "bfloat16"
+  ],
+  "query_blocks": [
+    512
+  ],
+  "chunks": [
+    512
+  ],
+  "tile_orders": [
+    "original",
+    "early",
+    "dpfirst"
+  ],
+  "prototype": true,
+  "operator_changed": false,
+  "kernel_sha256": "0e1e52d536fc102c15a407f09f7500614ed68526a4bb9a1542bc3b11ddd8b04f",
+  "probe_sha256": "3ce29774b13522f6d08a31ab68fe57ec9d68b9e2276f4bee732ad43ee05e2815",
+  "results": {
+    "softmax_baseline": {
+      "samples_ms": [
+        3.9719223333425666,
+        3.971993333349625,
+        3.9726296667746888,
+        3.9707279667103044,
+        3.97085863345031,
+        3.9710739998554345,
+        3.970919666850629,
+        3.9704713000295064,
+        3.972029966826085
+      ],
+      "compile_s": 2.2488854309995077,
+      "median_ms": 3.9710739998554345,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.1812421164844755,
+        "ci95": [
+          1.181076930730724,
+          1.1814120429605366
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_baseline": {
+      "samples_ms": [
+        5.946150166467608,
+        5.945144133390083,
+        5.944717799866339,
+        5.942606133370039,
+        5.945846133545274,
+        5.941445166778673,
+        5.942692466487642,
+        5.945622800209094,
+        5.950604799969976
+      ],
+      "compile_s": 4.897440897999331,
+      "median_ms": 5.945144133390083,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4969472108726483,
+        "ci95": [
+          1.4965895518122376,
+          1.4973367073503803
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.7682570916367397,
+        "ci95": [
+          1.767797891893733,
+          1.7687789521802537
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q512_k512_original": {
+      "samples_ms": [
+        3.365087366546504,
+        3.3652763668214902,
+        3.364548066747375,
+        3.3645747333745626,
+        3.3649900666205212,
+        3.364257366532305,
+        3.3646950333301597,
+        3.364438033410503,
+        3.36478806687713
+      ],
+      "compile_s": 2.0514692889992148,
+      "median_ms": 3.3646950333301597,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8472420217490844,
+        "ci95": [
+          0.847142629572436,
+          0.8473264486428065
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.8472420217490844,
+        "ci95": [
+          0.847142629572436,
+          0.8473264486428065
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.0007979589454745,
+        "ci95": [
+          1.0007192839096632,
+          1.0008689078097543
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q512_k512_original": {
+      "samples_ms": [
+        5.419685199982875,
+        5.41884586661278,
+        5.419249200106909,
+        5.419593866584667,
+        5.420015866548056,
+        5.419255500116075,
+        5.418853200050459,
+        5.419982833215424,
+        5.4189595333203515
+      ],
+      "compile_s": 4.86667013099941,
+      "median_ms": 5.419255500116075,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9115895834763025,
+        "ci95": [
+          0.9113101999752713,
+          0.9118220133899011
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.36460148444541,
+        "ci95": [
+          1.3643966408303714,
+          1.3648031582012308
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.6119247456441534,
+        "ci95": [
+          1.6117769477723305,
+          1.6120492401485291
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q512_k512_early": {
+      "samples_ms": [
+        3.362201699928846,
+        3.362019733322086,
+        3.3617987333855126,
+        3.3615333665996636,
+        3.362210700045883,
+        3.3617467001022305,
+        3.3627123666519765,
+        3.362277066480601,
+        3.3620097000190676
+      ],
+      "compile_s": 2.003634332002548,
+      "median_ms": 3.362019733322086,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8465664964403108,
+        "ci95": [
+          0.8464447319277965,
+          0.8466848974700631
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.8465664964403108,
+        "ci95": [
+          0.8464447319277965,
+          0.8466848974700631
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q512_k512_early": {
+      "samples_ms": [
+        5.417526533225707,
+        5.415352533357994,
+        5.416544866602635,
+        5.416195166859931,
+        5.415771533201526,
+        5.417539200182849,
+        5.415599199962647,
+        5.417512533313129,
+        5.415873866634986
+      ],
+      "compile_s": 5.108793040002638,
+      "median_ms": 5.416195166859931,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9110938140404425,
+        "ci95": [
+          0.9107928582284407,
+          0.9113646705432156
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.3638593437711637,
+        "ci95": [
+          1.3636367971803725,
+          1.3640849381098687
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.6110480978233774,
+        "ci95": [
+          1.610838218588908,
+          1.6112506947986807
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q512_k512_dpfirst": {
+      "samples_ms": [
+        3.4599600333118965,
+        3.4602190666191746,
+        3.4598893333168235,
+        3.4602807000434646,
+        3.460800333171695,
+        3.4608879999723285,
+        3.460259366693208,
+        3.461332366714487,
+        3.460017366645237
+      ],
+      "compile_s": 2.1148566830015625,
+      "median_ms": 3.460259366693208,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8713306633519728,
+        "ci95": [
+          0.8711627318803503,
+          0.8714958596172652
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.8713306633519728,
+        "ci95": [
+          0.8711627318803503,
+          0.8714958596172652
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.0292524769357065,
+        "ci95": [
+          1.029150119851175,
+          1.0293583099389363
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q512_k512_dpfirst": {
+      "samples_ms": [
+        5.646144166530576,
+        5.646530166753412,
+        5.646609166675868,
+        5.646922833208616,
+        5.647123499996572,
+        5.646613499993691,
+        5.646673166484106,
+        5.646738166493985,
+        5.648116500136287
+      ],
+      "compile_s": 5.276569034998829,
+      "median_ms": 5.646673166484106,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9498483769234699,
+        "ci95": [
+          0.9496151339533104,
+          0.9500711926762071
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4218728785875,
+        "ci95": [
+          1.4216791850928538,
+          1.4220474352624948
+        ],
+        "rounds": 9
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.6795761284745723,
+        "ci95": [
+          1.6794271612664768,
+          1.6797346749198843
+        ],
+        "rounds": 9
+      }
+    }
+  },
+  "validation": {
+    "softmax_resident_q512_k512_original": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.0653816338599427e-06,
+          1.228424662258476e-05,
+          1.183340555144241e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0001220703125,
+          0.00048828125,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q512_k512_original": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.324408908156329e-06,
+          3.661200253191055e-06,
+          2.0033581677125767e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.225913360438426e-06,
+          2.5618384825065732e-05,
+          1.9624347260105424e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q512_k512_early": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.0653816338599427e-06,
+          1.228424662258476e-05,
+          1.183340555144241e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0001220703125,
+          0.00048828125,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q512_k512_early": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.324408908156329e-06,
+          3.661200253191055e-06,
+          2.0033581677125767e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.225913360438426e-06,
+          2.5618384825065732e-05,
+          1.9624347260105424e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q512_k512_dpfirst": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.0653816338599427e-06,
+          1.228424662258476e-05,
+          1.183340555144241e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0001220703125,
+          0.00048828125,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q512_k512_dpfirst": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.324408908156329e-06,
+          3.661200253191055e-06,
+          2.0033581677125767e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.225913360438426e-06,
+          2.5618384825065732e-05,
+          1.9624347260105424e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ]
+  },
+  "failures": {},
+  "fastest_standard": "softmax_resident_q512_k512_early"
+}

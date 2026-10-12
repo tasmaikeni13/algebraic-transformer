@@ -10,6 +10,13 @@ coverage in [attention_exact.md](attention_exact.md), with paired hardware
 measurements and rejected optimizations in
 [attention_performance.md](attention_performance.md). Speed parity remains
 open. The new Lean project is in [`formal/`](../formal/README.md).
+Exact resident-memory dQ accumulation now improves the deployed kernel;
+the real key-partition identity is checked in Lean. Alternative links are
+analyzed separately in [attention_pade.md](attention_pade.md),
+[attention_binomial.md](attention_binomial.md), and
+[attention_quadratic.md](attention_quadratic.md). Their primitive counts,
+formal derivatives, static routing, numerical VJPs, and hardware timings
+are distinguished from a language-model quality result.
 
 ## 0. What "algebraic" means here
 

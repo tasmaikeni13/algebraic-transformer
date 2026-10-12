@@ -139,3 +139,60 @@ def test_explicit_clipping_vjp_is_zero_above_cap():
         grads = jax.jit(jax.grad(loss, argnums=(0, 1, 2)))(q, k, sink)
         for grad in grads:
             np.testing.assert_array_equal(grad, jnp.zeros_like(grad))
+
+
+@pytest.mark.parametrize("kind,mode", [("softmax", "sink"), ("softmax", "no_sink"),
+                                      ("asinh", "inverse"), ("asinh", "root"),
+                                      ("asinh", "shifted"), ("asinh", "guarded")])
+@pytest.mark.parametrize("seq", [512, 2048])
+def test_resident_backward_matches_dense(kind, mode, seq):
+    """Independent dense VJPs for forced resident and automatic model dispatch."""
+    from src.sota.kernels.flash import flash_attention
+    shape = (1, 2, seq, 64)
+    keys = jax.random.split(jax.random.PRNGKey(67), 5)
+    q, k, v, g = [jax.random.normal(key, shape, jnp.bfloat16) for key in keys[:4]]
+    sink = jax.random.normal(keys[4], (1, 2, 1, 1), jnp.float32) if mode != "no_sink" else None
+    opts = dict(kind=kind, n=16, c=8., block=512, compact_stat=mode != "root",
+                resident_bwd=True, shift=mode == "shifted", inv_stat=mode != "root" and mode != "shifted",
+                range_guard=mode == "guarded")
+    f = lambda q, k, v, s: flash_attention(q, k, v, s, **opts)
+    ref = lambda q, k, v, s: reference(q, k, v, s, kind, 16, 8.)
+    with jax.default_matmul_precision("default"):
+        got = jax.jit(f)(q, k, v, sink)
+        want = jax.jit(ref)(q, k, v, sink)
+        np.testing.assert_allclose(np.asarray(got, dtype=np.float32),
+                                   np.asarray(want, dtype=np.float32), atol=.012, rtol=.012)
+        loss = lambda fn, q, k, v, s: jnp.sum(fn(q, k, v, s).astype(jnp.float32) * g.astype(jnp.float32))
+        argnums = (0, 1, 2, 3) if sink is not None else (0, 1, 2)
+        ga = jax.jit(jax.grad(partial(loss, f), argnums=argnums))(q, k, v, sink)
+        gb = jax.jit(jax.grad(partial(loss, ref), argnums=argnums))(q, k, v, sink)
+        for a, b in zip(ga, gb):
+            a, b = np.asarray(a, dtype=np.float32), np.asarray(b, dtype=np.float32)
+            assert np.linalg.norm(a - b) / max(np.linalg.norm(b), 1e-6) < .02
+        if seq == 2048 and mode == "guarded":
+            auto = lambda q, k, v, s: flash_attention(q, k, v, s, **{**opts, "resident_bwd": None})
+            gc = jax.jit(jax.grad(partial(loss, auto), argnums=argnums))(q, k, v, sink)
+            for a, b in zip(ga, gc):
+                np.testing.assert_array_equal(a, b)
+
+
+@pytest.mark.parametrize("score_sign", [-1., 1.])
+@pytest.mark.parametrize("with_sink", [False, True])
+def test_resident_guarded_tail(score_sign, with_sink):
+    from src.sota.kernels.flash import flash_attention
+    shape = (1, 1, 512, 64)
+    q = jnp.full(shape, math.sqrt(1000), jnp.bfloat16)
+    k = q * score_sign
+    v = jax.random.normal(jax.random.PRNGKey(69), shape, jnp.bfloat16)
+    sink = jnp.zeros((1,), jnp.float32) if with_sink else None
+    fn = lambda q, k, v: flash_attention(q, k, v, sink, kind="asinh", n=16, c=8.,
+                                         block=128, compact_stat=True, range_guard=True,
+                                         resident_bwd=True)
+    with jax.default_matmul_precision("default"):
+        out = jax.jit(fn)(q, k, v)
+        want = A.asinh_attention(q, k, v, n=16, c=8., sink_logit=sink)
+        assert np.isfinite(np.asarray(out, dtype=np.float32)).all()
+        np.testing.assert_allclose(np.asarray(out, dtype=np.float32),
+                                   np.asarray(want, dtype=np.float32), atol=.012, rtol=.012)
+        grads = jax.jit(jax.grad(lambda q, k, v: fn(q, k, v).sum(), argnums=(0, 1, 2)))(q, k, v)
+        assert all(np.isfinite(np.asarray(x, dtype=np.float32)).all() for x in grads)

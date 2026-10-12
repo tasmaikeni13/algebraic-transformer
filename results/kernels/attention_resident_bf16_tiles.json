@@ -1,0 +1,789 @@
+{
+  "utc": "2026-10-11T23:42:35.086990+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "rounds": 9,
+  "iters": 30,
+  "seed": 37,
+  "validation_seq": 2048,
+  "validation_dtypes": [
+    "bfloat16"
+  ],
+  "query_blocks": [
+    256,
+    512,
+    1024
+  ],
+  "chunks": [
+    512,
+    1024
+  ],
+  "prototype": true,
+  "operator_changed": false,
+  "kernel_sha256": "0e1e52d536fc102c15a407f09f7500614ed68526a4bb9a1542bc3b11ddd8b04f",
+  "probe_sha256": "8c52f45b252351bbd1b45f4c7aea66df3676e6b914e1748e7563cf78f90dcefb",
+  "results": {
+    "softmax_baseline": {
+      "samples_ms": [
+        3.9721045335075664,
+        3.9711188668055306,
+        3.971961199810418,
+        3.9720558333404674,
+        3.9729768667408885,
+        3.970496533293044,
+        3.970053499991385,
+        3.970892533349494,
+        3.974224866639512
+      ],
+      "compile_s": 2.0907314520009095,
+      "median_ms": 3.971961199810418,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_baseline": {
+      "samples_ms": [
+        5.945755933256199,
+        5.948568299936596,
+        5.946584300060446,
+        5.946618633364172,
+        5.945039633176445,
+        5.947336333338171,
+        5.944967933222263,
+        5.947618633460176,
+        5.946269966807449
+      ],
+      "compile_s": 4.978267449994746,
+      "median_ms": 5.946584300060446,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4972006330966232,
+        "ci95": [
+          1.496809959300961,
+          1.4975847201631776
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q256_k512": {
+      "samples_ms": [
+        3.6329375664839367,
+        3.632973566709552,
+        3.6330572666580943,
+        3.633293566720871,
+        3.6325922332859286,
+        3.6336825665785,
+        3.6325815664895345,
+        3.6333112332310216,
+        3.6335935665798993
+      ],
+      "compile_s": 1.9074502639996354,
+      "median_ms": 3.6330572666580943,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9147353536835306,
+        "ci95": [
+          0.9145508356490756,
+          0.9149164068558725
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.9147353536835306,
+        "ci95": [
+          0.9145508356490756,
+          0.9149164068558725
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q256_k512": {
+      "samples_ms": [
+        5.735202966752695,
+        5.693790333558961,
+        5.693625000033838,
+        5.694077333221988,
+        5.694124999960574,
+        5.694120966897269,
+        5.6928613332274836,
+        5.693458966561593,
+        5.69457863336235
+      ],
+      "compile_s": 5.258521567004209,
+      "median_ms": 5.694077333221988,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9582753522612782,
+        "ci95": [
+          0.9573966573266457,
+          0.9598936805676013
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4347304640864755,
+        "ci95": [
+          1.433404201267661,
+          1.437093219813428
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q256_k1024": {
+      "samples_ms": [
+        3.6674678999891817,
+        3.667994900024496,
+        3.6676905998319853,
+        3.6683092332774927,
+        3.667840233295768,
+        3.668031233246438,
+        3.667242566734785,
+        3.667636866642473,
+        3.667929900014618
+      ],
+      "compile_s": 2.1341187069992884,
+      "median_ms": 3.667840233295768,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9234669985809663,
+        "ci95": [
+          0.923285145802556,
+          0.9236347916260651
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.9234669985809663,
+        "ci95": [
+          0.923285145802556,
+          0.9236347916260651
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q256_k1024": {
+      "samples_ms": [
+        5.949298966637191,
+        5.948524633276975,
+        5.948770933415896,
+        5.949501633343364,
+        5.949111966765486,
+        5.9557719667888405,
+        5.949351933425835,
+        5.949418633341945,
+        5.9492792999662925
+      ],
+      "compile_s": 5.216490981998504,
+      "median_ms": 5.949298966637191,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0005655571787477,
+        "ci95": [
+          1.0003439007459018,
+          1.0008161271451794
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4980473856626966,
+        "ci95": [
+          1.4975826281683726,
+          1.4986302213158138
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q512_k512": {
+      "samples_ms": [
+        3.3648782666811408,
+        3.3653012668461693,
+        3.364504599934056,
+        3.3643199334619567,
+        3.364642600111741,
+        3.3657212998756827,
+        3.3645389332377817,
+        3.3642849331954494,
+        3.3644469333618567
+      ],
+      "compile_s": 2.0816027730033966,
+      "median_ms": 3.3645389332377817,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8471643701445987,
+        "ci95": [
+          0.8469560485851505,
+          0.8473704284428508
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.8471643701445987,
+        "ci95": [
+          0.8469560485851505,
+          0.8473704284428508
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q512_k512": {
+      "samples_ms": [
+        5.419807333479791,
+        5.419480666751042,
+        5.41969403323795,
+        5.419401666828587,
+        5.419226999947568,
+        5.420122033441051,
+        5.420119033563727,
+        5.419326366730577,
+        5.420009366692587
+      ],
+      "compile_s": 5.308869521002634,
+      "median_ms": 5.41969403323795,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9114035636118679,
+        "ci95": [
+          0.9112769386045091,
+          0.9115232204676442
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.3645539924462071,
+        "ci95": [
+          1.3642668359047123,
+          1.3648433859127442
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q512_k1024": {
+      "samples_ms": [
+        3.638872900046408,
+        3.6395279001832628,
+        3.6390695665128683,
+        3.6383982333063614,
+        3.638680566655239,
+        3.6385332668335955,
+        3.6384012334262175,
+        3.6388928999561663,
+        3.6381205667566974
+      ],
+      "compile_s": 2.7724701719998848,
+      "median_ms": 3.638680566655239,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.91614737571646,
+        "ci95": [
+          0.9159229603047561,
+          0.9163471032615501
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.91614737571646,
+        "ci95": [
+          0.9159229603047561,
+          0.9163471032615501
+        ],
+        "rounds": 9
+      }
+    },
+    "asinh_resident_q512_k1024": {
+      "samples_ms": [
+        5.879522666752261,
+        5.878502966515953,
+        5.876339299963244,
+        5.877475300076185,
+        5.878569966686579,
+        5.877549633441959,
+        5.880125633363302,
+        5.877604299894301,
+        5.878156966597696
+      ],
+      "compile_s": 6.541903963996447,
+      "median_ms": 5.878156966597696,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9885103301218398,
+        "ci95": [
+          0.9883164620275608,
+          0.9887220972604772
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4799982920809704,
+        "ci95": [
+          1.479635674207735,
+          1.4803794629626554
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q1024_k512": {
+      "samples_ms": [
+        3.6242195667000487,
+        3.6237088999769185,
+        3.6241842334372145,
+        3.623760600021342,
+        3.6232319000797966,
+        3.623182899900712,
+        3.623805566652057,
+        3.6248038998261713,
+        3.623913233362449
+      ],
+      "compile_s": 2.7076508780010045,
+      "median_ms": 3.623805566652057,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9124074648738328,
+        "ci95": [
+          0.9121986674160005,
+          0.9126028663590628
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.9124074648738328,
+        "ci95": [
+          0.9121986674160005,
+          0.9126028663590628
+        ],
+        "rounds": 9
+      }
+    },
+    "softmax_resident_q1024_k1024": {
+      "samples_ms": [
+        3.5903905666297455,
+        3.5902942334359977,
+        3.590841600089334,
+        3.590194600110408,
+        3.589777233234296,
+        3.5909058999095578,
+        3.590658233345797,
+        3.5905556001428827,
+        3.5910445665649604
+      ],
+      "compile_s": 4.064045489001728,
+      "median_ms": 3.5905556001428827,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.9040107450251713,
+        "ci95": [
+          0.9038161200402971,
+          0.9042039596921552
+        ],
+        "rounds": 9
+      },
+      "ratio_to_standard": {
+        "ratio": 0.9040107450251713,
+        "ci95": [
+          0.9038161200402971,
+          0.9042039596921552
+        ],
+        "rounds": 9
+      }
+    }
+  },
+  "validation": {
+    "softmax_resident_q256_k512": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.0653816338599427e-06,
+          8.778526989772217e-07,
+          1.1833411917905323e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0001220703125,
+          3.0517578125e-05,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q256_k512": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.324408908156329e-06,
+          4.9012101044354495e-06,
+          1.943557981576305e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.225913360438426e-06,
+          2.8584629035321996e-05,
+          1.9661971236928366e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q256_k1024": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          9.579262894021667e-08,
+          8.778526989772217e-07,
+          1.1833411917905323e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          3.814697265625e-06,
+          3.0517578125e-05,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q256_k1024": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          4.599688185891182e-09,
+          4.9012101044354495e-06,
+          1.943557981576305e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          4.76837158203125e-07,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.2254913548968034e-06,
+          2.8584629035321996e-05,
+          1.9661971236928366e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q512_k512": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.0653816338599427e-06,
+          1.228424662258476e-05,
+          1.183340555144241e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0001220703125,
+          0.00048828125,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q512_k512": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.324408908156329e-06,
+          3.661200253191055e-06,
+          2.0033581677125767e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.225913360438426e-06,
+          2.5618384825065732e-05,
+          1.9624347260105424e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q512_k1024": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          9.579262894021667e-08,
+          1.228424662258476e-05,
+          1.183340555144241e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          3.814697265625e-06,
+          0.00048828125,
+          0.00048828125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q512_k1024": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          4.599688185891182e-09,
+          3.661200253191055e-06,
+          2.0033581677125767e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          4.76837158203125e-07,
+          0.00048828125,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          3.2254913548968034e-06,
+          2.5618384825065732e-05,
+          1.9624347260105424e-05,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.00048828125,
+          0.00390625,
+          0.001953125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q1024_k512": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          3.0653816338599427e-06,
+          1.0707909581242347e-07,
+          2.8047672913089627e-06,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0001220703125,
+          3.814697265625e-06,
+          0.0001220703125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "softmax_resident_q1024_k1024": [
+      {
+        "shape": [
+          1,
+          2,
+          2048,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          9.579262894021667e-08,
+          1.0707909581242347e-07,
+          2.8047672913089627e-06,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          3.814697265625e-06,
+          3.814697265625e-06,
+          0.0001220703125,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ]
+  },
+  "failures": {
+    "asinh_resident_q1024_k512": {
+      "type": "XlaRuntimeError",
+      "message": "RESOURCE_EXHAUSTED: XLA:TPU compile permanent error. Ran out of memory in memory space vmem. Used 16.29M of 16.00M vmem. Exceeded vmem capacity by 292.0K.\n\nProgram vmem requirement 16.29M:\n    scoped           16.29M\n\n  Largest program allocations in vmem:\n\n  1. Size: 8.17M\n     XLA label: register allocator spill slots call depth 2\n     Allocation type: scoped\n     ==========================\n\n  2. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  3. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: f32[2048,128]{1,0:T(8,128)}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  4. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: f32[2048,128]{1,0:T(8,128)}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  5. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  6. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  7. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  8. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: f32[1024,128]{1,0:T(8,128)}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  9. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  10. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  11. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  12. Size: 36.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[72,128]{1,0:T(1,128)}\n     Unpadded size: 36.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  13. Size: 8.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[8192]{0}\n     Unpadded size: 8.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  14. Size: 8.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[8192]{0}\n     Unpadded size: 8.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  15. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  16. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  17. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  18. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  19. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  20. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  21. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  22. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  23. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  24. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  25. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  26. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  27. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  28. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  29. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  30. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n"
+    },
+    "asinh_resident_q1024_k1024": {
+      "type": "XlaRuntimeError",
+      "message": "RESOURCE_EXHAUSTED: XLA:TPU compile permanent error. Ran out of memory in memory space vmem. Used 23.86M of 16.00M vmem. Exceeded vmem capacity by 7.86M.\n\nProgram vmem requirement 23.86M:\n    scoped           23.86M\n\n  Largest program allocations in vmem:\n\n  1. Size: 15.74M\n     XLA label: register allocator spill slots call depth 2\n     Allocation type: scoped\n     ==========================\n\n  2. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  3. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: f32[2048,128]{1,0:T(8,128)}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  4. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: f32[2048,128]{1,0:T(8,128)}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  5. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  6. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  7. Size: 1.00M\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[1048576]{0}\n     Unpadded size: 1.00M\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  8. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: f32[1024,128]{1,0:T(8,128)}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  9. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  10. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  11. Size: 512.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[524288]{0}\n     Unpadded size: 512.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  12. Size: 36.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[72,128]{1,0:T(1,128)}\n     Unpadded size: 36.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  13. Size: 8.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[8192]{0}\n     Unpadded size: 8.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  14. Size: 8.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u8[8192]{0}\n     Unpadded size: 8.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  15. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  16. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  17. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  18. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  19. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  20. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  21. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  22. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  23. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  24. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  25. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  26. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  27. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  28. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  29. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n  30. Size: 4.0K\n     Operator: op_name=\"jit(loss)/jit(main)/pallas_call\" source_file=\"/home/tasma/sota-algebra/src/sota/kernels/flash.py\" source_line=648\n     Shape: u32[8,128]{1,0}\n     Unpadded size: 4.0K\n     XLA label: main.3 = custom-call(get-tuple-element.5, multiply_convert_fusion.1, copy.3, copy.4, ...(+3)), custom_call_target=\"tpu_custom_call\", operand_layout_constraints={f32[2]{0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, bf16[1,2,2048,64]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}, f32[1,2,1,2048]{3,2,1,0}}\n     Allocation type: scoped\n     ==========================\n\n"
+    }
+  }
+}
