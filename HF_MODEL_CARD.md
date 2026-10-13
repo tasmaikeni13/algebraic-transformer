@@ -20,7 +20,7 @@ pipeline_tag: text-generation
 
 # The Algebraic Transformer: Transcendental-Free Language Modeling
 
-The **Algebraic Transformer** is a causal language model whose entire forward, backward, and loss training path is strictly free of transcendental functions—avoiding exponentials ($\exp$), logarithms ($\ln$), trigonometric functions ($\sin, \cos$), sigmoids ($\sigma$), and error functions ($\text{erf}$). Every operation in the network is arithmetic, comparison, or radical square root ($\mathbb{Q}[\sqrt{\cdot}]$).
+The **Algebraic Transformer** is a causal language model whose entire forward, backward, and loss training path is strictly free of transcendental functions—avoiding exponentials (\( \exp \)), logarithms (\( \ln \)), trigonometric functions (\( \sin, \cos \)), sigmoids (\( \sigma \)), and error functions (\( \text{erf} \)). Every operation in the network is arithmetic, comparison, or radical square root (\( \mathbb{Q}[\sqrt{\cdot}] \)).
 
 Evaluated against the standard Transformer at **125M parameters on 2.5B tokens of FineWeb-Edu across 3 matched seeds**, the Algebraic Transformer achieves **lower held-out perplexity (22.78 vs 23.86)**, superior long-context retrieval, and high throughput using custom Pallas TPU kernels.
 
@@ -30,36 +30,48 @@ This repository provides the official model checkpoints, evaluation predictions,
 
 ## Architecture Overview
 
-Standard Transformers rely heavily on transcendental functions: softmax attention uses $\exp$, cross-entropy computes $\ln$, position encodings use sinusoidal rotations ($\sin, \cos$), and feed-forward networks use GELU/Swish ($\sigma, \text{erf}$). In hardware, these operations require multi-cycle Special Function Units (SFUs) running CORDIC or polynomial approximations.
+Standard Transformers rely heavily on transcendental functions: softmax attention uses \( \exp \), cross-entropy computes \( \ln \), position encodings use sinusoidal rotations (\( \sin, \cos \)), and feed-forward networks use GELU/Swish (\( \sigma, \text{erf} \)). In hardware, these operations require multi-cycle Special Function Units (SFUs) running CORDIC or polynomial approximations.
 
 The Algebraic Transformer replaces these primitives with exact algebraic alternatives:
 
 | Subsystem | Standard Transformer | Pure Algebraic Transformer | Minimal-Algebra Hybrid |
 | :--- | :--- | :--- | :--- |
-| **Attention Kernel** | Softmax FlashAttention ($\exp$) | Asinh-Power Attention $\rho(s/8)^{16}$ with learned sink | Softmax FlashAttention ($\exp$) |
-| **Attention Normalization**| Standard Scaling ($1/\sqrt{d}$) | QK-Normalization (learned $\text{rsqrt}$) | QK-Normalization (learned $\text{rsqrt}$) |
-| **Position Encoding** | Rotary Embeddings (RoPE: $\sin, \cos$)| Geometric Cayley Rotations | Rotary Embeddings (RoPE: $\sin, \cos$) |
-| **Activation Function** | SwiGLU ($x \cdot \sigma(\beta x)$) | ALU-GLU ($x \cdot \text{ALU}_{1/2}(y)$) | SwiGLU ($x \cdot \sigma(\beta x)$) |
-| **Normalization** | RMSNorm ($\text{rsqrt}$) with learned gains | RMSNorm ($\text{rsqrt}$) with learned gains | RMSNorm ($\text{rsqrt}$) with learned gains |
-| **Vocabulary Head** | Linear Logits + Softmax Cross-Entropy | Algebraic Maximum-Likelihood Head $\rho(z/2)^8$ | Algebraic Maximum-Likelihood Head $\rho(z/2)^8$ |
-| **Training Gradient** | Transcendental ($\ln, \exp$) | **Strictly Algebraic ($\mathbb{Q}[\sqrt{\cdot}]$)** | **Strictly Algebraic ($\mathbb{Q}[\sqrt{\cdot}]$)** |
+| **Attention Kernel** | Softmax FlashAttention (exp) | Asinh-Power Attention ρ(s/8)¹⁶ with learned sink | Softmax FlashAttention (exp) |
+| **Attention Normalization**| Standard Scaling (1/√d) | QK-Normalization (learned rsqrt) | QK-Normalization (learned rsqrt) |
+| **Position Encoding** | Rotary Embeddings (RoPE: sin, cos)| Geometric Cayley Rotations | Rotary Embeddings (RoPE: sin, cos) |
+| **Activation Function** | SwiGLU (x · σ(βx)) | ALU-GLU (x · ALU₁/₂(y)) | SwiGLU (x · σ(βx)) |
+| **Normalization** | RMSNorm (rsqrt) with learned gains | RMSNorm (rsqrt) with learned gains | RMSNorm (rsqrt) with learned gains |
+| **Vocabulary Head** | Linear Logits + Softmax Cross-Entropy | Algebraic Maximum-Likelihood Head ρ(z/2)⁸ | Algebraic Maximum-Likelihood Head ρ(z/2)⁸ |
+| **Training Gradient** | Transcendental (ln, exp) | **Strictly Algebraic (ℚ[√·])** | **Strictly Algebraic (ℚ[√·])** |
 
 ### Core Mathematical Components
 
 1. **Algebraic Maximum-Likelihood Head**:
    Probabilities are defined entrywise by power scores:
-   $$p_j \propto \rho(z_j / c)^n \quad \text{where} \quad \rho(x) = x + \sqrt{1 + x^2}$$
-   with $n=8$ and $c=2$. The log-likelihood loss gradient with respect to logit $z_j$ is rational-radical:
-   $$\frac{\partial \mathcal{L}}{\partial z_j} = \frac{n}{c} \left(1 + \left(\frac{z_j}{c}\right)^2\right)^{-1/2} (p_j - y_j)$$
+
+$$
+p_j \propto \rho(z_j / c)^n \quad \text{where} \quad \rho(x) = x + \sqrt{1 + x^2}
+$$
+
+   with \( n=8 \) and \( c=2 \). The log-likelihood loss gradient with respect to logit \( z_j \) is rational-radical:
+
+$$
+\frac{\partial \mathcal{L}}{\partial z_j} = \frac{n}{c} \left(1 + \left(\frac{z_j}{c}\right)^2\right)^{-1/2} (p_j - y_j)
+$$
+
    The model trains on exact likelihood without evaluating a logarithm. Furthermore, the entrywise asinh compression escapes the **Softmax Rank Bottleneck** (Yang et al., 2018), achieving infinite effective rank in log-probability space.
 
 2. **Asinh-Power Attention**:
    Attention scores are computed as:
-   $$A_{ij} \propto \rho\left(\frac{q_i k_j^\top}{8 \sqrt{d}}\right)^{16}$$
-   coupled with a learned per-head attention sink. An exact log-free max shift ($\rho(a)\rho(-b) = \rho(a \ominus b)$) prevents numerical overflow in Pallas TPU tiles.
+
+$$
+A_{ij} \propto \rho\left(\frac{q_i k_j^\top}{8 \sqrt{d}}\right)^{16}
+$$
+
+   coupled with a learned per-head attention sink. An exact log-free max shift (\( \rho(a)\rho(-b) = \rho(a \ominus b) \)) prevents numerical overflow in Pallas TPU tiles.
 
 3. **Minimal-Algebra Hybrid Transformer**:
-   Adds only the two algebraic components that carry the empirical gain—**QK-normalization** and the **algebraic likelihood head**—to a standard Transformer backbone. It captures $\sim 86\%$ of the full algebraic gain while retaining the standard Softmax FlashAttention kernel.
+   Adds only the two algebraic components that carry the empirical gain—**QK-normalization** and the **algebraic likelihood head**—to a standard Transformer backbone. It captures ~86% of the full algebraic gain while retaining the standard Softmax FlashAttention kernel.
 
 ---
 
@@ -71,7 +83,7 @@ All three models were trained on **2,500,000,000 tokens of FineWeb-Edu** (sequen
 
 | Metric | Standard Transformer | Minimal-Algebra Hybrid | Pure Algebraic Transformer | Advantage vs Standard |
 | :--- | :---: | :---: | :---: | :---: |
-| **Held-Out NLL** (nats/token) | 3.1722 ± 0.0024 | 3.1323 ± 0.0011 | **3.1258 ± 0.0026** | **−0.0464 nats** ($t > 25, p < 10^{-6}$) |
+| **Held-Out NLL** (nats/token) | 3.1722 ± 0.0024 | 3.1323 ± 0.0011 | **3.1258 ± 0.0026** | **−0.0464 nats** (\( t > 25, p < 10^{-6} \)) |
 | **Held-Out Perplexity** | 23.86 ± 0.06 | 22.93 ± 0.03 | **22.78 ± 0.06** | **−1.08 PPL drop** |
 | **Training Time per Run** | 25.9 minutes | 29.4 minutes | 30.2 minutes | — |
 | **Throughput (16 TPU v4 chips)**| 1.62M tokens/s | 1.43M tokens/s | 1.39M tokens/s | **86% speed parity** |
@@ -165,7 +177,7 @@ print("Loaded parameter keys:", list(weights.keys())[:5])
 ## Hardware & Pallas Kernels
 
 The models were trained on **Google Cloud TPU v4** hardware using custom **Pallas** TPU kernels:
-* **Fused Backward Attention**: Computes $dQ, dK, dV$ simultaneously inside TPU Vector Memory (VMEM) tiles, eliminating high-bandwidth memory (HBM) materialization of attention matrices.
+* **Fused Backward Attention**: Computes \( dQ, dK, dV \) simultaneously inside TPU Vector Memory (VMEM) tiles, eliminating high-bandwidth memory (HBM) materialization of attention matrices.
 * **Algebraic Speed Parity**: Pure Algebraic attention achieves **6.32 ms** forward+backward latency on TPU v4 (vs **4.28 ms** for Standard Softmax and **22.14 ms** for JAX default FlashAttention), reaching **86% end-to-end throughput parity** with standard Transformers.
 
 ---
