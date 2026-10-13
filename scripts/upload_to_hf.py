@@ -52,7 +52,7 @@ This repository hosts the official weights, evaluation traces, and benchmark com
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--repo-id", default="tasmaikeni13/sota-algebra-125m")
+    p.add_argument("--repo-id", default="tasmaikeni13/algebraic-transformer")
     p.add_argument("--runs-root", type=Path, default=ROOT / "runs/main")
     p.add_argument("--results-root", type=Path, default=ROOT / "results/main")
     p.add_argument("--private", action="store_true")
@@ -95,16 +95,21 @@ def main():
     if args.results_root.exists():
         subprocess.check_call(["cp", "-r", f"{args.results_root}/.", str(eval_target)])
 
-    print(f"Staged files in {staging_dir}. Uploading to {args.repo_id}...")
-    upload_cmd = [
-        str(hf_cli), "upload", args.repo_id, str(staging_dir), ".",
-        "--commit-message", "Upload 125M comparison checkpoints and benchmark results",
-    ]
-    if args.private:
-        upload_cmd.append("--private")
+    try:
+        print(f"Staged files in {staging_dir}. Uploading to {args.repo_id}...")
+        upload_cmd = [
+            str(hf_cli), "upload", args.repo_id, str(staging_dir), ".",
+            "--commit-message", "Upload 125M comparison checkpoints and benchmark results",
+        ]
+        if args.private:
+            upload_cmd.append("--private")
 
-    subprocess.check_call(upload_cmd)
-    print(f"Upload complete: https://huggingface.co/{args.repo_id}")
+        subprocess.check_call(upload_cmd)
+        print(f"Upload complete: https://huggingface.co/{args.repo_id}")
+    finally:
+        import shutil
+        shutil.rmtree(staging_dir, ignore_errors=True)
+        print(f"Cleaned staging directory {staging_dir}.")
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--repo-id", default="tasmaikeni13/sota-algebra-125m")
+    p.add_argument("--repo-id", default="tasmaikeni13/algebraic-transformer")
     p.add_argument("--no-git", action="store_true")
     p.add_argument("--no-hf", action="store_true")
     args = p.parse_args()
