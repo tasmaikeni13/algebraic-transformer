@@ -1,0 +1,290 @@
+{
+  "results": {
+    "arc_easy": {
+      "correct": 1031,
+      "total": 2376,
+      "accuracy": 0.43392255892255893,
+      "truncated_pairs": 0
+    },
+    "arc_challenge": {
+      "correct": 287,
+      "total": 1172,
+      "accuracy": 0.24488054607508533,
+      "truncated_pairs": 0
+    },
+    "hellaswag": {
+      "correct": 2893,
+      "total": 10042,
+      "accuracy": 0.28809002190798644,
+      "truncated_pairs": 0
+    },
+    "piqa": {
+      "correct": 1140,
+      "total": 1838,
+      "accuracy": 0.6202393906420022,
+      "truncated_pairs": 0
+    },
+    "openbookqa": {
+      "correct": 145,
+      "total": 500,
+      "accuracy": 0.29,
+      "truncated_pairs": 0
+    },
+    "winogrande": {
+      "correct": 664,
+      "total": 1267,
+      "accuracy": 0.5240726124704025,
+      "truncated_pairs": 0
+    },
+    "boolq": {
+      "correct": 1956,
+      "total": 3270,
+      "accuracy": 0.5981651376146789,
+      "truncated_pairs": 0
+    },
+    "lambada": {
+      "correct": 906,
+      "total": 5153,
+      "accuracy": 0.17581991073161266,
+      "truncated_pairs": 0
+    }
+  },
+  "dataset_metadata": {
+    "datasets": {
+      "arc_easy": {
+        "source": "allenai/ai2_arc",
+        "config": "ARC-Easy",
+        "split": "test",
+        "source_url": "https://huggingface.co/datasets/allenai/ai2_arc",
+        "rows": 2376,
+        "sha256": "a5cdebe23efa19d62cd886ccdb303fdb3b29477eaabfcce7c9e029aa4753e3c9",
+        "limited": false
+      },
+      "arc_challenge": {
+        "source": "allenai/ai2_arc",
+        "config": "ARC-Challenge",
+        "split": "test",
+        "source_url": "https://huggingface.co/datasets/allenai/ai2_arc",
+        "rows": 1172,
+        "sha256": "8fca890b8d2bcd5851fa1481910761a57df385731b1ffaed41c763fbdd19ab64",
+        "limited": false
+      },
+      "hellaswag": {
+        "source": "Rowan/hellaswag",
+        "config": "default",
+        "split": "validation",
+        "source_url": "https://huggingface.co/datasets/Rowan/hellaswag",
+        "rows": 10042,
+        "sha256": "640e4a9e5a9476a84c7ecbc596afc27352522adaae04a7e8b9cc7dfd4394a10a",
+        "limited": false
+      },
+      "piqa": {
+        "source": "lighteval/piqa",
+        "config": "plain_text",
+        "split": "validation",
+        "source_url": "https://huggingface.co/datasets/lighteval/piqa",
+        "rows": 1838,
+        "sha256": "ab59bae6959e7342e6d56493f2c3471746e6ce10247ec223ce8885c8cdb171cc",
+        "limited": false
+      },
+      "openbookqa": {
+        "source": "allenai/openbookqa",
+        "config": "main",
+        "split": "test",
+        "source_url": "https://huggingface.co/datasets/allenai/openbookqa",
+        "rows": 500,
+        "sha256": "14df54cfd691bf86e1af8198b5f72c6875bc6818935e06ac24257c9e2ed1e60d",
+        "limited": false
+      },
+      "winogrande": {
+        "source": "allenai/winogrande",
+        "config": "winogrande_xl",
+        "split": "validation",
+        "source_url": "https://huggingface.co/datasets/allenai/winogrande",
+        "rows": 1267,
+        "sha256": "577851fdf631a05a5eaddd18f0840d149e342b36bd9349bc5434fd3053fd65e7",
+        "limited": false
+      },
+      "boolq": {
+        "source": "google/boolq",
+        "config": "default",
+        "split": "validation",
+        "source_url": "https://huggingface.co/datasets/google/boolq",
+        "rows": 3270,
+        "sha256": "e2520982a180e64bb570c8bea55076b0f7f5abe09e0a1f36499e0b0b84bf963c",
+        "limited": false
+      },
+      "lambada": {
+        "source": "cimec/lambada",
+        "config": "plain_text",
+        "split": "test",
+        "source_url": "https://huggingface.co/datasets/cimec/lambada",
+        "rows": 5153,
+        "sha256": "8601deebd0028f3cc5fe2ede500bc0304521518eeb43d312d446329e62583dbe",
+        "limited": false
+      }
+    }
+  },
+  "limited": false,
+  "limit": null,
+  "seconds": 90.82267786900047,
+  "run": "/home/tasma/sota-algebra/runs/main/standard_s42",
+  "protocol": "sota-zero-shot-v2-mean-continuation-logprob",
+  "checkpoint": {
+    "params_sha256": "f975753f27e1861ece2c7edd2d97084c5c74131dd65333a80064bcf4edaad53e",
+    "meta_sha256": "5fb08977ca258d5f5ee234638b1692769b8fbb24107e9e812ec18ca36703b3b9",
+    "result_sha256": "bfc4dbad8cc56a72a2a1c8e9c7eb624ad59d99c7127e065bf16e75ec18f36dd5",
+    "config": {
+      "vocab_size": 50257,
+      "d_model": 768,
+      "n_layers": 12,
+      "n_heads": 12,
+      "d_ff": 2048,
+      "seq_len": 2048,
+      "norm": "rms",
+      "eps": 1e-05,
+      "ffn": "swiglu",
+      "alu_beta": 1.0,
+      "pos": "rope",
+      "rope_base": 10000.0,
+      "rope_fraction": 1.0,
+      "attn": "softmax",
+      "attn_n": 8,
+      "attn_c": 1.0,
+      "sink": "none",
+      "sink_init": 0.0,
+      "qk_norm": false,
+      "head": "ce",
+      "head_n": 16,
+      "head_c": 16.0,
+      "eps_vocab": 100.0,
+      "gamma": 2.0,
+      "init_std": 0.02,
+      "out_init_scale": 1.0,
+      "dtype": "bfloat16",
+      "remat": true,
+      "attn_impl": "flash",
+      "flash_block": 512,
+      "head_impl": "dense"
+    },
+    "training_args": {
+      "preset": "standard",
+      "size": "125m",
+      "set": [
+        "attn_impl=flash"
+      ],
+      "train": "/home/tasma/data/fw25/fineweb_train_2_5B.npy",
+      "valid": "/home/tasma/data/fw25/fineweb_valid.npy",
+      "seq_len": 2048,
+      "batch": 512,
+      "micro": 8,
+      "steps": 0,
+      "tokens": 2500000000.0,
+      "lr": 0.003,
+      "min_lr_ratio": 0.1,
+      "warmup": 57.0,
+      "schedule": "cosine",
+      "decay_frac": 0.2,
+      "wd": 0.1,
+      "b1": 0.9,
+      "b2": 0.95,
+      "adam_eps": 1e-08,
+      "clip": 1.0,
+      "seed": 42,
+      "data_seed": null,
+      "eval_every": 250,
+      "eval_tokens": 8000000.0,
+      "eval_batch": 8,
+      "log_every": 25,
+      "out": "/home/tasma/sota-algebra/runs/main/standard_s42",
+      "save_params": true,
+      "distributed": true,
+      "profile_steps": 0,
+      "ckpt_every": 200,
+      "keep_ckpts": 2,
+      "resume": true
+    }
+  },
+  "source": {
+    "sha256": "fd4e05b75c7576219b11808db0ee1904623a1950750f852383c53fdff051cc56",
+    "git_revision": "ca8f6050fd6ef2c8e9304ff242cc2d922be39109"
+  },
+  "execution_config": {
+    "vocab_size": 50257,
+    "d_model": 768,
+    "n_layers": 12,
+    "n_heads": 12,
+    "d_ff": 2048,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "swiglu",
+    "alu_beta": 1.0,
+    "pos": "rope",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "softmax",
+    "attn_n": 8,
+    "attn_c": 1.0,
+    "sink": "none",
+    "sink_init": 0.0,
+    "qk_norm": false,
+    "head": "ce",
+    "head_n": 16,
+    "head_c": 16.0,
+    "eps_vocab": 100.0,
+    "gamma": 2.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "dense"
+  },
+  "backend": "tpu",
+  "jax_version": "0.6.2",
+  "batch": 8,
+  "tokenizer": "gpt2",
+  "training_metrics": {
+    "final_eval_nll": 3.171922047932943,
+    "final_eval_ppl": 23.853287486329336,
+    "train_seconds": 1554.9132204055786,
+    "mean_tok_per_s": 1622722.284855002
+  },
+  "config": {
+    "vocab_size": 50257,
+    "d_model": 768,
+    "n_layers": 12,
+    "n_heads": 12,
+    "d_ff": 2048,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "swiglu",
+    "alu_beta": 1.0,
+    "pos": "rope",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "softmax",
+    "attn_n": 8,
+    "attn_c": 1.0,
+    "sink": "none",
+    "sink_init": 0.0,
+    "qk_norm": false,
+    "head": "ce",
+    "head_n": 16,
+    "head_c": 16.0,
+    "eps_vocab": 100.0,
+    "gamma": 2.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "dense"
+  },
+  "predictions": "/home/tasma/sota-algebra/results/main/standard_s42_zero_shot.predictions.jsonl",
+  "predictions_sha256": "dc660bdececc59304e2065459590797ca16921feeafe4585c9dba2c9a74b4f55"
+}
