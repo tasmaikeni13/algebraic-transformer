@@ -20,7 +20,7 @@ pipeline_tag: text-generation
 
 # The Algebraic Transformer: Transcendental-Free Language Modeling
 
-The **Algebraic Transformer** is a causal language model whose entire forward, backward, and loss training path is strictly free of transcendental functions—avoiding exponentials $\exp(x)$, logarithms $\ln(x)$, trigonometric functions $\sin(x)$ and $\cos(x)$, sigmoids $\sigma(x)$, and error functions $\text{erf}(x)$. Every operation in the network is arithmetic, comparison, or radical square root ($\mathbb{Q}[\sqrt{\cdot}]$).
+The **Algebraic Transformer** is a causal language model whose entire forward, backward, and loss training path is strictly free of transcendental functions—avoiding exponentials (e^x), logarithms (ln(x)), trigonometric functions (sin(x), cos(x)), sigmoids (σ(x)), and error functions (erf(x)). Every operation in the network is arithmetic, comparison, or radical square root (ℚ[√·]).
 
 Evaluated against the standard Transformer at **125M parameters on 2.5B tokens of FineWeb-Edu across 3 matched seeds**, the Algebraic Transformer achieves **lower held-out perplexity (22.78 vs 23.86)**, superior long-context retrieval, and high throughput using custom Pallas TPU kernels.
 
@@ -30,7 +30,7 @@ This repository provides the official model checkpoints, evaluation predictions,
 
 ## Architecture Overview
 
-Standard Transformers rely heavily on transcendental functions: softmax attention uses $\exp(x)$, cross-entropy computes $\ln(x)$, position encodings use sinusoidal rotations $\sin(x)$ and $\cos(x)$, and feed-forward networks use GELU/Swish activations $\sigma(x)$ and $\text{erf}(x)$. In hardware, these operations require multi-cycle Special Function Units (SFUs) running CORDIC or polynomial approximations.
+Standard Transformers rely heavily on transcendental functions: softmax attention uses e^x, cross-entropy computes ln(x), position encodings use sinusoidal rotations (sin(x), cos(x)), and feed-forward networks use GELU/Swish activations (σ(x), erf(x)). In hardware, these operations require multi-cycle Special Function Units (SFUs) running CORDIC or polynomial approximations.
 
 The Algebraic Transformer replaces these primitives with exact algebraic alternatives:
 
