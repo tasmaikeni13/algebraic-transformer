@@ -19,8 +19,8 @@
   "sources": {
     "analysis/qk_normalization_probe.py": "81253a03d78a7d5c89980c5e58f5e4ce47d37285efb5a050b2efc4bb41532265",
     "analysis/qk_rms_kernel.py": "91bec132e0e4c844e73a44317019ba4b9e8fe789224e4366c27c1d4b70e2b0e7",
-    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+    "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
   },
   "validation": {
     "autodiff": [
@@ -93,36 +93,36 @@
       {
         "dtype": "float32",
         "passed": false,
-        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/sota-algebra/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (12, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
+        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/algebraic-transformer/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (12, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
       },
       {
         "dtype": "bfloat16",
         "passed": false,
-        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/sota-algebra/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (12, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
+        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/algebraic-transformer/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (12, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
       }
     ],
     "pallas512": [
       {
         "dtype": "float32",
         "passed": false,
-        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/sota-algebra/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (6, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
+        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/algebraic-transformer/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (6, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
       },
       {
         "dtype": "bfloat16",
         "passed": false,
-        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/sota-algebra/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (6, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
+        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/algebraic-transformer/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (6, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
       }
     ],
     "pallas1024": [
       {
         "dtype": "float32",
         "passed": false,
-        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/sota-algebra/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (3, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
+        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/algebraic-transformer/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (3, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
       },
       {
         "dtype": "bfloat16",
         "passed": false,
-        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/sota-algebra/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (3, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
+        "error": "ValueError: The Pallas TPU lowering currently requires that the last two dimensions of your block shape are divisible by 8 and 128 respectively, or be equal to the respective dimensions of the overall array. Block spec for outputs[1] in pallas_call _backward_kernel at /home/tasma/algebraic-transformer/analysis/qk_rms_kernel.py:18 has block shape (Blocked(block_size=1), Blocked(block_size=64)), array shape (3, 64), and index_map { lambda ; a:i32[]. let  in (a, 0:i32[]) }, in memory space None.\nSee details at https://docs.jax.dev/en/latest/pallas/grid_blockspec.html#pallas-blockspec"
       }
     ]
   },

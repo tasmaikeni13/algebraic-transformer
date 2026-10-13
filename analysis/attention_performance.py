@@ -22,12 +22,13 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 import jax.numpy as jnp
 import numpy as np
 
-from src.sota.kernels.flash import flash_attention
+from algebraic.kernels.flash import flash_attention
 
 
 def ratio_ci(a, b, seed=19, samples=10000):
@@ -113,8 +114,8 @@ def main():
               "devices": [str(d) for d in jax.devices()], "hostname": platform.node(),
               "rounds": args.rounds, "iters_per_round": args.iters, "seed": args.seed,
               "git_revision": revision,
-              "kernel_sha256": hashlib.sha256((ROOT / "src/sota/kernels/flash.py").read_bytes()).hexdigest(),
-              "radical_sha256": hashlib.sha256((ROOT / "src/sota/kernels/radical.py").read_bytes()).hexdigest(),
+              "kernel_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
+              "radical_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/radical.py").read_bytes()).hexdigest(),
               "results": {}, "comparisons": {}}
     args.out.parent.mkdir(parents=True, exist_ok=True)
     def save():

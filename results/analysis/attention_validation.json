@@ -1,9 +1,9 @@
 {
   "utc": "2026-10-11T19:28:10.711831+00:00",
   "source_sha256": {
-    "src/sota/kernels/flash.py": "0e1e52d536fc102c15a407f09f7500614ed68526a4bb9a1542bc3b11ddd8b04f",
-    "src/sota/kernels/radical.py": "6d4beb8359b8386959c76c2dce570a739961d873c607728ae8fd44b2f595e23c",
-    "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+    "src/algebraic/kernels/flash.py": "0e1e52d536fc102c15a407f09f7500614ed68526a4bb9a1542bc3b11ddd8b04f",
+    "src/algebraic/kernels/radical.py": "6d4beb8359b8386959c76c2dce570a739961d873c607728ae8fd44b2f595e23c",
+    "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
     "tests/test_flash_kernel_tpu.py": "6581914a3450e5592ed98a358c65a7a6dd2a6a62d8da924840e7513bd376215f",
     "formal/lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
     "formal/lake-manifest.json": "3bcbf4c8daf6fa9f49744f3a3ac017867e163c1f415bed86667d6568287be30b",

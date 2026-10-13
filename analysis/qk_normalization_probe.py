@@ -16,6 +16,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 from jax import lax
@@ -24,8 +25,8 @@ import numpy as np
 
 from analysis.attention_performance import ratio_ci
 from analysis.qk_rms_kernel import make_norm as make_pallas_norm
-from src.sota import algebraic as A, standard as S
-from src.sota.kernels.flash import flash_attention
+from algebraic import algebraic as A, standard as S
+from algebraic.kernels.flash import flash_attention
 
 
 def make_norm(store_normalized):
@@ -64,7 +65,7 @@ def main():
               "seed":137,"rounds":args.rounds,"iters":args.iters,"prototype":True,
               "model_adopted":False,"jax":jax.__version__,"devices":[str(d) for d in jax.devices()],
               "sources":{f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in
-                  ("analysis/qk_normalization_probe.py","analysis/qk_rms_kernel.py","src/sota/algebraic.py","src/sota/kernels/flash.py")},
+                  ("analysis/qk_normalization_probe.py","analysis/qk_rms_kernel.py","src/algebraic/algebraic.py","src/algebraic/kernels/flash.py")},
               "validation":{},"results":{},"failures":{}}
     args.out.parent.mkdir(parents=True,exist_ok=True)
     def save():

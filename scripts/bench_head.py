@@ -4,9 +4,10 @@ import argparse, json, time, sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 import jax, jax.numpy as jnp
-from src.sota import algebraic as A, standard as S
-from src.sota.kernels.fused_head import fused_head
+from algebraic import algebraic as A, standard as S
+from algebraic.kernels.fused_head import fused_head
 
 
 def timeit(f, *a, iters=10):

@@ -22,7 +22,7 @@ import jax.numpy as jnp
 import numpy as np
 
 from analysis.attention_performance import ratio_ci
-from src.sota import algebraic as A, standard as S
+from algebraic import algebraic as A, standard as S
 
 
 def cached_likelihood(cache_dtype):
@@ -69,7 +69,7 @@ def main():
             "jax":jax.__version__,"devices":[str(d) for d in jax.devices()],
             "prototype":True,"model_adopted":False,"head_n":8,"head_c":2.,
             "sources":{f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in
-                       ("analysis/head_gradient_cache_probe.py","src/sota/algebraic.py","src/sota/standard.py")},
+                       ("analysis/head_gradient_cache_probe.py","src/algebraic/algebraic.py","src/algebraic/standard.py")},
             "validation":{},"results":{},"failures":{}}
     a.out.parent.mkdir(parents=True,exist_ok=True)
     def save():

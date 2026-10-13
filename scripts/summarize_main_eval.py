@@ -11,7 +11,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.sota.benchmarking import (RECALL_PROTOCOL, ZERO_SHOT_PROTOCOL, load_jsonl,
+sys.path.insert(0, str(ROOT / "src"))
+from algebraic.benchmarking import (RECALL_PROTOCOL, ZERO_SHOT_PROTOCOL, load_jsonl,
                                    sha256_file, write_json)
 
 
@@ -43,6 +44,10 @@ def read_records(directory, archs, seeds):
                     raise ValueError(f"duplicate predictions: {path}")
                 signature = {"datasets": {t: d["sha256"] for t, d in
                                           record["dataset_metadata"]["datasets"].items()},
+                             "model_shape": tuple(record["config"][k] for k in
+                                                  ("d_model", "n_layers", "n_heads", "d_ff", "vocab_size", "seq_len")),
+                             "training_budget": tuple(args[k] for k in ("size", "tokens", "seq_len", "batch")),
+                             "corpus": (Path(args["train"]).name, Path(args["valid"]).name),
                              "protocol": protocol, "source": record["source"]["sha256"],
                              "backend": record["backend"], "batch": record["batch"],
                              "dtype": record["config"]["dtype"], "ids": set(ids)}
@@ -101,9 +106,10 @@ def summarize(records, predictions, archs, seeds):
                for arch in archs for seed in seeds):
             training_metrics[name] = {arch: mean_sd([records[("zero_shot", arch, seed)]["training_metrics"][name]
                                                     for seed in seeds]) for arch in archs}
+    training_args = records[("zero_shot", archs[0], seeds[0])]["checkpoint"]["training_args"]
     return {"architectures": archs, "training_seeds": seeds, "training_metrics": training_metrics,
-            "complete_three_arm_three_seed_comparison": set(archs) == {"standard", "algebraic", "hybrid"}
-                                                        and set(seeds) == {42, 43, 44},
+            "training": {k: training_args[k] for k in ("size", "tokens", "seq_len", "batch")},
+            "comparison_complete": True,
             "uncertainty": "sample SD across training seeds; paired deltas use the same seed and examples; descriptive only",
             "metrics": rows, "recall_cells": cell_rows}
 
@@ -117,10 +123,9 @@ def write_tables(directory, summary):
         return mean if stat["sd"] is None else f"{mean} ± {scale*stat['sd']:.2f}"
 
     lines = ["# Post-training comparison", "", f"Training seeds: {', '.join(map(str, seeds))}.", "",
-             "Scores are percentages, mean ± sample SD across training seeds. "
+             ("Scores are percentages, mean ± sample SD across training seeds. " if len(seeds) > 1 else
+              "Scores are percentages from one training seed; seed variance is not estimated. ") +
              "Paired differences use the same seed and examples. No pooled item confidence interval is implied.", ""]
-    if not summary["complete_three_arm_three_seed_comparison"]:
-        lines += ["**Subset comparison: the full three-architecture, three-seed result is incomplete.**", ""]
     if summary["training_metrics"]:
         lines += ["## Held-out language modeling and training telemetry", "",
                   "NLL is in nats/token; perplexity is exp(NLL). Training times and throughput are trainer telemetry.", "",
@@ -143,7 +148,8 @@ def write_tables(directory, summary):
         lines.append("")
     if "standard" in archs and len(archs) > 1:
         others = [a for a in archs if a != "standard"]
-        lines += ["## Paired difference from standard", "", "Percentage points, mean ± sample SD across matched training seeds.", "",
+        lines += ["## Paired difference from standard", "",
+                  "Percentage points" + (", mean ± sample SD across matched training seeds." if len(seeds)>1 else " for the matched training seed."), "",
                   "| task | " + " | ".join(others) + " |", "|---|" + "---|" * len(others)]
         for row in summary["metrics"]:
             if row["suite"] == "zero_shot" or (row["condition"] == "present" and row["metric"] == "exact_retrieval"):

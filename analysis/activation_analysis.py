@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Phase 1d: the algebraic activation against SiLU (numerical analysis).
+"""The algebraic activation against SiLU (numerical analysis).
 
 For ALU_beta(x) = x/2 (1 + beta x / sqrt(1 + beta^2 x^2)):
 * Gaussian-weighted L2 distance to SiLU and GELU over beta (best match).

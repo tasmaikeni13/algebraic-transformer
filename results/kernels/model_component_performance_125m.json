@@ -26,9 +26,9 @@
   "scope": "component forward/VJP; no optimizer, model, data loading, or quality estimate",
   "source_sha256": {
     "analysis/model_component_performance.py": "8606891f89506650166522562bc0f75b6419cac58be3d8270534c3b16bfb79d7",
-    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-    "src/sota/standard.py": "dadf67991f529267b57e4555f144c97b918b51cef065ccc5bde1ec1842ef324d",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+    "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/algebraic/standard.py": "dadf67991f529267b57e4555f144c97b918b51cef065ccc5bde1ec1842ef324d",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
   },
   "results": {
     "standard_attention_forward": {

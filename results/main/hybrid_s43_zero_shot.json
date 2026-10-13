@@ -128,8 +128,8 @@
   "limited": false,
   "limit": null,
   "seconds": 99.77528496200102,
-  "run": "/home/tasma/sota-algebra/runs/main/hybrid_s43",
-  "protocol": "sota-zero-shot-v2-mean-continuation-logprob",
+  "run": "/home/tasma/algebraic-transformer/runs/main/hybrid_s43",
+  "protocol": "algebraic-zero-shot-mean-continuation-logprob",
   "checkpoint": {
     "params_sha256": "eb58bfadb38860fbbaa211513a41c4ce638f7fa71b004a573cf2fdb210e89cfa",
     "meta_sha256": "435c098ff9143eb748f08e5921d1219490c2ba5a6a2858ef6bddf4d7373b6c64",
@@ -196,7 +196,7 @@
       "eval_tokens": 8000000.0,
       "eval_batch": 8,
       "log_every": 25,
-      "out": "/home/tasma/sota-algebra/runs/main/hybrid_s43",
+      "out": "/home/tasma/algebraic-transformer/runs/main/hybrid_s43",
       "save_params": true,
       "distributed": true,
       "profile_steps": 0,
@@ -285,6 +285,6 @@
     "flash_block": 512,
     "head_impl": "dense"
   },
-  "predictions": "/home/tasma/sota-algebra/results/main/hybrid_s43_zero_shot.predictions.jsonl",
+  "predictions": "/home/tasma/algebraic-transformer/results/main/hybrid_s43_zero_shot.predictions.jsonl",
   "predictions_sha256": "cf83eecb13a77732a078b89928f90154cee330d79f14a9dedeac135524b13024"
 }

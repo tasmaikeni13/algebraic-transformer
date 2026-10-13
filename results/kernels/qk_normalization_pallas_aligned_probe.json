@@ -19,8 +19,8 @@
   "sources": {
     "analysis/qk_normalization_probe.py": "81253a03d78a7d5c89980c5e58f5e4ce47d37285efb5a050b2efc4bb41532265",
     "analysis/qk_rms_kernel.py": "f37a6f88df9ede60bdc3396b3f62bd07058b096cb15297338abae9bb03b52eee",
-    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+    "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
   },
   "validation": {
     "autodiff": [

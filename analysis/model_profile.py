@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run the real trainer's optimizer-step profile with an optional QK prototype.
 
-Arguments other than --qk-rms-block go to src.sota.train unchanged. The
+Arguments other than --qk-rms-block go to algebraic.train unchanged. The
 prototype substitutes RMS normalization only for rank-four D=64 Q/K arrays.
 Its formula and learned gains remain the same. It is not model dispatch.
 """
@@ -24,9 +24,9 @@ def main():
     p.add_argument("--gain-partials-only",action="store_true")
     p.add_argument("--native-qk",action="store_true")
     extra,rest=p.parse_known_args()
-    from src.sota import algebraic as A
-    from src.sota import train
-    from src.sota import model
+    from algebraic import algebraic as A
+    from algebraic import train
+    from algebraic import model
     original=A.rms_norm
     original_qk=model._qk_norm
     if extra.native_qk:
@@ -51,8 +51,8 @@ def main():
         "native_qk":extra.native_qk,
         "deployed_model_unchanged":True,
         "source_sha256":{f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in
-            ("analysis/model_profile.py","analysis/qk_rms_kernel.py","src/sota/kernels/qk_norm.py","src/sota/model.py",
-             "src/sota/algebraic.py","src/sota/kernels/flash.py")}},indent=2)+"\n")
+            ("analysis/model_profile.py","analysis/qk_rms_kernel.py","src/algebraic/kernels/qk_norm.py","src/algebraic/model.py",
+             "src/algebraic/algebraic.py","src/algebraic/kernels/flash.py")}},indent=2)+"\n")
     try:
         return train.main(rest)
     finally:

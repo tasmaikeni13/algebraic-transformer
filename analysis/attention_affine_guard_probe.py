@@ -18,6 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 from jax import lax
@@ -27,8 +28,8 @@ from jax.experimental.pallas import tpu as pltpu
 import numpy as np
 
 from analysis.attention_performance import ratio_ci
-from src.sota import algebraic as A
-from src.sota.kernels import flash as fk
+from algebraic import algebraic as A
+from algebraic.kernels import flash as fk
 
 LINKS = {"32:16":(32,16.,-.75,3.), "64:32":(64,32.,-.5,2.),
          "16:2":(16,2.,-.9375,32.), "8:1":(8,1.,-.999,64.),
@@ -183,7 +184,7 @@ def main():
     sink = jnp.zeros((12,),jnp.float32)
     report = {"utc":datetime.now(timezone.utc).isoformat(),"shape":shape,"qk_normalized":True,"gains":args.gains,
               "seed":113,"rounds":args.rounds,"iters":args.iters,"jax":jax.__version__,"devices":[str(x) for x in jax.devices()],
-              "prototype":True,"model_adopted":False,"kernel_sha256":hashlib.sha256((ROOT/"src/sota/kernels/flash.py").read_bytes()).hexdigest(),
+              "prototype":True,"model_adopted":False,"kernel_sha256":hashlib.sha256((ROOT/"src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
               "probe_sha256":hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),"links":[LINKS[x] for x in args.links],
               "validation":{},"results":{},"failures":{},"domains":{}}
     functions = {}

@@ -1,0 +1,10 @@
+{
+  "source": "results/main/comparison.json",
+  "source_sha256": "55ff6d3026d885bb061e11186bf767d853681075e08dfa93c23c3bb26c176e8d",
+  "training_seeds": [
+    42,
+    43,
+    44
+  ],
+  "generator": "analysis/plot_figures.py"
+}

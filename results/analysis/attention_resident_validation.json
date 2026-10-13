@@ -2,9 +2,9 @@
   "utc": "2026-10-12T00:06:39.645786+00:00",
   "validated_parent_revision": "25c0831f81379bef24b1c6b2d4109c79d38cd5dd",
   "source_sha256": {
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
-    "src/sota/kernels/radical.py": "6d4beb8359b8386959c76c2dce570a739961d873c607728ae8fd44b2f595e23c",
-    "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+    "src/algebraic/kernels/radical.py": "6d4beb8359b8386959c76c2dce570a739961d873c607728ae8fd44b2f595e23c",
+    "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
     "tests/test_flash_kernel_tpu.py": "ac793ab15e605fd8e41b6ccb791f08a73545ed6122730e50467a585d761ef33b",
     "scripts/audit_algebraic.py": "c5fa1d315b7fa2a0c19b1fac1e4ffb7c8519e1eb01ef8c8655c7bcf1d01d1add",
     "formal/AlgebraicAttention.lean": "2b0a5a72a9b0e5313ed98586e1b3df52b037cae03b8c348514df7939f0308e7f",

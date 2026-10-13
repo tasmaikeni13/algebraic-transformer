@@ -5,8 +5,8 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
-from src.sota import algebraic as A, config, model
-from src.sota.kernels.qk_norm import qk_rms_norm
+from algebraic import algebraic as A, config, model
+from algebraic.kernels.qk_norm import qk_rms_norm
 
 pytestmark = pytest.mark.skipif(jax.devices()[0].platform != "tpu", reason="needs a TPU")
 
@@ -50,7 +50,7 @@ def test_qk_norm_output_and_vjp(dtype, block, eps):
     ("algebraic", "flash", 2048, jnp.bfloat16, False),
 ])
 def test_model_dispatch(monkeypatch, arch, impl, seq, dtype, expected):
-    import src.sota.kernels.qk_norm as module
+    import algebraic.kernels.qk_norm as module
     calls = []
     def tracked(x, gain, eps):
         calls.append(x.shape)

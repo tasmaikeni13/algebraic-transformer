@@ -1,268 +1,195 @@
 #!/usr/bin/env python3
-"""Pipeline to download and tokenize 2.5B tokens of real FineWeb-Edu.
+"""Download and tokenize a complete FineWeb-Edu corpus with GPT-2 BPE.
 
-Streams real FineWeb-Edu parquet shards from HuggingFaceFW/fineweb-edu,
-tokenizes using tiktoken GPT-2 BPE, and emits:
-- data/fineweb_train_2_5B.npy (exactly 2,500,000,000 tokens)
-- data/fineweb_sweep_600M.npy (exactly 600,000,000 tokens for Tuning study sweep)
-- data/fineweb_valid.npy (10,000,000 held-out validation tokens)
+The 7B experiment uses --train-tokens 7000000000 --sweep-tokens 0.
+Data is published only after every quota is filled. Validation and training
+use separate documents; source shards come from an immutable Hub revision.
 """
 
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import shutil
-import sys
 import time
-from typing import Optional
-import urllib.request
 
 import numpy as np
 import pyarrow.parquet as pq
+import requests
 import tiktoken
 
 ROOT = Path(__file__).resolve().parents[1]
-HF_BASE_URL = "https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu/resolve/main/sample/10BT"
-SHARDS = [
-    "000_00000.parquet",
-    "001_00000.parquet",
-    "002_00000.parquet",
-    "003_00000.parquet",
-]
-
-
-def download_file(url: str, dest: Path) -> None:
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    temp_dest = dest.with_suffix(".tmp")
-    print(f"Downloading {url} to {dest}...", flush=True)
-    t0 = time.time()
-    
-    # Try using curl for fast multi-stream download if available
-    cmd = f"curl -L -f -s -S '{url}' -o '{temp_dest}'"
-    ret = os.system(cmd)
-    if ret != 0:
-        print(f"curl failed, falling back to urllib...", flush=True)
-        urllib.request.urlretrieve(url, temp_dest)
-    
-    temp_dest.replace(dest)
-    dt = time.time() - t0
-    size_mb = dest.stat().st_size / (1024 * 1024)
-    print(f"Downloaded {size_mb:.1f} MB in {dt:.1f}s ({size_mb/dt:.1f} MB/s)", flush=True)
-
-
+DATASET = "HuggingFaceFW/fineweb-edu"
 EOT = 50256
 
 
-def build_fineweb_dataset(
-    output_dir: Path,
-    target_train_tokens: int = 2_500_000_000,
-    target_sweep_tokens: int = 600_000_000,
-    target_val_tokens: int = 10_000_000,
-    clean_raw: bool = True,
-    eot: bool = True,
-    threads: int = 32,
-) -> None:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    raw_dir = output_dir / "fineweb_raw"
-    raw_dir.mkdir(parents=True, exist_ok=True)
+def train_filename(tokens):
+    label = {2_500_000_000: "2_5B", 7_000_000_000: "7B", 20_000_000_000: "20B"}.get(tokens, str(tokens))
+    return f"fineweb_train_{label}.npy"
 
-    train_path = output_dir / "fineweb_train_2_5B.npy"
-    sweep_path = output_dir / "fineweb_sweep_600M.npy"
-    valid_path = output_dir / "fineweb_valid.npy"
 
-    if train_path.exists() and sweep_path.exists() and valid_path.exists():
-        train_mm = np.load(train_path, mmap_mode="r")
-        sweep_mm = np.load(sweep_path, mmap_mode="r")
-        valid_mm = np.load(valid_path, mmap_mode="r")
-        if len(train_mm) >= target_train_tokens and len(sweep_mm) >= target_sweep_tokens and len(valid_mm) >= target_val_tokens:
-            print(f"FineWeb-Edu dataset already complete in {output_dir}:")
-            print(f"  Train: {len(train_mm):,} tokens")
-            print(f"  Sweep: {len(sweep_mm):,} tokens")
-            print(f"  Valid: {len(valid_mm):,} tokens")
+def resolve_shards(revision="main", dataset_path="sample/10BT"):
+    response = requests.get(f"https://huggingface.co/api/datasets/{DATASET}/revision/{revision}", timeout=60)
+    response.raise_for_status()
+    pinned = response.json()["sha"]
+    url = f"https://huggingface.co/api/datasets/{DATASET}/tree/{pinned}/{dataset_path}"
+    shards = []
+    while url:
+        response = requests.get(url, params={"recursive": "true", "limit": 1000}, timeout=60)
+        response.raise_for_status()
+        shards.extend(row["path"] for row in response.json()
+                      if row["type"] == "file" and row["path"].endswith(".parquet"))
+        url = response.links.get("next", {}).get("url")
+    if not shards:
+        raise ValueError(f"no parquet shards in {DATASET}/{dataset_path}@{pinned}")
+    return pinned, sorted(shards)
+
+
+def download_file(url, destination):
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_suffix(".download")
+    for attempt in range(4):
+        try:
+            with requests.get(url, stream=True, timeout=(30, 120)) as response:
+                response.raise_for_status()
+                with temporary.open("wb") as stream:
+                    for chunk in response.iter_content(8 * 1024 * 1024):
+                        stream.write(chunk)
+            temporary.replace(destination)
             return
+        except requests.RequestException:
+            if attempt == 3:
+                raise
+            time.sleep(2 ** attempt)
 
+
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
+                          target_sweep_tokens=600_000_000, target_val_tokens=10_000_000,
+                          clean_raw=True, eot=True, threads=32, revision="main", dataset_path="sample/10BT"):
+    output_dir = Path(output_dir)
+    if (min(target_train_tokens, target_val_tokens, threads) < 1
+            or not 0 <= target_sweep_tokens <= target_train_tokens):
+        raise ValueError("positive train/validation quotas and threads; sweep cannot exceed training")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    train_path = output_dir / train_filename(target_train_tokens)
+    valid_path = output_dir / "fineweb_valid.npy"
+    sweep_path = output_dir / "fineweb_sweep_600M.npy" if target_sweep_tokens == 600_000_000 else output_dir / f"fineweb_sweep_{target_sweep_tokens}.npy"
+    metadata_path = output_dir / "fineweb_metadata.json"
+    requested = {"dataset": DATASET, "dataset_path": dataset_path, "tokenizer": "gpt2", "vocab_size": 50257,
+                 "document_separator": EOT if eot else None, "train_tokens": target_train_tokens,
+                 "valid_tokens": target_val_tokens, "sweep_tokens": target_sweep_tokens,
+                 "train_file": train_path.name, "valid_file": valid_path.name,
+                 "sweep_file": sweep_path.name if target_sweep_tokens else None}
+    if metadata_path.is_file():
+        metadata = json.loads(metadata_path.read_text())
+        if all(metadata.get(k) == v for k, v in requested.items()) and metadata.get("complete"):
+            paths = [(train_path, target_train_tokens), (valid_path, target_val_tokens)]
+            if target_sweep_tokens:
+                paths.append((sweep_path, target_sweep_tokens))
+            if all(path.is_file() and np.load(path, mmap_mode="r").shape == (count,)
+                   and np.load(path, mmap_mode="r").dtype == np.uint16 for path, count in paths):
+                if revision != "main" and revision != metadata.get("source_revision"):
+                    raise ValueError("existing corpus has a different source revision; use another output directory")
+                print(f"Verified complete corpus: {output_dir}", flush=True)
+                return metadata
+    pinned, shards = resolve_shards(revision, dataset_path)
+    # Remove the completion marker before replacing any corpus file.
+    metadata_path.unlink(missing_ok=True)
+    raw_dir = output_dir / "fineweb_raw" / pinned
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    files = [(train_path, target_train_tokens), (valid_path, target_val_tokens)]
+    required_bytes = sum(count * 2 for _, count in files) + target_sweep_tokens * 2
+    if shutil.disk_usage(output_dir).free < required_bytes:
+        raise OSError(f"need at least {required_bytes/1e9:.1f} GB free for token arrays plus parquet download space")
+    temporary = [path.with_suffix(".npy.incomplete") for path, _ in files]
+    arrays = [np.lib.format.open_memmap(path, mode="w+", dtype=np.uint16, shape=(count,))
+              for path, (_, count) in zip(temporary, files)]
+    train, valid = arrays
+    counts = {"train": 0, "valid": 0}
     enc = tiktoken.get_encoding("gpt2")
-    
-    print(f"Pre-allocating binary memmap files...")
-    # Pre-allocate valid memmap
-    valid_mm = np.lib.format.open_memmap(
-        valid_path, mode="w+", dtype=np.uint16, shape=(target_val_tokens,)
-    )
-    # Pre-allocate train memmap
-    train_mm = np.lib.format.open_memmap(
-        train_path, mode="w+", dtype=np.uint16, shape=(target_train_tokens,)
-    )
-
-    valid_tokens_written = 0
-    train_tokens_written = 0
-    t_start = time.time()
-
-    for shard_name in SHARDS:
-        if train_tokens_written >= target_train_tokens and valid_tokens_written >= target_val_tokens:
+    sources = []
+    started = time.monotonic()
+    for source in shards:
+        if counts["train"] == target_train_tokens and counts["valid"] == target_val_tokens:
             break
-
-        shard_path = raw_dir / shard_name
-        shard_url = f"{HF_BASE_URL}/{shard_name}"
-
-        if not shard_path.exists():
-            download_file(shard_url, shard_path)
-
-        print(f"Processing shard {shard_name}...", flush=True)
-        pf = pq.ParquetFile(str(shard_path))
-        num_rg = pf.num_row_groups
-        print(f"Shard {shard_name} has {num_rg} row groups ({pf.metadata.num_rows:,} rows)", flush=True)
-
-        t_shard = time.time()
-        shard_tokens = 0
-
-        # Read in batches of row groups
-        batch_size = 10
-        for rg_idx in range(0, num_rg, batch_size):
-            if train_tokens_written >= target_train_tokens and valid_tokens_written >= target_val_tokens:
-                break
-
-            rg_indices = list(range(rg_idx, min(rg_idx + batch_size, num_rg)))
-            texts = []
-            for rg in rg_indices:
-                tbl = pf.read_row_group(rg, columns=["text"])
-                texts.extend(tbl["text"].to_pylist())
-
-            # Tokenize batch
-            encoded = enc.encode_ordinary_batch(texts, num_threads=threads)
-            for doc_toks in encoded:
-                doc_len = len(doc_toks)
-                if doc_len == 0:
+        local = raw_dir / Path(source).name
+        if not local.is_file():
+            download_file(f"https://huggingface.co/datasets/{DATASET}/resolve/{pinned}/{source}", local)
+        sources.append({"path": source, "sha256": sha256_file(local)})
+        for batch in pq.ParquetFile(local).iter_batches(batch_size=2048, columns=["text"]):
+            texts = batch.column(0).to_pylist()
+            for doc in enc.encode_ordinary_batch(texts, num_threads=threads):
+                if not doc:
                     continue
-                if eot:
-                    doc_toks = doc_toks + [EOT]
-                    doc_len += 1
-                arr = np.array(doc_toks, dtype=np.uint16)
-
-                # First satisfy validation quota
-                if valid_tokens_written < target_val_tokens:
-                    needed = target_val_tokens - valid_tokens_written
-                    take = min(doc_len, needed)
-                    valid_mm[valid_tokens_written : valid_tokens_written + take] = arr[:take]
-                    valid_tokens_written += take
-                    shard_tokens += take
-                    if take < doc_len:
-                        arr = arr[take:]
-                        doc_len -= take
-                    else:
-                        continue
-
-                # Then satisfy training quota
-                if train_tokens_written < target_train_tokens:
-                    needed = target_train_tokens - train_tokens_written
-                    take = min(doc_len, needed)
-                    train_mm[train_tokens_written : train_tokens_written + take] = arr[:take]
-                    train_tokens_written += take
-                    shard_tokens += take
-
-                if train_tokens_written >= target_train_tokens:
+                tokens = np.asarray(doc + ([EOT] if eot else []), dtype=np.uint16)
+                # A validation document is never also used for training.
+                if counts["valid"] < target_val_tokens:
+                    take = min(len(tokens), target_val_tokens - counts["valid"])
+                    valid[counts["valid"]:counts["valid"]+take] = tokens[:take]
+                    counts["valid"] += take
+                else:
+                    take = min(len(tokens), target_train_tokens - counts["train"])
+                    train[counts["train"]:counts["train"]+take] = tokens[:take]
+                    counts["train"] += take
+                if counts["train"] == target_train_tokens and counts["valid"] == target_val_tokens:
                     break
-
-            if (rg_idx // batch_size) % 5 == 0:
-                elapsed = time.time() - t_start
-                rate = (train_tokens_written + valid_tokens_written) / elapsed if elapsed > 0 else 0
-                print(
-                    f"  [{shard_name} RG {rg_idx}/{num_rg}] Written: "
-                    f"train={train_tokens_written:,}/{target_train_tokens:,} "
-                    f"valid={valid_tokens_written:,}/{target_val_tokens:,} "
-                    f"({rate/1e6:.2f} Mtok/s)",
-                    flush=True,
-                )
-
-        dt_shard = time.time() - t_shard
-        print(f"Finished {shard_name}: {shard_tokens:,} tokens in {dt_shard:.1f}s ({shard_tokens/dt_shard/1e6:.2f} Mtok/s)", flush=True)
-
-        if clean_raw and shard_path.exists():
-            print(f"Removing processed shard {shard_path} to conserve disk space...", flush=True)
-            shard_path.unlink()
-
-    # Flush memmaps
-    train_mm.flush()
-    valid_mm.flush()
-    del train_mm
-    del valid_mm
-
-    print(f"Creating {sweep_path} (taking exactly {target_sweep_tokens:,} tokens from train)...", flush=True)
-    # Open read-only memmap and copy first 600M tokens to sweep_path
-    train_ro = np.load(train_path, mmap_mode="r")
-    sweep_mm = np.lib.format.open_memmap(
-        sweep_path, mode="w+", dtype=np.uint16, shape=(target_sweep_tokens,)
-    )
-    chunk_size = 50_000_000
-    for i in range(0, target_sweep_tokens, chunk_size):
-        end_idx = min(i + chunk_size, target_sweep_tokens)
-        sweep_mm[i:end_idx] = train_ro[i:end_idx]
-    sweep_mm.flush()
-    del sweep_mm
-    del train_ro
-
-    total_time = time.time() - t_start
-    print(f"\n================ FineWeb-Edu Pipeline Complete ================")
-    print(f"Total time: {total_time:.1f}s ({total_time/60:.2f} min)")
-    print(f"Train path: {train_path} ({target_train_tokens:,} tokens, {train_path.stat().st_size / 1e9:.2f} GB)")
-    print(f"Sweep path: {sweep_path} ({target_sweep_tokens:,} tokens, {sweep_path.stat().st_size / 1e9:.2f} GB)")
-    print(f"Valid path: {valid_path} ({target_val_tokens:,} tokens, {valid_path.stat().st_size / 1e6:.2f} MB)")
-
-    # Verification checks
-    print("\nRunning verification integrity checks...")
-    train_verify = np.load(train_path, mmap_mode="r")
-    sweep_verify = np.load(sweep_path, mmap_mode="r")
-    valid_verify = np.load(valid_path, mmap_mode="r")
-
-    assert len(train_verify) == target_train_tokens, f"Expected {target_train_tokens}, got {len(train_verify)}"
-    assert len(sweep_verify) == target_sweep_tokens, f"Expected {target_sweep_tokens}, got {len(sweep_verify)}"
-    assert len(valid_verify) == target_val_tokens, f"Expected {target_val_tokens}, got {len(valid_verify)}"
-
-    min_t, max_t = int(train_verify[:1_000_000].min()), int(train_verify[:1_000_000].max())
-    assert 0 <= min_t and max_t < 50257, f"Token range invalid: [{min_t}, {max_t}]"
-    
-    # Save metadata
-    meta = {
-        "dataset": "HuggingFaceFW/fineweb-edu",
-        "tokenizer": "gpt2",
-        "vocab_size": 50257,
-        "document_separator": EOT if eot else None,
-        "train_tokens": target_train_tokens,
-        "sweep_tokens": target_sweep_tokens,
-        "valid_tokens": target_val_tokens,
-        "train_file": str(train_path.name),
-        "sweep_file": str(sweep_path.name),
-        "valid_file": str(valid_path.name),
-        "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-    }
-    with open(output_dir / "fineweb_metadata.json", "w") as f:
-        json.dump(meta, f, indent=2)
-    print("Verification passed! Metadata saved to data/fineweb_metadata.json")
+            if counts["train"] == target_train_tokens and counts["valid"] == target_val_tokens:
+                break
+        print(f"{source}: train {counts['train']:,}/{target_train_tokens:,}; valid {counts['valid']:,}/{target_val_tokens:,}", flush=True)
+        if clean_raw:
+            local.unlink()
+    for array in arrays:
+        array.flush()
+    del train, valid, arrays, array
+    if counts != {"train": target_train_tokens, "valid": target_val_tokens}:
+        raise RuntimeError(f"source exhausted before quotas: {counts}; incomplete arrays were not published")
+    for pending, (path, _) in zip(temporary, files):
+        pending.replace(path)
+    if target_sweep_tokens:
+        train = np.load(train_path, mmap_mode="r")
+        pending = sweep_path.with_suffix(".npy.incomplete")
+        sweep = np.lib.format.open_memmap(pending, mode="w+", dtype=np.uint16, shape=(target_sweep_tokens,))
+        for start in range(0, target_sweep_tokens, 10_000_000):
+            end = min(start + 10_000_000, target_sweep_tokens)
+            sweep[start:end] = train[start:end]
+        sweep.flush()
+        del sweep, train
+        pending.replace(sweep_path)
+    metadata = {**requested, "complete": True, "source_revision": pinned, "source_shards": sources,
+                "tiktoken_version": tiktoken.__version__, "validation_documents_disjoint": True,
+                "seconds": time.monotonic()-started,
+                "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+    pending_meta = metadata_path.with_suffix(".json.tmp")
+    pending_meta.write_text(json.dumps(metadata, indent=2) + "\n")
+    pending_meta.replace(metadata_path)
+    print(f"Complete corpus: {train_path}; metadata: {metadata_path}", flush=True)
+    return metadata
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output-dir", type=Path, default=ROOT / "data")
-    parser.add_argument("--train-tokens", type=int, default=2_500_000_000)
-    parser.add_argument("--sweep-tokens", type=int, default=600_000_000)
-    parser.add_argument("--valid-tokens", type=int, default=10_000_000)
-    parser.add_argument("--no-clean", action="store_true")
-    parser.add_argument("--no-eot", action="store_true",
-                        help="do not append the GPT-2 end-of-text token after each document")
-    parser.add_argument("--threads", type=int, default=32)
-    args = parser.parse_args()
-
-    build_fineweb_dataset(
-        output_dir=args.output_dir,
-        target_train_tokens=args.train_tokens,
-        target_sweep_tokens=args.sweep_tokens,
-        target_val_tokens=args.valid_tokens,
-        clean_raw=not args.no_clean,
-        eot=not args.no_eot,
-        threads=args.threads,
-    )
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--output-dir", type=Path, default=ROOT / "data")
+    p.add_argument("--train-tokens", type=int, default=2_500_000_000)
+    p.add_argument("--sweep-tokens", type=int, default=600_000_000)
+    p.add_argument("--valid-tokens", type=int, default=10_000_000)
+    p.add_argument("--revision", default="main")
+    p.add_argument("--dataset-path", default="sample/10BT")
+    p.add_argument("--no-clean", action="store_true")
+    p.add_argument("--no-eot", action="store_true")
+    p.add_argument("--threads", type=int, default=32)
+    a = p.parse_args()
+    build_fineweb_dataset(a.output_dir, a.train_tokens, a.sweep_tokens, a.valid_tokens,
+                          not a.no_clean, not a.no_eot, a.threads, a.revision, a.dataset_path)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

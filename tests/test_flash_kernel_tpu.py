@@ -12,8 +12,8 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
-from src.sota import algebraic as A
-from src.sota import standard as S
+from algebraic import algebraic as A
+from algebraic import standard as S
 
 pytestmark = pytest.mark.skipif(jax.devices()[0].platform != "tpu", reason="needs a TPU")
 
@@ -41,7 +41,7 @@ CASES = [("softmax", 16, 1.0, False, None, None), ("softmax", 16, 1.0, True, Non
 @pytest.mark.parametrize("kind,n,c,with_sink,shift,fast", CASES)
 @pytest.mark.parametrize("block", [128, 256])
 def test_flash_matches_dense(kind, n, c, with_sink, shift, fast, block):
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     B, H, T, D = 2, 3, 512, 64
     ks = jax.random.split(jax.random.PRNGKey(0), 5)
     q = jax.random.normal(ks[0], (B, H, T, D), jnp.float32) * 1.5
@@ -74,7 +74,7 @@ def test_flash_matches_dense(kind, n, c, with_sink, shift, fast, block):
 @pytest.mark.parametrize("blocks", [(128, 128), (128, 256), (256, 128)])
 def test_model_attention_statistics(mode, dtype, blocks):
     """Actual n=16,c=8, including the learned sink's VJP and rectangular tiles."""
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     shape = (1, 2, 512, 64)
     keys = jax.random.split(jax.random.PRNGKey(13), 5)
     q, k, v, g = (jax.random.normal(key, shape, dtype) for key in keys[:4])
@@ -105,7 +105,7 @@ def test_model_attention_statistics(mode, dtype, blocks):
 @pytest.mark.parametrize("magnitude", [1000., 1e7])
 def test_guarded_attention_tail(score_sign, with_sink, magnitude):
     """Guarded fallback handles both weight overflow and whole-row underflow."""
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     shape = (1, 1, 256, 64)
     q = jnp.full(shape, math.sqrt(magnitude), jnp.float32)
     k = q * score_sign
@@ -124,7 +124,7 @@ def test_guarded_attention_tail(score_sign, with_sink, magnitude):
 
 def test_explicit_clipping_vjp_is_zero_above_cap():
     """A saturated score or sink is constant in the clipped primal."""
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     shape = (1, 1, 256, 64)
     q = jnp.full(shape, math.sqrt(1000), jnp.float32)
     k = q
@@ -147,7 +147,7 @@ def test_explicit_clipping_vjp_is_zero_above_cap():
 @pytest.mark.parametrize("seq", [512, 2048])
 def test_resident_backward_matches_dense(kind, mode, seq):
     """Independent dense VJPs for forced resident and automatic model dispatch."""
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     shape = (1, 2, seq, 64)
     keys = jax.random.split(jax.random.PRNGKey(67), 5)
     q, k, v, g = [jax.random.normal(key, shape, jnp.bfloat16) for key in keys[:4]]
@@ -179,7 +179,7 @@ def test_resident_backward_matches_dense(kind, mode, seq):
 @pytest.mark.parametrize("score_sign", [-1., 1.])
 @pytest.mark.parametrize("with_sink", [False, True])
 def test_resident_guarded_tail(score_sign, with_sink):
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     shape = (1, 1, 512, 64)
     q = jnp.full(shape, math.sqrt(1000), jnp.bfloat16)
     k = q * score_sign

@@ -24,3 +24,8 @@ paper/*.out
 *.swp
 *.swo
 runs/
+*.egg-info/
+build/
+dist/
+hf_upload_staging/
+HF_MODEL_CARD.md

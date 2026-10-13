@@ -12,11 +12,10 @@ Stages (each prints a job list for scripts/run_slice.py):
 * ``main``: the main run with the selected hyperparameters: 125M models,
   2.5B tokens, seeds 42/43/44, checkpoints every 200 steps (resumable with
   --resume), validation every 250 steps. ``--archs standard,algebraic``
-  restricts it to the two original arms.
+  restricts it to the standard and pure algebraic arms.
 
 All arms use AdamW with a cosine schedule. Batch 512 x 2048 tokens
-(1,048,576 per step): 573 steps for 600M tokens and 2,385 for 2.5B, as in the
-first study.
+(1,048,576 per step): 573 steps for 600M tokens and 2,385 for 2.5B.
 
   python scripts/main_run.py sweep > sweep.json
   python scripts/run_slice.py sweep.json --group main_sweep

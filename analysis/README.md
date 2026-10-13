@@ -1,213 +1,28 @@
-# Phase 1: why the first algebraic model lost, and what beats the standard
+# Reproducible analysis
 
-Every number here is produced by a script in this directory; JSON outputs
-are in `results/analysis/`. The concise mathematics is in
-`paper/theory.md`.
+The public comparison is in [results/main/comparison.md](../results/main/comparison.md). This directory contains numerical studies, exact attention certificates, and performance probes for the implemented components.
 
-The attention speed follow-up is tracked in
-[`paper/attention_performance.md`](../paper/attention_performance.md) and
-[`paper/attention_exact.md`](../paper/attention_exact.md). It includes
-`attention_numerics.py` (9,216 random rows and adversarial tails),
-`attention_polynomial.py` (exact rational interval certificates),
-`attention_performance.py` (randomized paired TPU rounds including Splash),
-and `attention_statistics.py` (bootstrap over independent seeds/rounds).
-The checked Lean proofs are in [`formal/`](../formal/README.md). The speed
-goal remains open; historical phase completion does not establish parity.
-
-| File | What it does |
+| Script | Purpose |
 |---|---|
-| `attention_link_analysis.py` | Static normalized-sphere routing, clipping/tie diagnostics, and temperature-matched KL for alternative algebraic links; does not establish trained quality |
-| `attention_link_probe.py` | Isolated TPU rational/affine-power kernels, independent dense output/VJP checks, and paired timing with frozen standard/asinh executables |
-| `attention_resident_probe.py` | Exact backward experiment retaining K/V and accumulating dQ in VMEM; output checks and paired timing without changing the deployed kernel |
-| `attention_link_statistics.py` | Bootstrap over independent synthetic seeds and paired within-run hardware rounds for alternative links |
-| `attention_affine_guard_probe.py` | Wider affine caps, native reciprocal slopes, deterministic unclipped branch, gain sweeps, and rounded-denominator comparison |
-| `attention_radical_probe.py` | Independent TPU radical accuracy/VJP checks and paired timing of alternative inverse-root implementations |
-| `attention_interpolation_probe.py` | Direct Hermite weight/derivative lookup, independent VJP checks, guarded exact fallback, and TPU timings |
-| `attention_interpolation_certificate.py` | Exact rational Hermite coefficient enclosures and conditional real-arithmetic weight/derivative error bounds |
-| `attention_newton_certificate.py` | Exact rational residual bounds for rounded inverse-root polynomial seeds, using the Lean-checked Newton identity |
-| `model_component_performance.py` | Paired timing of deployed standard/hybrid/pure attention preprocessing and deployed vocabulary heads |
-| `qk_normalization_probe.py`, `qk_rms_kernel.py` | Equivalent analytic and Pallas RMS VJP prototypes, including local gain-gradient partials |
-| `head_gradient_cache_probe.py` | Deployed n=8,c=2 head with alternative float32/BF16 saved-gradient residuals |
-| `model_profile.py`, `model_step_performance.py` | Real trainer optimizer-step profiles, including randomized paired seeds and explicit native QK baseline |
-| `qk_model_validation.py` | Initialized complete-model output/parameter-gradient checks, including large gains and the real 125M/60M shapes |
-| `attention_recall_probe.py` | Learned QK-normalized toy associative recall across paired seeds; independent stable-logit oracle, not language-model quality |
-| `attention_followup_statistics.py` | Independent-seed bootstrap for wider-link routing and paired toy-recall results; descriptive intervals with no multiplicity correction |
-| `v1_statistics.py` | Paired seed statistics of the first study's 125M runs, the 18-run tuning sweep, schedule areas, and an LR-annealing scaling-law fit |
-| `head_analysis.py` | Monte Carlo: representational floor of each head, cost of OACE vs log-loss under misspecification (B), rank bottleneck of softmax vs asinh links (C) |
-| `verify_head_eval.py` | Independent float64 recomputation of a saved model's held-out NLL |
-| `phase1_summary.py` | Paired-by-seed statistics of the Phase 1 headline comparisons |
-| `phase3_summary.py` | Phase 3 table, best learning rate per arm, curves |
-| `attention_analysis.py` | Monte Carlo: attention entropy at initialization per kernel, associative recall across kernels, positional-resolution linear programs |
-| `activation_analysis.py` | ALU vs SiLU/GELU: best-matching sharpness, mean-field moments, tails |
-| `phase1_jobs.py` | The ablation batches (job lists for `scripts/run_queue.py`) |
-| `phase3_jobs.py` | The 60M / 1B-token comparison (job lists for `scripts/run_slice.py`) |
-| `summarize_runs.py` | Tables of held-out NLL, paired differences, and validation curves |
-| `plot_figures.py` | The figures in `results/figures/` from the recorded JSON outputs |
+| `plot_figures.py` | Rebuild architecture, held-out-quality, and benchmark figures from the published 125M results |
+| `activation_analysis.py` | Compare ALU and SiLU activation values, derivatives, and moments |
+| `attention_numerics.py` | Float32 attention normalization and gradient stress cases |
+| `attention_statistics.py`, `attention_followup_statistics.py` | Paired kernel timing statistics |
+| `attention_performance.py`, `attention_resident_probe.py` | Tiled and resident attention performance |
+| `attention_link_analysis.py`, `attention_link_probe.py`, `attention_link_statistics.py` | Candidate link accuracy and latency |
+| `attention_interpolation_certificate.py`, `attention_newton_certificate.py` | Exact rational error certificates |
+| `attention_interpolation_probe.py`, `attention_polynomial.py`, `attention_radical_probe.py`, `attention_affine_guard_probe.py` | Experimental approximation probes |
+| `model_component_performance.py`, `model_step_performance.py`, `model_profile.py` | Component and optimizer-step timings |
+| `qk_model_validation.py`, `qk_normalization_probe.py`, `qk_rms_kernel.py` | QK normalization checks and reduction experiments |
+| `head_gradient_cache_probe.py`, `verify_head_eval.py` | Head gradient and evaluation checks |
+| `attention_recall_probe.py` | Toy attention retrieval study |
+| `scaling_jobs.py`, `scaling_summary.py` | 60M / 1B-token scaling comparison |
+| `summarize_runs.py` | Collect completed trainer outputs |
 
-## 1. Statistics of the first study (`v1_statistics.py`)
+```bash
+python analysis/plot_figures.py
+JAX_PLATFORMS=cpu python analysis/activation_analysis.py
+python scripts/audit_algebraic.py --set attn_impl=flash --set head_impl=fused
+```
 
-* 125M final runs: paired NLL gap 0.0088 nats, 95% CI [−0.011, 0.028],
-  posterior P(algebraic worse) = 0.90; 9 paired seeds would be needed for
-  80% power at the observed effect. The 81,920-token validation subset is
-  small but shared, so the paired comparison is still informative.
-* The tuning sweep picked the largest learning rate offered for both arms
-  (1e-3): the optimum lay outside the searched range.
-* The algebraic arm's ARDS schedule ends at 0.63× peak learning rate
-  (cosine: 0.05×) and averages 0.84× (cosine: 0.52×). An annealing-law fit
-  on the standard arm's traces predicts that schedule alone costs 0.115
-  nats at 125M (90% CI 0.087–0.185): larger than the observed gap.
-* In the 20M pilot the algebraic arm's gradient was clipped on 99.999% of
-  steps (standard: 0.19%): OACE's gradient scale is ~16× that of
-  cross-entropy.
-
-## 2. Mathematics and Monte Carlo of the components
-
-* **Head.** Training the first study's link on OACE instead of log-loss
-  costs ≈0.03 nats of test cross-entropy under misspecification (12-trial
-  Monte Carlo); the asinh link is slightly better than softmax at equal rank.
-  The algebraic head can be trained by exact maximum likelihood (its
-  log-loss gradient is algebraic), which removes the objective mismatch.
-* **Attention.** `ρ(s)^8` is degree-8 homogeneous for large scores, so
-  normalized weights stop sharpening as scores grow: entropy saturates at
-  0.42·log T (softmax: 0.06·log T) in the random-score Monte Carlo.
-* **Positions.** The first-study Cayley grid has 2 of 32 pairs with
-  wavelength < 64 tokens (RoPE: 9) and 2–4× smaller position-only margins,
-  yet it was not harmful in training: its static pairs act like partial
-  rotary dimensions.
-* **Activation.** ALU(β=1) is closer to GELU than SiLU (best SiLU match
-  β ≈ 0.6) with a heavy algebraic negative tail.
-
-## 3. Ablations at the proxy scale (`phase1_jobs.py`)
-
-33M-parameter proxy, context 1024, 196.6M tokens, 2M held-out tokens,
-seed-to-seed SD ≈ 0.003 nats (standard, 3 seeds: 3.8201 ± 0.0018 SE).
-
-First-study components swapped one at a time into the standard model:
-OACE head +0.080, ARDS schedule + wd 0.01 +0.060, no norm gains +0.037,
-octic attention +0.003, ALU +0.001, Cayley grid −0.008. The genuinely
-algebraic substitutions are free; the gap came from the objective, the
-schedule, and the missing gains. Reverse checks inside v1: CE instead of
-OACE −0.122, gains −0.103.
-
-Second-generation exploration (single changes to the provisional v2,
-3.8146 ± 0.0017 over 3 seeds): stronger asinh compression in the head is
-monotonically better (CE 3.8208, n=c=32 3.8199, n=c=16 3.8125,
-n=8/c=2 3.7857); QK-norm 3.7910; first-study Cayley grid 3.7979;
-ALU β=0.5 3.8058; softmax attention 3.8059; attention n=c=16 3.8176.
-
-## 4. Final Phase 1 design and statistics (`phase1_summary.py`)
-
-Batches 3–5 combined the winners, tuned the head and attention kernels
-under QK-normalization, and added controls. Held-out NLL (mean ± SE over
-seeds; runs with equal seeds are paired):
-
-| model | seeds | NLL |
-|---|---|---|
-| standard | 4 | 3.8182 ± 0.0029 |
-| first-study algebraic (v1) | 1 | 3.9608 |
-| v2 provisional | 3 | 3.8146 ± 0.0017 |
-| v2c (+ n=8/c=2 head, QK-norm, v1 grid, ALU β=½) | 4 | 3.7647 ± 0.0025 |
-| hybrid: v2c with softmax attention | 3 | 3.7617 ± 0.0021 |
-| **v2d: final algebraic (attention n=16/c=8, geometric grid)** | 4 | **3.7574 ± 0.0016** |
-| standard + QK-norm + algebraic head (control) | 3 | 3.7613 ± 0.0047 |
-
-* **v2d − standard = −0.061 ± 0.004 nats (t = −14.1, p = 0.0008).**
-* v2d − (standard + QK-norm + algebraic head) = −0.004 ± 0.005 (p = 0.50):
-  with the same head and QK-norm, the fully algebraic backbone (ALU-GLU,
-  Cayley rotations, asinh attention with sink) matches the standard
-  backbone. The win over the standard baseline is carried by the algebraic
-  likelihood head and QK-normalization, both of which also transfer to a
-  standard backbone (−0.059 together).
-* Around v2d, single-seed variants are within noise (sink removed −0.005,
-  ALU β 0.6/0.75 −0.003/−0.002, head c 1.5/3 ±0.001, attention n=32/c=16
-  −0.001); partial rotary (+0.009) and a lower learning rate (+0.026) hurt.
-* The algebraic head's held-out NLL was recomputed from its definition in
-  float64 NumPy from saved parameters: probabilities sum to 1 within 1e-15
-  and the NLL matches the trainer to 2e-7 (`verify_head_eval.py`).
-
-Associative recall (Monte Carlo, 512 distractors): softmax 99.5% accuracy,
-first-study kernel 65% with seed failures — the empirical face of the
-degree-8 homogeneity ceiling that motivated the n=16, c=8 kernel.
-
-## 5. Phase 3: 60M parameters, 1B tokens, one seed (`phase3_jobs.py`, `phase3_summary.py`)
-
-16 TPU v4 chips, FineWeb-Edu-1B, context 2048, 524,288-token batches,
-1,908 steps (1,000,341,504 tokens), cosine AdamW, 8M held-out tokens. Each
-arm received the same LR budget (four values, the fourth placed at its fitted
-optimum); results in `results/phase3/summary.json`.
-
-| run | LR | NLL | PPL |
-|---|---|---|---|
-| standard | 1.5e-3 | 3.4644 | 31.96 |
-| standard | 2.12e-3 | 3.4215 | 30.62 |
-| **standard (best)** | 3e-3 | **3.4170** | **30.48** |
-| standard | 6e-3 | 3.4992 | 33.09 |
-| algebraic | 1.5e-3 | 3.4058 | 30.14 |
-| **algebraic (best)** | 3e-3 | **3.3697** | **29.07** |
-| algebraic | 4.24e-3 | 3.3750 | 29.22 |
-| algebraic | 6e-3 | 3.3711 | 29.11 |
-| hybrid | 1.5e-3 | 3.4130 | 30.36 |
-| **hybrid (best): standard + QK-norm + algebraic head** | 3e-3 | **3.3716** | **29.13** |
-| hybrid | 6e-3 | 3.3950 | 29.82 |
-
-**The algebraic model wins: −0.047 nats, perplexity 29.07 vs 30.48 (ratio
-0.954).** Every algebraic learning rate beats the standard's best, and the
-algebraic model is markedly less sensitive to the learning rate. It leads
-from the first evaluation (step 200) to the end, and by a near-constant
-0.04–0.05 nats at every context position beyond the first few tokens.
-Throughput: 1.94M vs 2.70M tokens/s (0.72×).
-
-![Associative recall](../results/figures/recall.png)
-
-## 6. Monte Carlo conclusions
-
-* Representational floor (12 Zipf-like targets over the full GPT-2 vocabulary,
-  log dynamic range 9–19 nats): every head — softmax, the first-study
-  vocabulary-normalized octic head, and the asinh head — reaches KL ≤ 5e-4
-  (mostly < 1e-5) with unconstrained logits. The first-study head's cost is
-  therefore not representability but its objective and its behavior under
-  rank-constrained logits.
-* Objective (12 trials): OACE vs log-loss on the same link +0.0289 ± 0.0009;
-  first-study link vs softmax +0.0033 ± 0.0009; asinh n=c=16 link vs
-  softmax −0.00226 ± 0.00008 nats.
-* Rank bottleneck (6 trials per rank): asinh (n=8, c=1) lowers the best
-  achievable KL to a full-rank teacher by 7.7%, 11.7%, 15.4%, 18.1% at ranks
-  8, 16, 32, 64 (paired SE ≤ 0.0013) — the mechanism behind the head's gain.
-* Associative recall, 512 distractors (3 seeds): softmax 99.51%; first-study
-  kernel 65% with seed failures; asinh n=16/c=16 99.71%, n=8/c=2 99.58%,
-  n=32/c=32 99.54%.
-
-## 7. How much algebra do we really need? (`algebra_ladder.py`)
-
-Algebraic pieces added to the standard model one at a time, proxy scale,
-3–4 paired seeds per rung (`results/analysis/algebra_ladder.json`):
-
-| rung | NLL | Δ vs standard (t 95% CI half-width) | share | tokens/s (1 chip) |
-|---|---|---|---|---|
-| standard | 3.8181 | 0 | 0% | 333K |
-| + algebraic head | 3.7840 | −0.036 (0.029) | 59% | 317K |
-| QK-norm only | 3.7914 | −0.029 (0.008) | 47% | 309K |
-| **+ QK-norm = hybrid** | **3.7613** | **−0.059 (0.027)** | **97%** | **294K** |
-| + sink | 3.7647 | −0.055 (0.020) | 91% | 294K |
-| + ALU-GLU | 3.7630 | −0.057 (0.015) | 94% | 286K |
-| + Cayley rotations | 3.7642 | −0.056 (0.006) | 92% | 286K |
-| + asinh attention = algebraic | 3.7574 | −0.061 (0.014) | 100% | 249K |
-
-The head and QK-normalization carry the gain; everything after them is
-quality-neutral. The hybrid is the cheapest model that beats the standard by
-the full margin (Phase 3: −0.045 nats at 0.88× standard throughput).
-
-## 8. 125M budget sweep for the main run (`scripts/main_run.py`)
-
-125M parameters, 600M tokens (573 steps of 1,048,576 tokens), seeds
-42/43/44, cosine AdamW, 57 warmup steps, 8M held-out tokens. Mean ± SD:
-
-| LR | standard | algebraic | hybrid |
-|---|---|---|---|
-| 1.5e-3 | 3.8608 ± 0.0088 | 3.7090 ± 0.0137 | 3.7475 ± 0.0095 |
-| **3e-3 (selected)** | **3.8208 ± 0.0145** | **3.6655 ± 0.0063** | **3.6982 ± 0.0149** |
-| 6e-3 | 4.1434 ± 0.1382 | 3.7562 ± 0.0488 | 3.7851 ± 0.0135 |
-
-Every architecture's optimum is interior to the grid (unlike the first
-study, whose sweep selected its largest offered rate for both arms).
-
+TPU probes run through `bash scripts/tpu_python.sh 0 <script> ...`. Experimental approximations are opt-in and are not selected by the language-model presets. Performance records describe their measured shapes, dtypes, and code fingerprints; use the current smoke reports under `results/verification/` for execution checks of the published training configurations. Toy retrieval studies do not replace post-training recall evaluation.

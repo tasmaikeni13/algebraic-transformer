@@ -7,7 +7,7 @@ from jax import lax
 import jax.numpy as jnp
 from jax.experimental import pallas as pl
 from jax.experimental.pallas import tpu as pltpu
-from src.sota.algebraic import rms_norm as _native_norm
+from algebraic.algebraic import rms_norm as _native_norm
 
 
 def _forward_kernel(x_ref, gain_ref, y_ref):

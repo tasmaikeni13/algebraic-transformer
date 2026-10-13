@@ -10,8 +10,9 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.sota.benchmarking import RECALL_PROTOCOL, sha256_file, write_json
-from src.sota.recall_benchmarks import TASKS, build_example
+sys.path.insert(0, str(ROOT / "src"))
+from algebraic.benchmarking import RECALL_PROTOCOL, sha256_file, write_json
+from algebraic.recall_benchmarks import TASKS, build_example
 
 
 def main():
@@ -67,7 +68,7 @@ def main():
         datasets[task] = {"rows": rows, "sha256": digest.hexdigest(), "limited": a.trials is not None}
         print(f"{task}: {rows:,} bounded-context examples -> {path}", flush=True)
     write_json(a.output_dir / "metadata.json", {
-        "protocol": RECALL_PROTOCOL, "generator_sha256": sha256_file(ROOT / "src/sota/recall_benchmarks.py"),
+        "protocol": RECALL_PROTOCOL, "generator_sha256": sha256_file(ROOT / "src/algebraic/recall_benchmarks.py"),
         "config_sha256": sha256_file(a.config), "spec": {**spec, "trials_per_cell": trials},
         "tokenizer": "gpt2", "tiktoken_version": tiktoken.__version__,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

@@ -15,10 +15,10 @@
   "sources": {
     "analysis/qk_model_validation.py": "8700844fa85045c02f45fa1d184b17217ad458521757083ada9a621c5589a698",
     "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-    "src/sota/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d",
-    "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+    "src/algebraic/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d",
+    "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+    "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
   },
   "cases": [
     {

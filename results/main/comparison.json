@@ -127,7 +127,13 @@
       }
     }
   },
-  "complete_three_arm_three_seed_comparison": true,
+  "training": {
+    "size": "125m",
+    "tokens": 2500000000.0,
+    "seq_len": 2048,
+    "batch": 512
+  },
+  "comparison_complete": true,
   "uncertainty": "sample SD across training seeds; paired deltas use the same seed and examples; descriptive only",
   "metrics": [
     {

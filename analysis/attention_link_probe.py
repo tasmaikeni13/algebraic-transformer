@@ -18,6 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 from jax import lax
@@ -26,7 +27,7 @@ from jax.experimental import pallas as pl
 import numpy as np
 
 from analysis.attention_performance import ratio_ci
-from src.sota.kernels import flash as fk
+from algebraic.kernels import flash as fk
 
 
 def powers_pair(x, n):
@@ -198,7 +199,7 @@ def main():
     report = {"utc": datetime.now(timezone.utc).isoformat(), "shape": shape, "jax": jax.__version__,
               "devices": [str(x) for x in jax.devices()], "seed": 37, "rounds": args.rounds,
               "iters": args.iters, "prototype": True, "model_adopted": False,
-              "kernel_sha256": hashlib.sha256((ROOT / "src/sota/kernels/flash.py").read_bytes()).hexdigest(),
+              "kernel_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
               "probe_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "backward": "resident" if args.resident_chunk else "deployed_partials",
               "resident_chunk": args.resident_chunk,

@@ -14,9 +14,10 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.sota.benchmarking import (RECALL_PROTOCOL, Scorer, load_model, provenance,
+sys.path.insert(0, str(ROOT / "src"))
+from algebraic.benchmarking import (RECALL_PROTOCOL, Scorer, load_model, provenance,
                                    read_dataset, sha256_file, write_json)
-from src.sota.recall_benchmarks import TASKS, generated_metrics, summarize, validate_example
+from algebraic.recall_benchmarks import TASKS, generated_metrics, summarize, validate_example
 
 
 def evaluate(scorer, benchmarks, tasks, limit=None):

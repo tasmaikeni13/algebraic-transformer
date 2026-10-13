@@ -12,7 +12,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.sota.benchmarking import PUBLIC_TASKS, ZERO_SHOT_PROTOCOL, write_json
+sys.path.insert(0, str(ROOT / "src"))
+from algebraic.benchmarking import PUBLIC_TASKS, ZERO_SHOT_PROTOCOL, write_json
 API = "https://datasets-server.huggingface.co/rows"
 
 

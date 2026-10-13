@@ -17,15 +17,16 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 import jax.numpy as jnp
 import numpy as np
 
 from analysis.attention_performance import ratio_ci
-from src.sota import algebraic as A, standard as S
-from src.sota import model
-from src.sota.kernels.flash import flash_attention
+from algebraic import algebraic as A, standard as S
+from algebraic import model
+from algebraic.kernels.flash import flash_attention
 
 
 def main():
@@ -61,9 +62,9 @@ def main():
               "rounds": args.rounds, "iters": args.iters,
               "scope": "component forward/VJP; no optimizer, model, data loading, or quality estimate",
               "source_sha256": {f: hashlib.sha256((ROOT/f).read_bytes()).hexdigest()
-                  for f in ("analysis/model_component_performance.py", "src/sota/algebraic.py",
-                            "src/sota/standard.py", "src/sota/kernels/flash.py",
-                            "src/sota/model.py", "src/sota/kernels/qk_norm.py")},
+                  for f in ("analysis/model_component_performance.py", "src/algebraic/algebraic.py",
+                            "src/algebraic/standard.py", "src/algebraic/kernels/flash.py",
+                            "src/algebraic/model.py", "src/algebraic/kernels/qk_norm.py")},
               "results": {}, "comparisons": {}, "failures": {}}
     args.out.parent.mkdir(parents=True, exist_ok=True)
     def save():

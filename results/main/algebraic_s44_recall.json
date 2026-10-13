@@ -3126,7 +3126,7 @@
     ]
   },
   "dataset_metadata": {
-    "protocol": "sota-recall-v1-greedy-16-token-budget",
+    "protocol": "algebraic-recall-greedy-16-token-budget",
     "generator_sha256": "f5c5033313f909a85bf7f8e3202d609dc8ebc85a5942f103ca967a3a885e6702",
     "config_sha256": "0f9fa0e95d4d79431ac0e797f335bb307c8ce030f3e75657d9f1c6aeec4523ab",
     "spec": {
@@ -3193,8 +3193,8 @@
     "evidence_truncation": false,
     "answer_parser": "leading requested six-digit codes; trailing prose allowed"
   },
-  "run": "/home/tasma/sota-algebra/runs/main/algebraic_s44",
-  "protocol": "sota-recall-v1-greedy-16-token-budget",
+  "run": "/home/tasma/algebraic-transformer/runs/main/algebraic_s44",
+  "protocol": "algebraic-recall-greedy-16-token-budget",
   "checkpoint": {
     "params_sha256": "5f195dc481c2a718f67a7c8d780c2ea02b655c5b64cd87aa914c5a546343895c",
     "meta_sha256": "9cf168335c7a8d88a9c4a03a780ffe580bc247669c9198e920018fedd5852ea6",
@@ -3261,7 +3261,7 @@
       "eval_tokens": 8000000.0,
       "eval_batch": 8,
       "log_every": 25,
-      "out": "/home/tasma/sota-algebra/runs/main/algebraic_s44",
+      "out": "/home/tasma/algebraic-transformer/runs/main/algebraic_s44",
       "save_params": true,
       "distributed": true,
       "profile_steps": 0,
@@ -3350,6 +3350,6 @@
     "flash_block": 512,
     "head_impl": "dense"
   },
-  "predictions": "/home/tasma/sota-algebra/results/main/algebraic_s44_recall.predictions.jsonl",
+  "predictions": "/home/tasma/algebraic-transformer/results/main/algebraic_s44_recall.predictions.jsonl",
   "predictions_sha256": "ae13e10cd522ec4d13bd00f8a01d97d1ab06d38989aade6877652830e3a15d07"
 }

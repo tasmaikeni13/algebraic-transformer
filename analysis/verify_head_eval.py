@@ -20,6 +20,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import numpy as np
 
@@ -33,7 +34,7 @@ def main():
 
     import jax
     import jax.numpy as jnp
-    from src.sota.model import LMConfig, forward_hidden, position_tables, eval_logprobs
+    from algebraic.model import LMConfig, forward_hidden, position_tables, eval_logprobs
 
     meta = json.loads((a.run / "meta.json").read_text())
     cfg = LMConfig(**{**meta["config"], "dtype": "float32", "attn_impl": "dense"})

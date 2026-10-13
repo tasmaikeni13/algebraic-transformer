@@ -1,0 +1,69 @@
+{
+  "purpose": "limited evaluator smoke",
+  "limited": true,
+  "full_training_launched": false,
+  "backend": "tpu",
+  "source": {
+    "sha256": "75d3aea341370c0de95b1274c20f4e75caa8a82cf11f3a97ab4607b194524299",
+    "git_revision": "4422c7440db39c19509b51d0ce087150281508ae"
+  },
+  "runs": {
+    "standard": {
+      "passed": true,
+      "public_tasks": [
+        "arc_easy",
+        "arc_challenge",
+        "hellaswag",
+        "piqa",
+        "openbookqa",
+        "winogrande",
+        "boolq",
+        "lambada"
+      ],
+      "recall_tasks": [
+        "needle_passkey",
+        "associative_recall",
+        "multi_needle",
+        "latest_value"
+      ],
+      "public_examples": 8,
+      "recall_examples": 12,
+      "controls": [
+        "present",
+        "absent",
+        "short"
+      ],
+      "evidence_truncated": false,
+      "attn_impl": "flash"
+    },
+    "algebraic": {
+      "passed": true,
+      "public_tasks": [
+        "arc_easy",
+        "arc_challenge",
+        "hellaswag",
+        "piqa",
+        "openbookqa",
+        "winogrande",
+        "boolq",
+        "lambada"
+      ],
+      "recall_tasks": [
+        "needle_passkey",
+        "associative_recall",
+        "multi_needle",
+        "latest_value"
+      ],
+      "public_examples": 8,
+      "recall_examples": 12,
+      "controls": [
+        "present",
+        "absent",
+        "short"
+      ],
+      "evidence_truncated": false,
+      "attn_impl": "flash"
+    }
+  },
+  "passed": true
+}

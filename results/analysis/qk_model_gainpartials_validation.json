@@ -14,9 +14,9 @@
   "sources": {
     "analysis/qk_model_validation.py": "4937ff4c57ee82273654deea9ada64414b15532759b8baac6a020cc771732b54",
     "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-    "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+    "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+    "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
   },
   "cases": [
     {

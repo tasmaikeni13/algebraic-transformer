@@ -1,226 +1,164 @@
-# sota-algebra: a second-generation algebraic Transformer
+# Algebraic Transformer
 
-The [first study](https://github.com/tasmaikeni13/algebraic-transformer)
-(tag `v1-original` here) built a causal language model whose training path
-avoids exponentials, logarithms, trigonometric and sigmoid functions, and
-compared it with a standard Transformer at 125M parameters on 2.5B
-FineWeb-Edu tokens. The algebraic model lost narrowly: 25.774 vs 25.548
-validation perplexity (paired gap 0.009 nats, 95% CI [−0.011, 0.028]).
+Causal language models with an algebraic attention kernel, Cayley positional rotations, and an output head whose exact log-loss gradient uses arithmetic and reciprocal square roots. The repository includes a matched standard Transformer, an optional hybrid, fused Pallas TPU kernels, reproducible training configurations, and public-task and recall evaluation.
 
-This repository finds out **why it lost**, builds a **stronger algebraic
-model that beats the standard one**, provides **Pallas TPU kernels for both
-architectures**, and prepares the **125M × 3-seed main run** (implementation
-and budget hyperparameter sweep; the main run itself is left to the author).
+The pure algebraic **model objective and its gradient** avoid exponential, logarithmic, trigonometric, sigmoid, and hyperbolic primitives. Initialization, the shared cosine learning-rate schedule, and metric reporting are outside that claim. See [the mathematics](paper/theory.md) and [primitive audit](scripts/audit_algebraic.py).
 
-| Phase | Content | Status |
+![Standard and algebraic model components](results/figures/architecture.png)
+
+## Measured results
+
+The completed comparison trains approximately **125M parameters on 2.5B [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu) tokens**, with paired seeds **42, 43, 44**. Values below are mean ± sample SD across training seeds; throughput is trainer telemetry on 16 TPU v4 chips.
+
+| Model | Held-out NLL | Perplexity | Million tokens/s |
+|---|---:|---:|---:|
+| Standard | 3.1723 ± 0.0024 | 23.86 ± 0.06 | 1.62 |
+| Pure algebraic | 3.1258 ± 0.0026 | 22.78 ± 0.06 | 1.39 |
+| Hybrid | 3.1323 ± 0.0011 | 22.93 ± 0.03 | 1.43 |
+
+![Held-out perplexity and measured throughput](results/figures/results_overview.png)
+
+The algebraic model has lower held-out perplexity. Public-task differences are mixed: it improves HellaSwag and PIQA in this comparison, while several other tasks are similar or lower. Free recall is low for all models; recognition and generation are reported separately. These results do not imply a universal accuracy or retrieval advantage.
+
+![Eight public tasks, with variation across training seeds](results/figures/public_tasks.png)
+
+![Needle retrieval by context budget and evidence position](results/main/needle_recall.png)
+
+The [complete comparison](results/main/comparison.md) includes all public tasks, recall controls, matched-seed differences, and the full context/position matrix. [Per-example predictions and provenance](results/main) support the tables. Presentation paths and protocol names are normalized; checkpoint hashes, dataset hashes, recorded source fingerprints, predictions, and scores are preserved.
+
+## Models and kernels
+
+| Component | Standard | Pure algebraic |
 |---|---|---|
-| 1 | Statistics, mathematics, and Monte Carlo diagnosis of the first study; ablations; a new algebraic design | done |
-| 2 | Flash attention and fused head kernels for both arms | done |
-| 3 | 60M models, FineWeb-Edu-1B, 1B tokens, one seed, both arms | done: **algebraic wins** |
-| + | How much algebra do we really need? A minimal-algebra hybrid | done: **hybrid wins too, at 88% of standard speed** |
-| Speed | Pure/hybrid kernel and complete optimizer-step parity with standard | **ongoing**; hybrid gain reduction improves 125M steps by 3.8%; parity remains open |
-| Main | 125M, 3 seeds, 2.5B tokens | implementation and budget sweeps done for all three arms; main run left to the author |
+| Normalization | Learned RMS gains | Learned RMS gains, plus QK normalization |
+| Feed-forward | SwiGLU | ALU-GLU, β = ½ |
+| Positions | RoPE | Geometric Cayley rotations |
+| Attention | Causal softmax | `ρ(s/8)^16`, learned per-head sink |
+| Output distribution | Softmax | `ρ(z/2)^8` |
+| Objective gradient | Cross-entropy | Exact algebraic log-loss gradient |
 
-## Headline results
+Here `ρ(x) = x + √(1 + x²)`. Token embeddings and the output projection are tied. The hybrid uses standard attention and feed-forward components with QK normalization and the algebraic likelihood head.
 
-**Phase 3 (60M parameters, 1B tokens, 16 TPU v4 chips, best of four learning
-rates per arm):**
+Pallas provides tiled attention forward/backward, a vocabulary projection/loss kernel, and a QK gain-gradient reduction. The 350M and 1B configurations enable **fused attention and the fused head** for both arms. The head uses 128-token × 512-vocabulary tiles, verified at both widths. Dense components remain available for CPU checks. [Kernel measurements](paper/attention_performance.md), [numerical identities](paper/attention_exact.md), and [Lean certificates](formal/README.md) document scope and limitations.
 
-| model | held-out NLL | perplexity | tokens/s |
-|---|---|---|---|
-| standard (RMSNorm, SwiGLU, RoPE, softmax, cross-entropy) | 3.4170 | 30.48 | 2.70M |
-| **algebraic (v2d)** | **3.3697** | **29.07** | 1.94M |
-| **hybrid (standard + QK-norm + algebraic head)** | **3.3716** | **29.13** | 2.38M |
+## Install
 
-Every algebraic run (each of its four learning rates) beat the standard's
-best run; the hybrid's best (3 learning rates) is within 0.002 of the
-algebraic model.
-
-![Phase 3 training curves](results/figures/phase3_curves.png)
-![Learning-rate sensitivity](results/figures/phase3_lr.png) Proxy experiments (33M parameters, 4 paired seeds) agree:
-3.7574 ± 0.0016 vs 3.8182 ± 0.0029, paired difference −0.061 ± 0.004 nats
-(t = −14).
-
-**Why the first model lost** — first-study components swapped one at a time
-into the standard model (proxy, Δ held-out NLL):
-
-| first-study component | Δ NLL |
-|---|---|
-| OACE power-score head with vocabulary normalization | **+0.080** |
-| rational (ARDS) schedule + weight decay 0.01 | **+0.060** |
-| normalization without learned gains | **+0.037** |
-| octic attention kernel (n=8, sink) | +0.003 |
-| ALU activation | +0.001 |
-| Cayley rotations (first-study grid) | −0.008 |
-
-![First-study attribution](results/figures/v1_attribution.png)
-
-The genuinely algebraic substitutions were free; the gap came from the
-training objective, the schedule (it ended at 63% of peak learning rate), and
-the missing gains. Details: [analysis/README.md](analysis/README.md); short
-mathematics and proofs: [paper/theory.md](paper/theory.md).
-
-## The second-generation algebraic model (v2d)
-
-* **Algebraic maximum-likelihood head.** `p_j ∝ ρ(z_j/c)^n` with
-  `ρ(x) = x + √(1+x²)`, n=8, c=2. Its log-loss gradient is algebraic,
-  `(n/c)(1+(z_j/c)²)^(−1/2)(p_j − y_j)`, so the model trains on exact
-  likelihood without evaluating a logarithm. The entrywise asinh compression
-  escapes the softmax rank bottleneck (Monte Carlo: up to 18% lower KL at
-  equal rank) and is the largest single source of the win.
-![Head compression and the rank bottleneck](results/figures/head_and_bottleneck.png)
-
-* **Asinh-power attention** `ρ(s/8)^16` with a learned per-head sink,
-  QK-normalization, and an exact log-free max shift (`ρ(a)ρ(−b) = ρ(a ⊖ b)`);
-  at 512 distractors it retrieves at least as precisely as softmax.
-* Geometric Cayley rotations, ALU-GLU with β = ½, learned RMS gains,
-  cosine AdamW (as specified for the new study).
-
-A primitive-level audit (`scripts/audit_algebraic.py`) confirms the traced
-training gradient — including the Pallas kernel bodies — contains no
-exponential, logarithmic, trigonometric, hyperbolic, sigmoid or
-error-function primitive.
-
-## How much algebra do we really need?
-
-Algebraic pieces were added to the standard model one rung at a time (proxy
-scale, 3–4 paired seeds per rung, t 95% intervals):
-
-![How much algebra is needed](results/figures/algebra_ladder.png)
-
-| rung | Δ NLL vs standard | share of the full gain |
-|---|---|---|
-| + algebraic likelihood head | −0.036 ± 0.007 | 59% |
-| + QK-normalization (**the hybrid**) | **−0.059 ± 0.006** | **97%** |
-| + sink, ALU-GLU, Cayley rotations | −0.055 … −0.057 | 91–94% |
-| + asinh attention (fully algebraic) | −0.061 ± 0.004 | 100% |
-
-**Answer: two algebraic pieces.** The likelihood head `ρ(z/c)^n` (trained
-by its algebraic log-loss gradient) and the rsqrt QK-normalization carry
-essentially the whole gain; the other algebraic substitutions are
-quality-neutral and are only needed to make the training path entirely free
-of transcendentals. At 60M the hybrid beats the standard model by 0.045 nats
-at 88% of its throughput, against 72% for the fully algebraic model.
-
-## Kernels (Phase 2)
-
-**Attention speed follow-up:** the current guarded algebraic kernel uses
-inverse-denominator statistics, compact row outputs, and a stable fallback
-for extreme scores, plus resident-memory dQ accumulation at the measured
-bfloat16 model shape. Fifteen paired rounds at the 125M attention shape give
-**5.42 ms algebraic vs 3.36 ms standard** for forward plus backward; at the
-60M shape, **3.53 vs 2.21 ms**. Speed parity remains open. The follow-up
-includes 84 passing TPU checks, 9,216 numerical Monte Carlo rows, alternative
-link routing studies, exact rational certificates, and 63 checked Lean
-theorems. Experimental links are kept separate from the deployed model.
-[Measurements and rejected candidates](paper/attention_performance.md),
-[expanded attention theory](paper/attention_exact.md),
-[formal coverage](formal/README.md).
-
-The active engineering target includes **both pure algebraic and hybrid**
-models, with kernel and full optimizer-step speed compared against the
-fastest measured standard implementation at the same shape. Hybrid retains
-softmax attention and shares the standard resident-memory FlashAttention
-kernel. A checked tiled QK gain-gradient reduction lowers hybrid optimizer
-latency by **3.8%**. Three fresh seeds with randomized job order give **156.6 ms
-standard, 171.6 ms hybrid, and 181.2 ms pure algebraic**, on one chip at the
-125M shape. The remaining full-step gaps are **9.6%** and **15.7%**; parity
-is still open. These speed profiles are not new language-model quality runs.
-See the [hybrid implementation choice](paper/attention_hybrid.md) and
-[current engineering status](paper/attention_performance.md).
-
-The following table records the earlier Phase 2 implementation, before the
-current statistics layout and range guard:
-
-One Pallas TPU flash-attention implementation serves both arms (forward;
-fused dK/dV/dQ backward; causal tile skipping with diagonal-only masking;
-sinks). Forward + backward on one TPU v4 chip, 2048 tokens, head dim 64:
-
-| kernel | 125M shape (8 × 12 heads) | 60M shape (8 × 8 heads) |
-|---|---|---|
-| this repo, softmax | 4.28 ms | 2.72 ms |
-| this repo, asinh (algebraic) | 6.32 ms | 4.09 ms |
-| JAX `pallas.ops.tpu.flash_attention` (used by the first study) | 22.14 ms | 14.55 ms |
-| dense XLA softmax | 10.80 ms | 7.20 ms |
-
-End to end on 16 chips the kernels make both arms 2–2.6× faster than the
-first study (125M: standard 1.58M vs 0.60M tokens/s; algebraic 1.14M vs
-0.57M). The vocabulary head uses XLA-dense logits (the fastest measured; the
-lean algebraic head is within 14% of softmax cross-entropy); a fused Pallas
-head is included as a low-memory option. Raw numbers: `results/kernels/`.
-
-## Running the 125M main run
-
-The budget sweep (three learning rates × three seeds × 600M tokens per
-architecture, `configs/main_sweep.json`; held-out NLL, mean ± SD over seeds
-42–44) selected **lr 3e-3 for all three architectures**
-(`configs/main_selected.json`, every run in `results/main_sweep/runs.json`):
-
-| LR | standard | algebraic | hybrid |
-|---|---|---|---|
-| 1.5e-3 | 3.8608 ± 0.0088 | 3.7090 ± 0.0137 | 3.7475 ± 0.0095 |
-| **3e-3** | **3.8208 ± 0.0145** | **3.6655 ± 0.0063** | **3.6982 ± 0.0149** |
-| 6e-3 | 4.1434 ± 0.1382 | 3.7562 ± 0.0488 | 3.7851 ± 0.0135 |
-
-At this short budget the fully algebraic model leads the hybrid by 0.033
-nats (it also learns fastest early at 60M); by 1B tokens at 60M the two
-were within 0.002. Training throughput on 16 chips at 125M: standard 1.53M,
-hybrid 1.36M, algebraic 1.10M tokens/s. Then, on a TPU v4-32 with hosts
-`w0..w3` reachable over SSH (see `scripts/setup_workers.sh`):
+Python 3.10 or newer:
 
 ```bash
-python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw25 --threads 128   # 2.5B + 600M + 10M tokens
-python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals            # eight public tasks
-python scripts/prepare_recall_benchmarks.py --output-dir ~/data/recall         # needle and recall matrix
-python scripts/main_run.py main > main.json         # 3 seeds x {standard, algebraic, hybrid}, 2,385 steps each
-# (add --archs standard,algebraic to run only the two original arms)
-python scripts/run_slice.py main.json --group main  # rerun the same command to resume (checkpoints every 200 steps)
-# After all nine main runs finish, evaluate on one chip on w0:
-~/bin/chiprun 0 scripts/evaluate_main.py --resume
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install -e . --no-deps
+JAX_PLATFORMS=cpu python -m pytest -q tests/test_components.py tests/test_experiments.py
 ```
 
-Expected wall time per run on 16 chips: about 30 minutes (standard),
-35 minutes (hybrid), and 40 minutes (algebraic).
+For TPU workers, install `requirements-tpu.txt` instead of `requirements.txt`. The pinned environment uses JAX 0.6.2. `scripts/tpu_python.sh` isolates one local TPU chip and uses `.venv/bin/python`, `~/venv/bin/python`, or `ALGEBRAIC_PYTHON`.
 
-### Post-training benchmarks
+## 350M and 1B experiments
 
-All three architectures, seeds 42–44, receive **ARC-Easy, ARC-Challenge,
-HellaSwag, PIQA, OpenBookQA, WinoGrande, BoolQ, and LAMBADA**, plus
-**needle-in-a-haystack, associative recall, multiple-needle retrieval, and
-latest-value recall**. Recall covers 256/512/1,024/2,048-token total budgets
-and five evidence positions, with short-context and absent-evidence controls.
-The 2,048-token budget includes 16 answer tokens; evidence is never truncated.
+Both comparisons use **standard vs pure algebraic**, **one paired seed (42)**, GPT-2 tokenization, a 2,048-token context, AdamW, a cosine schedule, and the same data seed. Models are matched in width, depth, feed-forward width, and tied vocabulary embedding; QK gains and learned sinks account for the small parameter difference.
 
-The evaluator writes per-example predictions, mean ± SD across training
-seeds, paired differences from standard, and needle heatmaps. Hybrid's recall
-preservation will be measured by this comparison. Main training remains for
-the author; `python scripts/evaluate_main.py --dry-run` prepares the evaluation
-plan without loading weights or starting training. Full task definitions,
-scoring conventions and commands: [post-training evaluation protocol](paper/post_training_evaluation.md).
+| Configuration | Standard parameters | Algebraic parameters | Training budget | Steps | Per-device micro-batch |
+|---|---:|---:|---:|---:|---:|
+| [350M](configs/comparison_350m.json) | 350,358,528 | 350,361,984 | 7B tokens | 6,676 | 2 |
+| [1B](configs/comparison_1b.json) | 1,002,140,160 | 1,002,145,024 | 20B tokens | 19,074 | 1 |
 
-## Layout
+Global batch is 512 sequences. Budgets round up to complete optimizer steps: **7,000,293,376** and **20,000,538,624** token presentations. Corpus arrays contain exactly 7B and 20B tokens. The trainer samples deterministic contiguous windows, so token presentations are a compute budget rather than a claim of one pass through every corpus token.
 
-| path | contents |
-|---|---|
-| `src/sota/` | model (`model.py`), algebraic and standard components, presets (`config.py`), trainer with checkpoint/resume (`train.py`) |
-| `src/sota/kernels/` | Pallas flash attention (`flash.py`), QK gain-gradient kernel (`qk_norm.py`), and fused head (`fused_head.py`) |
-| `analysis/` | Phase 1 statistics and Monte Carlo, ablation job lists, Phase 3 jobs and summary |
-| `scripts/` | data preparation, 16-chip job queue (`run_queue.py`), full-slice launcher (`run_slice.py`), main run (`main_run.py`), public/recall evaluation (`evaluate_main.py`), benchmarks, audit |
-| `configs/` | budget-sweep candidates, selected main-run hyperparameters, and frozen post-training evaluation matrix |
-| `results/` | `analysis/` (Phase 1 and Monte Carlo outputs), `phase3/`, `main_sweep/`, `kernels/`, `figures/`, and the first study's records (`v1/`) |
-| `paper/theory.md` | concise mathematics, proofs, and measured status of each claim |
+**These full runs have not been launched here.** The implementations were smoke-tested with one synthetic optimizer step at each full model shape, including fused kernels and checkpoint reload. One-step checks also verify the production batch and gradient accumulation across all 16 TPU chips. Synthetic loss values are execution checks, not benchmark results. Reports are in [results/verification](results/verification).
 
-The first study's code, Lean certificates, paper, and microbenchmark records
-are preserved under the `v1-original` tag (and in the original repository);
-its run records used by the analysis are in `results/v1/`.
+### Budgeted hyperparameter sweeps
 
-## Reproduce
+Each scale tests **four candidates per architecture** using one seed: three learning rates and one lower-weight-decay alternative. Both arms receive identical pilot data and validation windows. Selection minimizes held-out NLL independently for each architecture and requires every pilot to complete with finite results.
+
+| Sweep | Tokens per candidate | Runs | Total nominal pilot tokens | Fraction of full two-arm budget |
+|---|---:|---:|---:|---:|
+| [350M](configs/sweep_350m.json) | 100M | 8 | 800M | 5.7% |
+| [1B](configs/sweep_1b.json) | 200M | 8 | 1.6B | 4.0% |
+
+Pilots also round up to full steps. They save one resumable optimizer checkpoint and omit final weight exports to reduce disk use. Short-budget rankings do not establish full-budget optimality. The main launcher requires the sweep selection before starting training.
+
+### Prepare data
+
+The preparer discovers all required parquet shards at an immutable source revision, separates validation and training documents, inserts GPT-2 end-of-text separators, and publishes arrays only after every quota is filled. It fails if the source is exhausted.
 
 ```bash
-python3 -m virtualenv ~/venv && ~/venv/bin/pip install -r requirements-tpu.txt
-python scripts/prepare_fineweb_edu_1b.py --raw-dir <parquet dir> --output-dir ~/data/tok
-JAX_PLATFORMS=cpu python -m pytest -q tests/test_sota_components.py   # TPU kernel tests: tests/test_*_tpu.py
-python -m src.sota.train --preset algebraic --size proxy --steps 3000 --out runs/demo   # one chip
-python analysis/phase1_jobs.py batch5 > jobs.json && python scripts/run_queue.py jobs.json --group p1
-python analysis/phase3_jobs.py sweep > p3.json && python scripts/run_slice.py p3.json --group p3
+# 350M corpus: exactly 7B training tokens, plus 10M held-out tokens.
+python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw7b \
+  --train-tokens 7000000000 --sweep-tokens 0 --threads 32
+
+# 1B corpus: exactly 20B training tokens from the larger sample.
+python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw20b \
+  --dataset-path sample/100BT --train-tokens 20000000000 --sweep-tokens 0 --threads 32
+
+python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals
+python scripts/prepare_recall_benchmarks.py --config configs/comparison_350m.json \
+  --output-dir ~/data/recall_350m
+python scripts/prepare_recall_benchmarks.py --config configs/comparison_1b.json \
+  --output-dir ~/data/recall_1b
 ```
+
+Use the same absolute repository, environment, and data paths on all four TPU workers. Configure SSH aliases `w0,w1,w2,w3`; copy token arrays to every worker. Run the launchers from worker zero. Code synchronization is handled by [setup_workers.sh](scripts/setup_workers.sh). Token arrays require about **14GB** and **40GB** per worker, plus validation, raw-shard downloads, and optimizer checkpoints.
+
+### Plan, sweep, train, and evaluate
+
+Commands without `--run` or `--stage run` print plans and start no training.
+
+```bash
+# 350M: inspect the sweep, run the short pilots, and select settings.
+python scripts/hparam_sweep.py --scale 350m
+python scripts/hparam_sweep.py --scale 350m --stage run
+python scripts/hparam_sweep.py --scale 350m --stage select
+python scripts/run_comparison.py --scale 350m
+python scripts/run_comparison.py --scale 350m --run
+
+# 1B: independently select settings before the 20B-token comparison.
+python scripts/hparam_sweep.py --scale 1b
+python scripts/hparam_sweep.py --scale 1b --stage run
+python scripts/hparam_sweep.py --scale 1b --stage select
+python scripts/run_comparison.py --scale 1b
+python scripts/run_comparison.py --scale 1b --run
+```
+
+Selections are written to `results/tuning_<scale>/selected.json`. Full checkpoints go to `runs/comparison_<scale>/`; evaluation outputs go to `results/comparison_<scale>/`. Repeating the commands resumes checkpoints and reuses only validated, matching completed outputs. The pipeline trains both models before running all benchmarks. [Training details](paper/training.md) cover configuration, resume, and separate evaluation commands.
+
+## Benchmark protocol
+
+Every completed model receives **ARC-Easy, ARC-Challenge, HellaSwag, PIQA, OpenBookQA, WinoGrande, BoolQ, and LAMBADA**, plus **needle passkey retrieval, associative recall, multiple-needle retrieval, and latest-value recall**. The 350M and 1B runs retain the 125M prompts and scoring rules so results can be compared across scales.
+
+Recall covers 256/512/1,024/2,048-token total budgets, five evidence positions, 32 trials per cell, 16 generated answer tokens, absent-evidence controls, and short-context controls. Evidence is never truncated. Outputs include predictions, checkpoint/dataset/source hashes, matched-model differences, per-cell intervals, and heatmaps. Single-seed comparisons report individual scores and paired differences; they do not estimate variance across training seeds. See the [evaluation protocol](paper/post_training_evaluation.md).
+
+## Verification and reproduction
+
+```bash
+# Actual full model shapes, one synthetic optimizer step each; no corpus training.
+bash scripts/tpu_python.sh 0 scripts/smoke_comparison.py --scale 350m
+bash scripts/tpu_python.sh 0 scripts/smoke_comparison.py --scale 1b
+bash scripts/tpu_python.sh 0 -m pytest -q \
+  tests/test_flash_kernel_tpu.py tests/test_fused_head_tpu.py tests/test_qk_norm_tpu.py
+# Optional distributed synthetic verification from worker zero:
+JAX_PLATFORMS=cpu python scripts/smoke_distributed.py --scale 350m
+JAX_PLATFORMS=cpu python scripts/smoke_distributed.py --scale 1b
+
+# Rebuild figures from the published 125M results.
+python scripts/summarize_main_eval.py
+python analysis/plot_figures.py
+
+# 125M / 2.5B tokens, three architectures and seeds.
+python scripts/main_run.py main > jobs.json
+python scripts/run_slice.py jobs.json --group main --skip-done
+bash scripts/tpu_python.sh 0 scripts/evaluate_main.py --resume
+```
+
+| Path | Contents |
+|---|---|
+| `src/algebraic/` | Model presets, trainer, numerical components, scoring, and recall generator |
+| `src/algebraic/kernels/` | Pallas attention, fused vocabulary head, and QK reduction |
+| `configs/` | Frozen comparisons, budget sweeps, and evaluation matrices |
+| `scripts/` | Data preparation, experiment launchers, audits, and benchmark drivers |
+| `analysis/` | Figure generation, numerical studies, and performance probes |
+| `results/` | Measured comparisons, per-example predictions, figures, and smoke evidence |
+| `paper/`, `formal/` | Mathematical notes, protocols, and Lean certificates |
+
+TPU experiments were supported by Google's TPU Research Cloud (TRC).

@@ -37,8 +37,8 @@ def main():
             "protocol":"fresh process per seed/case; first step excluded; real AdamW updates and input I/O; randomized case order; paired seeds",
             "scope":"single-chip training speed; no held-out quality or slice throughput claim",
             "sources":{f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in
-                       ("analysis/model_step_performance.py","analysis/model_profile.py","src/sota/train.py",
-                        "src/sota/model.py","src/sota/kernels/qk_norm.py","src/sota/kernels/flash.py")},
+                       ("analysis/model_step_performance.py","analysis/model_profile.py","src/algebraic/train.py",
+                        "src/algebraic/model.py","src/algebraic/kernels/qk_norm.py","src/algebraic/kernels/flash.py")},
             "jobs":[],"results":{},"comparisons":{}}
     a.out.parent.mkdir(parents=True,exist_ok=True)
     root=ROOT/"runs"/(a.out.stem+"_jobs")

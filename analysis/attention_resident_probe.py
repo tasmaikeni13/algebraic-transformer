@@ -18,6 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 from jax import lax
@@ -27,7 +28,7 @@ from jax.experimental.pallas import tpu as pltpu
 import numpy as np
 
 from analysis.attention_performance import ratio_ci
-from src.sota.kernels import flash as fk
+from algebraic.kernels import flash as fk
 
 
 def ordered_tile(q, k, v, do, stat, di, i, j, *, var, bq, bk, masked, order):
@@ -268,7 +269,7 @@ def main():
               "tile_orders": args.tile_orders,
               "packing": args.packing,
               "prototype": True, "operator_changed": False,
-              "kernel_sha256": hashlib.sha256((ROOT / "src/sota/kernels/flash.py").read_bytes()).hexdigest(),
+              "kernel_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
               "probe_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "results": {}, "validation": {}, "failures": {}}
     functions = {}

@@ -16,8 +16,8 @@ import jax.numpy as jnp
 import numpy as np
 
 from analysis.qk_rms_kernel import make_norm
-from src.sota import algebraic as A, config, model
-from src.sota.model import init_params, forward_hidden, head_loss, position_tables
+from algebraic import algebraic as A, config, model
+from algebraic.model import init_params, forward_hidden, head_loss, position_tables
 
 
 def main():
@@ -31,7 +31,7 @@ def main():
     original=A.rms_norm
     original_qk=model._qk_norm
     if args.production:
-        from src.sota.kernels.qk_norm import qk_rms_norm
+        from algebraic.kernels.qk_norm import qk_rms_norm
         candidate=qk_rms_norm
     else:
         candidate=make_norm(1024,args.forward_native,args.faithful_backward,args.gain_partials_only)
@@ -43,8 +43,8 @@ def main():
             "public_kernel":args.production,
             "scope":"numerical equivalence of initialized complete models; not trained quality",
             "sources":{f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in
-                       ("analysis/qk_model_validation.py","analysis/qk_rms_kernel.py","src/sota/kernels/qk_norm.py","src/sota/model.py",
-                        "src/sota/algebraic.py","src/sota/kernels/flash.py")},"cases":[]}
+                       ("analysis/qk_model_validation.py","analysis/qk_rms_kernel.py","src/algebraic/kernels/qk_norm.py","src/algebraic/model.py",
+                        "src/algebraic/algebraic.py","src/algebraic/kernels/flash.py")},"cases":[]}
     path=args.out
     path.parent.mkdir(parents=True,exist_ok=True)
     def save():

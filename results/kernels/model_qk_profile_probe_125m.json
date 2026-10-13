@@ -104,9 +104,9 @@
         "source_sha256": {
           "analysis/model_profile.py": "c5554194e4871d2d04dac55d28295c3e9d9559027d5953facf99f05e484e5fb7",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -206,9 +206,9 @@
         "source_sha256": {
           "analysis/model_profile.py": "c5554194e4871d2d04dac55d28295c3e9d9559027d5953facf99f05e484e5fb7",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -305,9 +305,9 @@
         "source_sha256": {
           "analysis/model_profile.py": "8be8c3b81501ba115fe0c7cafa886929350f9a5eb9be5b233e2732d5637b256d",
           "analysis/qk_rms_kernel.py": "f37a6f88df9ede60bdc3396b3f62bd07058b096cb15297338abae9bb03b52eee",
-          "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -404,9 +404,9 @@
         "source_sha256": {
           "analysis/model_profile.py": "8be8c3b81501ba115fe0c7cafa886929350f9a5eb9be5b233e2732d5637b256d",
           "analysis/qk_rms_kernel.py": "f37a6f88df9ede60bdc3396b3f62bd07058b096cb15297338abae9bb03b52eee",
-          "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -506,9 +506,9 @@
         "source_sha256": {
           "analysis/model_profile.py": "c5554194e4871d2d04dac55d28295c3e9d9559027d5953facf99f05e484e5fb7",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -607,9 +607,9 @@
         "source_sha256": {
           "analysis/model_profile.py": "05627bba4b97da6821cffed02d17c4ecf860b463958fae5c64a9f5efe28e897f",
           "analysis/qk_rms_kernel.py": "90f386451dcf83eee03b391242ad32836987147a5dc3cf372140322f1f8a6605",
-          "src/sota/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/model.py": "24fbcf293ea43dcdbacceeb718a8972ed0c8670e87dc2f3b3bee23ed607ae54b",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     }

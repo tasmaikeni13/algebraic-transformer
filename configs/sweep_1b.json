@@ -1,0 +1,28 @@
+{
+  "scale": "1b",
+  "seed": 42,
+  "tokens_per_candidate": 200000000,
+  "eval_tokens": 1000000,
+  "candidates": [
+    {
+      "name": "lr_low",
+      "lr": 0.0006,
+      "wd": 0.1
+    },
+    {
+      "name": "lr_mid",
+      "lr": 0.0012,
+      "wd": 0.1
+    },
+    {
+      "name": "lr_high",
+      "lr": 0.002,
+      "wd": 0.1
+    },
+    {
+      "name": "lower_decay",
+      "lr": 0.0012,
+      "wd": 0.05
+    }
+  ]
+}

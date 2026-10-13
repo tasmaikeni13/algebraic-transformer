@@ -16,6 +16,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import jax
 import jax.numpy as jnp
@@ -41,7 +42,7 @@ def main():
     p.add_argument("--out", type=Path)
     args = p.parse_args()
 
-    from src.sota.kernels.flash import flash_attention
+    from algebraic.kernels.flash import flash_attention
     B, H, T, D = args.batch, args.heads, args.seq, args.dim
     ks = jax.random.split(jax.random.PRNGKey(0), 4)
     q, k, v, g = (jax.random.normal(kk, (B, H, T, D), jnp.bfloat16) for kk in ks)

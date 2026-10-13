@@ -18,8 +18,9 @@ import sys
 os.environ.setdefault("JAX_PLATFORMS", "cpu")
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 import numpy as np
-from src.sota.kernels.radical import SQRT_COEFFICIENTS, RSQRT_COEFFICIENTS
+from algebraic.kernels.radical import SQRT_COEFFICIENTS, RSQRT_COEFFICIENTS
 
 
 def product(a, b):

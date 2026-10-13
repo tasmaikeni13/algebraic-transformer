@@ -1,9 +1,8 @@
-# Post-training evaluation for the 125M comparison
+# Post-training evaluation protocol
 
-Evaluate **standard, algebraic, and hybrid**, each trained on 2.5B
-FineWeb-Edu tokens with seeds **42, 43, 44**. The main training remains for
-the author to run. No main-run benchmark scores have been measured here.
-The frozen selection is in [`configs/post_training_eval.json`](../configs/post_training_eval.json).
+The completed 125M / 2.5B-token comparison evaluates standard, algebraic, and hybrid models with seeds 42, 43, 44. The implemented 350M / 7B-token and 1B / 20B-token comparisons evaluate standard and pure algebraic with one paired seed (42), after their budgeted hyperparameter sweeps. The same public prompts, recall matrix, tokenizer, and scoring rules apply at every scale.
+
+The frozen plans are [125M](../configs/post_training_eval.json), [350M](../configs/comparison_350m.json), and [1B](../configs/comparison_1b.json). The 125M [published scores](../results/main/comparison.md) are measured; full 350M and 1B quality runs remain for the author to launch. [Training and sweep commands](training.md) describe the larger comparisons.
 
 ## What each benchmark measures
 
@@ -29,7 +28,6 @@ including the completed sentence suffix for WinoGrande. BoolQ compares
 ` yes` and ` no` after the passage and question. LAMBADA requires an exact
 greedy match of the final word's token prefix. Matching every teacher-forced
 target argmax is equivalent to that free greedy prefix matching, by causality.
-The four original tasks keep their previous text and scoring format.
 These are project protocol scores; external harnesses may use different
 prompts, preprocessing, or length normalization.
 
@@ -107,10 +105,9 @@ treat the same trial across all lengths/positions, or multiple training
 seeds on one example, as independent observations. Three seeds support a
 descriptive comparison; they do not establish a universal recall guarantee.
 
-Preserving needle retrieval is the **hybrid hypothesis to measure**. Assess
-its entire length/position matrix, the controls, and its paired difference
-from standard. The earlier learned toy-recall kernel experiments do not
-substitute for these post-training language-model scores.
+The measured 125M results show low free retrieval for all architectures. Recognition, short controls, absent controls, and the entire length/position matrix are necessary to interpret those scores. Toy attention retrieval experiments do not establish a language model's post-training recall performance.
+
+For the 350M and 1B comparisons, tables report the individual score and paired difference for seed 42. Sample SD across training seeds is unavailable and remains null; no additional training seeds are implied. Per-cell Wilson intervals describe trials within a cell and remain available.
 
 ## Commands
 
@@ -122,11 +119,11 @@ python scripts/prepare_recall_benchmarks.py --output-dir ~/data/recall
 python scripts/evaluate_main.py --dry-run
 ```
 
-After the author completes all nine main runs, evaluate on a single TPU
+After completing the nine 125M runs, evaluate on a single TPU
 chip on `w0`, where the trainer saves the final weights:
 
 ```bash
-~/bin/chiprun 0 scripts/evaluate_main.py --resume
+bash scripts/tpu_python.sh 0 scripts/evaluate_main.py --resume
 ```
 
 With another environment or dataset location:
@@ -150,9 +147,9 @@ backends, dtype and batch size across architectures/seeds.
 For one model, or development-only subsets:
 
 ```bash
-~/bin/chiprun 0 scripts/evaluate_zero_shot.py runs/main/hybrid_s42 \
+bash scripts/tpu_python.sh 0 scripts/evaluate_zero_shot.py runs/main/hybrid_s42 \
   --benchmarks ~/data/evals --out results/main/hybrid_s42_zero_shot.json
-~/bin/chiprun 0 scripts/evaluate_recall.py runs/main/hybrid_s42 \
+bash scripts/tpu_python.sh 0 scripts/evaluate_recall.py runs/main/hybrid_s42 \
   --benchmarks ~/data/recall --out results/main/hybrid_s42_recall.json
 # --tasks needle_passkey --limit 8 is a development subset, not a main score.
 ```
@@ -169,3 +166,16 @@ Outputs in `results/main/`:
   for standard, algebraic and hybrid, generated from actual scores only.
 - `evaluation_plan.json`: commands and completion status. Evaluation starts
   no training jobs and requires no instruction tuning.
+
+## Larger comparisons
+
+Use the same public dataset directory and prepare recall with the corresponding frozen configuration. The recall examples are identical across the larger scales because their recall specifications agree; each directory records its configuration hash.
+
+```bash
+python scripts/prepare_recall_benchmarks.py --config configs/comparison_350m.json --output-dir ~/data/recall_350m
+python scripts/prepare_recall_benchmarks.py --config configs/comparison_1b.json --output-dir ~/data/recall_1b
+python scripts/evaluate_main.py --config configs/comparison_350m.json --dry-run --out-dir /tmp/plan_350m
+python scripts/evaluate_main.py --config configs/comparison_1b.json --dry-run --out-dir /tmp/plan_1b
+```
+
+`run_comparison.py --scale <350m|1b> --run` performs the full evaluation after both training runs, using the selected hyperparameters. Results go to `results/comparison_<scale>/`. The evaluator checks scale-specific dimensions, token budget, seed, trained context, fused implementation, selected recipe, and completion before scoring. It rejects short smoke runs and limited datasets. Every example and output is matched between the two architectures.

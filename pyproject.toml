@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "algebraic-transformer"
+version = "0.1.0"
+description = "Algebraic Transformer language models with exact likelihood gradients and fused TPU kernels"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "tasmaikeni13"}]
+dependencies = ["jax==0.6.2", "jaxlib==0.6.2", "numpy==2.2.6", "tiktoken==0.14.0"]
+
+[project.urls]
+Repository = "https://github.com/tasmaikeni13/algebraic-transformer"
+
+[project.scripts]
+algebraic-train = "algebraic.train:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -80,10 +80,10 @@
       }
     },
     "created_at": "2026-10-12T09:21:40Z",
-    "protocol": "sota-zero-shot-v2-mean-continuation-logprob"
+    "protocol": "algebraic-zero-shot-mean-continuation-logprob"
   },
   "recall": {
-    "protocol": "sota-recall-v1-greedy-16-token-budget",
+    "protocol": "algebraic-recall-greedy-16-token-budget",
     "generator_sha256": "f5c5033313f909a85bf7f8e3202d609dc8ebc85a5942f103ca967a3a885e6702",
     "config_sha256": "0f9fa0e95d4d79431ac0e797f335bb307c8ce030f3e75657d9f1c6aeec4523ab",
     "spec": {

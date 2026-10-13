@@ -17,10 +17,10 @@
   "sources": {
     "analysis/model_step_performance.py": "ba76697e63de3967d79f55d9379ece8950a49417c37d58ee2ca65f25c6c7b015",
     "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
-    "src/sota/train.py": "14b727fb7159d1c9f74ffcd52c9f2f7088d942cbe175ff727c0172e069d3985f",
-    "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-    "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+    "src/algebraic/train.py": "14b727fb7159d1c9f74ffcd52c9f2f7088d942cbe175ff727c0172e069d3985f",
+    "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+    "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
   },
   "jobs": [
     {
@@ -28,7 +28,7 @@
       "seed": 191,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "algebraic",
         "--size",
@@ -54,9 +54,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s191"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s191"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s191",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s191",
       "exit_code": 0,
       "profile": {
         "step_time": 0.10059221585591634,
@@ -126,7 +126,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s191",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s191",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -154,10 +154,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -166,7 +166,7 @@
       "seed": 191,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "hybrid",
         "--size",
@@ -192,9 +192,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s191"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s191"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s191",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s191",
       "exit_code": 0,
       "profile": {
         "step_time": 0.09500998655954997,
@@ -264,7 +264,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s191",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s191",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -292,10 +292,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -304,7 +304,7 @@
       "seed": 191,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "hybrid",
         "--size",
@@ -330,10 +330,10 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s191",
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s191",
         "--native-qk"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s191",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s191",
       "exit_code": 0,
       "profile": {
         "step_time": 0.09705068270365397,
@@ -403,7 +403,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s191",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s191",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -431,10 +431,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -443,7 +443,7 @@
       "seed": 191,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "standard",
         "--size",
@@ -469,9 +469,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s191"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s191"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s191",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s191",
       "exit_code": 0,
       "profile": {
         "step_time": 0.08698501586914062,
@@ -541,7 +541,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s191",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s191",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -569,10 +569,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -581,7 +581,7 @@
       "seed": 193,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "algebraic",
         "--size",
@@ -607,9 +607,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s193"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s193"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s193",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s193",
       "exit_code": 0,
       "profile": {
         "step_time": 0.1005922794342041,
@@ -679,7 +679,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s193",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s193",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -707,10 +707,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -719,7 +719,7 @@
       "seed": 193,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "standard",
         "--size",
@@ -745,9 +745,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s193"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s193"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s193",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s193",
       "exit_code": 0,
       "profile": {
         "step_time": 0.0869797150293986,
@@ -817,7 +817,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s193",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s193",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -845,10 +845,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -857,7 +857,7 @@
       "seed": 193,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "hybrid",
         "--size",
@@ -883,9 +883,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s193"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s193"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s193",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s193",
       "exit_code": 0,
       "profile": {
         "step_time": 0.09500192006429037,
@@ -955,7 +955,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s193",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s193",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -983,10 +983,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -995,7 +995,7 @@
       "seed": 193,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "hybrid",
         "--size",
@@ -1021,10 +1021,10 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s193",
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s193",
         "--native-qk"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s193",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s193",
       "exit_code": 0,
       "profile": {
         "step_time": 0.0970543384552002,
@@ -1094,7 +1094,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s193",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s193",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -1122,10 +1122,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -1134,7 +1134,7 @@
       "seed": 197,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "hybrid",
         "--size",
@@ -1160,9 +1160,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s197"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s197"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s197",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s197",
       "exit_code": 0,
       "profile": {
         "step_time": 0.09501202901204427,
@@ -1232,7 +1232,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s197",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_tiled_gain_s197",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -1260,10 +1260,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -1272,7 +1272,7 @@
       "seed": 197,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "algebraic",
         "--size",
@@ -1298,9 +1298,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s197"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s197"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s197",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s197",
       "exit_code": 0,
       "profile": {
         "step_time": 0.10059181849161784,
@@ -1370,7 +1370,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/algebraic_s197",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/algebraic_s197",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -1398,10 +1398,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -1410,7 +1410,7 @@
       "seed": 197,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "standard",
         "--size",
@@ -1436,9 +1436,9 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s197"
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s197"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s197",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s197",
       "exit_code": 0,
       "profile": {
         "step_time": 0.08700251579284668,
@@ -1508,7 +1508,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/standard_s197",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/standard_s197",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -1536,10 +1536,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     },
@@ -1548,7 +1548,7 @@
       "seed": 197,
       "command": [
         "/home/tasma/venv/bin/python",
-        "/home/tasma/sota-algebra/analysis/model_profile.py",
+        "/home/tasma/algebraic-transformer/analysis/model_profile.py",
         "--preset",
         "hybrid",
         "--size",
@@ -1574,10 +1574,10 @@
         "--set",
         "attn_impl=flash",
         "--out",
-        "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s197",
+        "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s197",
         "--native-qk"
       ],
-      "output_dir": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s197",
+      "output_dir": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s197",
       "exit_code": 0,
       "profile": {
         "step_time": 0.09705171585083008,
@@ -1647,7 +1647,7 @@
           "eval_tokens": 16384.0,
           "eval_batch": 8,
           "log_every": 1000,
-          "out": "/home/tasma/sota-algebra/runs/model_step_confirm_60m_jobs/hybrid_native_s197",
+          "out": "/home/tasma/algebraic-transformer/runs/model_step_confirm_60m_jobs/hybrid_native_s197",
           "save_params": false,
           "distributed": false,
           "profile_steps": 30,
@@ -1675,10 +1675,10 @@
         "source_sha256": {
           "analysis/model_profile.py": "06a5ff5a4c8e0f65d67cbe51f50c9560c41bc3f5a1fb92614b1215d2d1f6922c",
           "analysis/qk_rms_kernel.py": "43260297880d6fd5d3e5f30dad6cc94ae50d055218faf9d3b81b6ef460043388",
-          "src/sota/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
-          "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-          "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-          "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
+          "src/algebraic/kernels/qk_norm.py": "a7c30517228da4bf4ce26351c21f6c3d8316db9f698f936e4383a89bebd3f3e3",
+          "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+          "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+          "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c"
         }
       }
     }

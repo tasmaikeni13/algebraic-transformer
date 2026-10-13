@@ -14,8 +14,9 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
-from src.sota.benchmarking import (PUBLIC_TASKS, ZERO_SHOT_PROTOCOL, Scorer,
+from algebraic.benchmarking import (PUBLIC_TASKS, ZERO_SHOT_PROTOCOL, Scorer,
                                    load_jsonl, load_model, provenance, read_dataset, sha256_file, write_json)
 
 

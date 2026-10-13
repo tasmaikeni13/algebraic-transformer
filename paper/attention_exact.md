@@ -1,6 +1,6 @@
 # Algebraic attention: exact definition, sensitivity, and numerical contracts
 
-The deployed v2d link is `kappa(s)=rho(s/8)^16`, where
+The deployed algebraic link is `kappa(s)=rho(s/8)^16`, where
 `rho(x)=x+sqrt(1+x^2)`. For a causal row, the zero-value sink is another
 weight `kappa(b)`. Define `Z=sum_visible kappa(s_j)+kappa(b)`, `p_j=kappa(s_j)/Z`,
 and `o=sum_visible p_j v_j`. All comparisons of implementation accuracy below

@@ -6,9 +6,9 @@
   "objective_achieved": false,
   "accepted_change": "Hybrid softmax QK learned-gain VJP uses local Pallas reductions; native forward and input VJP retained; pure attention/model operators retained",
   "source_sha256": {
-    "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
-    "src/sota/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d",
+    "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+    "src/algebraic/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d",
     "scripts/audit_algebraic.py": "7c2d8638b177dee22bbcda0c3767058293a927ccaed2f2a34283cbf645b0d9f6",
     "formal/AlgebraicAttention.lean": "f21fa5505f4f501633bd1732367705be97a42a2916d59353b78227eb788b9c5f",
     "formal/AlgebraicAttention/Accumulation.lean": "ccbeb4a1957e288eebf8a88c8718363c401b128d1e73a984f47b03564f1bb399",
@@ -34,7 +34,7 @@
       "seconds": 8.85
     },
     "cpu_components": {
-      "command": "JAX_PLATFORMS=cpu /home/tasma/venv/bin/python -m pytest -q tests/test_sota_components.py",
+      "command": "JAX_PLATFORMS=cpu /home/tasma/venv/bin/python -m pytest -q tests/test_components.py",
       "passed": 15,
       "seconds": 21.56
     }

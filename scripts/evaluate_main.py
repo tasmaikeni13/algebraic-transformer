@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate all completed main-run seeds and write the three-arm comparison.
+"""Evaluate the architectures and seeds in a frozen comparison configuration.
 
 This driver only starts evaluation subprocesses. --dry-run writes the job
 plan without loading weights or initializing JAX. Training is separate.
@@ -14,7 +14,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.sota.benchmarking import (RECALL_PROTOCOL, ZERO_SHOT_PROTOCOL, checkpoint_fingerprint,
+sys.path.insert(0, str(ROOT / "src"))
+from algebraic.benchmarking import (RECALL_PROTOCOL, ZERO_SHOT_PROTOCOL, checkpoint_fingerprint,
                                    load_jsonl, read_dataset, sha256_file, source_fingerprint, write_json)
 
 
@@ -28,11 +29,23 @@ def validate_run(run, arch, seed, plan):
     expected_args = {"preset": arch, "seed": seed, "size": training["size"],
                      "tokens": training["tokens"], "seq_len": training["seq_len"]}
     if any(args.get(k) != v for k, v in expected_args.items()):
-        raise ValueError(f"{run} is not the configured 125M / 2.5B-token main run")
-    if Path(args["train"]).name != "fineweb_train_2_5B.npy":
+        raise ValueError(f"{run} does not match the configured training experiment")
+    if args.get("steps", 0) or args.get("profile_steps", 0):
+        raise ValueError(f"explicit step overrides are not a complete token-budget run: {run}")
+    if Path(args["train"]).name != training.get("train_file", "fineweb_train_2_5B.npy"):
         raise ValueError(f"unexpected main training corpus: {run}")
-    expected_dimensions = {"d_model": 768, "n_layers": 12, "n_heads": 12, "d_ff": 2048,
-                           "vocab_size": 50257, "seq_len": training["seq_len"]}
+    expected_dimensions = {**training.get("dimensions", {"d_model": 768, "n_layers": 12,
+                                                        "n_heads": 12, "d_ff": 2048}),
+                           "vocab_size": training.get("vocab_size", 50257), "seq_len": training["seq_len"]}
+    expected_execution = {k: training[k] for k in ("attn_impl", "head_impl", "flash_block",
+                                                 "head_block_n", "head_block_v") if k in training}
+    recipe = {**training, **plan.get("selected_hyperparameters", {}).get(arch, {})}
+    recipe_keys = ("batch", "micro", "data_seed", "lr", "wd", "warmup", "schedule", "b1", "b2",
+                   "clip", "min_lr_ratio", "eval_tokens", "eval_batch")
+    if any(args.get(k) != recipe[k] for k in recipe_keys if k in recipe):
+        raise ValueError(f"training recipe differs from the frozen comparison: {run}")
+    if meta["tokens_per_step"] != args["batch"] * args["seq_len"]:
+        raise ValueError(f"inconsistent token accounting: {run}")
     expected_components = {
         "standard": {"ffn": "swiglu", "pos": "rope", "attn": "softmax", "head": "ce",
                      "qk_norm": False, "sink": "none"},
@@ -42,13 +55,14 @@ def validate_run(run, arch, seed, plan):
         "hybrid": {"ffn": "swiglu", "pos": "rope", "attn": "softmax", "head": "alg_ce",
                    "qk_norm": True, "sink": "none", "head_n": 8, "head_c": 2.0},
     }
-    expected = {**expected_dimensions, "norm": "rms", **expected_components[arch]}
+    expected = {**expected_dimensions, **expected_execution, "norm": "rms", **expected_components[arch]}
     if any(cfg.get(k) != v for k, v in expected.items()):
         raise ValueError(f"unexpected architecture or model size: {run}")
     steps = math.ceil(training["tokens"] / meta["tokens_per_step"])
     losses = [r for r in load_jsonl(run / "log.jsonl") if "loss" in r]
     if (not losses or losses[-1]["step"] != steps or not math.isfinite(losses[-1]["loss"])
             or meta["total_steps"] != steps or result["total_steps"] != steps
+            or result.get("completed_steps", steps) != steps
             or not math.isfinite(result["final_eval_nll"]) or result["config"] != cfg):
         raise ValueError(f"incomplete or non-finite training history: {run}")
 
@@ -74,6 +88,7 @@ def reusable(output, run, data, tasks, protocol, batch):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--config", type=Path, default=ROOT / "configs/post_training_eval.json")
+    p.add_argument("--hparams", type=Path, help="completed budget-sweep selection for this configuration")
     p.add_argument("--runs-root", type=Path, default=ROOT / "runs/main")
     p.add_argument("--benchmarks", type=Path, default=Path.home() / "data/evals")
     p.add_argument("--recall-benchmarks", type=Path, default=Path.home() / "data/recall")
@@ -85,6 +100,9 @@ def main():
     p.add_argument("--resume", action="store_true", help="reuse only matching complete evaluation outputs")
     a = p.parse_args()
     plan = json.loads(a.config.read_text())
+    if a.hparams:
+        from scripts.run_comparison import read_selection
+        plan["selected_hyperparameters"] = read_selection(a.hparams, a.config)
     archs = a.archs.split(",") if a.archs else plan["architectures"]
     seeds = a.seeds if a.seeds is not None else plan["training_seeds"]
     if (a.batch < 1 or len(set(archs)) != len(archs) or len(set(seeds)) != len(seeds)

@@ -26,11 +26,11 @@
   "scope": "component forward/VJP; no optimizer, model, data loading, or quality estimate",
   "source_sha256": {
     "analysis/model_component_performance.py": "f80c94fd5d42b6ea0dba76c1623433fb4c99f03a48f97bcf0e9aa821b5626f06",
-    "src/sota/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
-    "src/sota/standard.py": "dadf67991f529267b57e4555f144c97b918b51cef065ccc5bde1ec1842ef324d",
-    "src/sota/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
-    "src/sota/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
-    "src/sota/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d"
+    "src/algebraic/algebraic.py": "0b6bba9b319c6c94e18c5800195452b55de823b02f62267bea31742d6c80adac",
+    "src/algebraic/standard.py": "dadf67991f529267b57e4555f144c97b918b51cef065ccc5bde1ec1842ef324d",
+    "src/algebraic/kernels/flash.py": "e5771b69baf3273cbb63ffaaf51ffc63af8dfdbcaac212f2b4c6b23389449c7c",
+    "src/algebraic/model.py": "a2cc4c94c602e42d49a14a29e2629165c1f6d53c33db1c118929b7c691bd3fe0",
+    "src/algebraic/kernels/qk_norm.py": "0d1519f4f3e9578e4d4f6f019c9002d4e107a0ad6438bc7b42f4ff1207d4532d"
   },
   "results": {
     "standard_attention_forward": {
