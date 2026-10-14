@@ -63,6 +63,7 @@ def audit(preset: str, overrides: dict, seq_len: int = 256, *, size="proxy", bat
     return {"preset": preset, "size": size, "batch": batch, "config": asdict(cfg),
             "overrides": overrides, "seq_len": seq_len,
             "kernel_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
+            "head_resident_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/head_resident.py").read_bytes()).hexdigest(),
             "fused_head_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/fused_head.py").read_bytes()).hexdigest(),
             "model_sha256": hashlib.sha256((ROOT / "src/algebraic/model.py").read_bytes()).hexdigest(),
             "qk_norm_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/qk_norm.py").read_bytes()).hexdigest(),

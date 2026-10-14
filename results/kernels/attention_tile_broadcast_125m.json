@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "utc": "2026-10-13T17:27:03.353872+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "dtype": "bfloat16",
+  "causal": true,
+  "asinh_n": 16,
+  "asinh_c": 8.0,
+  "asinh_sink": 0.0,
+  "softmax_sink": null,
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "hostname": "t1v-n-79750f9f-w-0",
+  "rounds": 5,
+  "iters_per_round": 20,
+  "seed": 307,
+  "compiler_scheduler": "default",
+  "git_revision": "f4e7afe799288a95bb73da565e0af63f266eb546",
+  "kernel_sha256": "ba313f0963b0463b34eb1edd0752c15b59455e2c72356a3efba8da20eb00d672",
+  "radical_sha256": "6d4beb8359b8386959c76c2dce570a739961d873c607728ae8fd44b2f595e23c",
+  "results": {
+    "softmax_compact_512x512": {
+      "forward": {
+        "compile_s": 1.379588928015437,
+        "samples_ms": [
+          3.1054997496539727,
+          3.1057192507432774,
+          3.104257299855817,
+          3.1046053001773544,
+          3.104467299999669
+        ],
+        "median_ms": 3.1046053001773544
+      },
+      "training": {
+        "compile_s": 2.723908097977983,
+        "samples_ms": [
+          4.905398649862036,
+          4.906064650276676,
+          4.905623650120106,
+          4.905771600897424,
+          4.905703650729265
+        ],
+        "median_ms": 4.905703650729265
+      }
+    },
+    "asinh_guarded_512x512": {
+      "forward": {
+        "compile_s": 3.0095126579981297,
+        "samples_ms": [
+          2.2339663497405127,
+          2.233907350455411,
+          2.234619350929279,
+          2.2338893497362733,
+          2.2329788000206463
+        ],
+        "median_ms": 2.233907350455411
+      },
+      "training": {
+        "compile_s": 5.481783994007856,
+        "samples_ms": [
+          5.422869599715341,
+          5.4222726001171395,
+          5.424022099759895,
+          5.423033599799965,
+          5.424714100081474
+        ],
+        "median_ms": 5.423033599799965
+      }
+    }
+  },
+  "comparisons": {
+    "forward": {
+      "reference": "softmax_compact_512x512",
+      "selection": "fastest measured standard; exploratory",
+      "latency_ratios": {
+        "softmax_compact_512x512": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 5
+        },
+        "asinh_guarded_512x512": {
+          "ratio": 0.7194644537215562,
+          "ci95": [
+            0.7192985999924271,
+            0.7196777254471662
+          ],
+          "rounds": 5
+        }
+      }
+    },
+    "training": {
+      "reference": "softmax_compact_512x512",
+      "selection": "fastest measured standard; exploratory",
+      "latency_ratios": {
+        "softmax_compact_512x512": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 5
+        },
+        "asinh_guarded_512x512": {
+          "ratio": 1.1055238970969832,
+          "ci95": [
+            1.1053537455061022,
+            1.1056866812278952
+          ],
+          "rounds": 5
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "utc": "2026-10-14T03:12:41.549662+00:00",
+  "records": [
+    {
+      "record": "results/kernels/attention_head_precise_confirm_125m.json",
+      "record_sha256": "18b0d48222b9d2f9766f570272b8639f05fdc87a58f09612cb0f217f1990d4f1",
+      "shape": [
+        8,
+        12,
+        2048,
+        64
+      ],
+      "jax": "0.6.2",
+      "seed": 587,
+      "kernel_sha256": "3bbe97f29b6e463d1643548ee9f28882400dbcb53023b337c6cf923d8748bd55",
+      "head_resident_sha256": "9c0148d74418d9f21e9d0740622769a7ac9edab5b4ab21ee80e091a5c1202f83",
+      "modes": {
+        "forward": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 1.6173848998732865,
+          "standard_ms": 1.1501762666739523,
+          "previous_ms": 2.016077832862114,
+          "algebraic_over_standard": {
+            "ratio": 1.4060827876941495,
+            "ci95": [
+              1.405813840453135,
+              1.4063512870241006
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8022042875358015,
+            "ci95": [
+              0.8020939644430397,
+              0.80230380043066
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        },
+        "training": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 4.301248032910128,
+          "standard_ms": 2.675283500381435,
+          "previous_ms": 5.071669633616693,
+          "algebraic_over_standard": {
+            "ratio": 1.6076200532597746,
+            "ci95": [
+              1.6072628329112078,
+              1.6079246456727383
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8480355903635672,
+            "ci95": [
+              0.8478345048034062,
+              0.8482477564625901
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        }
+      },
+      "failed_baselines": {}
+    },
+    {
+      "record": "results/kernels/attention_head_precise_modern_confirm_125m.json",
+      "record_sha256": "db71482994fed9349325c234ac4a06c9a8fa5fc43c8efbf3fdede47b46c657ff",
+      "shape": [
+        8,
+        12,
+        2048,
+        64
+      ],
+      "jax": "0.11.2",
+      "seed": 587,
+      "kernel_sha256": "3bbe97f29b6e463d1643548ee9f28882400dbcb53023b337c6cf923d8748bd55",
+      "head_resident_sha256": "9c0148d74418d9f21e9d0740622769a7ac9edab5b4ab21ee80e091a5c1202f83",
+      "modes": {
+        "forward": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 1.7578698665602133,
+          "standard_ms": 1.1654605662139754,
+          "previous_ms": 2.0774308669691286,
+          "algebraic_over_standard": {
+            "ratio": 1.5082768648868239,
+            "ci95": [
+              1.5079137747458486,
+              1.508561057087362
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8463210353299093,
+            "ci95": [
+              0.8461154760534523,
+              0.8465943359898402
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        },
+        "training": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 4.258473033163075,
+          "standard_ms": 2.6997944669953235,
+          "previous_ms": 4.955779999727383,
+          "algebraic_over_standard": {
+            "ratio": 1.5773183549483376,
+            "ci95": [
+              1.5770543769384868,
+              1.5775765220409816
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8593942459420629,
+            "ci95": [
+              0.8592585114389455,
+              0.8595430706725925
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        }
+      },
+      "failed_baselines": {
+        "tokamax_api_forward": "NotImplementedError: Not supported on TPU v4.",
+        "tokamax_api_training": "NotImplementedError: Not supported on TPU v4."
+      }
+    },
+    {
+      "record": "results/kernels/attention_head_confirm_350m_shape.json",
+      "record_sha256": "7ea8b31c7b102eacb5f8b3aa354f1a63e33bd21d0a40d60e69aef59cfd9ac4ed",
+      "shape": [
+        2,
+        16,
+        2048,
+        64
+      ],
+      "jax": "0.6.2",
+      "seed": 599,
+      "kernel_sha256": "3bbe97f29b6e463d1643548ee9f28882400dbcb53023b337c6cf923d8748bd55",
+      "head_resident_sha256": "9c0148d74418d9f21e9d0740622769a7ac9edab5b4ab21ee80e091a5c1202f83",
+      "modes": {
+        "forward": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 0.5181986334112784,
+          "standard_ms": 0.3460896007406215,
+          "previous_ms": 0.641364300584731,
+          "algebraic_over_standard": {
+            "ratio": 1.4974772832807979,
+            "ci95": [
+              1.4966049943458979,
+              1.4983667661892563
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8077593296874428,
+            "ci95": [
+              0.8072019887240295,
+              0.8083149015305574
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        },
+        "training": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 1.4504335665454466,
+          "standard_ms": 0.8466169335103283,
+          "previous_ms": 1.6835921996971592,
+          "algebraic_over_standard": {
+            "ratio": 1.7128589443373552,
+            "ci95": [
+              1.712055578669515,
+              1.713946687931464
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8613946406185659,
+            "ci95": [
+              0.8610956781823372,
+              0.8617844979830772
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        }
+      },
+      "failed_baselines": {}
+    },
+    {
+      "record": "results/kernels/attention_head_confirm_1b_shape.json",
+      "record_sha256": "1caf04e7a88b9e9701d14d1206b51f948c37f36cdac3cfc3283d0fdf31bd5594",
+      "shape": [
+        1,
+        24,
+        2048,
+        64
+      ],
+      "jax": "0.6.2",
+      "seed": 601,
+      "kernel_sha256": "3bbe97f29b6e463d1643548ee9f28882400dbcb53023b337c6cf923d8748bd55",
+      "head_resident_sha256": "9c0148d74418d9f21e9d0740622769a7ac9edab5b4ab21ee80e091a5c1202f83",
+      "modes": {
+        "forward": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 0.3917906336331119,
+          "standard_ms": 0.26327499945182353,
+          "previous_ms": 0.4844949668040499,
+          "algebraic_over_standard": {
+            "ratio": 1.4873362280808016,
+            "ci95": [
+              1.485869303226721,
+              1.488546265637395
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8087432970768373,
+            "ci95": [
+              0.808384108275616,
+              0.8091426467676679
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        },
+        "training": {
+          "reference": "softmax_head_512x512",
+          "algebraic_ms": 1.1063332659735654,
+          "standard_ms": 0.6411862996174023,
+          "previous_ms": 1.2794459335661184,
+          "algebraic_over_standard": {
+            "ratio": 1.7251759281474839,
+            "ci95": [
+              1.7245167024667212,
+              1.7257831727082888
+            ],
+            "rounds": 11
+          },
+          "new_over_previous": {
+            "ratio": 0.8647464607001545,
+            "ci95": [
+              0.864429519935558,
+              0.8650014584953714
+            ],
+            "rounds": 11
+          },
+          "measured_parity": false
+        }
+      },
+      "failed_baselines": {}
+    }
+  ],
+  "scope": "within-process paired measurement rounds; excludes between-device, model, and compilation variability",
+  "full_model_scope": "five-step optimizer smokes have no per-step samples or statistical parity claim",
+  "parity_achieved": false
+}

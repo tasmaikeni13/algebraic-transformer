@@ -13,7 +13,8 @@ pytestmark = pytest.mark.skipif(jax.devices()[0].platform != "tpu", reason="need
 
 @pytest.fixture(autouse=True)
 def float32_context():
-    with jax.experimental.enable_x64(False):
+    enable_x64 = jax.enable_x64 if hasattr(jax, "enable_x64") else jax.experimental.enable_x64
+    with enable_x64(False):
         yield
 
 

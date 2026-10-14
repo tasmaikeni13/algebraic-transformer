@@ -8,3 +8,4 @@ import AlgebraicAttention.Accumulation
 import AlgebraicAttention.QuadraticPower
 import AlgebraicAttention.Interpolation
 import AlgebraicAttention.RMSGain
+import AlgebraicAttention.ProjectiveError

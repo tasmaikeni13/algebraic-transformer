@@ -3,6 +3,7 @@
 
 import argparse
 from datetime import datetime, timezone
+from functools import partial
 import hashlib
 import json
 from pathlib import Path
@@ -24,12 +25,21 @@ from algebraic import algebraic as A
 from algebraic.kernels import flash as fk
 
 
-def make_radical(original, mode):
+def make_radical(original, mode, bound=1.5):
     coefficients = None
+    sqrt_coefficients = None
     if mode.startswith("poly"):
-        t = np.linspace(0., 2.25, 4097)
+        t = np.linspace(0., bound * bound, 4097)
         fit = np.polynomial.Chebyshev.fit(t, 1/np.sqrt(1+t), int(mode[4]))
         coefficients = fit.convert(kind=np.polynomial.Polynomial).coef.astype(np.float32)
+        if mode.endswith("direct") or mode.endswith("sqrt_reciprocal"):
+            sqrt_coefficients = np.polynomial.Chebyshev.fit(
+                t, np.sqrt(1+t), int(mode[4])).convert(kind=np.polynomial.Polynomial).coef.astype(np.float32)
+        if mode.endswith("anchored_reciprocal"):
+            # (sqrt(1+t)-1)/t = 1/(sqrt(1+t)+1), including t=0.
+            residual = np.polynomial.Chebyshev.fit(
+                t, 1/(np.sqrt(1+t)+1), int(mode[4])-1).convert(kind=np.polynomial.Polynomial).coef
+            sqrt_coefficients = np.asarray([1., *residual], np.float32)
     def rho(x, fast):
         if not fast:
             return original(x, False)
@@ -42,6 +52,13 @@ def make_radical(original, mode):
             inv = jnp.full_like(t,float(coefficients[-1]))
             for coefficient in reversed(coefficients[:-1]):
                 inv = inv*t+float(coefficient)
+            if sqrt_coefficients is not None:
+                root = jnp.full_like(t, float(sqrt_coefficients[-1]))
+                for coefficient in reversed(sqrt_coefficients[:-1]):
+                    root = root*t+float(coefficient)
+                return x + root, (pl.reciprocal(root, approx=True) if mode.endswith("reciprocal") else inv)
+            if mode.endswith("shared"):
+                return x + rad * inv, inv
         elif mode.startswith("bit_"):
             bits = lax.bitcast_convert_type(rad, jnp.uint32)
             seed_bits = jnp.uint32(0x5f375a86) - lax.shift_right_logical(bits, jnp.uint32(1))
@@ -57,17 +74,18 @@ def make_radical(original, mode):
             return jnp.where(x >= 0., t, pl.reciprocal(t, approx=True)), inv
         return x + root, inv
     rho.coefficients = None if coefficients is None else coefficients.tolist()
+    rho.sqrt_coefficients = None if sqrt_coefficients is None else sqrt_coefficients.tolist()
     return rho
 
 
-def bounded_attention(q,k,v,sink):
-    """Outer guard for polynomial seeds on |kernel-unit score| <= 1.5."""
+def bounded_attention(q,k,v,sink, *, bound=1.5):
+    """Outer guard for polynomial evaluation on a specified score interval."""
     B,H,T,D=q.shape
     qs=(q.astype(jnp.float32)/(8*np.sqrt(D))).astype(q.dtype)
     si=jnp.broadcast_to(jnp.reshape(sink,(-1,)),(H,))/8
     q2=jnp.max(jnp.sum(qs.astype(jnp.float32)**2,-1))
     k2=jnp.max(jnp.sum(k.astype(jnp.float32)**2,-1))
-    safe=(q2*k2 <= (1.5/1.01)**2) & (jnp.max(jnp.abs(si)) <= 1.5/1.01)
+    safe=(q2*k2 <= (bound/1.01)**2) & (jnp.max(jnp.abs(si)) <= bound/1.01)
     safe=safe & (jnp.max(jnp.abs(v.astype(jnp.float32))) <= 1e8)
     var=fk.make_variant("asinh",16,8.,T,False,True,True,True,False)
     var=var._replace(resident_bwd=q.dtype==jnp.bfloat16 and T in (512,1024,2048) and D==64)
@@ -85,7 +103,7 @@ def validate(dtype, seq=512, attention=None):
     if attention is not None:
         q,k = A.rms_norm(q,None),A.rms_norm(k,None)
     fn = attention or (lambda q, k, v, s: fk.flash_attention(q, k, v, s, kind="asinh", n=16,
-                                             c=8., block=512, range_guard=True))
+                                             c=8., block=512, range_guard=True, head_resident=False))
     ref = lambda q, k, v, s: A.asinh_attention(q, k, v, n=16, c=8., sink_logit=s)
     loss = lambda f, q, k, v, s: jnp.sum(f(q, k, v, s).astype(jnp.float32) * g.astype(jnp.float32))
     with jax.default_matmul_precision("highest" if dtype == jnp.float32 else "default"):
@@ -132,10 +150,16 @@ def main():
     p.add_argument("--rounds", type=int, default=9)
     p.add_argument("--iters", type=int, default=30)
     p.add_argument("--qk-normalized", action="store_true")
+    p.add_argument("--score-bound", type=float, default=1.5,
+                   help="Norm-guard domain for polynomial candidates; error certification is separate.")
     p.add_argument("--modes", nargs="+", default=["sqrt_reciprocal", "bit_nr2_stable", "bit_nr3_fast"],
                    choices=["sqrt_reciprocal", "bf16_nr1_fast", "bf16_nr2_fast",
                             "bf16_nr1_stable", "bf16_nr2_stable", "bit_nr2_fast", "bit_nr2_stable",
-                            "bit_nr3_fast", "bit_nr3_stable", "poly2_nr2", "poly3_nr1", "poly4_nr1"],
+                            "bit_nr3_fast", "bit_nr3_stable", "poly2_nr2", "poly3_nr1", "poly4_nr1",
+                            "poly2_direct", "poly3_direct", "poly4_direct", "poly5_direct",
+                            "poly3_shared", "poly4_shared", "poly5_shared", "poly6_shared",
+                            "poly2_anchored_reciprocal", "poly3_anchored_reciprocal", "poly4_anchored_reciprocal",
+                            "poly3_sqrt_reciprocal", "poly4_sqrt_reciprocal"],
                    help="The installed TPU v4 compiler aborts on bfloat16 rsqrt; those modes require another target.")
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
@@ -149,6 +173,7 @@ def main():
               "jax": jax.__version__, "devices": [str(x) for x in jax.devices()],
               "rounds": args.rounds, "iters": args.iters, "seed": 97,
               "qk_normalized":args.qk_normalized,
+              "score_bound": args.score_bound,
               "modes": args.modes,
               "prototype": True, "model_adopted": False,
               "kernel_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
@@ -176,24 +201,25 @@ def main():
         compile_case("standard_resident", lambda q, k, v: fk.flash_attention(q, k, v))
         compile_case("asinh_resident", asinh)
         for name in args.modes:
-            fk._rho = make_radical(original, name)
+            fk._rho = make_radical(original, name, args.score_bound)
             jax.clear_caches()
             try:
-                attention = bounded_attention if name.startswith("poly") else None
+                attention = partial(bounded_attention, bound=args.score_bound) if name.startswith("poly") else None
                 report["approximation"][name] = {"rsqrt_seed_coefficients_f32":fk._rho.coefficients,
-                                                  "domain_abs_x":1.5 if attention else 15.8}
+                                                  "sqrt_coefficients_f32": fk._rho.sqrt_coefficients,
+                                                  "domain_abs_x":args.score_bound if attention else 15.8}
                 if attention:
                     qs=(q.astype(jnp.float32)/64).astype(q.dtype)
                     bound2=float(jnp.max(jnp.sum(qs.astype(jnp.float32)**2,-1))*
                                  jnp.max(jnp.sum(k.astype(jnp.float32)**2,-1)))
                     report["approximation"][name]["timing_score_bound_squared"]=bound2
-                    report["approximation"][name]["timing_uses_polynomial_branch"]=bound2<=(1.5/1.01)**2
-                report["grid_error"][name] = grid_error(1.5 if attention else 15.8)
+                    report["approximation"][name]["timing_uses_polynomial_branch"]=bound2<=(args.score_bound/1.01)**2
+                report["grid_error"][name] = grid_error(args.score_bound if attention else 15.8)
                 checks = [validate(jnp.float32,attention=attention), validate(jnp.bfloat16, seq=2048,attention=attention)]
                 report["validation"][name] = checks
                 print(name, report["grid_error"][name], checks, flush=True)
                 if all(x["passed"] for x in checks):
-                    compile_case(name, (lambda q,k,v:bounded_attention(q,k,v,sink)) if attention else asinh)
+                    compile_case(name, (lambda q,k,v,attention=attention:attention(q,k,v,sink)) if attention else asinh)
             except Exception as exc:
                 report["failures"][name] = {"type": type(exc).__name__, "message": str(exc)}
                 print(f"FAILED {name}: {str(exc).splitlines()[0]}", flush=True)

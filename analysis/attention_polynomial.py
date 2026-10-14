@@ -42,10 +42,10 @@ def bernstein(poly, a, b):
             for k in range(degree + 1)]
 
 
-def certify(poly, intervals):
+def certify(poly, intervals, upper=Q(1)):
     rows = []
     for i in range(intervals):
-        a, b = Q(i, intervals), Q(i + 1, intervals)
+        a, b = upper * Q(i, intervals), upper * Q(i + 1, intervals)
         c = bernstein(poly, a, b)
         rows.append({"a": str(a), "b": str(b), "lower": str(min(c)), "upper": str(max(c))})
     lo = min(Q(r["lower"]) for r in rows)

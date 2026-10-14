@@ -60,7 +60,7 @@ def ordered_tile(q, k, v, do, stat, di, i, j, *, var, bq, bk, masked, order):
 
 def resident_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref,
                     dk_ref, dv_ref, dq_ref, dk_sc, dv_sc, dq_sc, *, var,
-                    bq, chunk, nq, nk):
+                    bq, chunk, nq, nk, triangular=False):
     i = pl.program_id(3)
 
     @pl.when(i == 0)
@@ -78,6 +78,22 @@ def resident_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref,
             k, v = k_ref[0, 0, key_slice, :], v_ref[0, 0, key_slice, :]
             stat = jnp.expand_dims(stat_ref[0, 0, 0], -1)
             di = jnp.expand_dims(di_ref[0, 0, 0], -1)
+            if masked and triangular and bq == chunk == 512:
+                sub, count = 128, 4
+                for qi in range(count):
+                    qs = slice(qi*sub, (qi+1)*sub)
+                    for kj in range(qi+1):
+                        ks = slice(kj*sub, (kj+1)*sub)
+                        p, ds = fk._tile_grads(q[qs], k[ks], v[ks], do[qs], stat[qs], di[qs],
+                            i*count+qi, j*count+kj, var=var, bq=sub, bk=sub, masked=qi == kj)
+                        dsb = ds.astype(q.dtype)
+                        output_keys = pl.ds(j*chunk+kj*sub, sub)
+                        dv_sc[output_keys, :] += lax.dot_general(
+                            p.astype(do.dtype), do[qs], fk.TRANS_A, preferred_element_type=jnp.float32)
+                        dk_sc[output_keys, :] += lax.dot_general(
+                            dsb, q[qs], fk.TRANS_A, preferred_element_type=jnp.float32)
+                        dq_sc[qs, :] += lax.dot(dsb, k[ks], preferred_element_type=jnp.float32)
+                return
             p, ds = fk._tile_grads(q, k, v, do, stat, di, i, j,
                                    var=var, bq=bq, bk=chunk, masked=masked)
             dsb = ds.astype(q.dtype)
@@ -109,7 +125,7 @@ def resident_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref,
 
 
 def resident_backward(q, k, v, sink, stat4, di4, do, di, *, var, bq, bk, chunk,
-                      query_block=None):
+                      query_block=None, triangular=False):
     B, H, T, D = q.shape
     bq = min(T, query_block or bq)
     if T % chunk:
@@ -119,7 +135,7 @@ def resident_backward(q, k, v, sink, stat4, di4, do, di, *, var, bq, bk, chunk,
     kv_map = lambda b, h, j, i, *_: (b, h, 0, 0)
     row_map = lambda b, h, j, i, *_: (b, h, 0, i)
     dk, dv, dq = pl.pallas_call(
-        partial(resident_kernel, var=var, bq=bq, chunk=chunk, nq=nq, nk=nk),
+        partial(resident_kernel, var=var, bq=bq, chunk=chunk, nq=nq, nk=nk, triangular=triangular),
         grid_spec=pltpu.PrefetchScalarGridSpec(
             num_scalar_prefetch=1,
             grid=(B, H, 1, nq),
@@ -247,6 +263,7 @@ def main():
     p.add_argument("--heads", type=int, default=12)
     p.add_argument("--rounds", type=int, default=9)
     p.add_argument("--iters", type=int, default=30)
+    p.add_argument("--seed", type=int, default=37)
     p.add_argument("--chunks", type=int, nargs="+", default=[128, 256, 512])
     p.add_argument("--query-blocks", type=int, nargs="+", default=[512])
     p.add_argument("--validation-seq", type=int, default=512)
@@ -254,16 +271,16 @@ def main():
                    default=["float32", "bfloat16"])
     p.add_argument("--tile-orders", nargs="+", choices=["original", "early", "dpfirst"],
                    default=["original"])
-    p.add_argument("--packing", nargs="+", choices=["separate", "together"], default=["separate"])
+    p.add_argument("--packing", nargs="+", choices=["separate", "together", "triangular"], default=["separate"])
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     shape = (8, args.heads, 2048, 64)
     q, k, v, g = [jax.random.normal(key, shape, jnp.bfloat16) for key in
-                  jax.random.split(jax.random.PRNGKey(37), 4)]
+                  jax.random.split(jax.random.PRNGKey(args.seed), 4)]
     sink = jnp.zeros((args.heads,), jnp.float32)
     report = {"utc": datetime.now(timezone.utc).isoformat(), "shape": shape,
               "jax": jax.__version__, "devices": [str(x) for x in jax.devices()],
-              "rounds": args.rounds, "iters": args.iters, "seed": 37,
+              "rounds": args.rounds, "iters": args.iters, "seed": args.seed,
               "validation_seq": args.validation_seq, "validation_dtypes": args.validation_dtypes,
               "query_blocks": args.query_blocks, "chunks": args.chunks,
               "tile_orders": args.tile_orders,
@@ -277,8 +294,8 @@ def main():
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
 
-    def compile_case(name, kind):
-        opts = {"kind": kind, "compact_stat": True, "resident_bwd": False}
+    def compile_case(name, kind, deployed=False):
+        opts = {"kind": kind, "compact_stat": True, "resident_bwd": None if deployed else False}
         if kind == "asinh":
             opts.update(n=16, c=8., range_guard=True)
         # Preserve the same sink convention as the paired baseline report.
@@ -299,9 +316,11 @@ def main():
     try:
         for kind in ("softmax", "asinh"):
             compile_case(f"{kind}_baseline", kind)
+            compile_case(f"{kind}_deployed", kind, deployed=True)
         for query_block, chunk, order, packing in [(b, c, o, p) for b in args.query_blocks
                                           for c in args.chunks for o in args.tile_orders for p in args.packing]:
-            backend = resident_backward if packing == "separate" else packed_backward
+            backend = {"separate": resident_backward, "together": packed_backward,
+                       "triangular": partial(resident_backward, triangular=True)}[packing]
             candidate = partial(backend, chunk=chunk, query_block=query_block)
             fk._tile_grads = original_tile if order == "original" else partial(ordered_tile, order=order)
             for kind in ("softmax", "asinh"):
@@ -329,7 +348,7 @@ def main():
         fk._tile_grads = original_tile
 
     cases = list(functions)
-    rng = np.random.default_rng(37)
+    rng = np.random.default_rng(args.seed)
     for rid in range(args.rounds):
         for idx in rng.permutation(len(cases)):
             name = cases[int(idx)]

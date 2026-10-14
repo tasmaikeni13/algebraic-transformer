@@ -9,6 +9,8 @@ The public comparison is in [results/main/comparison.md](../results/main/compari
 | `attention_numerics.py` | Float32 attention normalization and gradient stress cases |
 | `attention_statistics.py`, `attention_followup_statistics.py` | Paired kernel timing statistics |
 | `attention_performance.py`, `attention_resident_probe.py` | Tiled and resident attention performance |
+| `attention_head_resident_probe.py`, `attention_streamed_probe.py`, `attention_projective_probe.py` | Whole-head scheduling, score-tile sweeps, and normalization rearrangements |
+| `attention_head_statistics.py`, `attention_checkpoint_probe.py` | Paired confirmation statistics and bounded synthetic optimizer smokes |
 | `attention_link_analysis.py`, `attention_link_probe.py`, `attention_link_statistics.py` | Candidate link accuracy and latency |
 | `attention_interpolation_certificate.py`, `attention_newton_certificate.py` | Exact rational error certificates |
 | `attention_interpolation_probe.py`, `attention_polynomial.py`, `attention_radical_probe.py`, `attention_affine_guard_probe.py` | Experimental approximation probes |

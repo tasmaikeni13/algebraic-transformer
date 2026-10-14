@@ -20,11 +20,16 @@ lake build
 | `Rational.lean` | clipped-domain rational-link bounds, actual radical-free rational-power derivative, equivalent product formula, and slope bound |
 | `AffinePower.lean` | actual affine-power derivative, positive base/slope bounds, and shared addition-chain identities for powers 31/32 and 63/64 |
 | `Accumulation.lean` | dQ key-partition identity and movement of the common slope after partial reduction |
+| `ProjectiveError.lean` | finite likelihood-ratio secant bound and sharp normalized TV bound without independence assumptions |
 | `QuadraticPower.lean` | positivity, monotonicity, slope/base bounds, actual derivatives, fourth-order surplus identity, power-pair chain, and conditional Newton reciprocal-error identity |
 | `Interpolation.lean` | quintic Horner and actual derivative identities, exact Hermite endpoint values/slopes, finite polynomial derivatives, and the inverse-square-root Newton residual identity |
 | `RMSGain.lean` | actual derivative with respect to a learned RMS gain, disjoint row-partition VJP identity, and real radial-subtraction identity |
 
-All **63 project theorems** build successfully. The rational, affine-power, quadratic, and interpolation
+All **76 project theorems** build successfully. Accumulation also checks causal
+suffix trimming and normalization-factor extraction in score/value VJPs.
+It proves output-centering bias, the equal-key sink identity, and a conditional
+bound on score-cotangent rounding before the dQ contraction.
+The rational, affine-power, quadratic, and interpolation
 modules cover experimental links; those links are not adopted by the model.
 
 The polynomial coefficients have an independent exact-rational Bernstein
@@ -44,6 +49,6 @@ seed coefficients with rational Bernstein bounds. The Newton residual
 identity is checked in Lean; these coefficient bounds are not imported.
 
 There are no `sorry`, `admit`, or additional axioms in the project. Formal
-coverage is deliberately distinguished from the 84 TPU output/gradient/dispatch
+coverage is deliberately distinguished from the TPU output/gradient/dispatch
 checks and Monte Carlo results. See `paper/attention_exact.md` and
 `paper/attention_performance.md` for the connection to the implementation.

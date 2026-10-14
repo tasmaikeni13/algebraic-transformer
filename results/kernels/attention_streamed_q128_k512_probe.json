@@ -1,0 +1,193 @@
+{
+  "utc": "2026-10-14T02:47:48.307201+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "seed": 503,
+  "rounds": 5,
+  "iters": 25,
+  "source_sha256": {
+    "analysis/attention_head_resident_probe.py": "a1b16bc0d7e8b68ed8e16ac1c0ef31d8c62013b6f40fa1eef60958f4710964fb",
+    "src/algebraic/kernels/flash.py": "8d10e7d51eeba551bc9453a19c827a028ad26fd97d3d33d105fa2ed3dbb6c3ed",
+    "analysis/attention_streamed_probe.py": "802d830b36e90873393864bb8d9cb42207b4e7ea71d2adcea35d5a5f13adf93b"
+  },
+  "results": {
+    "softmax_baseline": {
+      "forward": {
+        "compile_s": 0.6795072400127538,
+        "samples_ms": [
+          1.567261079326272,
+          1.5666211198549718,
+          1.5669106808491051,
+          1.568384679267183,
+          1.5663718804717064
+        ],
+        "median_ms": 1.5669106808491051
+      },
+      "training": {
+        "compile_s": 2.2136103880184237,
+        "samples_ms": [
+          3.372069359757006,
+          3.37073456030339,
+          3.366424120031297,
+          3.368156960932538,
+          3.367232959717512
+        ],
+        "median_ms": 3.368156960932538
+      }
+    },
+    "asinh_baseline": {
+      "forward": {
+        "compile_s": 2.1642001519794576,
+        "samples_ms": [
+          2.0189022400882095,
+          2.0187582401558757,
+          2.018095439998433,
+          2.0183970395009965,
+          2.018992640078068
+        ],
+        "median_ms": 2.0187582401558757
+      },
+      "training": {
+        "compile_s": 4.920029499975499,
+        "samples_ms": [
+          4.9790340405888855,
+          4.97807884006761,
+          4.977311639813706,
+          4.977470480371267,
+          4.9775923998095095
+        ],
+        "median_ms": 4.9775923998095095
+      }
+    },
+    "softmax_both_static": {
+      "forward": {
+        "error": "Invalid shape for `swap`. Ref shape: (128, 128). Expected shape: (128, 128). Value shape: (128, 1). Transforms: (NDIndexer(indices=(Slice(start=0, size=128, stride=1), Slice(start=0, size=128, stride=1)), shape=(128, 128), int_indexer_shape=(), validate=False),). "
+      },
+      "training": {
+        "error": "Invalid shape for `swap`. Ref shape: (128, 128). Expected shape: (128, 128). Value shape: (128, 1). Transforms: (NDIndexer(indices=(Slice(start=0, size=128, stride=1), Slice(start=0, size=128, stride=1)), shape=(128, 128), int_indexer_shape=(), validate=False),). "
+      }
+    },
+    "asinh_both_static": {
+      "forward": {
+        "compile_s": 13.424787525000283,
+        "samples_ms": [
+          1.6200806805863976,
+          1.6207051207311451,
+          1.618829839862883,
+          1.6196230798959732,
+          1.6201194794848561
+        ],
+        "median_ms": 1.6200806805863976
+      },
+      "training": {
+        "compile_s": 18.413903679000214,
+        "samples_ms": [
+          4.2582752800080925,
+          4.2602125206030905,
+          4.258995279669762,
+          4.257079319795594,
+          4.257734080310911
+        ],
+        "median_ms": 4.2582752800080925
+      }
+    }
+  },
+  "validation": {
+    "asinh_both_static": {
+      "shape": [
+        1,
+        2,
+        2048,
+        64
+      ],
+      "dtype": "bfloat16",
+      "sink": [
+        -0.35,
+        0.125
+      ],
+      "qk_normalized": false,
+      "output_max_abs_error": 0.015625,
+      "q_k_v_sink_relative_l2_errors": [
+        0.004096199758350849,
+        0.003993721213191748,
+        0.00011309804540360346,
+        0.0015540466411039233
+      ],
+      "passed": true
+    }
+  },
+  "failures": {},
+  "comparisons": {
+    "forward": {
+      "reference": "softmax_baseline",
+      "ratios": {
+        "softmax_baseline": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 5
+        },
+        "asinh_baseline": {
+          "ratio": 1.2881223650653002,
+          "ci95": [
+            1.2875119270272926,
+            1.2886870779354853
+          ],
+          "rounds": 5
+        },
+        "asinh_both_static": {
+          "ratio": 1.03366821645077,
+          "ci95": [
+            1.03306200575139,
+            1.0342747828804064
+          ],
+          "rounds": 5
+        }
+      }
+    },
+    "training": {
+      "reference": "softmax_baseline",
+      "ratios": {
+        "softmax_baseline": {
+          "ratio": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "rounds": 5
+        },
+        "asinh_baseline": {
+          "ratio": 1.4775931563334102,
+          "ci95": [
+            1.4769221349375483,
+            1.478264482599585
+          ],
+          "rounds": 5
+        },
+        "asinh_both_static": {
+          "ratio": 1.2640417334342575,
+          "ci95": [
+            1.2633531185009157,
+            1.264672601849892
+          ],
+          "rounds": 5
+        }
+      }
+    }
+  },
+  "streamed_compute": {
+    "block_q": 128,
+    "block_k": 512,
+    "trim_last_key": true
+  }
+}

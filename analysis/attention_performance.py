@@ -14,6 +14,7 @@ from functools import partial
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -28,6 +29,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from algebraic.kernels import flash as flash_kernel
 from algebraic.kernels.flash import flash_attention
 
 
@@ -49,13 +51,37 @@ def main():
     p.add_argument("--blocks", default="128,256,512,128x256,256x128,256x512,512x256")
     p.add_argument("--families", default="softmax,asinh,asinh_inv")
     p.add_argument("--baselines", action="store_true")
+    p.add_argument("--tokamax", action="store_true", help="Include installed Tokamax API and tuned Splash controls.")
     p.add_argument("--baseline-blocks", default="128,256,512")
     p.add_argument("--rounds", type=int, default=9)
     p.add_argument("--iters", type=int, default=20)
     p.add_argument("--seed", type=int, default=11)
+    p.add_argument("--compiler-scheduler", choices=["default", "lp"], default="default",
+                   help="Compare the compiler scheduler exposed by maintained Splash kernels.")
+    p.add_argument("--annotate-inputs", choices=["none", "no_store", "no_store_bank"], default="none",
+                   help="Current Pallas: tell the compiler that kernel inputs are read-only.")
     p.add_argument("--source-revision", help="revision of a checkout copied to a worker without .git")
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
+    if args.compiler_scheduler == "lp":
+        default_params = flash_kernel._params
+        def scheduled_params():
+            return default_params().__class__(
+                dimension_semantics=("parallel", "parallel", "parallel", "arbitrary"),
+                vmem_limit_bytes=flash_kernel.VMEM_LIMIT,
+                flags={"XLA_TPU_FORCE_LP_LLO_SCHEDULER": True})
+        flash_kernel._params = scheduled_params
+    if args.annotate_inputs != "none":
+        from jax.experimental.pallas import tpu as pltpu
+        for kernel_name, inputs in (("_fwd_kernel", 4), ("_resident_bwd_kernel", 7),
+                                    ("_fused_bwd_kernel", 7), ("_dkv_kernel", 7), ("_dq_kernel", 7)):
+            original = getattr(flash_kernel, kernel_name)
+            def annotated(*refs, original=original, inputs=inputs, **kwargs):
+                refs = [pltpu.annotate(ref, no_store=True,
+                                      no_bank_conflict=args.annotate_inputs == "no_store_bank")
+                        if idx < inputs else ref for idx, ref in enumerate(refs)]
+                return original(*refs, **kwargs)
+            setattr(flash_kernel, kernel_name, annotated)
     B, H, T, D = shape = (args.batch, args.heads, args.seq, args.dim)
     keys = jax.random.split(jax.random.PRNGKey(args.seed), 4)
     q, k, v, g = (jax.random.normal(key, shape, jnp.bfloat16) for key in keys)
@@ -68,17 +94,29 @@ def main():
             continue
         for family in args.families.split(","):
             kw = dict(block_q=bq, block_k=bk)
-            if family in ("softmax", "softmax_compact", "softmax_partial"):
+            if family in ("softmax", "softmax_compact", "softmax_partial", "softmax_diagonal", "softmax_head"):
                 kw.update(kind="softmax", compact_stat=family != "softmax")
+                if family == "softmax_diagonal":
+                    kw.update(diagonal_bwd=True)
                 if family == "softmax_partial":
                     kw.update(resident_bwd=False)
+                if family == "softmax_head":
+                    kw.update(head_resident=True)
                 s = None
-            elif family in ("asinh", "asinh_inv", "asinh_exact", "asinh_compact", "asinh_poly", "asinh_poly_compact", "asinh_guarded", "asinh_guarded_partial"):
+            elif family in ("asinh", "asinh_inv", "asinh_exact", "asinh_compact", "asinh_poly", "asinh_poly_compact", "asinh_guarded", "asinh_guarded_resident", "asinh_guarded_partial", "asinh_guarded_full", "asinh_guarded_fwd_diagonal", "asinh_guarded_bwd_diagonal"):
                 kw.update(kind="asinh", n=16, c=8., shift=False,
                           fast_rho=family != "asinh_exact", inv_stat=family != "asinh",
-                          compact_stat=family in ("asinh_compact", "asinh_poly_compact", "asinh_guarded", "asinh_guarded_partial"),
+                          compact_stat=family in ("asinh_compact", "asinh_poly_compact", "asinh_guarded", "asinh_guarded_resident", "asinh_guarded_partial", "asinh_guarded_full", "asinh_guarded_fwd_diagonal", "asinh_guarded_bwd_diagonal"),
                           poly_rho=family in ("asinh_poly", "asinh_poly_compact"),
-                          range_guard=family in ("asinh_guarded", "asinh_guarded_partial"))
+                          range_guard=family in ("asinh_guarded", "asinh_guarded_resident", "asinh_guarded_partial", "asinh_guarded_full", "asinh_guarded_fwd_diagonal", "asinh_guarded_bwd_diagonal"))
+                if family == "asinh_guarded_resident":
+                    kw.update(head_resident=False)
+                if family == "asinh_guarded_full":
+                    kw.update(diagonal_bwd=False, diagonal_fwd=False)
+                if family == "asinh_guarded_bwd_diagonal":
+                    kw.update(diagonal_fwd=False)
+                if family == "asinh_guarded_fwd_diagonal":
+                    kw.update(diagonal_fwd=True)
                 if family == "asinh_guarded_partial":
                     kw.update(resident_bwd=False)
                 s = sink
@@ -103,6 +141,32 @@ def main():
                     vp = jnp.pad(v, ((0, 0), (0, 0), (0, 0), (0, pad)))
                     return kernel(q * (1 / math.sqrt(D)), k, vp)[..., :D]
                 functions[f"splash_{block}_fused{fused}"] = splash
+    baseline_provenance = {}
+    if args.tokamax:
+        import dataclasses
+        import tokamax
+        from tokamax._src.ops.experimental.tpu.splash_attention import splash_attention_kernel as tsk
+        from tokamax._src.ops.experimental.tpu.splash_attention import splash_attention_mask as tsm
+        baseline_provenance["tokamax"] = {
+            "version": tokamax.__version__,
+            "splash_sha256": hashlib.sha256(Path(tsk.__file__).read_bytes()).hexdigest(),
+            "splash_source": str(Path(tsk.__file__)),
+        }
+        def tokamax_api(q, k, v):
+            qt, kt, vt = (jnp.swapaxes(a, 1, 2) for a in (q, k, v))
+            out = tokamax.dot_product_attention(qt, kt, vt, scale=1 / math.sqrt(D),
+                                                is_causal=True, implementation="mosaic")
+            return jnp.swapaxes(out, 1, 2)
+        functions["tokamax_api"] = tokamax_api
+        for block in map(int, args.baseline_blocks.split(",")):
+            config = dataclasses.replace(tsk.SplashConfig.get_default(),
+                                         block_q=block, block_kv=block, block_kv_compute=block,
+                                         block_q_dkv=block, block_kv_dkv=block,
+                                         block_kv_dkv_compute=block)
+            kernel = jax.vmap(tsk.make_splash_mha_single_device(tsm.CausalMask((T, T)), config=config))
+            def tokamax_splash(q, k, v, kernel=kernel):
+                return kernel(q * (1 / math.sqrt(D)), k, v)
+            functions[f"tokamax_splash_{block}"] = tokamax_splash
     revision = args.source_revision
     if revision is None:
         git = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True,
@@ -112,9 +176,16 @@ def main():
               "dtype": "bfloat16", "causal": True, "asinh_n": 16, "asinh_c": 8.,
               "asinh_sink": 0., "softmax_sink": None, "jax": jax.__version__,
               "devices": [str(d) for d in jax.devices()], "hostname": platform.node(),
+              "device_kinds": [d.device_kind for d in jax.devices()],
+              "visible_chips": os.environ.get("TPU_VISIBLE_CHIPS"),
+              "baseline_provenance": baseline_provenance,
               "rounds": args.rounds, "iters_per_round": args.iters, "seed": args.seed,
+              "compiler_scheduler": args.compiler_scheduler,
+              "annotate_inputs": args.annotate_inputs,
               "git_revision": revision,
               "kernel_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/flash.py").read_bytes()).hexdigest(),
+              "head_resident_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/head_resident.py").read_bytes()).hexdigest(),
+              "benchmark_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               "radical_sha256": hashlib.sha256((ROOT / "src/algebraic/kernels/radical.py").read_bytes()).hexdigest(),
               "results": {}, "comparisons": {}}
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -167,7 +238,7 @@ def main():
                 result["median_ms"] = float(np.median(a))
                 print(f"{name:30s} {mode:8s} {np.median(a):.4f} ms", flush=True)
     for mode in ("forward", "training"):
-        standard = [n for n in functions if (n.startswith("softmax") or n.startswith("splash"))
+        standard = [n for n in functions if n.startswith(("softmax", "splash", "tokamax", "jax_flash"))
                     and (n, mode) in compiled]
         if standard:
             best = min(standard, key=lambda n: report["results"][n][mode]["median_ms"])

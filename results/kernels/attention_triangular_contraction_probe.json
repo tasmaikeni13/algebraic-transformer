@@ -1,0 +1,394 @@
+{
+  "utc": "2026-10-13T18:06:30.097635+00:00",
+  "shape": [
+    8,
+    12,
+    2048,
+    64
+  ],
+  "jax": "0.6.2",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "rounds": 7,
+  "iters": 25,
+  "seed": 457,
+  "validation_seq": 512,
+  "validation_dtypes": [
+    "float32",
+    "bfloat16"
+  ],
+  "query_blocks": [
+    512
+  ],
+  "chunks": [
+    512
+  ],
+  "tile_orders": [
+    "original"
+  ],
+  "packing": [
+    "triangular"
+  ],
+  "prototype": true,
+  "operator_changed": false,
+  "kernel_sha256": "8d10e7d51eeba551bc9453a19c827a028ad26fd97d3d33d105fa2ed3dbb6c3ed",
+  "probe_sha256": "ef8b2fa858a731633ca52314ddd395173828a8e5bc21ead5a190bcfb6ebdadb9",
+  "results": {
+    "softmax_baseline": {
+      "samples_ms": [
+        3.971341319847852,
+        3.9726064796559513,
+        3.9731920801568776,
+        3.972632479853928,
+        3.9723332796711475,
+        3.973766480339691,
+        3.9726892800536007
+      ],
+      "compile_s": 2.1070896640012506,
+      "median_ms": 3.972632479853928,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 7
+      },
+      "ratio_to_standard": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 7
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.1802964320733829,
+        "ci95": [
+          1.180100527103433,
+          1.180490970029115
+        ],
+        "rounds": 7
+      }
+    },
+    "softmax_deployed": {
+      "samples_ms": [
+        3.3656717208214104,
+        3.3649653603788465,
+        3.365305360639468,
+        3.3667797595262527,
+        3.366006559226662,
+        3.3663337607868016,
+        3.365596159128472
+      ],
+      "compile_s": 1.8690585409931373,
+      "median_ms": 3.3656717208214104,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8472447876872229,
+        "ci95": [
+          0.8471051667386633,
+          0.8473854362683056
+        ],
+        "rounds": 7
+      },
+      "ratio_to_standard": {
+        "ratio": 0.8472447876872229,
+        "ci95": [
+          0.8471051667386633,
+          0.8473854362683056
+        ],
+        "rounds": 7
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 7
+      }
+    },
+    "asinh_baseline": {
+      "samples_ms": [
+        5.728193599497899,
+        5.729233160382137,
+        5.727178800152615,
+        5.730653599603102,
+        5.728437160141766,
+        5.730397159932181,
+        5.7312479603569955
+      ],
+      "compile_s": 4.611833809001837,
+      "median_ms": 5.729233160382137,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "rounds": 7
+      },
+      "ratio_to_standard": {
+        "ratio": 1.4421940176235921,
+        "ci95": [
+          1.4419074341849019,
+          1.4424430720592214
+        ],
+        "rounds": 7
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.7022164533587034,
+        "ci95": [
+          1.701961272577778,
+          1.7025089985954653
+        ],
+        "rounds": 7
+      }
+    },
+    "asinh_deployed": {
+      "samples_ms": [
+        4.978918440174311,
+        4.976544440723956,
+        4.977351640118286,
+        4.977105640573427,
+        4.976102439686656,
+        4.976293639047071,
+        4.976222040131688
+      ],
+      "compile_s": 4.442201031022705,
+      "median_ms": 4.976544440723956,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8686757784508444,
+        "ci95": [
+          0.8684527273286561,
+          0.8689220570290661
+        ],
+        "rounds": 7
+      },
+      "ratio_to_standard": {
+        "ratio": 1.2527990109363247,
+        "ci95": [
+          1.2525432219680999,
+          1.2531449574069293
+        ],
+        "rounds": 7
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.4786742027132072,
+        "ci95": [
+          1.4784053586227273,
+          1.4789738909112946
+        ],
+        "rounds": 7
+      }
+    },
+    "softmax_resident_q512_k512_original_triangular": {
+      "samples_ms": [
+        3.5390045191161335,
+        3.538093720562756,
+        3.538749720901251,
+        3.538408559979871,
+        3.539038159651682,
+        3.5382017609663308,
+        3.5383933200500906
+      ],
+      "compile_s": 2.1229703829740174,
+      "median_ms": 3.538408559979871,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.8907289255407059,
+        "ci95": [
+          0.890575563287835,
+          0.8909023052142406
+        ],
+        "rounds": 7
+      },
+      "ratio_to_standard": {
+        "ratio": 0.8907289255407059,
+        "ci95": [
+          0.890575563287835,
+          0.8909023052142406
+        ],
+        "rounds": 7
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.0513241727602531,
+        "ci95": [
+          1.0511648726504488,
+          1.0514661384870245
+        ],
+        "rounds": 7
+      }
+    },
+    "asinh_resident_q512_k512_original_triangular": {
+      "samples_ms": [
+        5.044545240234584,
+        5.043962000636384,
+        5.045640040189028,
+        5.044092839816585,
+        5.0447167991660535,
+        5.042831639293581,
+        5.045433200430125
+      ],
+      "compile_s": 4.660853595007211,
+      "median_ms": 5.044545240234584,
+      "ratio_to_same_operator_baseline": {
+        "ratio": 0.880461828112166,
+        "ci95": [
+          0.8802459623963944,
+          0.8806905664701329
+        ],
+        "rounds": 7
+      },
+      "ratio_to_standard": {
+        "ratio": 1.2697967812492974,
+        "ci95": [
+          1.2695007447000022,
+          1.270028888771974
+        ],
+        "rounds": 7
+      },
+      "ratio_to_fastest_standard": {
+        "ratio": 1.4987366103668116,
+        "ci95": [
+          1.4984058376143625,
+          1.499051310532228
+        ],
+        "rounds": 7
+      }
+    }
+  },
+  "validation": {
+    "softmax_resident_q512_k512_original_triangular": [
+      {
+        "shape": [
+          1,
+          2,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          512,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "softmax",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ],
+    "asinh_resident_q512_k512_original_triangular": [
+      {
+        "shape": [
+          1,
+          2,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          512,
+          64
+        ],
+        "dtype": "bfloat16",
+        "kind": "asinh",
+        "shifted": false,
+        "q_k_v_sink_relative_l2_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      },
+      {
+        "shape": [
+          1,
+          2,
+          512,
+          64
+        ],
+        "dtype": "float32",
+        "kind": "asinh",
+        "shifted": true,
+        "q_k_v_sink_relative_l2_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "q_k_v_sink_max_abs_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "reference": "validated deployed backward, identical forward",
+        "passed": true
+      }
+    ]
+  },
+  "failures": {},
+  "fastest_standard": "softmax_deployed"
+}

@@ -5,6 +5,16 @@
 an inverse denominator, compact row statistics, and a checked range guard.
 The fully algebraic training path passes the primitive audit.
 
+The pure-only continuation now uses whole-head VMEM residency and static
+128-query score tiles at the measured BF16 shape. Its corrected forward plus
+backward takes **4.301 ms**, down from **5.072 ms** for the preceding causal
+resident schedule. The strongest standard control takes **2.675 ms**, so the
+attention parity target remains open. The isolated newer JAX stack and current
+350M/1B micro-batches are checked separately. See
+[attention_head_resident.md](attention_head_resident.md) for raw records,
+complete-model smokes, arithmetic checks, and the remaining work. The sections
+below describe the preceding milestones.
+
 ## Hybrid and complete model speed
 
 The hybrid uses the same standard softmax resident-memory FlashAttention

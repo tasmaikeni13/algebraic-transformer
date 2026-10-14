@@ -24,13 +24,18 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--scale", choices=("350m", "1b"), default="350m")
     p.add_argument("--hosts", default="w0,w1,w2,w3")
+    p.add_argument("--arches",nargs="+",choices=("standard","algebraic"),default=["standard","algebraic"])
+    p.add_argument("--group",help="Use a fresh run directory for this verification.")
+    p.add_argument("--out",type=Path,help="Preserve historical verification reports at a separate output path.")
     a = p.parse_args()
     import numpy as np
     from algebraic.benchmarking import source_fingerprint, write_json
     config = json.loads((ROOT / f"configs/comparison_{a.scale}.json").read_text())
     config["training"]["tokens"] = config["training"]["batch"] * config["training"]["seq_len"]
     config["training"].update(eval_tokens=65536, eval_every=0, ckpt_every=0, log_every=1)
-    group = f"smoke_slice_{a.scale}"
+    group = a.group or f"smoke_slice_{a.scale}"
+    if not group or any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-" for c in group):
+        p.error("group must be a simple directory name")
     data_dir = ROOT / "runs" / group / "synthetic"
     data_dir.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(42)
@@ -44,6 +49,9 @@ def main():
         subprocess.run(["ssh", host, f"mkdir -p {shlex.quote(str(data_dir))}"], check=True)
         subprocess.run(["rsync", "-a", str(data_dir)+"/", f"{host}:{data_dir}/"], check=True)
     jobs = training_jobs(config, data_dir, save_params=False)
+    jobs = [job for job in jobs if job["name"].split("_s")[0] in a.arches]
+    if not jobs:
+        p.error("no requested architecture appears in this comparison")
     for job in jobs:
         job["args"] += ["--steps", "1"]
     job_path = ROOT / "runs" / group / "jobs.json"
@@ -65,7 +73,7 @@ def main():
                                  "accumulation": result["accum"], "attn_impl": result["config"]["attn_impl"],
                                  "head_impl": result["config"]["head_impl"]}
     report["passed"] = True
-    path = ROOT / f"results/verification/distributed_{a.scale}.json"
+    path = a.out or ROOT / f"results/verification/distributed_{a.scale}.json"
     write_json(path, report)
     print(f"Distributed smoke passed: {path}", flush=True)
     return 0

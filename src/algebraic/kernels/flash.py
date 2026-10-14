@@ -34,6 +34,8 @@ and writes dQ partials per key block. For the measured bfloat16 model shape,
 resident backward retains K/V in VMEM and accumulates dQ before writing it
 once. Other shapes retain the partial-reduction backend. Causal tiles above
 the diagonal are skipped; only tiles crossing it evaluate a mask.
+The guarded algebraic model shape additionally keeps Q and all outputs
+resident, uses static 128-query tiles, and trims the last key tile.
 """
 
 from functools import partial
@@ -65,6 +67,10 @@ class Variant(NamedTuple):
     poly_rho: bool = False  # opt-in, bounded approximation with a stable exact tail
     bounded_scores: bool = False  # internal: a runtime Cauchy-Schwarz guard passed
     resident_bwd: bool = False  # retain full K/V and accumulate dQ in VMEM
+    diagonal_bwd: bool = False  # skip masked subtiles before nonlinear score evaluation
+    diagonal_fwd: bool = False  # unshifted forward diagonal decomposition
+    head_resident: bool = False  # full-head residency and static, trimmed score tiles
+    precise_output: bool = False  # retain the unrounded output for shifted-tail VJP centering
 
 
 def _rho_exact(x):
@@ -123,7 +129,11 @@ def _bcast(x, width):
         return x
     if width < LANES:
         return x[:, :width]
-    return pltpu.repeat(x, width // LANES, axis=1)
+    # The pinned compiler emits a faster broadcast for repeat; current JAX
+    # removed it. Both routes preserve the lane-replicated row statistic.
+    if hasattr(pltpu, "repeat"):
+        return pltpu.repeat(x, width // LANES, axis=1)
+    return jnp.tile(x, (1, width // LANES))
 
 
 TRANS_B = (((1,), (1,)), ((), ()))   # a @ b.T
@@ -143,6 +153,33 @@ def _last_kblock(i, bq, bk, nk):
 def _crosses_diagonal(i, j, bq, bk):
     """True if some key in tile (i, j) lies after some query in it."""
     return (j + 1) * bk - 1 > i * bq
+
+
+def _diagonal_forward_weights(q, k, i, j, *, var):
+    """Unshifted weights and FP32 row sums without upper-triangle score work."""
+    sub, count = 128, 4
+    p_rows, sum_rows = [], []
+    for qi in range(count):
+        qs = slice(qi * sub, (qi + 1) * sub)
+        p_cols = []
+        row_sum = jnp.zeros((sub, 1), F32)
+        for kj in range(count):
+            if kj > qi:
+                p = jnp.zeros((sub, sub), q.dtype)
+            else:
+                ks = slice(kj * sub, (kj + 1) * sub)
+                scores = lax.dot_general(q[qs], k[ks], TRANS_B, preferred_element_type=F32)
+                x = scores if var.bounded_scores else jnp.minimum(scores, var.clamp)
+                p = _ipow(_variant_rho(x, var)[0], var.n)
+                if qi == kj:
+                    mask = _causal_mask(i * count + qi, j * count + kj, sub, sub)
+                    p = jnp.where(mask, p, 0.)
+                row_sum += jnp.sum(p, axis=1, keepdims=True)
+                p = p.astype(q.dtype)
+            p_cols.append(p)
+        p_rows.append(jnp.concatenate(p_cols, axis=1))
+        sum_rows.append(row_sum)
+    return jnp.concatenate(p_rows), jnp.concatenate(sum_rows)
 
 
 # ---------------------------------------------------------------------------
@@ -180,6 +217,11 @@ def _fwd_kernel(sink_ref, q_ref, k_ref, v_ref, o_ref, stat_ref, m_sc, l_sc, acc_
         q = q_ref[0, 0]
         k = k_ref[0, 0]
         v = v_ref[0, 0]
+        if masked and asinh_noshift and var.diagonal_fwd and bq == bk == 512:
+            p, row_sum = _diagonal_forward_weights(q, k, i, j, var=var)
+            l_sc[...] += row_sum
+            acc_sc[...] += lax.dot(p.astype(v.dtype), v, preferred_element_type=F32)
+            return
         s = lax.dot_general(q, k, TRANS_B, preferred_element_type=F32)
         mask = _causal_mask(i, j, bq, bk) if masked else None
         if asinh_noshift:
@@ -248,6 +290,9 @@ def _params():
 
 
 def _forward(q, k, v, sink, *, var, bq, bk, has_sink):
+    if var.head_resident:
+        from .head_resident import forward
+        return forward(q, k, v, sink, var=var, has_sink=has_sink)
     B, H, T, D = q.shape
     nq, nk = T // bq, T // bk
 
@@ -274,7 +319,7 @@ def _forward(q, k, v, sink, *, var, bq, bk, has_sink):
             scratch_shapes=[pltpu.VMEM((bq, LANES), F32), pltpu.VMEM((bq, LANES), F32),
                             pltpu.VMEM((bq, D), F32)],
         ),
-        out_shape=[jax.ShapeDtypeStruct(q.shape, q.dtype),
+        out_shape=[jax.ShapeDtypeStruct(q.shape, F32 if var.precise_output else q.dtype),
                    jax.ShapeDtypeStruct((B, H, 1, T) if var.compact_stat else (B, H, T, LANES), F32)],
         compiler_params=_params(),
     )(sink, q, k, v)
@@ -314,6 +359,39 @@ def _tile_grads(q, k, v, do, stat, di, i, j, *, var, bq, bk, masked):
             # clamp kink choose the constant branch's subgradient (zero).
             ds = jnp.where(s < var.clamp, ds, 0.0)
     return p, ds
+
+
+def _diagonal_tile_grads(q, k, v, do, stat, di, i, j, *, var, bq, bk, masked):
+    """Evaluate the lower triangle in 128-square pieces, then use full MXU VJPs.
+
+    Resident backward uses aligned 512-square compute tiles. On its diagonal,
+    six of sixteen subtiles contain only causally masked entries. Leave those
+    operands zero without computing their scores, radicals, or cotangents.
+    The remaining operands receive the same BF16 rounding as _tile_grads.
+    """
+    if not masked or bq != bk or bq != 512:
+        return _tile_grads(q, k, v, do, stat, di, i, j,
+                           var=var, bq=bq, bk=bk, masked=masked)
+    sub = 128
+    count = bq // sub
+    p_rows, ds_rows = [], []
+    for qi in range(count):
+        qs = slice(qi * sub, (qi + 1) * sub)
+        p_cols, ds_cols = [], []
+        for kj in range(count):
+            if kj > qi:
+                p = ds = jnp.zeros((sub, sub), q.dtype)
+            else:
+                ks = slice(kj * sub, (kj + 1) * sub)
+                p, ds = _tile_grads(q[qs], k[ks], v[ks], do[qs], stat[qs], di[qs],
+                                    i * count + qi, j * count + kj,
+                                    var=var, bq=sub, bk=sub, masked=kj == qi)
+                p, ds = p.astype(q.dtype), ds.astype(q.dtype)
+            p_cols.append(p)
+            ds_cols.append(ds)
+        p_rows.append(jnp.concatenate(p_cols, axis=1))
+        ds_rows.append(jnp.concatenate(ds_cols, axis=1))
+    return jnp.concatenate(p_rows), jnp.concatenate(ds_rows)
 
 
 def _dkv_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref, dk_ref, dv_ref,
@@ -488,8 +566,9 @@ def _resident_bwd_kernel(sink_ref, q_ref, k_ref, v_ref, do_ref, stat_ref, di_ref
             k, v = k_ref[0, 0, key_slice, :], v_ref[0, 0, key_slice, :]
             stat = jnp.expand_dims(stat_ref[0, 0, 0], -1)
             di = jnp.expand_dims(di_ref[0, 0, 0], -1)
-            p, ds = _tile_grads(q, k, v, do, stat, di, i, j,
-                                var=var, bq=bq, bk=bk, masked=masked)
+            tile_grads = _diagonal_tile_grads if var.diagonal_bwd and masked else _tile_grads
+            p, ds = tile_grads(q, k, v, do, stat, di, i, j,
+                              var=var, bq=bq, bk=bk, masked=masked)
             dsb = ds.astype(q.dtype)
             dv_sc[key_slice, :] += lax.dot_general(
                 p.astype(do.dtype), do, TRANS_A, preferred_element_type=F32)
@@ -554,6 +633,9 @@ def _backward(q, k, v, sink, o, stat, do, *, var, bq, bk, fused=True):
     di = jnp.sum(do.astype(F32) * o.astype(F32), axis=-1)            # (B, H, T)
     stat4 = stat[:, :, None, :]
     di4 = di[:, :, None, :]
+    if var.head_resident:
+        from .head_resident import backward
+        return backward(q, k, v, sink, stat4, di4, do, di, var=var)
     if var.resident_bwd:
         return _backward_resident(q, k, v, sink, stat4, di4, do, di, var=var)
     if fused:
@@ -625,12 +707,12 @@ def _sink_mass_and_slope(sink, stat, var):
 
 @partial(jax.custom_vjp, nondiff_argnums=(4, 5, 6, 7))
 def _flash(q, k, v, sink, var, bq, bk, has_sink):
-    return _forward(q, k, v, sink, var=var, bq=bq, bk=bk, has_sink=has_sink)[0]
+    return _forward(q, k, v, sink, var=var, bq=bq, bk=bk, has_sink=has_sink)[0].astype(q.dtype)
 
 
 def _flash_fwd(q, k, v, sink, var, bq, bk, has_sink):
     o, stat = _forward(q, k, v, sink, var=var, bq=bq, bk=bk, has_sink=has_sink)
-    return o, (q, k, v, sink, o, stat)
+    return o.astype(q.dtype), (q, k, v, sink, o, stat)
 
 
 def _flash_bwd(var, bq, bk, has_sink, res, do):
@@ -684,7 +766,10 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
                     shift: Optional[bool] = None, fast_rho: Optional[bool] = None,
                     inv_stat: Optional[bool] = None, compact_stat: bool = True,
                     poly_rho: bool = False, range_guard: bool = False,
-                    resident_bwd: Optional[bool] = None):
+                    resident_bwd: Optional[bool] = None,
+                    diagonal_bwd: Optional[bool] = None,
+                    diagonal_fwd: Optional[bool] = None,
+                    head_resident: Optional[bool] = None):
     """Causal attention on (B, H, T, D). ``sink_logit`` broadcastable to (H,).
 
     For ``kind="asinh"`` the weights are ``rho(s / c)^n`` with ``s`` the
@@ -694,6 +779,16 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
     ``resident_bwd=None`` selects resident accumulation for compact-statistic
     bfloat16 inputs at T=2048,D=64 and 512-square forward tiles. Explicit True
     also supports T=512/1024; False retains per-key-block dQ partials.
+    ``diagonal_bwd=None`` skips upper-diagonal 128-square subtiles for the
+    measured T=2048 algebraic resident backward. Explicit True also allows
+    the supported smaller resident contexts and a matching softmax control.
+    ``diagonal_fwd=None`` selects the corresponding unshifted forward
+    decomposition at T=2048 with bfloat16 and 512-square tiles. The shifted
+    fallback retains its original schedule. False permits a measured control.
+    ``head_resident=None`` selects whole-head residency for the guarded
+    algebraic model shape when no diagonal schedule is explicitly specified.
+    False retains query-streamed resident accumulation. Explicit True also
+    permits a softmax benchmark control at the same shape.
     """
     B, H, T, D = q.shape
     bq = min(block_q or block, T)
@@ -709,7 +804,22 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
                          "and softmax or exact asinh n=16")
     use_resident = (resident_supported and T == 2048 and bq == bk == 512 and compact_stat
                     if resident_bwd is None else bool(resident_bwd))
-    var = var._replace(resident_bwd=use_resident)
+    if diagonal_bwd is True and not use_resident:
+        raise ValueError("diagonal backward requires the resident backward backend")
+    use_diagonal = (use_resident and kind == "asinh" and T == 2048
+                    if diagonal_bwd is None else bool(diagonal_bwd))
+    use_diagonal_fwd = (resident_supported and kind == "asinh" and T == 2048
+                        and bq == bk == 512 and not poly_rho
+                        if diagonal_fwd is None else bool(diagonal_fwd))
+    head_supported = (use_resident and T == 2048 and bq == bk == 512 and compact_stat)
+    if head_resident is True and not head_supported:
+        raise ValueError("whole-head residency needs resident bfloat16 T=2048,D=64, "
+                         "512-square public tiles, and compact statistics")
+    use_head = (head_supported and kind == "asinh" and range_guard
+                and diagonal_bwd is None and diagonal_fwd is None
+                if head_resident is None else bool(head_resident))
+    var = var._replace(resident_bwd=use_resident, diagonal_bwd=use_diagonal,
+                       diagonal_fwd=use_diagonal_fwd, head_resident=use_head)
     unit = 1.0 if kind == "softmax" else float(c)
     scale = 1.0 / (math.sqrt(D) * unit)
     has_sink = sink_logit is not None
@@ -738,7 +848,8 @@ def flash_attention(q, k, v, sink_logit: Optional[jax.Array] = None, *, kind: st
         vmax = min(1e8, 1e37 / ((T + int(has_sink)) * (2 * bound + 1) ** n))
         in_range = in_range & (jnp.max(jnp.abs(v.astype(F32))) <= vmax)
         low = var._replace(shift=False, inv_stat=True, bounded_scores=True)
-        high = var._replace(shift=True, inv_stat=False, fast_rho=False, bounded_scores=False)
+        high = var._replace(shift=True, inv_stat=False, fast_rho=False, bounded_scores=False,
+                            head_resident=False, precise_output=True)
         return lax.cond(in_range,
                         lambda _: _flash(q_scaled, k, v, sink, low, bq, bk, has_sink),
                         lambda _: _flash(q_scaled, k, v, sink, high, bq, bk, has_sink),
