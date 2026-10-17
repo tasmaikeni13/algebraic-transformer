@@ -1,6 +1,6 @@
 # Algebraic Transformer
 
-The pure algebraic model replaces softmax attention, SwiGLU, and trigonometric positional rotations with arithmetic and reciprocal-root operations. Its output head has the exact gradient of a normalized maximum-likelihood objective. The standard model uses RMSNorm, SwiGLU, RoPE, softmax attention, and cross-entropy. A hybrid shares the standard backbone and uses QK normalization and the algebraic head.
+The pure algebraic model replaces softmax attention, SwiGLU, and trigonometric positional rotations with arithmetic and reciprocal-root operations. Its output head has the exact gradient of a normalized maximum-likelihood objective. The standard model uses RMSNorm, SwiGLU, RoPE, softmax attention, and cross-entropy.
 
 ## Positive link and stable normalization
 
@@ -60,6 +60,4 @@ $$\operatorname{ALU}(x)=\frac{x}{2}\left(1+\frac{\beta x}{\sqrt{1+\beta^2x^2}}\r
 
 ## Evidence
 
-The completed 125M / 2.5B-token comparison uses three paired seeds. Its [per-example predictions and comparison tables](../results/main/comparison.md) report held-out quality, eight public tasks, and four recall tasks. Algebraic perplexity is lower; public-task gains are mixed and free retrieval remains low. These observations do not establish a universal accuracy or recall advantage.
-
-The 350M / 7B-token and 1B / 20B-token configurations each use one paired training seed. Their budgeted sweeps and complete post-training evaluation are implemented; full training and benchmark results remain to be run by the author. Synthetic smoke measurements verify execution, not learned quality.
+The 350M / 7B-token and 1B / 20B-token configurations each use one paired training seed. Their complete post-training evaluation protocols are implemented; full training and benchmark results remain to be run by the author. Synthetic smoke measurements verify execution, not learned quality.

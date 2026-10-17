@@ -1,6 +1,6 @@
 # Attention kernel engineering: measured status
 
-**Speed parity is not achieved for either pure algebraic or hybrid.** The pure model remains
+**Speed parity with standard attention is not yet achieved for pure algebraic attention.** The pure model remains
 `rho(s/8)^16` with a learned zero-value sink. The new implementation uses
 an inverse denominator, compact row statistics, and a checked range guard.
 The fully algebraic training path passes the primitive audit.
@@ -15,24 +15,6 @@ attention parity target remains open. The isolated newer JAX stack and current
 complete-model smokes, arithmetic checks, and the remaining work. The sections
 below describe the preceding milestones.
 
-## Hybrid and complete model speed
-
-The hybrid uses the same standard softmax resident-memory FlashAttention
-as the reference model. Its learned QK normalization and algebraic head are
-also speed targets. The new hybrid kernel tiles the learned-gain reduction
-while preserving native RMS forward and input VJP calculations. Three fresh
-seeds with randomized job order confirm **171.627 ms** per hybrid optimizer
-step versus **178.414 ms** before the change, a **3.80%** reduction. Standard
-takes **156.587 ms**, and pure algebraic takes **181.203 ms** at the same
-125M training shape. The remaining full-step gaps are **9.61%** and **15.72%**.
-
-These are single-chip, micro-batch 8, context 2048, real AdamW update profiles,
-not the historical full-slice throughput or new quality runs. See
-[attention_hybrid.md](attention_hybrid.md) for the implementation choice,
-rejected RMS/head variants, complete-model numerical checks, and raw records.
-The pure model retains native QK normalization because the tiled substitution
-is slower in its full compilation pipeline.
-
 ## Latest confirmed resident-memory backend
 
 The backward now keeps an entire head's K/V in VMEM, iterates over 512-key
@@ -45,20 +27,18 @@ Other shapes/dtypes retain the previous backend. An explicit
 
 Fresh data seed 71, fifteen randomized paired rounds of 30 queued calls:
 
-| Forward + q/k/v backward | 125M shape (ms) | 60M shape (ms) |
-|---|---:|---:|
-| Guarded algebraic, dQ partials | 5.943 | 3.948 |
-| **Guarded algebraic, resident dQ** | **5.419** | **3.531** |
-| Standard compact, dQ partials | 3.971 | 2.604 |
-| **Standard compact, resident dQ** | **3.364** | **2.214** |
-| Maintained Splash 512, fused backward | 4.178 | 2.710 |
+| Forward + q/k/v backward | 125M shape (ms) |
+|---|---:|
+| Guarded algebraic, dQ partials | 5.943 |
+| **Guarded algebraic, resident dQ** | **5.419** |
+| Standard compact, dQ partials | 3.971 |
+| **Standard compact, resident dQ** | **3.364** |
+| Maintained Splash 512, fused backward | 4.178 |
 
-This lowers deployed algebraic latency by about 8.8% at the 125M shape and
-10.5% at the 60M shape. The same optimization benefits standard attention
-more, so the fair algebraic/standard ratios are **1.6107** [1.6105,1.6110]
-and **1.5950** [1.5948,1.5951]. The speed goal remains open. Forward is
+This lowers deployed algebraic latency by about 8.8% at the 125M shape. The same optimization benefits standard attention
+more, so the fair algebraic/standard ratio is **1.6107** [1.6105,1.6110]. The speed goal remains open. Forward is
 unchanged. The tiny intervals describe within-run repeatability only.
-Raw records are `results/kernels/attention_resident_confirm_{125m,60m}.json`.
+Raw records are `results/kernels/attention_resident_confirm_125m.json`.
 
 At the 125M shape, the old F32 dQ partial array occupies 192 MiB. Removing
 its store and subsequent reduction read avoids about 384 MiB of device-memory
@@ -130,31 +110,30 @@ before resident dQ was introduced.
 
 Single TPU v4 chip, installed JAX 0.6.2/libtpu 0.0.17, bfloat16 inputs,
 causal context 2,048, head dimension 64, batch 8. The model labels specify
-head count (12 for 125M, 8 for 60M); these are attention microbenchmarks,
+head count (12 for 125M); these are attention microbenchmarks,
 not new full-model training-throughput measurements.
 
-| Forward + q/k/v backward | 125M shape (ms) | 60M shape (ms) |
-|---|---:|---:|
-| Original row layout/statistic, corrected clipping VJP, algebraic | 6.601 | 4.280 |
-| Inverse denominator + compact statistics, algebraic | 6.042 | 3.986 |
-| **Guarded production algebraic kernel** | **5.944** | **3.947** |
-| **Compact-statistic standard kernel** | **3.971** | **2.605** |
-| Tuned maintained Splash, fused backward, values padded to 128 | 4.178 | 2.710 |
-| JAX flash attention, defaults | 22.131 | 14.545 |
+| Forward + q/k/v backward | 125M shape (ms) |
+|---|---:|
+| Original row layout/statistic, corrected clipping VJP, algebraic | 6.601 |
+| Inverse denominator + compact statistics, algebraic | 6.042 |
+| **Guarded production algebraic kernel** | **5.944** |
+| **Compact-statistic standard kernel** | **3.971** |
+| Tuned maintained Splash, fused backward, values padded to 128 | 4.178 |
+| JAX flash attention, defaults | 22.131 |
 
 Guarded algebraic latency / fastest measured standard latency:
 
 | Shape | Paired geometric ratio | Bootstrap 95% interval |
 |---|---:|---:|
 | 125M | 1.4968 | [1.4965, 1.4971] |
-| 60M | 1.5151 | [1.5148, 1.5153] |
 
 Fifteen randomized paired rounds, 30 queued calls per measurement, fresh
 data seed 37 after configuration selection. Compilation and three warmup
 calls are excluded. A synchronization before each measurement drains the
 previous call; a final synchronization includes all queued work. Raw samples,
 source hashes, devices, and arguments are in
-`results/kernels/attention_confirm_{125m,60m}.json`. Seed-level numerical
+`results/kernels/attention_confirm_125m.json`. Seed-level numerical
 statistics and timing ratios are in `results/analysis/attention_statistics.json`.
 
 These narrow intervals measure repeatability in one process on one chip.
@@ -165,9 +144,7 @@ gradients are checked for accuracy separately; the timing loss differentiates
 q, k, and v, with a constant sink matching the old benchmark convention.
 
 Forward-only latency is 2.231 ms for guarded algebraic at the 125M shape;
-the fastest measured standard forward is Splash at 1.518 ms. At the 60M
-shape, guarded algebraic is 1.433 ms and compact standard is 0.931 ms.
-Forward parity is also open.
+the fastest measured standard forward is Splash at 1.518 ms. Forward parity is also open.
 
 ## What changed and what failed
 
@@ -265,7 +242,6 @@ On a TPU worker, use its single-chip wrapper (or an equivalent TPU setup):
   --families softmax,softmax_compact,asinh,asinh_compact,asinh_guarded \
   --baselines --baseline-blocks 512 --seed 37 --rounds 15 --iters 30 \
   --out results/kernels/attention_confirm_125m.json
-# Add --heads 8 for the 60M shape.
 JAX_PLATFORMS=cpu python scripts/audit_algebraic.py --set attn_impl=flash
 python analysis/attention_statistics.py
 ```

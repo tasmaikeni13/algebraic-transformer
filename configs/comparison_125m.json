@@ -1,0 +1,87 @@
+{
+  "name": "comparison_125m",
+  "architectures": [
+    "standard",
+    "algebraic"
+  ],
+  "training_seeds": [
+    42
+  ],
+  "training": {
+    "size": "125m",
+    "dimensions": {
+      "d_model": 768,
+      "n_layers": 12,
+      "n_heads": 12,
+      "d_ff": 2048
+    },
+    "vocab_size": 32768,
+    "tokens": 2500000000,
+    "train_file": "fineweb_train_2.5B.npy",
+    "valid_file": "fineweb_valid.npy",
+    "seq_len": 2048,
+    "batch": 512,
+    "batch_size": 512,
+    "micro": 4,
+    "microbatch": 4,
+    "data_seed": 42,
+    "lr": 0.003,
+    "learning_rate": 0.003,
+    "min_lr_ratio": 0.1,
+    "warmup": 0.02,
+    "schedule": "cosine",
+    "wd": 0.1,
+    "weight_decay": 0.1,
+    "b1": 0.9,
+    "b2": 0.95,
+    "clip": 1.0,
+    "eval_tokens": 8000000,
+    "eval_batch": 4,
+    "eval_every": 250,
+    "log_every": 25,
+    "ckpt_every": 200,
+    "keep_ckpts": 2,
+    "attn_impl": "flash",
+    "head_impl": "fused",
+    "flash_block": 512,
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "public_tasks": [
+    "arc_easy",
+    "arc_challenge",
+    "hellaswag",
+    "piqa",
+    "openbookqa",
+    "winogrande",
+    "boolq",
+    "lambada"
+  ],
+  "recall": {
+    "tasks": [
+      "needle_passkey",
+      "associative_recall",
+      "multi_needle",
+      "latest_value"
+    ],
+    "dataset_seed": 20261012,
+    "context_budgets": [
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "depths": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "trials_per_cell": 32,
+    "max_new_tokens": 16,
+    "format_demonstrations": 1,
+    "absent_evidence_controls": true,
+    "short_context_controls": true
+  }
+}

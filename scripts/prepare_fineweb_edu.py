@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Download and tokenize a complete FineWeb-Edu corpus with GPT-2 BPE.
+"""Download and tokenize a complete FineWeb-Edu corpus with 32k BPE.
 
-The 7B experiment uses --train-tokens 7000000000 --sweep-tokens 0.
+The 7B experiment uses --train-tokens 7000000000.
 Data is published only after every quota is filled. Validation and training
 use separate documents; source shards come from an immutable Hub revision.
 """
@@ -16,11 +16,12 @@ import time
 import numpy as np
 import pyarrow.parquet as pq
 import requests
-import tiktoken
+
+from algebraic.tokenizer import get_tokenizer
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET = "HuggingFaceFW/fineweb-edu"
-EOT = 50256
+EOT = 2
 
 
 def train_filename(tokens):
@@ -72,7 +73,7 @@ def sha256_file(path):
 
 
 def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
-                          target_sweep_tokens=600_000_000, target_val_tokens=10_000_000,
+                          target_sweep_tokens=0, target_val_tokens=10_000_000,
                           clean_raw=True, eot=True, threads=32, revision="main", dataset_path="sample/10BT"):
     output_dir = Path(output_dir)
     if (min(target_train_tokens, target_val_tokens, threads) < 1
@@ -83,7 +84,7 @@ def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
     valid_path = output_dir / "fineweb_valid.npy"
     sweep_path = output_dir / "fineweb_sweep_600M.npy" if target_sweep_tokens == 600_000_000 else output_dir / f"fineweb_sweep_{target_sweep_tokens}.npy"
     metadata_path = output_dir / "fineweb_metadata.json"
-    requested = {"dataset": DATASET, "dataset_path": dataset_path, "tokenizer": "gpt2", "vocab_size": 50257,
+    requested = {"dataset": DATASET, "dataset_path": dataset_path, "tokenizer": "llama32k", "vocab_size": 32768,
                  "document_separator": EOT if eot else None, "train_tokens": target_train_tokens,
                  "valid_tokens": target_val_tokens, "sweep_tokens": target_sweep_tokens,
                  "train_file": train_path.name, "valid_file": valid_path.name,
@@ -114,7 +115,7 @@ def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
               for path, (_, count) in zip(temporary, files)]
     train, valid = arrays
     counts = {"train": 0, "valid": 0}
-    enc = tiktoken.get_encoding("gpt2")
+    enc = get_tokenizer()
     sources = []
     started = time.monotonic()
     for source in shards:
@@ -164,7 +165,7 @@ def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
         del sweep, train
         pending.replace(sweep_path)
     metadata = {**requested, "complete": True, "source_revision": pinned, "source_shards": sources,
-                "tiktoken_version": tiktoken.__version__, "validation_documents_disjoint": True,
+                "validation_documents_disjoint": True,
                 "seconds": time.monotonic()-started,
                 "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     pending_meta = metadata_path.with_suffix(".json.tmp")
@@ -178,7 +179,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output-dir", type=Path, default=ROOT / "data")
     p.add_argument("--train-tokens", type=int, default=2_500_000_000)
-    p.add_argument("--sweep-tokens", type=int, default=600_000_000)
+    p.add_argument("--sweep-tokens", type=int, default=0)
     p.add_argument("--valid-tokens", type=int, default=10_000_000)
     p.add_argument("--revision", default="main")
     p.add_argument("--dataset-path", default="sample/10BT")

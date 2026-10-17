@@ -268,7 +268,7 @@ algebraic_likelihood.defvjp(_alg_lik_fwd, _alg_lik_bwd)
 # ---------------------------------------------------------------------------
 # Lean dense variant of the algebraic likelihood (no running maximum).
 # Logits enter as x = min(z / c, X) with X chosen so that V (2X)^n fits in
-# float32 (X ~ 30 for n = 16 and the GPT-2 vocabulary): the clamp never binds
+# float32 (X ~ 30 for n = 16 and the 32,768 vocabulary): the clamp never binds
 # for realistic logits and its gradient is straight-through. rho is evaluated
 # as x + sqrt(1 + x^2); cancellation for x << 0 only perturbs weights that are
 # negligible after normalization.

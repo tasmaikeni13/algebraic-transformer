@@ -92,7 +92,7 @@ def provenance(run, scorer, protocol):
             "checkpoint": checkpoint_fingerprint(run), "source": source_fingerprint(),
             "execution_config": asdict(scorer.cfg), "backend": jax.default_backend(),
             "jax_version": jax.__version__, "batch": scorer.batch,
-            "tokenizer": "gpt2", "training_metrics": {key: training_result[key] for key in
+            "tokenizer": "llama32k", "training_metrics": {key: training_result[key] for key in
             ("final_eval_nll", "final_eval_ppl", "train_seconds", "mean_tok_per_s") if key in training_result}}
 
 
@@ -107,8 +107,8 @@ def load_model(run_dir):
     # Checkpoint metadata may include extra diagnostic fields.
     names = {field.name for field in fields(LMConfig)}
     cfg = LMConfig(**{k: v for k, v in meta["config"].items() if k in names})
-    if cfg.vocab_size != 50257:
-        raise ValueError("this evaluation protocol requires the GPT-2 vocabulary")
+    if cfg.vocab_size != 32768:
+        raise ValueError("this evaluation protocol requires the 32,768 vocabulary")
     if jax.default_backend() != "tpu":
         cfg = replace(cfg, attn_impl="dense")
     L, d, f = cfg.n_layers, cfg.d_model, cfg.d_ff
@@ -147,11 +147,11 @@ def load_model(run_dir):
 class Scorer:
     def __init__(self, cfg, params, batch=8):
         import jax
-        import tiktoken
+        from algebraic.tokenizer import get_tokenizer
         if batch < 1:
             raise ValueError("batch must be positive")
         self.jax, self.cfg, self.params, self.batch = jax, cfg, params, batch
-        self.enc = tiktoken.get_encoding("gpt2")
+        self.enc = get_tokenizer()
         self.T = cfg.seq_len
         self._score_fns, self._greedy_fns = {}, {}
         self.truncated_pairs = 0

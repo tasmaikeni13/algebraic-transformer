@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Tokenize codelion/fineweb-edu-1B into GPT-2 token arrays.
+"""Tokenize codelion/fineweb-edu-1B into 32k BPE token arrays.
 
 The dataset is a reservoir sample of HuggingFaceFW/fineweb-edu, so its row
-order is already random. Every document is followed by the GPT-2
-end-of-text token (50256). The split is made at document level: documents
+order is already random. Every document is followed by the
+end-of-text token (2). The split is made at document level: documents
 are taken from the end of the last shard until the validation array holds
 exactly ``--valid-tokens`` tokens (the final document is truncated), and
 every remaining document goes to training.
@@ -22,9 +22,10 @@ import time
 
 import numpy as np
 import pyarrow.parquet as pq
-import tiktoken
 
-EOT = 50256
+from algebraic.tokenizer import get_tokenizer
+
+EOT = 2
 SHARDS = [f"train-{i:05d}-of-00010.parquet" for i in range(10)]
 HF_URL = "https://huggingface.co/datasets/codelion/fineweb-edu-1B/resolve/main/data/{}"
 
@@ -50,7 +51,7 @@ def main() -> int:
         raise FileNotFoundError(
             f"missing shards {missing}; download them from {HF_URL.format('<name>')}"
         )
-    enc = tiktoken.get_encoding("gpt2")
+    enc = get_tokenizer()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
 
@@ -99,7 +100,7 @@ def main() -> int:
 
     meta = {
         "dataset": "codelion/fineweb-edu-1B",
-        "tokenizer": "gpt2 (tiktoken)",
+        "tokenizer": "llama32k",
         "document_separator": EOT,
         "train_tokens": int(train_count),
         "valid_tokens": int(args.valid_tokens),

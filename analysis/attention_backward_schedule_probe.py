@@ -4,7 +4,7 @@
 All candidates retain the original algebraic weight and real VJP formulas.
 Prefactor variants move a multiplication before centering and round the dV
 operand early. Independent dense VJPs and preceding-kernel VJPs are checked
-before randomized paired timings. Neither the deployed kernel nor the hybrid
+before randomized paired timings. Neither the deployed kernel nor the standard
 dispatch is mutated outside this process.
 """
 

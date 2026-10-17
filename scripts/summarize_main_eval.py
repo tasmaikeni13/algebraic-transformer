@@ -215,7 +215,7 @@ def plot_needle(directory, summary):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--out-dir", type=Path, default=ROOT / "results/main")
-    p.add_argument("--archs", default="standard,algebraic,hybrid")
+    p.add_argument("--archs", default="standard,algebraic")
     p.add_argument("--seeds", type=int, nargs="+", default=[42, 43, 44])
     p.add_argument("--no-plots", action="store_true")
     a = p.parse_args()

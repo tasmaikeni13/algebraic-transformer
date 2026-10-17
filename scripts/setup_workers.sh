@@ -10,7 +10,7 @@ for worker in "${ALGEBRAIC_HOSTS[@]}"; do
   ssh "$worker" "mkdir -p '$ALGEBRAIC_ROOT'"
   # Worker zero already has the authoritative checkout.
   if [ "$(ssh "$worker" hostname)" = "$(hostname)" ]; then continue; fi
-  rsync -a --delete --exclude .git --exclude .lake --exclude runs --exclude data \
+  rsync -a --delete --exclude .git --exclude .lake --exclude runs --exclude /data \
     --exclude .venv --exclude '*.egg-info' --exclude '__pycache__' --exclude .pytest_cache \
     "$ALGEBRAIC_ROOT/" "$worker:$ALGEBRAIC_ROOT/"
 done

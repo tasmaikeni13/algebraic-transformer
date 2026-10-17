@@ -22,7 +22,7 @@ from scripts.run_comparison import parameter_count, training_jobs
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--scale", choices=("350m", "1b"), default="350m")
+    p.add_argument("--scale", choices=("125m", "350m", "1b"), default="350m")
     p.add_argument("--hosts", default="w0,w1,w2,w3")
     p.add_argument("--arches",nargs="+",choices=("standard","algebraic"),default=["standard","algebraic"])
     p.add_argument("--group",help="Use a fresh run directory for this verification.")
@@ -39,8 +39,9 @@ def main():
     data_dir = ROOT / "runs" / group / "synthetic"
     data_dir.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(42)
+    vocab_size = config["training"].get("vocab_size", 32768)
     for name in (config["training"]["train_file"], config["training"]["valid_file"]):
-        np.save(data_dir / name, rng.integers(0, 50257, 1_048_576+1, dtype=np.uint16))
+        np.save(data_dir / name, rng.integers(0, vocab_size, 1_048_576+1, dtype=np.uint16))
     hosts = a.hosts.split(",")
     subprocess.run(["bash", str(ROOT / "scripts/setup_workers.sh"), *hosts], cwd=ROOT, check=True)
     for host in hosts:
@@ -59,7 +60,8 @@ def main():
     subprocess.run([sys.executable, str(ROOT / "scripts/run_slice.py"), str(job_path), "--group", group,
                     "--hosts", a.hosts, "--no-sync"], cwd=ROOT, check=True)
     report = {"purpose": "one-step distributed synthetic verification", "full_training_launched": False,
-              "scale": a.scale, "source": source_fingerprint(), "hosts": hosts, "runs": {}}
+              "scale": a.scale, "completed_steps": 1, "processes": len(hosts),
+              "source": source_fingerprint(), "hosts": hosts, "runs": {}}
     for job in jobs:
         result = json.loads((ROOT / "runs" / group / job["name"] / "result.json").read_text())
         arch = job["name"].split("_s")[0]

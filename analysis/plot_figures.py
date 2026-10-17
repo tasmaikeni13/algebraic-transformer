@@ -13,7 +13,7 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-COLORS = {"standard": "#3269b8", "algebraic": "#d65b37", "hybrid": "#22816c"}
+COLORS = {"standard": "#3269b8", "algebraic": "#d65b37"}
 INK, SURFACE, GRID = "#182438", "#fbfcfe", "#dfe5ed"
 plt.rcParams.update({"figure.facecolor": SURFACE, "axes.facecolor": SURFACE,
                      "savefig.facecolor": SURFACE, "text.color": INK, "axes.labelcolor": INK,

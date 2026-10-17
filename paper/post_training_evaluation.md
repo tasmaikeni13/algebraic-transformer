@@ -1,8 +1,8 @@
 # Post-training evaluation protocol
 
-The completed 125M / 2.5B-token comparison evaluates standard, algebraic, and hybrid models with seeds 42, 43, 44. The implemented 350M / 7B-token and 1B / 20B-token comparisons evaluate standard and pure algebraic with one paired seed (42), after their budgeted hyperparameter sweeps. The same public prompts, recall matrix, tokenizer, and scoring rules apply at every scale.
+The comparison evaluates standard and pure algebraic models. The same public prompts, recall matrix, tokenizer, and scoring rules apply at every scale.
 
-The frozen plans are [125M](../configs/post_training_eval.json), [350M](../configs/comparison_350m.json), and [1B](../configs/comparison_1b.json). The 125M [published scores](../results/main/comparison.md) are measured; full 350M and 1B quality runs remain for the author to launch. [Training and sweep commands](training.md) describe the larger comparisons.
+The frozen comparison plans are [350M](../configs/comparison_350m.json) and [1B](../configs/comparison_1b.json). Full 350M and 1B quality runs remain for the author to launch. [Training commands](training.md) describe the comparisons.
 
 ## What each benchmark measures
 
@@ -50,7 +50,7 @@ in [NVIDIA's RULER suite](https://github.com/NVIDIA/RULER).
 
 ### Frozen matrix and controls
 
-- Total context budgets: **256, 512, 1,024, 2,048 GPT-2 tokens**.
+- Total context budgets: **256, 512, 1,024, 2,048 tokens** (32k BPE).
 - Needle positions: **0%, 25%, 50%, 75%, 100%** of the distractor region.
 - **32 trials** per task, budget, and position; dataset seed **20261012**.
 - Each prompt includes **one fixed answer-format demonstration**. The public
@@ -105,7 +105,7 @@ treat the same trial across all lengths/positions, or multiple training
 seeds on one example, as independent observations. Three seeds support a
 descriptive comparison; they do not establish a universal recall guarantee.
 
-The measured 125M results show low free retrieval for all architectures. Recognition, short controls, absent controls, and the entire length/position matrix are necessary to interpret those scores. Toy attention retrieval experiments do not establish a language model's post-training recall performance.
+Recognition, short controls, absent controls, and the entire length/position matrix are necessary to interpret recall scores. Toy attention retrieval experiments do not establish a language model's post-training recall performance.
 
 For the 350M and 1B comparisons, tables report the individual score and paired difference for seed 42. Sample SD across training seeds is unavailable and remains null; no additional training seeds are implied. Per-cell Wilson intervals describe trials within a cell and remain available.
 
@@ -115,26 +115,27 @@ Prepare datasets once, before evaluating any model:
 
 ```bash
 python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals
-python scripts/prepare_recall_benchmarks.py --output-dir ~/data/recall
-python scripts/evaluate_main.py --dry-run
+python scripts/prepare_recall_benchmarks.py --config configs/comparison_350m.json --output-dir ~/data/recall
+python scripts/evaluate_main.py --config configs/comparison_350m.json --dry-run
 ```
 
-After completing the nine 125M runs, evaluate on a single TPU
+After completing the comparison runs, evaluate on a single TPU
 chip on `w0`, where the trainer saves the final weights:
 
 ```bash
-bash scripts/tpu_python.sh 0 scripts/evaluate_main.py --resume
+bash scripts/tpu_python.sh 0 scripts/evaluate_main.py --config configs/comparison_350m.json --resume
 ```
 
 With another environment or dataset location:
 
 ```bash
-python scripts/evaluate_main.py --runs-root runs/main \
+python scripts/evaluate_main.py --config configs/comparison_350m.json \
+  --runs-root runs/comparison_350m \
   --benchmarks /path/to/evals --recall-benchmarks /path/to/recall \
-  --out-dir results/main --resume
+  --out-dir results/comparison_350m --resume
 ```
 
-`--dry-run` writes the 18 evaluation commands without requiring checkpoints,
+`--dry-run` plans the evaluation commands without requiring checkpoints,
 loading JAX, or starting training. The real run requires every selected final
 `params.npz`, matching `meta.json`, finite `result.json`, and a completed
 training loss history. It rejects limited preparation files. `--resume`
@@ -147,14 +148,14 @@ backends, dtype and batch size across architectures/seeds.
 For one model, or development-only subsets:
 
 ```bash
-bash scripts/tpu_python.sh 0 scripts/evaluate_zero_shot.py runs/main/hybrid_s42 \
-  --benchmarks ~/data/evals --out results/main/hybrid_s42_zero_shot.json
-bash scripts/tpu_python.sh 0 scripts/evaluate_recall.py runs/main/hybrid_s42 \
-  --benchmarks ~/data/recall --out results/main/hybrid_s42_recall.json
+bash scripts/tpu_python.sh 0 scripts/evaluate_zero_shot.py runs/comparison_350m/algebraic_s42 \
+  --benchmarks ~/data/evals --out results/comparison_350m/algebraic_s42_zero_shot.json
+bash scripts/tpu_python.sh 0 scripts/evaluate_recall.py runs/comparison_350m/algebraic_s42 \
+  --benchmarks ~/data/recall --out results/comparison_350m/algebraic_s42_recall.json
 # --tasks needle_passkey --limit 8 is a development subset, not a main score.
 ```
 
-Outputs in `results/main/`:
+Outputs in `results/`:
 
 - Per-model/suite JSON and per-example prediction JSONL, with checkpoint
   hashes, dataset hashes, source fingerprint, execution settings and limits.
@@ -163,7 +164,7 @@ Outputs in `results/main/`:
   NLL/perplexity and training time/throughput copied from the trainer.
 - `recall_cells.csv`: the full length/position matrix for every recall task.
 - `needle_recall.png` and `needle_recall.pdf`: shared-scale needle heatmaps
-  for standard, algebraic and hybrid, generated from actual scores only.
+  for standard and algebraic, generated from actual scores only.
 - `evaluation_plan.json`: commands and completion status. Evaluation starts
   no training jobs and requires no instruction tuning.
 
@@ -178,4 +179,4 @@ python scripts/evaluate_main.py --config configs/comparison_350m.json --dry-run 
 python scripts/evaluate_main.py --config configs/comparison_1b.json --dry-run --out-dir /tmp/plan_1b
 ```
 
-`run_comparison.py --scale <350m|1b> --run` performs the full evaluation after both training runs, using the selected hyperparameters. Results go to `results/comparison_<scale>/`. The evaluator checks scale-specific dimensions, token budget, seed, trained context, fused implementation, selected recipe, and completion before scoring. It rejects short smoke runs and limited datasets. Every example and output is matched between the two architectures.
+`run_comparison.py --scale <350m|1b> --run` performs the full evaluation after both training runs, using comparison config hyperparameters (or optional `--hparams`). Results go to `results/comparison_<scale>/`. The evaluator checks scale-specific dimensions, token budget, seed, trained context, fused implementation, recipe, and completion before scoring. It rejects short smoke runs and limited datasets. Every example and output is matched between the two architectures.

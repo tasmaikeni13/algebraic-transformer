@@ -23,7 +23,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--tokens", type=int, default=16384)
     p.add_argument("--dim", type=int, default=768)
-    p.add_argument("--vocab", type=int, default=50257)
+    p.add_argument("--vocab", type=int, default=32768)
     p.add_argument("--blocks", default="512x1024,512x2048,1024x1024,256x2048")
     p.add_argument("--out", type=Path)
     a = p.parse_args()

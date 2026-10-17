@@ -1,30 +1,8 @@
 # Algebraic Transformer
 
-Causal language models with an algebraic attention kernel, Cayley positional rotations, and an output head whose exact log-loss gradient uses arithmetic and reciprocal square roots. The repository includes a matched standard Transformer, an optional hybrid, fused Pallas TPU kernels, reproducible training configurations, and public-task and recall evaluation.
+Causal language models with an algebraic attention kernel, Cayley positional rotations, and an output head whose exact log-loss gradient uses arithmetic and reciprocal square roots. The repository includes a matched standard Transformer, fused Pallas TPU kernels, reproducible training configurations, and public-task and recall evaluation.
 
 The pure algebraic **model objective and its gradient** avoid exponential, logarithmic, trigonometric, sigmoid, and hyperbolic primitives. Initialization, the shared cosine learning-rate schedule, and metric reporting are outside that claim. See [the mathematics](paper/theory.md) and [primitive audit](scripts/audit_algebraic.py).
-
-![Standard and algebraic model components](results/figures/architecture.png)
-
-## Measured results
-
-The completed comparison trains approximately **125M parameters on 2.5B [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu) tokens**, with paired seeds **42, 43, 44**. Values below are mean ± sample SD across training seeds; throughput is trainer telemetry on 16 TPU v4 chips.
-
-| Model | Held-out NLL | Perplexity | Million tokens/s |
-|---|---:|---:|---:|
-| Standard | 3.1723 ± 0.0024 | 23.86 ± 0.06 | 1.62 |
-| Pure algebraic | 3.1258 ± 0.0026 | 22.78 ± 0.06 | 1.39 |
-| Hybrid | 3.1323 ± 0.0011 | 22.93 ± 0.03 | 1.43 |
-
-![Held-out perplexity and measured throughput](results/figures/results_overview.png)
-
-The algebraic model has lower held-out perplexity. Public-task differences are mixed: it improves HellaSwag and PIQA in this comparison, while several other tasks are similar or lower. Free recall is low for all models; recognition and generation are reported separately. These results do not imply a universal accuracy or retrieval advantage.
-
-![Eight public tasks, with variation across training seeds](results/figures/public_tasks.png)
-
-![Needle retrieval by context budget and evidence position](results/main/needle_recall.png)
-
-The [complete comparison](results/main/comparison.md) includes all public tasks, recall controls, matched-seed differences, and the full context/position matrix. [Per-example predictions and provenance](results/main) support the tables. Presentation paths and protocol names are normalized; checkpoint hashes, dataset hashes, recorded source fingerprints, predictions, and scores are preserved.
 
 ## Models and kernels
 
@@ -37,7 +15,7 @@ The [complete comparison](results/main/comparison.md) includes all public tasks,
 | Output distribution | Softmax | `ρ(z/2)^8` |
 | Objective gradient | Cross-entropy | Exact algebraic log-loss gradient |
 
-Here `ρ(x) = x + √(1 + x²)`. Token embeddings and the output projection are tied. The hybrid uses standard attention and feed-forward components with QK normalization and the algebraic likelihood head.
+Here `ρ(x) = x + √(1 + x²)`. Token embeddings and the output projection are tied.
 
 Pallas provides tiled attention forward/backward, a vocabulary projection/loss kernel, and a QK gain-gradient reduction. The 350M and 1B configurations enable **fused attention and the fused head** for both arms. The head uses 128-token × 512-vocabulary tiles, verified at both widths. Dense components remain available for CPU checks. [Kernel measurements](paper/attention_performance.md), [numerical identities](paper/attention_exact.md), and [Lean certificates](formal/README.md) document scope and limitations.
 
@@ -55,42 +33,32 @@ JAX_PLATFORMS=cpu python -m pytest -q tests/test_components.py tests/test_experi
 
 For TPU workers, install `requirements-tpu.txt` instead of `requirements.txt`. The pinned environment uses JAX 0.6.2. `scripts/tpu_python.sh` isolates one local TPU chip and uses `.venv/bin/python`, `~/venv/bin/python`, or `ALGEBRAIC_PYTHON`.
 
-## 350M and 1B experiments
+## 125M, 350M, and 1B experiments
 
-Both comparisons use **standard vs pure algebraic**, **one paired seed (42)**, GPT-2 tokenization, a 2,048-token context, AdamW, a cosine schedule, and the same data seed. Models are matched in width, depth, feed-forward width, and tied vocabulary embedding; QK gains and learned sinks account for the small parameter difference.
+All comparisons use **standard vs pure algebraic**, **one paired seed (42)**, a 32,768 TPU-aligned BPE tokenizer, a 2,048-token context, AdamW, a cosine schedule, and the same data seed. Models are matched in width, depth, feed-forward width, and tied vocabulary embedding; QK gains and learned sinks account for the small parameter difference.
 
 | Configuration | Standard parameters | Algebraic parameters | Training budget | Steps | Per-device micro-batch |
 |---|---:|---:|---:|---:|---:|
-| [350M](configs/comparison_350m.json) | 350,358,528 | 350,361,984 | 7B tokens | 6,676 | 2 |
-| [1B](configs/comparison_1b.json) | 1,002,140,160 | 1,002,145,024 | 20B tokens | 19,074 | 1 |
+| [125M](configs/comparison_125m.json) | 110,120,448 | 110,122,128 | 2.5B tokens | 2,385 | 4 |
+| [350M](configs/comparison_350m.json) | 332,449,792 | 332,453,248 | 7B tokens | 6,676 | 2 |
+| [1B](configs/comparison_1b.json) | 975,277,056 | 975,281,920 | 20B tokens | 19,074 | 1 |
 
 Global batch is 512 sequences. Budgets round up to complete optimizer steps: **7,000,293,376** and **20,000,538,624** token presentations. Corpus arrays contain exactly 7B and 20B tokens. The trainer samples deterministic contiguous windows, so token presentations are a compute budget rather than a claim of one pass through every corpus token.
 
-**These full runs have not been launched here.** The implementations were smoke-tested with one synthetic optimizer step at each full model shape, including fused kernels and checkpoint reload. One-step checks also verify the production batch and gradient accumulation across all 16 TPU chips. Synthetic loss values are execution checks, not benchmark results. Reports are in [results/verification](results/verification).
-
-### Budgeted hyperparameter sweeps
-
-Each scale tests **four candidates per architecture** using one seed: three learning rates and one lower-weight-decay alternative. Both arms receive identical pilot data and validation windows. Selection minimizes held-out NLL independently for each architecture and requires every pilot to complete with finite results.
-
-| Sweep | Tokens per candidate | Runs | Total nominal pilot tokens | Fraction of full two-arm budget |
-|---|---:|---:|---:|---:|
-| [350M](configs/sweep_350m.json) | 100M | 8 | 800M | 5.7% |
-| [1B](configs/sweep_1b.json) | 200M | 8 | 1.6B | 4.0% |
-
-Pilots also round up to full steps. They save one resumable optimizer checkpoint and omit final weight exports to reduce disk use. Short-budget rankings do not establish full-budget optimality. The main launcher requires the sweep selection before starting training.
+**These full runs have not been launched here.** The implementations were smoke-tested with one synthetic optimizer step at each full model shape, including fused kernels and checkpoint reload. One-step checks also verify the production batch and gradient accumulation across all 16 TPU chips. Synthetic loss values are execution checks, not benchmark results. Reports are in `results/verification/`.
 
 ### Prepare data
 
-The preparer discovers all required parquet shards at an immutable source revision, separates validation and training documents, inserts GPT-2 end-of-text separators, and publishes arrays only after every quota is filled. It fails if the source is exhausted.
+The preparer discovers all required parquet shards at an immutable source revision, separates validation and training documents, inserts end-of-text separators, and publishes arrays only after every quota is filled. It fails if the source is exhausted.
 
 ```bash
 # 350M corpus: exactly 7B training tokens, plus 10M held-out tokens.
 python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw7b \
-  --train-tokens 7000000000 --sweep-tokens 0 --threads 32
+  --train-tokens 7000000000 --threads 32
 
 # 1B corpus: exactly 20B training tokens from the larger sample.
 python scripts/prepare_fineweb_edu.py --output-dir ~/data/fw20b \
-  --dataset-path sample/100BT --train-tokens 20000000000 --sweep-tokens 0 --threads 32
+  --dataset-path sample/100BT --train-tokens 20000000000 --threads 32
 
 python scripts/prepare_eval_benchmarks.py --output-dir ~/data/evals
 python scripts/prepare_recall_benchmarks.py --config configs/comparison_350m.json \
@@ -101,27 +69,21 @@ python scripts/prepare_recall_benchmarks.py --config configs/comparison_1b.json 
 
 Use the same absolute repository, environment, and data paths on all four TPU workers. Configure SSH aliases `w0,w1,w2,w3`; copy token arrays to every worker. Run the launchers from worker zero. Code synchronization is handled by [setup_workers.sh](scripts/setup_workers.sh). Token arrays require about **14GB** and **40GB** per worker, plus validation, raw-shard downloads, and optimizer checkpoints.
 
-### Plan, sweep, train, and evaluate
+### Plan, train, and evaluate
 
-Commands without `--run` or `--stage run` print plans and start no training.
+Commands without `--run` print plans and start no training.
 
 ```bash
-# 350M: inspect the sweep, run the short pilots, and select settings.
-python scripts/hparam_sweep.py --scale 350m
-python scripts/hparam_sweep.py --scale 350m --stage run
-python scripts/hparam_sweep.py --scale 350m --stage select
+# 350M: inspect the plan and run comparison training and evaluation.
 python scripts/run_comparison.py --scale 350m
 python scripts/run_comparison.py --scale 350m --run
 
-# 1B: independently select settings before the 20B-token comparison.
-python scripts/hparam_sweep.py --scale 1b
-python scripts/hparam_sweep.py --scale 1b --stage run
-python scripts/hparam_sweep.py --scale 1b --stage select
+# 1B: inspect the plan and run comparison training and evaluation.
 python scripts/run_comparison.py --scale 1b
 python scripts/run_comparison.py --scale 1b --run
 ```
 
-Selections are written to `results/tuning_<scale>/selected.json`. Full checkpoints go to `runs/comparison_<scale>/`; evaluation outputs go to `results/comparison_<scale>/`. Repeating the commands resumes checkpoints and reuses only validated, matching completed outputs. The pipeline trains both models before running all benchmarks. [Training details](paper/training.md) cover configuration, resume, and separate evaluation commands.
+Full checkpoints go to `runs/comparison_<scale>/`; evaluation outputs go to `results/comparison_<scale>/`. Repeating the commands resumes checkpoints and reuses only validated, matching completed outputs. The pipeline trains both models before running all benchmarks. [Training details](paper/training.md) cover configuration, resume, and separate evaluation commands.
 
 ## Benchmark protocol
 
@@ -129,36 +91,59 @@ Every completed model receives **ARC-Easy, ARC-Challenge, HellaSwag, PIQA, OpenB
 
 Recall covers 256/512/1,024/2,048-token total budgets, five evidence positions, 32 trials per cell, 16 generated answer tokens, absent-evidence controls, and short-context controls. Evidence is never truncated. Outputs include predictions, checkpoint/dataset/source hashes, matched-model differences, per-cell intervals, and heatmaps. Single-seed comparisons report individual scores and paired differences; they do not estimate variance across training seeds. See the [evaluation protocol](paper/post_training_evaluation.md).
 
+## Execution speed and throughput benchmark (TPU v4)
+
+Execution speed and token throughput were empirically measured on Cloud TPU v4 (chip 0) for both Standard Causal Softmax and Pure Algebraic Attention ($\rho(s/8)^{16}$), recorded in `results/verification/benchmark_throughput.json`.
+
+### Pallas FlashAttention Kernels (Batch 8, Heads 12, Head Dim 64)
+
+| Sequence Length | Architecture | Forward Latency | Fwd+Bwd Latency | Step Throughput | Step TFLOP/s | Relative Throughput |
+|---:|---|---:|---:|---:|---:|---:|
+| 512 | Standard Softmax | 0.31 ms | 0.59 ms | 6,883,838 tok/s | 18.9 | 100.0% |
+| 512 | Pure Algebraic | 0.36 ms | 0.88 ms | 4,640,130 tok/s | 12.8 | 67.4% |
+| 1,024 | Standard Softmax | 0.65 ms | 1.48 ms | 5,526,717 tok/s | 30.4 | 100.0% |
+| 1,024 | Pure Algebraic | 0.87 ms | 2.25 ms | 3,643,887 tok/s | 20.1 | 65.9% |
+| 2,048 | Standard Softmax | 1.71 ms | 3.59 ms | 4,563,751 tok/s | 50.2 | 100.0% |
+| 2,048 | Pure Algebraic | 1.77 ms | 4.55 ms | 3,596,646 tok/s | 39.6 | 78.8% |
+
+At context length $T = 2048$, forward pass latency is within 4% (1.77 ms vs 1.71 ms).
+
+### Full 125M Transformer Training Step (Batch 4, Context 2048, Vocab 32,768)
+
+| Architecture | Parameters | Step Latency (Fwd+Bwd) | Token Throughput | Relative Speed |
+|---|---:|---:|---:|---:|
+| Standard Transformer | 110,120,448 | 74.37 ms | 110,155.3 tokens/s | 1.00x (100.0%) |
+| Pure Algebraic Transformer | 110,122,128 | 79.99 ms | 102,406.9 tokens/s | 1.08x (93.0%) |
+
+The Pure Algebraic Transformer achieves **93.0%** of standard transformer end-to-end training throughput while entirely eliminating transcendental exponentiation, log-sum-exp, and trigonometric functions.
+
 ## Verification and reproduction
 
 ```bash
 # Actual full model shapes, one synthetic optimizer step each; no corpus training.
+bash scripts/tpu_python.sh 0 scripts/smoke_comparison.py --scale 125m
 bash scripts/tpu_python.sh 0 scripts/smoke_comparison.py --scale 350m
 bash scripts/tpu_python.sh 0 scripts/smoke_comparison.py --scale 1b
 bash scripts/tpu_python.sh 0 -m pytest -q \
   tests/test_flash_kernel_tpu.py tests/test_fused_head_tpu.py tests/test_qk_norm_tpu.py
-# Optional distributed synthetic verification from worker zero:
-JAX_PLATFORMS=cpu python scripts/smoke_distributed.py --scale 350m
-JAX_PLATFORMS=cpu python scripts/smoke_distributed.py --scale 1b
 
-# Rebuild figures from the published 125M results.
-python scripts/summarize_main_eval.py
-python analysis/plot_figures.py
+# Distributed multi-worker synthetic verification across all 16 TPU v4 chips (4 workers):
+python scripts/smoke_distributed.py --scale 125m
+python scripts/smoke_distributed.py --scale 350m
+python scripts/smoke_distributed.py --scale 1b
 
-# 125M / 2.5B tokens, three architectures and seeds.
-python scripts/main_run.py main > jobs.json
-python scripts/run_slice.py jobs.json --group main --skip-done
-bash scripts/tpu_python.sh 0 scripts/evaluate_main.py --resume
+# Measure kernel speed and model throughput on TPU v4:
+bash scripts/tpu_python.sh 0 scripts/benchmark_throughput.py
 ```
 
 | Path | Contents |
 |---|---|
 | `src/algebraic/` | Model presets, trainer, numerical components, scoring, and recall generator |
 | `src/algebraic/kernels/` | Pallas attention, fused vocabulary head, and QK reduction |
-| `configs/` | Frozen comparisons, budget sweeps, and evaluation matrices |
+| `configs/` | Frozen comparisons and evaluation matrices |
 | `scripts/` | Data preparation, experiment launchers, audits, and benchmark drivers |
-| `analysis/` | Figure generation, numerical studies, and performance probes |
-| `results/` | Measured comparisons, per-example predictions, figures, and smoke evidence |
+| `analysis/` | Performance probes and numerical studies |
+| `results/` | Verification and evaluation outputs |
 | `paper/`, `formal/` | Mathematical notes, protocols, and Lean certificates |
 
 TPU experiments were supported by Google's TPU Research Cloud (TRC).

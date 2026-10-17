@@ -70,8 +70,7 @@ clip frequency, cue probability, and ties across normalized-sphere rows
 and grown gains. Cue probabilities are static routing diagnostics, not
 trained associative-recall accuracy. Adoption additionally requires a
 training comparison using the same algebraic head, QK-normalization,
-data budget, and optimization budget. The earlier hybrid results motivate
-trying a softmax-like link; they do not prove this candidate's quality.
+data budget, and optimization budget.
 
 The hardware probe uses process-local replacements of the existing Pallas
 weight and tile-gradient functions. Baseline executables are compiled before

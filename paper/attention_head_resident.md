@@ -2,7 +2,7 @@
 
 Speed parity remains open. This continuation optimizes the original
 `rho(s/8)^16` attention and its learned zero-value sink. It introduces no new
-attention link and does not change the hybrid model's dispatch.
+attention link.
 
 ## Exact kernel schedule
 
@@ -20,7 +20,7 @@ guard, and no explicit diagonal-schedule override. Other shapes use the
 existing backends. The shifted tail uses the existing query-streamed schedule.
 `head_resident=True` also permits a separately tuned softmax control: its
 512-query tiles are faster than the algebraic winner's 128-query tiles.
-The standard and hybrid model defaults continue to use their prior dispatch.
+The standard model defaults continue to use their prior dispatch.
 
 The first whole-head sweep reduced algebraic training latency from 4.976 to
 4.491 ms. Further score-tile experiments selected 128x512: 128x128 and

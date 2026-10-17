@@ -23,7 +23,7 @@ F32 = jnp.float32
 
 @dataclass(frozen=True)
 class LMConfig:
-    vocab_size: int = 50257
+    vocab_size: int = 32768
     d_model: int = 384
     n_layers: int = 8
     n_heads: int = 6
@@ -156,13 +156,6 @@ def _attention(q, k, v, sink_logit, cfg: LMConfig):
 
 
 def _qk_norm(x, gain, cfg: LMConfig):
-    # Measured hybrid training shape. Other paths retain native RMS; the
-    # algebraic attention's different compilation pipeline is timed separately.
-    if (cfg.attn_impl == "flash" and cfg.attn == "softmax" and x.dtype == jnp.bfloat16
-            and x.shape[-2:] == (2048, 64) and x.size//64 % 1024 == 0
-            and gain.dtype == F32 and cfg.eps > 0):
-        from algebraic.kernels.qk_norm import qk_rms_norm
-        return qk_rms_norm(x, gain, cfg.eps)
     return A.rms_norm(x, gain, cfg.eps)
 
 

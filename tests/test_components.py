@@ -8,8 +8,7 @@ import numpy as np
 import pytest
 
 from algebraic import algebraic as A
-from algebraic import standard as S
-from algebraic.config import algebraic, hybrid, standard
+from algebraic.config import algebraic, standard
 from algebraic.evaluation import logprob_from_logits
 from algebraic.model import eval_logprobs, forward_hidden, head_loss, init_params, position_tables
 
@@ -79,7 +78,7 @@ def test_alu_and_its_vjp():
         np.testing.assert_allclose(g, g_ref, rtol=1e-9, atol=1e-12)
 
 
-@pytest.mark.parametrize("make", [standard, algebraic, hybrid])
+@pytest.mark.parametrize("make", [standard, algebraic])
 def test_tiny_models_train_step_is_finite(make):
     cfg = make("proxy", d_model=64, n_layers=2, n_heads=2, d_ff=96, vocab_size=97,
                seq_len=16, dtype="float32", remat=False)

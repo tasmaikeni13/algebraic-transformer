@@ -8,8 +8,8 @@ Both training heads share one kernel structure:
   which is algebraic, so the head trains on exact maximum likelihood without
   evaluating a logarithm. Per-token statistic ``sigma = Z^(-1/n)``.
   Accumulation is additive with the kernel argument clamped above at
-  ``X`` such that ``V (2X)^n`` fits in float32 (X ~ 30 for n = 16 and the
-  GPT-2 vocabulary, i.e. logits up to 30 c); the clamp never binds for
+  ``X`` such that ``V (2X)^n`` fits in float32 (X ~ 31 for n = 16 and the
+  32,768 vocabulary, i.e. logits up to 31 c); the clamp never binds for
   realistic logits and its gradient is straight-through.
 
 Forward: grid (token blocks, vocabulary blocks), vocabulary innermost; the

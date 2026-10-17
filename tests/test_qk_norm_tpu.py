@@ -44,11 +44,8 @@ def test_qk_norm_output_and_vjp(dtype, block, eps):
 
 
 @pytest.mark.parametrize("arch,impl,seq,dtype,expected", [
-    ("hybrid", "flash", 2048, jnp.bfloat16, True),
-    ("hybrid", "dense", 2048, jnp.bfloat16, False),
-    ("hybrid", "flash", 512, jnp.bfloat16, False),
-    ("hybrid", "flash", 2048, jnp.float32, False),
     ("algebraic", "flash", 2048, jnp.bfloat16, False),
+    ("standard", "flash", 2048, jnp.bfloat16, False),
 ])
 def test_model_dispatch(monkeypatch, arch, impl, seq, dtype, expected):
     import algebraic.kernels.qk_norm as module

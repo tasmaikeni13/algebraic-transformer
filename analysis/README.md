@@ -1,10 +1,10 @@
 # Reproducible analysis
 
-The public comparison is in [results/main/comparison.md](../results/main/comparison.md). This directory contains numerical studies, exact attention certificates, and performance probes for the implemented components.
+This directory contains numerical studies, exact attention certificates, and performance probes for the implemented components.
 
 | Script | Purpose |
 |---|---|
-| `plot_figures.py` | Rebuild architecture, held-out-quality, and benchmark figures from the published 125M results |
+| `plot_figures.py` | Generate architecture and component figures |
 | `activation_analysis.py` | Compare ALU and SiLU activation values, derivatives, and moments |
 | `attention_numerics.py` | Float32 attention normalization and gradient stress cases |
 | `attention_statistics.py`, `attention_followup_statistics.py` | Paired kernel timing statistics |

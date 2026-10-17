@@ -1,0 +1,107 @@
+{
+  "purpose": "Execution speed and token throughput benchmark: Standard Softmax vs Pure Algebraic attention on Cloud TPU v4",
+  "timestamp": "2026-10-17T16:24:55Z",
+  "source": {
+    "sha256": "2283a52d9259443ef427613e55f52f7676fd19f22aa7c8aeb65ddfcb0f360bf6",
+    "git_revision": "4b979bdc51de77fa4acbf7b39e203e2a5aa4ce7b"
+  },
+  "hardware": {
+    "device_kind": "TPU v4",
+    "device_count": 1,
+    "platform": "tpu"
+  },
+  "attention_kernel_benchmark": {
+    "seq_512": {
+      "standard": {
+        "fwd_latency_ms": 0.308,
+        "bwd_latency_ms": 0.287,
+        "fwd_bwd_latency_ms": 0.595,
+        "fwd_throughput_tokens_per_s": 13283673.2,
+        "fwd_bwd_throughput_tokens_per_s": 6883837.5,
+        "fwd_tflops": 10.45,
+        "fwd_bwd_tflops": 18.95
+      },
+      "algebraic": {
+        "fwd_latency_ms": 0.364,
+        "bwd_latency_ms": 0.519,
+        "fwd_bwd_latency_ms": 0.883,
+        "fwd_throughput_tokens_per_s": 11261953.3,
+        "fwd_bwd_throughput_tokens_per_s": 4640129.7,
+        "fwd_tflops": 8.86,
+        "fwd_bwd_tflops": 12.77
+      },
+      "algebraic_relative_to_standard": {
+        "fwd_latency_ratio": 1.182,
+        "step_latency_ratio": 1.484,
+        "step_throughput_ratio": 0.674
+      }
+    },
+    "seq_1024": {
+      "standard": {
+        "fwd_latency_ms": 0.649,
+        "bwd_latency_ms": 0.833,
+        "fwd_bwd_latency_ms": 1.482,
+        "fwd_throughput_tokens_per_s": 12620891.7,
+        "fwd_bwd_throughput_tokens_per_s": 5526716.6,
+        "fwd_tflops": 19.85,
+        "fwd_bwd_tflops": 30.42
+      },
+      "algebraic": {
+        "fwd_latency_ms": 0.869,
+        "bwd_latency_ms": 1.379,
+        "fwd_bwd_latency_ms": 2.248,
+        "fwd_throughput_tokens_per_s": 9424867.3,
+        "fwd_bwd_throughput_tokens_per_s": 3643886.9,
+        "fwd_tflops": 14.82,
+        "fwd_bwd_tflops": 20.06
+      },
+      "algebraic_relative_to_standard": {
+        "fwd_latency_ratio": 1.339,
+        "step_latency_ratio": 1.517,
+        "step_throughput_ratio": 0.659
+      }
+    },
+    "seq_2048": {
+      "standard": {
+        "fwd_latency_ms": 1.711,
+        "bwd_latency_ms": 1.879,
+        "fwd_bwd_latency_ms": 3.59,
+        "fwd_throughput_tokens_per_s": 9573645.3,
+        "fwd_bwd_throughput_tokens_per_s": 4563750.5,
+        "fwd_tflops": 30.12,
+        "fwd_bwd_tflops": 50.25
+      },
+      "algebraic": {
+        "fwd_latency_ms": 1.773,
+        "bwd_latency_ms": 2.783,
+        "fwd_bwd_latency_ms": 4.555,
+        "fwd_throughput_tokens_per_s": 9243428.9,
+        "fwd_bwd_throughput_tokens_per_s": 3596646.4,
+        "fwd_tflops": 29.08,
+        "fwd_bwd_tflops": 39.6
+      },
+      "algebraic_relative_to_standard": {
+        "fwd_latency_ratio": 1.036,
+        "step_latency_ratio": 1.269,
+        "step_throughput_ratio": 0.788
+      }
+    }
+  },
+  "full_model_step_benchmark": {
+    "standard": {
+      "parameters": 110120448,
+      "step_latency_ms": 74.37,
+      "throughput_tokens_per_s": 110155.3
+    },
+    "algebraic": {
+      "parameters": 110122128,
+      "step_latency_ms": 79.99,
+      "throughput_tokens_per_s": 102406.9
+    },
+    "comparison": {
+      "latency_ratio_algebraic_over_standard": 1.076,
+      "throughput_ratio_algebraic_over_standard": 0.93
+    }
+  },
+  "elapsed_seconds": 69.14
+}

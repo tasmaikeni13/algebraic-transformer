@@ -1,0 +1,44 @@
+{
+  "purpose": "one-step distributed synthetic verification",
+  "full_training_launched": false,
+  "scale": "125m",
+  "completed_steps": 1,
+  "processes": 4,
+  "source": {
+    "sha256": "2283a52d9259443ef427613e55f52f7676fd19f22aa7c8aeb65ddfcb0f360bf6",
+    "git_revision": "4b979bdc51de77fa4acbf7b39e203e2a5aa4ce7b"
+  },
+  "hosts": [
+    "w0",
+    "w1",
+    "w2",
+    "w3"
+  ],
+  "runs": {
+    "standard": {
+      "passed": true,
+      "completed_steps": 1,
+      "parameters": 110120448,
+      "devices": 16,
+      "processes": 4,
+      "global_batch": 512,
+      "micro_batch": 4,
+      "accumulation": 8,
+      "attn_impl": "flash",
+      "head_impl": "fused"
+    },
+    "algebraic": {
+      "passed": true,
+      "completed_steps": 1,
+      "parameters": 110122128,
+      "devices": 16,
+      "processes": 4,
+      "global_batch": 512,
+      "micro_batch": 4,
+      "accumulation": 8,
+      "attn_impl": "flash",
+      "head_impl": "fused"
+    }
+  },
+  "passed": true
+}

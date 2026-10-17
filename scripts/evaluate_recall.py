@@ -23,7 +23,7 @@ from algebraic.recall_benchmarks import TASKS, generated_metrics, summarize, val
 def evaluate(scorer, benchmarks, tasks, limit=None):
     import numpy as np
     meta = json.loads((benchmarks / "metadata.json").read_text())
-    if meta["protocol"] != RECALL_PROTOCOL or meta["tokenizer"] != "gpt2":
+    if meta["protocol"] != RECALL_PROTOCOL or meta["tokenizer"] != "llama32k":
         raise ValueError("recall dataset uses a different evaluation protocol")
     results, predictions, datasets = {}, [], {}
     start = time.monotonic()

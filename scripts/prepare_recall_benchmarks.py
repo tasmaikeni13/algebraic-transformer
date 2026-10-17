@@ -16,7 +16,7 @@ from algebraic.recall_benchmarks import TASKS, build_example
 
 
 def main():
-    import tiktoken
+    from algebraic.tokenizer import get_tokenizer
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--config", type=Path, default=ROOT / "configs/post_training_eval.json")
     p.add_argument("--output-dir", type=Path, default=ROOT / "data/recall")
@@ -31,7 +31,7 @@ def main():
         p.error("recall budgets must fit the configured trained context")
     if any(not 0 <= d <= 1 for d in spec["depths"]):
         p.error("needle depths must be in [0,1]")
-    enc = tiktoken.get_encoding("gpt2")
+    enc = get_tokenizer()
     a.output_dir.mkdir(parents=True, exist_ok=True)
     datasets = {}
     for task in spec["tasks"]:
@@ -70,7 +70,7 @@ def main():
     write_json(a.output_dir / "metadata.json", {
         "protocol": RECALL_PROTOCOL, "generator_sha256": sha256_file(ROOT / "src/algebraic/recall_benchmarks.py"),
         "config_sha256": sha256_file(a.config), "spec": {**spec, "trials_per_cell": trials},
-        "tokenizer": "gpt2", "tiktoken_version": tiktoken.__version__,
+        "tokenizer": "llama32k",
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "datasets": datasets})
 

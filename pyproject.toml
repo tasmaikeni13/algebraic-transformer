@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [{name = "tasmaikeni13"}]
-dependencies = ["jax==0.6.2", "jaxlib==0.6.2", "numpy==2.2.6", "tiktoken==0.14.0"]
+dependencies = ["jax==0.6.2", "jaxlib==0.6.2", "numpy==2.2.6", "tokenizers==0.23.3"]
 
 [project.urls]
 Repository = "https://github.com/tasmaikeni13/algebraic-transformer"

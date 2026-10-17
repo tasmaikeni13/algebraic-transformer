@@ -106,7 +106,7 @@ def child(args):
         root = Path(path)
         rng = np.random.default_rng(args.seed)
         for name in ["train", "valid"]:
-            np.save(root / f"{name}.npy", rng.integers(0, 50257, 8*2048*8+1, dtype=np.uint16))
+            np.save(root / f"{name}.npy", rng.integers(0, 32768, 8*2048*8+1, dtype=np.uint16))
         run = root / "profile"
         # The trainer exits immediately after its profile; the explicit budget
         # also limits work if its profile behavior changes.

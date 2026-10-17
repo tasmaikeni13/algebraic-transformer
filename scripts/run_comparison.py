@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Plan or run matched 350M/7B and 1B/20B experiments on a TPU slice.
 
-The default prints a plan without training. --run requires a completed
-budget-sweep selection, trains both models sequentially, and evaluates the
-same eight public tasks and full recall matrix. Repeating --run resumes.
+The default prints a plan without training. --run trains both models
+sequentially using comparison config parameters (or optional --hparams),
+and evaluates the same eight public tasks and full recall matrix. Repeating --run resumes.
 """
 
 import argparse
@@ -16,7 +16,7 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-SCALES = {"350m": 7_000_000_000, "1b": 20_000_000_000}
+SCALES = {"125m": 2_500_000_000, "350m": 7_000_000_000, "1b": 20_000_000_000}
 
 
 def training_jobs(config, data_dir, selected=None, *, save_params=True):
@@ -50,7 +50,7 @@ def read_selection(path, config_path):
     selection = json.loads(path.read_text())
     if (selection.get("comparison_config_sha256") != hashlib.sha256(config_path.read_bytes()).hexdigest()
             or not selection.get("complete") or set(selection.get("selected", {})) != {"standard", "algebraic"}):
-        raise ValueError("sweep selection does not match this complete comparison configuration")
+        raise ValueError("hyperparameter selection does not match this complete comparison configuration")
     for hp in selection["selected"].values():
         if (set(hp) != {"lr", "wd"} or not all(math.isfinite(v) for v in hp.values())
                 or hp["lr"] <= 0 or hp["wd"] < 0):
@@ -80,7 +80,7 @@ def build_plan(config_path, data_dir, benchmarks, recall, group, eval_batch, hpa
     if selected:
         evaluation += ["--hparams", str(hparams_path)]
     return {"training_launched": False, "config": config,
-            "hyperparameters_status": "selected from completed sweep" if selected else "defaults shown; completed sweep required for --run",
+            "hyperparameters_status": "selected from hparams" if selected else "comparison config parameters",
             "selected_hyperparameters": selected,
             "parameter_counts": {a: parameter_count(t, a) for a in config["architectures"]},
             "optimizer_steps": steps, "tokens_per_step": tokens_per_step,
@@ -97,7 +97,7 @@ def preflight(config, data_dir, benchmarks=None, recall=None, config_path=None):
             raise ValueError(f"incomplete token corpus: {data_dir / name}")
     meta = json.loads((data_dir / "fineweb_metadata.json").read_text())
     if (not meta.get("complete") or meta["dataset"] != "HuggingFaceFW/fineweb-edu"
-            or meta["tokenizer"] != "gpt2" or meta["train_tokens"] != SCALES[t["size"]]
+            or meta["tokenizer"] != "llama32k" or meta["train_tokens"] != SCALES[t["size"]]
             or meta["train_file"] != t["train_file"] or not meta.get("validation_documents_disjoint")):
         raise ValueError("corpus metadata does not match the complete FineWeb-Edu experiment")
     if benchmarks is None:
@@ -127,7 +127,7 @@ def main():
     p.add_argument("--eval-chip", type=int, choices=range(4), default=0)
     p.add_argument("--eval-batch", type=int, default=1)
     p.add_argument("--jobs-out", type=Path)
-    p.add_argument("--run", action="store_true", help="train after the sweep, then evaluate")
+    p.add_argument("--run", action="store_true", help="train comparison models, then evaluate")
     a = p.parse_args()
     config_path = (a.config or ROOT / f"configs/comparison_{a.scale}.json").resolve()
     hparams = (a.hparams or ROOT / f"results/tuning_{a.scale}/selected.json").resolve()
@@ -143,8 +143,6 @@ def main():
     if not a.run:
         print(json.dumps(plan, indent=2))
         return 0
-    if plan["selected_hyperparameters"] is None:
-        p.error(f"complete scripts/hparam_sweep.py --scale {a.scale} --stage run, then --stage select first")
     sys.path.insert(0, str(ROOT))
     preflight(plan["config"], data_dir, a.benchmarks, recall, config_path)
     job_path = ROOT / "runs" / group / "jobs.json"

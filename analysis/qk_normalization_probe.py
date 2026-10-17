@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure equivalent RMS VJPs in hybrid and pure algebraic attention.
+"""Measure equivalent RMS VJPs in pure algebraic attention.
 
 Process-local prototypes only. The forward formula and eps are unchanged.
 The analytic VJP uses tau*(g - y*mean(g*y)), where y=x*tau before gain.
@@ -106,7 +106,7 @@ def main():
         save()
     compiled={}
     inputs=(q,k,v,gains,gains)
-    for arch in ("hybrid","algebraic"):
+    for arch in ("algebraic",):
         for name,norm in norms.items():
             if not all(c["passed"] for c in report["validation"][name]):
                 continue

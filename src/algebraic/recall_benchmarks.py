@@ -1,6 +1,6 @@
 """Deterministic retrieval prompts and metrics; no model or JAX dependency.
 
-Raw GPT-2 token IDs define context lengths. Only distractor material may be
+Raw token IDs define context lengths. Only distractor material may be
 cut to fit: instructions, needles, and the question are always retained.
 """
 

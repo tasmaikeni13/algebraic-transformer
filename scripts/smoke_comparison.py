@@ -4,7 +4,7 @@
 Run on one isolated TPU chip:
   bash scripts/tpu_python.sh 0 scripts/smoke_comparison.py --out results/verification/smoke_350m.json
 
-This uses the actual width, depth, 2,048-token context, GPT-2 vocabulary,
+This uses the actual width, depth, 2,048-token context, 32,768 vocabulary,
 rematerialization, Pallas attention, and fused head. No FineWeb corpus is
 opened. Temporary model weights are removed after checkpoint loading checks.
 --tiny keeps the kernel paths and vocabulary but reduces width/depth/context.
@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--scale", choices=("350m", "1b"), default="350m")
+    p.add_argument("--scale", choices=("125m", "350m", "1b"), default="350m")
     p.add_argument("--tiny", action="store_true")
     p.add_argument("--out", type=Path, default=None)
     a = p.parse_args()
@@ -52,7 +52,7 @@ def main():
         root = Path(directory)
         rng = np.random.default_rng(42)
         for name in ("train", "valid"):
-            np.save(root / f"{name}.npy", rng.integers(0, 50257, seq * batch * 8 + 1, dtype=np.uint16))
+            np.save(root / f"{name}.npy", rng.integers(0, 32768, seq * batch * 8 + 1, dtype=np.uint16))
         for arch in ("standard", "algebraic"):
             run = root / arch
             command = [sys.executable, "-m", "algebraic.train", "--preset", arch, "--size", a.scale,

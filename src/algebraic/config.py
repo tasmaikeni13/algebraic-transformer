@@ -1,4 +1,4 @@
-"""Matched standard, pure algebraic, and hybrid Transformer presets."""
+"""Matched standard and pure algebraic Transformer presets."""
 
 from dataclasses import replace
 from typing import Dict
@@ -7,9 +7,8 @@ from algebraic.model import LMConfig
 
 SIZES: Dict[str, Dict[str, int]] = {
     "proxy": dict(d_model=384, n_layers=8, n_heads=6, d_ff=1024),
-    "60m": dict(d_model=512, n_layers=10, n_heads=8, d_ff=1536),
     "125m": dict(d_model=768, n_layers=12, n_heads=12, d_ff=2048),
-    # Tied GPT-2 embedding; both arms have approximately 350.36M parameters.
+    # Tied 32k BPE embedding; both arms have approximately 332.45M parameters.
     "350m": dict(d_model=1024, n_layers=24, n_heads=16, d_ff=2688),
     "1b": dict(d_model=1536, n_layers=32, n_heads=24, d_ff=4224),
 }
@@ -36,14 +35,7 @@ def algebraic(size: str = "proxy", **overrides) -> LMConfig:
     return replace(cfg, **overrides)
 
 
-def hybrid(size: str = "proxy", **overrides) -> LMConfig:
-    """Standard backbone with QK normalization and the algebraic head."""
-    cfg = LMConfig(**SIZES[size], norm="rms", ffn="swiglu", pos="rope", attn="softmax",
-                   sink="none", qk_norm=True, head="alg_ce", head_n=8, head_c=2.0)
-    return replace(cfg, **overrides)
-
-
-PRESETS = {"standard": standard, "algebraic": algebraic, "hybrid": hybrid}
+PRESETS = {"standard": standard, "algebraic": algebraic}
 
 
 def build(preset: str, size: str, **overrides) -> LMConfig:

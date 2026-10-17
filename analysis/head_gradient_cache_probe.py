@@ -51,7 +51,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--tokens",type=int,default=16384)
     p.add_argument("--dim",type=int,default=768)
-    p.add_argument("--vocab",type=int,default=50257)
+    p.add_argument("--vocab",type=int,default=32768)
     p.add_argument("--rounds",type=int,default=9)
     p.add_argument("--iters",type=int,default=10)
     p.add_argument("--out",type=Path,required=True)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Paired TPU timing of deployed model components, including hybrid attention.
+"""Paired TPU timing of deployed model components, including algebraic attention.
 
 The normalization/rotation timing differentiates raw Q/K and their gains.
 Head timing uses the deployed n=8,c=2 algebraic likelihood, including its
@@ -35,7 +35,7 @@ def main():
     p.add_argument("--heads", type=int, default=12)
     p.add_argument("--seq", type=int, default=2048)
     p.add_argument("--dim", type=int, default=64)
-    p.add_argument("--vocab", type=int, default=50257)
+    p.add_argument("--vocab", type=int, default=32768)
     p.add_argument("--groups", nargs="+", choices=("attention", "head"), default=["attention", "head"])
     p.add_argument("--rounds", type=int, default=9)
     p.add_argument("--iters", type=int, default=10)
@@ -87,15 +87,12 @@ def main():
             print(f"FAILED {name}: {str(exc).splitlines()[0]}", flush=True)
         save()
     if "attention" in args.groups:
-        for arch in ("standard", "standard_qknorm", "hybrid", "hybrid_native", "algebraic"):
+        for arch in ("standard", "standard_qknorm", "algebraic"):
             cfg = model.LMConfig(d_model=H*D,n_heads=H,seq_len=T,attn_impl="flash",
                                  attn="asinh" if arch=="algebraic" else "softmax")
             def attn(q, k, v, qg, kg, arch=arch,cfg=cfg):
                 if arch != "standard":
-                    if arch == "hybrid_native":
-                        q,k=A.rms_norm(q,qg),A.rms_norm(k,kg)
-                    else:
-                        q,k=model._qk_norm(q,qg,cfg),model._qk_norm(k,kg,cfg)
+                    q,k=model._qk_norm(q,qg,cfg),model._qk_norm(k,kg,cfg)
                 tables = cayley if arch == "algebraic" else trig
                 q, k = A.apply_rotary(q, *tables), A.apply_rotary(k, *tables)
                 return (flash_attention(q, k, v, sink, kind="asinh", n=16, c=8., range_guard=True)

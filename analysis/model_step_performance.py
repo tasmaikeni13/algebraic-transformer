@@ -29,8 +29,7 @@ def main():
     p.add_argument("--profile-steps",type=int,default=30)
     p.add_argument("--out",type=Path,required=True)
     a=p.parse_args()
-    choices={"standard":("standard",False),"hybrid_native":("hybrid",True),
-             "hybrid_tiled_gain":("hybrid",False),"algebraic":("algebraic",False)}
+    choices={"standard":("standard",False),"algebraic":("algebraic",False)}
     report={"schema":1,"utc":datetime.now(timezone.utc).isoformat(),"size":a.size,
             "batch":8,"seq":2048,"seeds":a.seeds,"hostname":platform.node(),
             "profile_steps":a.profile_steps,"order_seed":191,
@@ -82,9 +81,6 @@ def main():
     for name,item in report["results"].items():
         if item["seeds"]==std["seeds"] and item["seeds"]:
             report["comparisons"][name]=ratio_ci(item["samples_ms"],std["samples_ms"])
-    old,new=report["results"]["hybrid_native"],report["results"]["hybrid_tiled_gain"]
-    if old["seeds"]==new["seeds"] and old["seeds"]:
-        report["hybrid_change"]=ratio_ci(new["samples_ms"],old["samples_ms"])
     save()
 
 

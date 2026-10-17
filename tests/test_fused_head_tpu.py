@@ -12,7 +12,7 @@ pytestmark = pytest.mark.skipif(jax.devices()[0].platform != "tpu", reason="need
 
 
 @pytest.mark.parametrize("kind,n,c", [("ce", 16, 16.0), ("alg_ce", 16, 16.0), ("alg_ce", 8, 2.0)])
-@pytest.mark.parametrize("V", [50257, 4096])
+@pytest.mark.parametrize("V", [32768, 4096])
 def test_fused_head_matches_dense(kind, n, c, V):
     from algebraic.kernels.fused_head import fused_head
     N, d = 1024, 256
@@ -48,7 +48,7 @@ def test_fused_head_matches_dense(kind, n, c, V):
 def test_production_head_tiles_at_model_widths(width, kind):
     """New low-memory defaults against an independent dense projection/VJP."""
     from algebraic.kernels.fused_head import fused_head
-    tokens, vocab = 256, 50257
+    tokens, vocab = 256, 32768
     keys = jax.random.split(jax.random.PRNGKey(42), 3)
     hidden = jax.random.normal(keys[0], (tokens, width), jnp.float32).astype(jnp.bfloat16)
     embedding = jax.random.normal(keys[1], (vocab, width), jnp.float32) * .02

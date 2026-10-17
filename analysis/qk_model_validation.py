@@ -49,9 +49,8 @@ def main():
     path.parent.mkdir(parents=True,exist_ok=True)
     def save():
         path.write_text(json.dumps(report,indent=2,allow_nan=False)+"\n")
-    cases=[("hybrid",163,512,2,4096,1.,"125m"),("hybrid",167,512,2,4096,4.,"125m"),
-           ("algebraic",163,512,2,4096,1.,"125m"),("hybrid",173,2048,12,50257,1.,"125m"),
-           ("hybrid",179,2048,10,50257,1.,"60m")]
+    cases=[("algebraic",163,512,2,4096,1.,"125m"),("algebraic",167,512,2,4096,4.,"125m"),
+           ("algebraic",173,2048,12,32768,1.,"125m"),("algebraic",179,2048,24,32768,1.,"350m")]
     for arch,seed,T,L,V,gain,size in cases:
         cfg=config.build(arch,size,seq_len=T,n_layers=L,vocab_size=V,attn_impl="flash")
         keys=jax.random.split(jax.random.PRNGKey(seed),3)

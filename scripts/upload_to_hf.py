@@ -28,7 +28,7 @@ tags:
 
 # Algebraic Transformer checkpoints
 
-Matched standard and pure algebraic Transformer language models trained on FineWeb-Edu. The optional hybrid uses a standard backbone with QK normalization and an algebraic likelihood head. Training metadata in each checkpoint directory records the model dimensions, token budget, and seed.
+Matched standard and pure algebraic Transformer language models trained on FineWeb-Edu. Training metadata in each checkpoint directory records the model dimensions, token budget, and seed.
 
 The algebraic model uses Cayley rotations, ALU-GLU, learned-sink algebraic attention, and a normalized algebraic output distribution. Its model-objective gradient uses arithmetic and reciprocal roots; initialization, the optimizer schedule, and metric reporting are outside this claim.
 
