@@ -405,10 +405,18 @@ def main():
         selected_lrs = run_phase1_sweep()
     if args.phase in ("all", "main"):
         if not selected_lrs:
-            selected_lrs = {
-                "standard": args.standard_lr or 0.003,
-                "algebraic": args.algebraic_lr or 0.003,
-            }
+            sel_file = ROOT / "results" / "hparam_sweep" / "selected.json"
+            if sel_file.is_file():
+                sel_data = json.loads(sel_file.read_text()).get("selected", {})
+                selected_lrs = {
+                    "standard": args.standard_lr or sel_data.get("standard", {}).get("lr", 0.0015),
+                    "algebraic": args.algebraic_lr or sel_data.get("algebraic", {}).get("lr", 0.0015),
+                }
+            else:
+                selected_lrs = {
+                    "standard": args.standard_lr or 0.0015,
+                    "algebraic": args.algebraic_lr or 0.0015,
+                }
         run_phase2_main(selected_lrs)
 
 
