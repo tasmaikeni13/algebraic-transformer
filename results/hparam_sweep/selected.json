@@ -1,0 +1,16 @@
+{
+  "selected": {
+    "standard": {
+      "cand_name": "lr1.5e-3",
+      "lr": 0.0015,
+      "final_eval_nll": 4.088831901550293,
+      "final_eval_ppl": 59.670150369562236
+    },
+    "algebraic": {
+      "cand_name": "lr1.5e-3",
+      "lr": 0.0015,
+      "final_eval_nll": 3.9851137653726045,
+      "final_eval_ppl": 53.791408729460706
+    }
+  }
+}
