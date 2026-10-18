@@ -346,6 +346,123 @@ def run_phase1_sweep():
     return {arch: selected[arch]["lr"] for arch in selected}
 
 
+def evaluate_model(name: str, run_dir: Path, results_dir: Path):
+    """Run zero-shot and recall evaluations on a single model checkpoint."""
+    results_dir.mkdir(parents=True, exist_ok=True)
+    zs_out = results_dir / f"{name}_zero_shot.json"
+    if not zs_out.is_file():
+        print(f"\n[{ist_now_str()}] Evaluating zero-shot public tasks for {name}...", flush=True)
+        cmd_zs = [
+            "bash", str(ROOT / "scripts/tpu_python.sh"), "0",
+            str(ROOT / "scripts/evaluate_zero_shot.py"),
+            str(run_dir),
+            "--benchmarks", str(Path.home() / "data/evals"),
+            "--out", str(zs_out),
+            "--batch", "8",
+        ]
+        run_command_stream(cmd_zs)
+    else:
+        print(f"[{ist_now_str()}] Zero-shot evaluation already exists for {name}.", flush=True)
+
+    rc_out = results_dir / f"{name}_recall.json"
+    if not rc_out.is_file():
+        print(f"[{ist_now_str()}] Evaluating recall tasks for {name}...", flush=True)
+        cmd_rc = [
+            "bash", str(ROOT / "scripts/tpu_python.sh"), "0",
+            str(ROOT / "scripts/evaluate_recall.py"),
+            str(run_dir),
+            "--benchmarks", str(Path.home() / "data/recall_llama32k"),
+            "--out", str(rc_out),
+            "--batch", "8",
+        ]
+        run_command_stream(cmd_rc)
+    else:
+        print(f"[{ist_now_str()}] Recall evaluation already exists for {name}.", flush=True)
+
+
+def upload_model_to_hf(name: str, run_dir: Path, results_dir: Path):
+    """Upload single model run (weights + evals) to Hugging Face under 350m/<name>/"""
+    import huggingface_hub
+    from huggingface_hub import HfApi
+    api = HfApi()
+    repo_id = "tasmaikeni13/algebraic-transformer"
+
+    print(f"\n[{ist_now_str()}] Uploading {name} to Hugging Face ({repo_id}: 350m/{name})...", flush=True)
+
+    # Model weights and training outputs
+    run_files = ["params.npz", "meta.json", "result.json", "log.jsonl"]
+    for fname in run_files:
+        fpath = run_dir / fname
+        if fpath.is_file():
+            sz_mb = fpath.stat().st_size / 1e6
+            print(f"  Uploading {fname} ({sz_mb:.1f} MB)...", flush=True)
+            api.upload_file(
+                path_or_fileobj=str(fpath),
+                path_in_repo=f"350m/{name}/{fname}",
+                repo_id=repo_id,
+                repo_type="model",
+                commit_message=f"Upload 350M {name} {fname}"
+            )
+
+    # Evaluation outputs
+    eval_files = [
+        f"{name}_zero_shot.json",
+        f"{name}_zero_shot.predictions.jsonl",
+        f"{name}_recall.json",
+        f"{name}_recall.predictions.jsonl",
+    ]
+    for fname in eval_files:
+        fpath = results_dir / fname
+        if fpath.is_file():
+            print(f"  Uploading eval {fname}...", flush=True)
+            api.upload_file(
+                path_or_fileobj=str(fpath),
+                path_in_repo=f"350m/{name}/{fname}",
+                repo_id=repo_id,
+                repo_type="model",
+                commit_message=f"Upload 350M {name} eval {fname}"
+            )
+    print(f"[{ist_now_str()}] Successfully uploaded {name} to Hugging Face!", flush=True)
+
+
+def delete_model_weights_locally(name: str, run_dir: Path):
+    """Delete params.npz and checkpoints locally across workers to save disk space after upload."""
+    print(f"[{ist_now_str()}] Deleting local params.npz and pruning checkpoints for {name}...", flush=True)
+    params_p = run_dir / "params.npz"
+    if params_p.is_file():
+        params_p.unlink()
+    clean_storage(HOSTS, prune_run_dir=run_dir)
+    print(f"[{ist_now_str()}] Storage cleaned. Disk info across workers:")
+    for h, s in get_disk_info(HOSTS).items():
+        print(f"  {h}: {s}")
+
+
+def upload_final_evaluations_and_card(results_dir: Path):
+    """Upload aggregated evaluations and update Hugging Face model card."""
+    import huggingface_hub
+    from huggingface_hub import HfApi
+    api = HfApi()
+    repo_id = "tasmaikeni13/algebraic-transformer"
+
+    print(f"\n[{ist_now_str()}] Uploading final 350M aggregated evaluations to Hugging Face ({repo_id}: 350m/evaluations/)...", flush=True)
+    eval_files = [
+        "comparison.md", "comparison.json", "comparison.csv",
+        "comparison_summary.json", "recall_cells.csv",
+        "needle_recall.png", "needle_recall.pdf",
+    ]
+    for fname in eval_files:
+        fpath = results_dir / fname
+        if fpath.is_file():
+            api.upload_file(
+                path_or_fileobj=str(fpath),
+                path_in_repo=f"350m/evaluations/{fname}",
+                repo_id=repo_id,
+                repo_type="model",
+                commit_message=f"Upload 350M final evaluation {fname}"
+            )
+    print(f"[{ist_now_str()}] 350M aggregated evaluations uploaded to Hugging Face!", flush=True)
+
+
 def run_phase2_main(selected_lrs):
     print(f"\n=======================================================", flush=True)
     print(f"[{ist_now_str()}] STARTING PHASE 2: MAIN 350M COMPARISON RUNS", flush=True)
@@ -359,10 +476,16 @@ def run_phase2_main(selected_lrs):
     job_path.parent.mkdir(parents=True, exist_ok=True)
     job_path.write_text(json.dumps([{"name": j["name"], "args": j["args"]} for j in jobs], indent=2))
 
+    results_dir = ROOT / "results" / "main_350m"
+    results_dir.mkdir(parents=True, exist_ok=True)
+
     print(f"Total main runs: {len(jobs)} (7B tokens each across 3 seeds)", flush=True)
 
     for i, j in enumerate(jobs, 1):
         name = j["name"]
+        out_dir = ROOT / "runs" / group / name
+
+        # 1. Train model (run_slice skips if already done)
         print(f"\n[{ist_now_str()}] [{i}/{len(jobs)}] Launching main run: {name} ...", flush=True)
         single_job_path = ROOT / "runs" / group / f"job_{name}.json"
         single_job_path.write_text(json.dumps([{"name": j["name"], "args": j["args"]}], indent=2))
@@ -377,24 +500,34 @@ def run_phase2_main(selected_lrs):
         t0 = time.time()
         run_command_stream(cmd)
         dt = (time.time() - t0) / 60
-        print(f"[{ist_now_str()}] Completed {name} in {dt:.1f} minutes.", flush=True)
+        print(f"[{ist_now_str()}] Completed {name} training in {dt:.1f} minutes.")
 
-        # Storage maintenance: Verify params.npz and result.json exist, then prune ckpt/
-        out_dir = ROOT / "runs" / group / name
-        if (out_dir / "result.json").is_file() and (out_dir / "params.npz").is_file():
-            print(f"Pruning intermediate checkpoints for completed run {name} across all workers...", flush=True)
-            clean_storage(HOSTS, prune_run_dir=out_dir)
-        else:
-            print(f"Warning: {name} completed without params.npz or result.json; retaining checkpoints.", flush=True)
+        # 2. Prune training intermediate checkpoints (keep params.npz for evaluation)
+        clean_storage(HOSTS, prune_run_dir=out_dir)
 
-        print("Current disk info across workers:")
-        for h, s in get_disk_info(HOSTS).items():
-            print(f"  {h}: {s}")
+        # 3. Directly evaluate model on zero-shot public benchmarks & recall benchmarks
+        evaluate_model(name, out_dir, results_dir)
 
-    # Summarize Phase 2 results
-    results_dir = ROOT / "results" / "main_350m"
-    results_dir.mkdir(parents=True, exist_ok=True)
+        # 4. Push model weights and evaluations to Hugging Face
+        upload_model_to_hf(name, out_dir, results_dir)
 
+        # 5. Delete local weights to save space before next model
+        delete_model_weights_locally(name, out_dir)
+
+    # 6. Summarize Phase 2 results across all seeds
+    print(f"\n[{ist_now_str()}] Summarizing main evaluation results across all seeds ...", flush=True)
+    try:
+        cmd_sum = [
+            str(ALGEBRAIC_PYTHON), str(ROOT / "scripts/summarize_main_eval.py"),
+            "--out-dir", str(results_dir),
+            "--archs", "standard,algebraic",
+            "--seeds", "42", "43", "44",
+        ]
+        run_command_stream(cmd_sum)
+    except Exception as e:
+        print(f"Warning: summarize_main_eval failed: {e}", flush=True)
+
+    # Also compile comparison_summary.json
     main_records = {}
     for arch in ["standard", "algebraic"]:
         nlls = []
@@ -427,7 +560,10 @@ def run_phase2_main(selected_lrs):
     }
     (results_dir / "comparison_summary.json").write_text(json.dumps(final_report, indent=2))
 
-    # Push final results
+    # 7. Upload final evaluations to Hugging Face
+    upload_final_evaluations_and_card(results_dir)
+
+    # 8. Push final results to GitHub
     print("\nPushing final main comparison results to GitHub...", flush=True)
     subprocess.run(["git", "add", "results/main_350m/"], cwd=ROOT, check=True)
     status = subprocess.check_output(["git", "status", "--porcelain", "results/main_350m/"], cwd=ROOT, text=True)
@@ -439,7 +575,7 @@ def run_phase2_main(selected_lrs):
         subprocess.run(["git", "push", "origin", "main"], cwd=ROOT, check=True)
         print("Main run comparison results pushed to GitHub!", flush=True)
 
-    print(f"\n[{ist_now_str()}] ALL 350M RUNS COMPLETED SUCCESSFULLY!", flush=True)
+    print(f"\n[{ist_now_str()}] ALL 350M RUNS AND EVALUATIONS COMPLETED SUCCESSFULLY!", flush=True)
 
 
 def ensure_data_ready_and_synced():

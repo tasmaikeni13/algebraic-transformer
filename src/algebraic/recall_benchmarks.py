@@ -36,19 +36,25 @@ def fresh_key(rng, used):
             return key
 
 
-def make_case(task, seed, trial):
+def make_case(task, seed, trial, enc=None):
+    count_multi = 2 if (enc and getattr(enc, "n_vocab", 0) == 32768) else 3
     rng, used_codes, used_keys = trial_rng(seed, task, trial), set(DEMO_CODES), {"EXAMPLE"}
-    count = 3 if task in ("multi_needle", "latest_value") else 1
+    count = count_multi if task == "multi_needle" else (3 if task == "latest_value" else 1)
     codes = [fresh_code(rng, used_codes) for _ in range(count)]
-    keys = [fresh_key(rng, used_keys) for _ in range(3 if task == "multi_needle" else 1)]
+    keys = [fresh_key(rng, used_keys) for _ in range(count_multi if task == "multi_needle" else 1)]
     if task == "multi_needle":
-        order = list(range(3))
+        order = list(range(count_multi))
         rng.shuffle(order)
         expected = [codes[i] for i in order]
         question = ", ".join(keys[i] for i in order)
-        header = ("Read the archive and copy the requested six-digit codes, in order.\n"
-                  "Example: AA=222333; BB=333444; CC=444555.\n"
-                  "Codes for BB, AA, CC: 333444, 222333, 444555\nArchive:\n")
+        if count_multi == 2:
+            header = ("Read the archive and copy the requested six-digit codes, in order.\n"
+                      "Example: AA=222333; BB=333444.\n"
+                      "Codes for BB, AA: 333444, 222333\nArchive:\n")
+        else:
+            header = ("Read the archive and copy the requested six-digit codes, in order.\n"
+                      "Example: AA=222333; BB=333444; CC=444555.\n"
+                      "Codes for BB, AA, CC: 333444, 222333, 444555\nArchive:\n")
         facts = [f"\nLocker {key} has code {code}.\n" for key, code in zip(keys, codes)]
         query = f"\nEnd of archive.\nCodes for {question}:"
     elif task == "latest_value":
@@ -98,9 +104,10 @@ def filler_tokens(enc, task, seed, trial, minimum, case):
     return tokens
 
 
-def placements(task, depth):
+def placements(task, depth, enc=None):
     if task == "multi_needle":
-        return [depth, (depth + 1/3) % 1.0, (depth + 2/3) % 1.0]
+        count_multi = 2 if (enc and getattr(enc, "n_vocab", 0) == 32768) else 3
+        return [(depth + i / count_multi) % 1.0 for i in range(count_multi)]
     if task == "latest_value":
         return [depth / 3, 2 * depth / 3, depth]
     return [depth]
@@ -108,7 +115,7 @@ def placements(task, depth):
 
 def build_example(enc, task, seed, trial, budget, depth, max_new_tokens,
                   *, condition="present", short=False):
-    case = make_case(task, seed, trial)
+    case = make_case(task, seed, trial, enc=enc)
     head = enc.encode_ordinary(case["header"])
     query = enc.encode_ordinary(case["query"])
     facts = [enc.encode_ordinary(text) for text in case["facts"]]
@@ -118,7 +125,7 @@ def build_example(enc, task, seed, trial, budget, depth, max_new_tokens,
         raise ValueError(f"budget {budget} cannot hold the complete {task} prompt")
     filler = filler_tokens(enc, task, seed, trial, max(available, max(map(len, facts))), case)
     count = 0 if short else available
-    inserts = sorted((round(p * count), i) for i, p in enumerate(placements(task, depth)))
+    inserts = sorted((round(p * count), i) for i, p in enumerate(placements(task, depth, enc=enc)))
     prompt, spans, previous = list(head), [], 0
     for offset, index in inserts:
         prompt.extend(filler[previous:offset])

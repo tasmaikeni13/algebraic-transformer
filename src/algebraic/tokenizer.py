@@ -38,6 +38,10 @@ class BPE32kTokenizer:
         self.bos_token = 1
         self.pad_token = 0
 
+    @property
+    def n_vocab(self) -> int:
+        return self.vocab_size
+
     def encode(self, text: str) -> list[int]:
         if not text:
             return []
