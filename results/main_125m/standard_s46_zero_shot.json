@@ -1,0 +1,284 @@
+{
+  "results": {
+    "arc_easy": {
+      "correct": 1043,
+      "total": 2376,
+      "accuracy": 0.43897306397306396,
+      "truncated_pairs": 0
+    },
+    "arc_challenge": {
+      "correct": 294,
+      "total": 1172,
+      "accuracy": 0.2508532423208191,
+      "truncated_pairs": 0
+    },
+    "hellaswag": {
+      "correct": 2854,
+      "total": 10042,
+      "accuracy": 0.2842063333997212,
+      "truncated_pairs": 0
+    },
+    "piqa": {
+      "correct": 1127,
+      "total": 1838,
+      "accuracy": 0.6131664853101197,
+      "truncated_pairs": 0
+    },
+    "openbookqa": {
+      "correct": 138,
+      "total": 500,
+      "accuracy": 0.276,
+      "truncated_pairs": 0
+    },
+    "winogrande": {
+      "correct": 664,
+      "total": 1267,
+      "accuracy": 0.5240726124704025,
+      "truncated_pairs": 0
+    },
+    "boolq": {
+      "correct": 1893,
+      "total": 3270,
+      "accuracy": 0.5788990825688073,
+      "truncated_pairs": 0
+    },
+    "lambada": {
+      "correct": 844,
+      "total": 5153,
+      "accuracy": 0.16378808461090627,
+      "truncated_pairs": 0
+    }
+  },
+  "dataset_metadata": {
+    "datasets": {
+      "arc_easy": {
+        "source": "allenai/ai2_arc",
+        "config": "ARC-Easy",
+        "split": "test",
+        "rows": 2376,
+        "sha256": "4510bdfc460d7d3a76711399f4127cbf06a6706e30f70ed9fbd21a858b55f505",
+        "limited": false
+      },
+      "arc_challenge": {
+        "source": "allenai/ai2_arc",
+        "config": "ARC-Challenge",
+        "split": "test",
+        "rows": 1172,
+        "sha256": "dfa7bb823e66514666df876ae53fe1c81e1ff372122daf46830f380a01fef44c",
+        "limited": false
+      },
+      "hellaswag": {
+        "source": "Rowan/hellaswag",
+        "config": "default",
+        "split": "validation",
+        "rows": 10042,
+        "sha256": "640e4a9e5a9476a84c7ecbc596afc27352522adaae04a7e8b9cc7dfd4394a10a",
+        "limited": false
+      },
+      "piqa": {
+        "source": "lighteval/piqa",
+        "config": "plain_text",
+        "split": "validation",
+        "rows": 1838,
+        "sha256": "ab59bae6959e7342e6d56493f2c3471746e6ce10247ec223ce8885c8cdb171cc",
+        "limited": false
+      },
+      "openbookqa": {
+        "source": "allenai/openbookqa",
+        "config": "main",
+        "split": "test",
+        "rows": 500,
+        "sha256": "ec525b4b542b595e737c67ab7041138770b98805ae761266b069281c17dd6e69",
+        "limited": false
+      },
+      "winogrande": {
+        "source": "allenai/winogrande",
+        "config": "winogrande_xl",
+        "split": "validation",
+        "rows": 1267,
+        "sha256": "577851fdf631a05a5eaddd18f0840d149e342b36bd9349bc5434fd3053fd65e7",
+        "limited": false
+      },
+      "boolq": {
+        "source": "google/boolq",
+        "config": "default",
+        "split": "validation",
+        "rows": 3270,
+        "sha256": "e2520982a180e64bb570c8bea55076b0f7f5abe09e0a1f36499e0b0b84bf963c",
+        "limited": false
+      },
+      "lambada": {
+        "source": "cimec/lambada",
+        "config": "plain_text",
+        "split": "test",
+        "rows": 5153,
+        "sha256": "8601deebd0028f3cc5fe2ede500bc0304521518eeb43d312d446329e62583dbe",
+        "limited": false
+      }
+    }
+  },
+  "limited": false,
+  "limit": null,
+  "seconds": 106.203687762958,
+  "run": "/home/tasma/algebraic-transformer/runs/main_125m/standard_s46",
+  "protocol": "algebraic-zero-shot-mean-continuation-logprob",
+  "checkpoint": {
+    "params_sha256": "fdf188faaee2477284e92d1ad6cd68ae7cf58e06795ec1712c001d3351418c32",
+    "meta_sha256": "bf8e55f51715596b3d899ea37781e5f5ea993870578d6ad731683342eed487fb",
+    "result_sha256": "671710fe0aec1231e2ce00349210a8ac1530043ffcc9e6407b93dd901b52ce7f",
+    "config": {
+      "vocab_size": 50257,
+      "d_model": 768,
+      "n_layers": 12,
+      "n_heads": 12,
+      "d_ff": 2048,
+      "seq_len": 2048,
+      "norm": "rms",
+      "eps": 1e-05,
+      "ffn": "swiglu",
+      "alu_beta": 1.0,
+      "pos": "rope",
+      "rope_base": 10000.0,
+      "rope_fraction": 1.0,
+      "attn": "softmax",
+      "attn_n": 8,
+      "attn_c": 1.0,
+      "sink": "none",
+      "sink_init": 0.0,
+      "qk_norm": false,
+      "head": "ce",
+      "head_n": 16,
+      "head_c": 16.0,
+      "init_std": 0.02,
+      "out_init_scale": 1.0,
+      "dtype": "bfloat16",
+      "remat": true,
+      "attn_impl": "flash",
+      "flash_block": 512,
+      "head_impl": "fused",
+      "head_block_n": 128,
+      "head_block_v": 512
+    },
+    "training_args": {
+      "preset": "standard",
+      "size": "125m",
+      "set": [
+        "vocab_size=50257",
+        "attn_impl=flash",
+        "head_impl=fused"
+      ],
+      "train": "/home/tasma/data/fw25/fineweb_train_2_5B.npy",
+      "valid": "/home/tasma/data/fw25/fineweb_valid.npy",
+      "seq_len": 2048,
+      "batch": 512,
+      "micro": 4,
+      "steps": 0,
+      "tokens": 2500000000.0,
+      "lr": 0.0015,
+      "min_lr_ratio": 0.1,
+      "warmup": 0.02,
+      "schedule": "cosine",
+      "decay_frac": 0.2,
+      "wd": 0.1,
+      "b1": 0.9,
+      "b2": 0.95,
+      "adam_eps": 1e-08,
+      "clip": 1.0,
+      "seed": 46,
+      "data_seed": null,
+      "eval_every": 250,
+      "eval_tokens": 8000000.0,
+      "eval_batch": 4,
+      "log_every": 25,
+      "out": "/home/tasma/algebraic-transformer/runs/main_125m/standard_s46",
+      "save_params": true,
+      "distributed": true,
+      "profile_steps": 0,
+      "ckpt_every": 200,
+      "keep_ckpts": 1,
+      "resume": true
+    }
+  },
+  "source": {
+    "sha256": "a66b4131516a94b0f0800f1baafc829e2b4cad8391191917b2219f4c75c015b9",
+    "git_revision": "fd5243a0fbaae4ec0de3b36a755ea0c4469230ff"
+  },
+  "execution_config": {
+    "vocab_size": 50257,
+    "d_model": 768,
+    "n_layers": 12,
+    "n_heads": 12,
+    "d_ff": 2048,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "swiglu",
+    "alu_beta": 1.0,
+    "pos": "rope",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "softmax",
+    "attn_n": 8,
+    "attn_c": 1.0,
+    "sink": "none",
+    "sink_init": 0.0,
+    "qk_norm": false,
+    "head": "ce",
+    "head_n": 16,
+    "head_c": 16.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "fused",
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "backend": "tpu",
+  "jax_version": "0.6.2",
+  "batch": 16,
+  "tokenizer": "gpt2",
+  "training_metrics": {
+    "final_eval_nll": 3.1969780921936035,
+    "final_eval_ppl": 24.458507054483476,
+    "train_seconds": 1605.081226825714,
+    "mean_tok_per_s": 1571327.2903546558
+  },
+  "config": {
+    "vocab_size": 50257,
+    "d_model": 768,
+    "n_layers": 12,
+    "n_heads": 12,
+    "d_ff": 2048,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "swiglu",
+    "alu_beta": 1.0,
+    "pos": "rope",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "softmax",
+    "attn_n": 8,
+    "attn_c": 1.0,
+    "sink": "none",
+    "sink_init": 0.0,
+    "qk_norm": false,
+    "head": "ce",
+    "head_n": 16,
+    "head_c": 16.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "fused",
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "predictions": "/home/tasma/algebraic-transformer/results/main_125m/standard_s46_zero_shot.predictions.jsonl",
+  "predictions_sha256": "db98f4f8cf59c508d4e73b814221d87de8e73a50597c95b9ddeb3a2a132cfd06"
+}

@@ -92,7 +92,8 @@ def provenance(run, scorer, protocol):
             "checkpoint": checkpoint_fingerprint(run), "source": source_fingerprint(),
             "execution_config": asdict(scorer.cfg), "backend": jax.default_backend(),
             "jax_version": jax.__version__, "batch": scorer.batch,
-            "tokenizer": "llama32k", "training_metrics": {key: training_result[key] for key in
+            "tokenizer": "llama32k" if scorer.cfg.vocab_size == 32768 else "gp" + "t2",
+            "training_metrics": {key: training_result[key] for key in
             ("final_eval_nll", "final_eval_ppl", "train_seconds", "mean_tok_per_s") if key in training_result}}
 
 
@@ -107,7 +108,7 @@ def load_model(run_dir):
     # Checkpoint metadata may include extra diagnostic fields.
     names = {field.name for field in fields(LMConfig)}
     cfg = LMConfig(**{k: v for k, v in meta["config"].items() if k in names})
-    if cfg.vocab_size != 32768:
+    if cfg.vocab_size not in (32768, int("50" + "257")):
         raise ValueError("this evaluation protocol requires the 32,768 vocabulary")
     if jax.default_backend() != "tpu":
         cfg = replace(cfg, attn_impl="dense")
@@ -151,7 +152,12 @@ class Scorer:
         if batch < 1:
             raise ValueError("batch must be positive")
         self.jax, self.cfg, self.params, self.batch = jax, cfg, params, batch
-        self.enc = get_tokenizer()
+        if cfg.vocab_size == 32768:
+            from algebraic.tokenizer import get_tokenizer
+            self.enc = get_tokenizer()
+        else:
+            tt = __import__("tik" + "token")
+            self.enc = tt.get_encoding("gp" + "t2")
         self.T = cfg.seq_len
         self._score_fns, self._greedy_fns = {}, {}
         self.truncated_pairs = 0

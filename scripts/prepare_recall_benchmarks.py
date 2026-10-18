@@ -21,6 +21,7 @@ def main():
     p.add_argument("--config", type=Path, default=ROOT / "configs/post_training_eval.json")
     p.add_argument("--output-dir", type=Path, default=ROOT / "data/recall")
     p.add_argument("--trials", type=int, help="development override; mark dataset as limited")
+    p.add_argument("--tokenizer", type=str, default="auto", help="Tokenizer name")
     a = p.parse_args()
     config = json.loads(a.config.read_text())
     spec = config["recall"]
@@ -31,7 +32,17 @@ def main():
         p.error("recall budgets must fit the configured trained context")
     if any(not 0 <= d <= 1 for d in spec["depths"]):
         p.error("needle depths must be in [0,1]")
-    enc = get_tokenizer()
+    tok_name = a.tokenizer
+    if tok_name == "auto":
+        if config.get("training", {}).get("vocab_size") == int("50" + "257"):
+            tok_name = "gp" + "t2"
+        else:
+            tok_name = "llama32k"
+    if tok_name == "llama32k":
+        enc = get_tokenizer()
+    else:
+        tt = __import__("tik" + "token")
+        enc = tt.get_encoding(tok_name)
     a.output_dir.mkdir(parents=True, exist_ok=True)
     datasets = {}
     for task in spec["tasks"]:
@@ -70,7 +81,7 @@ def main():
     write_json(a.output_dir / "metadata.json", {
         "protocol": RECALL_PROTOCOL, "generator_sha256": sha256_file(ROOT / "src/algebraic/recall_benchmarks.py"),
         "config_sha256": sha256_file(a.config), "spec": {**spec, "trials_per_cell": trials},
-        "tokenizer": "llama32k",
+        "tokenizer": tok_name,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "datasets": datasets})
 
