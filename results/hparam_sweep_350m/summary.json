@@ -1,0 +1,151 @@
+{
+  "timestamp_ist": "2026-10-18 20:55:16 IST",
+  "purpose": "350M hyperparameter sweep across standard and algebraic architectures on 2B tokens per arm",
+  "tokens_per_arm": 2000000000,
+  "selected": {
+    "standard": {
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "final_eval_nll": 2.818898013380707,
+      "final_eval_ppl": 16.758372990134365
+    },
+    "algebraic": {
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "final_eval_nll": 2.773820456911306,
+      "final_eval_ppl": 16.019719897091672
+    }
+  },
+  "table": {
+    "standard/lr3e-4": {
+      "nll": 3.2137534618377686,
+      "ppl": 24.872268347478098,
+      "tok_per_s": 593536.8559628676,
+      "lr": 0.0003
+    },
+    "algebraic/lr3e-4": {
+      "nll": 3.116969003052008,
+      "ppl": 22.577842456066932,
+      "tok_per_s": 533623.7444146033,
+      "lr": 0.0003
+    },
+    "standard/lr6e-4": {
+      "nll": 2.9608526581623513,
+      "ppl": 19.3144333456942,
+      "tok_per_s": 593548.9500928085,
+      "lr": 0.0006
+    },
+    "algebraic/lr6e-4": {
+      "nll": 2.8949129815961494,
+      "ppl": 18.081927912290283,
+      "tok_per_s": 533634.8244954303,
+      "lr": 0.0006
+    },
+    "standard/lr1.2e-3": {
+      "nll": 2.818898013380707,
+      "ppl": 16.758372990134365,
+      "tok_per_s": 593530.0377956701,
+      "lr": 0.0012
+    },
+    "algebraic/lr1.2e-3": {
+      "nll": 2.773820456911306,
+      "ppl": 16.019719897091672,
+      "tok_per_s": 533456.5174701265,
+      "lr": 0.0012
+    },
+    "standard/lr2.4e-3": {
+      "nll": 2.8491328133911384,
+      "ppl": 17.272796606095003,
+      "tok_per_s": 593549.0220519153,
+      "lr": 0.0024
+    },
+    "algebraic/lr2.4e-3": {
+      "nll": 2.799429518277528,
+      "ppl": 16.43526807612302,
+      "tok_per_s": 533574.8002563088,
+      "lr": 0.0024
+    }
+  },
+  "measurements": {
+    "standard_lr3e-4_s42": {
+      "arch": "standard",
+      "cand_name": "lr3e-4",
+      "lr": 0.0003,
+      "seed": 42,
+      "final_eval_nll": 3.2137534618377686,
+      "final_eval_ppl": 24.872268347478098,
+      "mean_tok_per_s": 593536.8559628676,
+      "train_seconds": 3380.7429733276367
+    },
+    "algebraic_lr3e-4_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr3e-4",
+      "lr": 0.0003,
+      "seed": 42,
+      "final_eval_nll": 3.116969003052008,
+      "final_eval_ppl": 22.577842456066932,
+      "mean_tok_per_s": 533623.7444146033,
+      "train_seconds": 3765.9740464687347
+    },
+    "standard_lr6e-4_s42": {
+      "arch": "standard",
+      "cand_name": "lr6e-4",
+      "lr": 0.0006,
+      "seed": 42,
+      "final_eval_nll": 2.9608526581623513,
+      "final_eval_ppl": 19.3144333456942,
+      "mean_tok_per_s": 593548.9500928085,
+      "train_seconds": 3380.7528958320618
+    },
+    "algebraic_lr6e-4_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr6e-4",
+      "lr": 0.0006,
+      "seed": 42,
+      "final_eval_nll": 2.8949129815961494,
+      "final_eval_ppl": 18.081927912290283,
+      "mean_tok_per_s": 533634.8244954303,
+      "train_seconds": 3767.5703480243683
+    },
+    "standard_lr1.2e-3_s42": {
+      "arch": "standard",
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "seed": 42,
+      "final_eval_nll": 2.818898013380707,
+      "final_eval_ppl": 16.758372990134365,
+      "mean_tok_per_s": 593530.0377956701,
+      "train_seconds": 3380.968829393387
+    },
+    "algebraic_lr1.2e-3_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "seed": 42,
+      "final_eval_nll": 2.773820456911306,
+      "final_eval_ppl": 16.019719897091672,
+      "mean_tok_per_s": 533456.5174701265,
+      "train_seconds": 3768.994634628296
+    },
+    "standard_lr2.4e-3_s42": {
+      "arch": "standard",
+      "cand_name": "lr2.4e-3",
+      "lr": 0.0024,
+      "seed": 42,
+      "final_eval_nll": 2.8491328133911384,
+      "final_eval_ppl": 17.272796606095003,
+      "mean_tok_per_s": 593549.0220519153,
+      "train_seconds": 3380.5198380947113
+    },
+    "algebraic_lr2.4e-3_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr2.4e-3",
+      "lr": 0.0024,
+      "seed": 42,
+      "final_eval_nll": 2.799429518277528,
+      "final_eval_ppl": 16.43526807612302,
+      "mean_tok_per_s": 533574.8002563088,
+      "train_seconds": 3768.4153220653534
+    }
+  }
+}
