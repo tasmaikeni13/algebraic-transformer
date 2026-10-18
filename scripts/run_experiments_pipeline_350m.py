@@ -6,7 +6,7 @@ TPU Pod Slice: Google Cloud TPU v4-32 (16 chips, 4 workers: w0, w1, w2, w3).
 Workflow:
 1. Phase 1: Hyperparameter testing (sweep) on 2B tokens per arm:
    - Standard Transformer (350M) vs Pure Algebraic Transformer (350M)
-   - 3 candidates per architecture: lr in {1.0e-3, 2.0e-3, 4.0e-3}
+   - 4 candidates per architecture: lr in {3.0e-4, 6.0e-4, 1.2e-3, 2.4e-3}
    - Evaluated on held-out validation window (8M tokens) every 250 steps
    - Zero-checkpoint retention during sweep to preserve disk space
 2. Automatic selection of best learning rate per architecture by validation NLL.
@@ -132,9 +132,10 @@ def get_vocab_size() -> int:
 def make_sweep_jobs():
     vocab_size = get_vocab_size()
     candidates = [
-        {"name": "lr1e-3", "lr": 0.0010},
-        {"name": "lr2e-3", "lr": 0.0020},
-        {"name": "lr4e-3", "lr": 0.0040},
+        {"name": "lr3e-4", "lr": 0.0003},
+        {"name": "lr6e-4", "lr": 0.0006},
+        {"name": "lr1.2e-3", "lr": 0.0012},
+        {"name": "lr2.4e-3", "lr": 0.0024},
     ]
     archs = ["standard", "algebraic"]
     seed = 42
