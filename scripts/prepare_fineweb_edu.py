@@ -72,6 +72,11 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def sweep_filename(tokens):
+    label = {600_000_000: "600M", 2_000_000_000: "2B"}.get(tokens, str(tokens))
+    return f"fineweb_sweep_{label}.npy"
+
+
 def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
                           target_sweep_tokens=0, target_val_tokens=10_000_000,
                           clean_raw=True, eot=True, threads=32, revision="main", dataset_path="sample/10BT"):
@@ -82,13 +87,13 @@ def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
     output_dir.mkdir(parents=True, exist_ok=True)
     train_path = output_dir / train_filename(target_train_tokens)
     valid_path = output_dir / "fineweb_valid.npy"
-    sweep_path = output_dir / "fineweb_sweep_600M.npy" if target_sweep_tokens == 600_000_000 else output_dir / f"fineweb_sweep_{target_sweep_tokens}.npy"
+    sweep_path = output_dir / sweep_filename(target_sweep_tokens) if target_sweep_tokens else None
     metadata_path = output_dir / "fineweb_metadata.json"
     requested = {"dataset": DATASET, "dataset_path": dataset_path, "tokenizer": "llama32k", "vocab_size": 32768,
                  "document_separator": EOT if eot else None, "train_tokens": target_train_tokens,
                  "valid_tokens": target_val_tokens, "sweep_tokens": target_sweep_tokens,
                  "train_file": train_path.name, "valid_file": valid_path.name,
-                 "sweep_file": sweep_path.name if target_sweep_tokens else None}
+                 "sweep_file": sweep_path.name if sweep_path else None}
     if metadata_path.is_file():
         metadata = json.loads(metadata_path.read_text())
         if all(metadata.get(k) == v for k, v in requested.items()) and metadata.get("complete"):
@@ -147,6 +152,8 @@ def build_fineweb_dataset(output_dir, target_train_tokens=2_500_000_000,
         print(f"{source}: train {counts['train']:,}/{target_train_tokens:,}; valid {counts['valid']:,}/{target_val_tokens:,}", flush=True)
         if clean_raw:
             local.unlink()
+    if clean_raw:
+        shutil.rmtree(output_dir / "fineweb_raw", ignore_errors=True)
     for array in arrays:
         array.flush()
     del train, valid, arrays, array
