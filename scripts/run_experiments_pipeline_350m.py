@@ -441,6 +441,45 @@ def run_phase2_main(selected_lrs):
     print(f"\n[{ist_now_str()}] ALL 350M RUNS COMPLETED SUCCESSFULLY!", flush=True)
 
 
+def ensure_data_ready_and_synced():
+    meta_path = DATA_DIR / "fineweb_metadata.json"
+    train_path = DATA_DIR / "fineweb_train_7B.npy"
+    sweep_path = DATA_DIR / "fineweb_sweep_2B.npy"
+    valid_path = DATA_DIR / "fineweb_valid.npy"
+
+    if not (meta_path.is_file() and train_path.is_file() and sweep_path.is_file() and valid_path.is_file()):
+        print(f"[{ist_now_str()}] Waiting for FineWeb-Edu 7B dataset preparation to complete...", flush=True)
+        while True:
+            if meta_path.is_file():
+                try:
+                    data = json.loads(meta_path.read_text())
+                    if data.get("complete") and train_path.is_file() and sweep_path.is_file() and valid_path.is_file():
+                        print(f"[{ist_now_str()}] Dataset preparation complete! Verified {meta_path}.", flush=True)
+                        break
+                except Exception:
+                    pass
+            time.sleep(15)
+
+    # Check if synced to all workers
+    needs_sync = False
+    for h in ("w1", "w2", "w3"):
+        try:
+            res = subprocess.check_output(
+                ["ssh", h, f"test -f {shlex.quote(str(meta_path))} && echo ok || echo missing"],
+                text=True, timeout=10
+            ).strip()
+            if res != "ok":
+                needs_sync = True
+                break
+        except Exception:
+            needs_sync = True
+            break
+    if needs_sync:
+        sync_data_to_workers()
+    else:
+        print(f"[{ist_now_str()}] Dataset already synced across all workers.", flush=True)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--phase", choices=("all", "sweep", "main", "sync-data"), default="all")
@@ -451,6 +490,8 @@ def main():
     if args.phase == "sync-data":
         sync_data_to_workers()
         return
+
+    ensure_data_ready_and_synced()
 
     selected_lrs = {}
     if args.phase in ("all", "sweep"):
