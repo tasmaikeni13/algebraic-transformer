@@ -231,92 +231,69 @@ def get_vocab_size() -> int:
 # ---------------------------------------------------------------------------
 
 def ensure_data_ready_and_synced():
-    """Prepare 20B training + 5B sweep token arrays on the freest worker, then sync to all."""
+    """Prepare 20B training + 5B sweep token arrays on w0, then sync to all workers.
+
+    Data preparation always runs on w0 (the coordinator) because only w0 has the
+    full Python environment including the `tokenizers` package.  Workers w1-w3 only
+    carry the JAX/TPU stack needed for training.
+
+    If w0 is low on disk, `rebalance_storage` is called first to free space by
+    pruning completed-run checkpoints and stale tmp files across all workers.
+    After the arrays are ready on w0, they are rsynced to whichever workers need
+    them, with a per-worker free-space guard before each rsync.
+    """
     meta_path = DATA_DIR / "fineweb_metadata.json"
     train_path = DATA_DIR / "fineweb_train_20B.npy"
     sweep_path = DATA_DIR / "fineweb_sweep_5B.npy"
     valid_path = DATA_DIR / "fineweb_valid.npy"
 
     if not (meta_path.is_file() and train_path.is_file() and sweep_path.is_file() and valid_path.is_file()):
-        # Pick the worker with the most free space to run dataset preparation.
-        # Data prep downloads raw parquet to /tmp on that host, tokenises, then syncs.
-        # Required: ~50 GB for arrays + ~5 GB working space for parquet shards.
-        REQUIRED_GB = 58.0
-        prep_host = get_freest_host(HOSTS)
-        _, prep_free = get_disk_bytes(prep_host)
-        prep_free_gb = prep_free / 1e9
+        # Need ~50 GB for arrays on w0 (20B + 5B + 10M tokens × 2 bytes)
+        REQUIRED_GB = 55.0
+        _, w0_free = get_disk_bytes("w0")
+        w0_free_gb = w0_free / 1e9
         print(
-            f"[{ist_now_str()}] Freest worker for data prep: {prep_host} "
-            f"({prep_free_gb:.1f} GB free, need ~{REQUIRED_GB:.0f} GB)",
+            f"[{ist_now_str()}] w0 free: {w0_free_gb:.1f} GB (need ~{REQUIRED_GB} GB for dataset prep).",
             flush=True,
         )
-        if prep_free_gb < REQUIRED_GB:
-            # Try rebalancing first, then re-check
+        if w0_free_gb < REQUIRED_GB:
+            print(f"[{ist_now_str()}] w0 is tight — running storage rebalance first...", flush=True)
             rebalance_storage(HOSTS)
-            prep_host = get_freest_host(HOSTS)
-            _, prep_free = get_disk_bytes(prep_host)
-            prep_free_gb = prep_free / 1e9
-            if prep_free_gb < REQUIRED_GB:
+            _, w0_free = get_disk_bytes("w0")
+            w0_free_gb = w0_free / 1e9
+            if w0_free_gb < REQUIRED_GB:
                 raise OSError(
-                    f"Insufficient disk space on all workers after cleanup. "
-                    f"Freest is {prep_host} with {prep_free_gb:.1f} GB; need {REQUIRED_GB} GB."
+                    f"Insufficient disk on w0 even after cleanup: {w0_free_gb:.1f} GB free, "
+                    f"need {REQUIRED_GB} GB. Free up space manually and retry."
                 )
 
         print(
-            f"[{ist_now_str()}] Preparing FineWeb-Edu 20B dataset on {prep_host} "
+            f"[{ist_now_str()}] Preparing FineWeb-Edu 20B dataset on w0 "
             f"(train=20B, sweep=5B, valid=10M)...",
             flush=True,
         )
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        cmd = [
+            str(ALGEBRAIC_PYTHON),
+            str(ROOT / "scripts/prepare_fineweb_edu.py"),
+            "--output-dir", str(DATA_DIR),
+            "--train-tokens", "20000000000",
+            "--sweep-tokens", "5000000000",
+            "--valid-tokens", "10000000",
+            "--dataset-path", "sample/100BT",
+            "--threads", "64",
+        ]
+        run_command_stream(cmd)
 
-        # If the freest worker is not w0, run the prep script there via SSH
-        if prep_host == "w0":
-            DATA_DIR.mkdir(parents=True, exist_ok=True)
-            cmd = [
-                str(ALGEBRAIC_PYTHON),
-                str(ROOT / "scripts/prepare_fineweb_edu.py"),
-                "--output-dir", str(DATA_DIR),
-                "--train-tokens", "20000000000",
-                "--sweep-tokens", "5000000000",
-                "--valid-tokens", "10000000",
-                "--dataset-path", "sample/100BT",
-                "--threads", "64",
-            ]
-            print(f"[{ist_now_str()}] Running dataset preparation locally on w0...", flush=True)
-            run_command_stream(cmd)
-        else:
-            # Run on a remote worker that has more space, then rsync back to w0
-            remote_data = str(DATA_DIR)
-            remote_root = str(ROOT)
-            remote_py = str(ALGEBRAIC_PYTHON)
-            prep_cmd = (
-                f"mkdir -p {shlex.quote(remote_data)} && "
-                f"cd {shlex.quote(remote_root)} && "
-                f"PYTHONPATH={shlex.quote(str(ROOT / 'src'))} "
-                f"{shlex.quote(remote_py)} {shlex.quote(str(ROOT / 'scripts/prepare_fineweb_edu.py'))} "
-                f"--output-dir {shlex.quote(remote_data)} "
-                f"--train-tokens 20000000000 --sweep-tokens 5000000000 "
-                f"--valid-tokens 10000000 --dataset-path sample/100BT --threads 64"
-            )
-            print(
-                f"[{ist_now_str()}] Running dataset preparation on {prep_host} (more free space)...",
-                flush=True,
-            )
-            subprocess.run(["ssh", prep_host, prep_cmd], check=True)
-            # Rsync the completed arrays back to w0
-            print(f"[{ist_now_str()}] Syncing prepared dataset back to w0...", flush=True)
-            DATA_DIR.mkdir(parents=True, exist_ok=True)
-            subprocess.run(
-                ["rsync", "-a", "--info=progress2",
-                 f"{prep_host}:{remote_data}/", f"{DATA_DIR}/"],
-                check=True,
-            )
-
-        # Wait for completion marker
-        for _ in range(60):
+        # Wait for the completion marker written by prepare_fineweb_edu.py
+        for _ in range(120):
             if meta_path.is_file():
                 try:
                     data = json.loads(meta_path.read_text())
-                    if data.get("complete") and train_path.is_file() and sweep_path.is_file() and valid_path.is_file():
+                    if (data.get("complete")
+                            and train_path.is_file()
+                            and sweep_path.is_file()
+                            and valid_path.is_file()):
                         print(f"[{ist_now_str()}] Dataset preparation complete!", flush=True)
                         break
                 except Exception:
@@ -327,49 +304,56 @@ def ensure_data_ready_and_synced():
     else:
         print(f"[{ist_now_str()}] FineWeb-Edu 20B dataset already present on w0.", flush=True)
 
-    # Verify sweep file name: prepare_fineweb_edu uses sweep_filename(5B) -> "fineweb_sweep_5B.npy"
+    # Safety: normalise sweep filename (prepare_fineweb_edu now knows "5B" label)
     if not sweep_path.is_file():
-        alt_sweep = DATA_DIR / "fineweb_sweep_5000000000.npy"
-        if alt_sweep.is_file():
-            alt_sweep.rename(sweep_path)
-            print(f"[{ist_now_str()}] Renamed sweep file to fineweb_sweep_5B.npy", flush=True)
+        alt = DATA_DIR / "fineweb_sweep_5000000000.npy"
+        if alt.is_file():
+            alt.rename(sweep_path)
+            print(f"[{ist_now_str()}] Renamed sweep file → fineweb_sweep_5B.npy", flush=True)
         else:
-            raise FileNotFoundError(f"Sweep file not found at {sweep_path} or {alt_sweep}")
+            raise FileNotFoundError(f"Sweep file not found: {sweep_path}")
 
-    # Rebalance before the large sync (ensures all workers have headroom)
+    # Rebalance all workers before the large sync
     rebalance_storage(HOSTS)
 
-    # Sync dataset to all workers that don't already have it
-    needs_sync_hosts = []
+    # Sync to workers that are missing the dataset, with per-worker free-space guard
     for h in ("w1", "w2", "w3"):
         try:
             res = subprocess.check_output(
-                ["ssh", h, f"test -f {shlex.quote(str(meta_path))} && "
-                           f"test -f {shlex.quote(str(train_path))} && echo ok || echo missing"],
+                ["ssh", h,
+                 f"test -f {shlex.quote(str(meta_path))} && "
+                 f"test -f {shlex.quote(str(train_path))} && echo ok || echo missing"],
                 text=True, timeout=10,
             ).strip()
-            if res != "ok":
-                needs_sync_hosts.append(h)
         except Exception:
-            needs_sync_hosts.append(h)
+            res = "missing"
 
-    if needs_sync_hosts:
-        print(f"[{ist_now_str()}] Syncing dataset to workers: {needs_sync_hosts}", flush=True)
-        for h in needs_sync_hosts:
-            _, free = get_disk_bytes(h)
-            free_gb = free / 1e9
-            if free_gb < 55.0:
-                print(f"  [{h}] Only {free_gb:.1f} GB free — running rebalance before sync...", flush=True)
-                rebalance_storage([h])
-            print(f"[{ist_now_str()}] Syncing {DATA_DIR} to {h}...", flush=True)
-            subprocess.run(["ssh", h, f"mkdir -p {shlex.quote(str(DATA_DIR))}"], check=True)
-            subprocess.run(
-                ["rsync", "-a", "--info=progress2", f"{DATA_DIR}/", f"{h}:{DATA_DIR}/"],
-                check=True,
-            )
-        print(f"[{ist_now_str()}] Token datasets synced across all workers!\n", flush=True)
-    else:
-        print(f"[{ist_now_str()}] Dataset already synced across all workers.", flush=True)
+        if res == "ok":
+            print(f"[{ist_now_str()}] {h}: dataset already present, skipping sync.", flush=True)
+            continue
+
+        # Check free space on target worker before syncing
+        _, h_free = get_disk_bytes(h)
+        h_free_gb = h_free / 1e9
+        if h_free_gb < 52.0:
+            print(f"[{ist_now_str()}] {h} only {h_free_gb:.1f} GB free — rebalancing before sync...", flush=True)
+            rebalance_storage([h])
+            _, h_free = get_disk_bytes(h)
+            h_free_gb = h_free / 1e9
+            if h_free_gb < 52.0:
+                raise OSError(
+                    f"Not enough free space on {h} ({h_free_gb:.1f} GB) to receive 20B dataset (~52 GB needed)."
+                )
+
+        print(f"[{ist_now_str()}] Syncing dataset → {h} ({h_free_gb:.1f} GB free)...", flush=True)
+        subprocess.run(["ssh", h, f"mkdir -p {shlex.quote(str(DATA_DIR))}"], check=True)
+        subprocess.run(
+            ["rsync", "-a", "--info=progress2", f"{DATA_DIR}/", f"{h}:{DATA_DIR}/"],
+            check=True,
+        )
+        print(f"[{ist_now_str()}] {h}: sync complete.", flush=True)
+
+    print(f"[{ist_now_str()}] All workers have the dataset.\n", flush=True)
 
 
 # ---------------------------------------------------------------------------
