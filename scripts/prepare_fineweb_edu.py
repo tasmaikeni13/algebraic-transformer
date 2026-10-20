@@ -73,7 +73,7 @@ def sha256_file(path):
 
 
 def sweep_filename(tokens):
-    label = {600_000_000: "600M", 2_000_000_000: "2B"}.get(tokens, str(tokens))
+    label = {600_000_000: "600M", 2_000_000_000: "2B", 5_000_000_000: "5B"}.get(tokens, str(tokens))
     return f"fineweb_sweep_{label}.npy"
 
 
