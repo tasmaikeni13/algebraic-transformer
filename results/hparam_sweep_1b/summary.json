@@ -1,0 +1,128 @@
+{
+  "timestamp_ist": "2026-10-23 11:17:16 IST",
+  "purpose": "1B hyperparameter sweep across standard and algebraic architectures on 5B tokens per arm",
+  "arms": [
+    "lr6e-4 (lower)",
+    "lr1.2e-3 (baseline)",
+    "lr2.4e-3 (upper)"
+  ],
+  "tokens_per_arm": 5000000000,
+  "architectures": [
+    "standard",
+    "algebraic"
+  ],
+  "selected": {
+    "standard": {
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "final_eval_nll": 2.5274795205866702,
+      "final_eval_ppl": 12.521905124465617
+    },
+    "algebraic": {
+      "cand_name": "lr2.4e-3",
+      "lr": 0.0024,
+      "final_eval_nll": 2.434469518114309,
+      "final_eval_ppl": 11.409764434313827
+    }
+  },
+  "table": {
+    "standard/lr6e-4": {
+      "nll": 2.556441991055598,
+      "ppl": 12.889873344829281,
+      "tok_per_s": 221748.9147266381,
+      "lr": 0.0006
+    },
+    "algebraic/lr6e-4": {
+      "nll": 2.519763129656432,
+      "ppl": 12.42565304625736,
+      "tok_per_s": 210262.25337878393,
+      "lr": 0.0006
+    },
+    "standard/lr1.2e-3": {
+      "nll": 2.5274795205866702,
+      "ppl": 12.521905124465617,
+      "tok_per_s": 221749.8025277961,
+      "lr": 0.0012
+    },
+    "algebraic/lr1.2e-3": {
+      "nll": 2.4739381670951843,
+      "ppl": 11.869097421398886,
+      "tok_per_s": 210252.29747729193,
+      "lr": 0.0012
+    },
+    "standard/lr2.4e-3": {
+      "nll": 2.6115534286030004,
+      "ppl": 13.620192423107119,
+      "tok_per_s": 221750.18319771023,
+      "lr": 0.0024
+    },
+    "algebraic/lr2.4e-3": {
+      "nll": 2.434469518114309,
+      "ppl": 11.409764434313827,
+      "tok_per_s": 210256.43220796576,
+      "lr": 0.0024
+    }
+  },
+  "measurements": {
+    "standard_lr6e-4_s42": {
+      "arch": "standard",
+      "cand_name": "lr6e-4",
+      "lr": 0.0006,
+      "seed": 42,
+      "final_eval_nll": 2.556441991055598,
+      "final_eval_ppl": 12.889873344829281,
+      "mean_tok_per_s": 221748.9147266381,
+      "train_seconds": 22563.999770879745
+    },
+    "algebraic_lr6e-4_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr6e-4",
+      "lr": 0.0006,
+      "seed": 42,
+      "final_eval_nll": 2.519763129656432,
+      "final_eval_ppl": 12.42565304625736,
+      "mean_tok_per_s": 210262.25337878393,
+      "train_seconds": 23804.09220433235
+    },
+    "standard_lr1.2e-3_s42": {
+      "arch": "standard",
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "seed": 42,
+      "final_eval_nll": 2.5274795205866702,
+      "final_eval_ppl": 12.521905124465617,
+      "mean_tok_per_s": 221749.8025277961,
+      "train_seconds": 22563.706283569336
+    },
+    "algebraic_lr1.2e-3_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr1.2e-3",
+      "lr": 0.0012,
+      "seed": 42,
+      "final_eval_nll": 2.4739381670951843,
+      "final_eval_ppl": 11.869097421398886,
+      "mean_tok_per_s": 210252.29747729193,
+      "train_seconds": 23804.468735933304
+    },
+    "standard_lr2.4e-3_s42": {
+      "arch": "standard",
+      "cand_name": "lr2.4e-3",
+      "lr": 0.0024,
+      "seed": 42,
+      "final_eval_nll": 2.6115534286030004,
+      "final_eval_ppl": 13.620192423107119,
+      "mean_tok_per_s": 221750.18319771023,
+      "train_seconds": 22563.668241262436
+    },
+    "algebraic_lr2.4e-3_s42": {
+      "arch": "algebraic",
+      "cand_name": "lr2.4e-3",
+      "lr": 0.0024,
+      "seed": 42,
+      "final_eval_nll": 2.434469518114309,
+      "final_eval_ppl": 11.409764434313827,
+      "mean_tok_per_s": 210256.43220796576,
+      "train_seconds": 23804.925762176514
+    }
+  }
+}
