@@ -1,0 +1,3359 @@
+{
+  "results": {
+    "needle_passkey": [
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 2,
+        "exact_match": 0.0625,
+        "wilson_95": [
+          0.017310567031640967,
+          0.2014712314415458
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0625,
+        "format_valid": 1.0,
+        "needle_recall": 0.0625
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 22,
+        "exact_match": 0.6875,
+        "wilson_95": [
+          0.5143332169904459,
+          0.8204745836639026
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.6875,
+        "format_valid": 1.0,
+        "needle_recall": 0.6875
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 4,
+        "exact_match": 0.125,
+        "wilson_95": [
+          0.04970134387480073,
+          0.2806830548165022
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.125,
+        "format_valid": 1.0,
+        "needle_recall": 0.125
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 20,
+        "exact_match": 0.625,
+        "wilson_95": [
+          0.4525440735307745,
+          0.7706611269054578
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.625,
+        "format_valid": 1.0,
+        "needle_recall": 0.625
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 30,
+        "exact_match": 0.9375,
+        "wilson_95": [
+          0.7985287685584542,
+          0.982689432968359
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.9375,
+        "format_valid": 1.0,
+        "needle_recall": 0.9375
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 1.0,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 19,
+        "exact_match": 0.59375,
+        "wilson_95": [
+          0.42260024875382873,
+          0.7448036515733456
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.59375,
+        "format_valid": 1.0,
+        "needle_recall": 0.59375
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 19,
+        "exact_match": 0.59375,
+        "wilson_95": [
+          0.42260024875382873,
+          0.7448036515733456
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.59375,
+        "format_valid": 0.59375,
+        "needle_recall": 0.59375
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 25,
+        "exact_match": 0.78125,
+        "wilson_95": [
+          0.6124500635075647,
+          0.8897616374739581
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.78125,
+        "format_valid": 0.78125,
+        "needle_recall": 0.78125
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 31,
+        "exact_match": 0.96875,
+        "wilson_95": [
+          0.8425573617998744,
+          0.9944621398359969
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.96875,
+        "format_valid": 0.96875,
+        "needle_recall": 0.96875
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "needle_passkey",
+        "condition": "short",
+        "context_budget": null,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": null,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      }
+    ],
+    "associative_recall": [
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 0.9375,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.34375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.71875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 5,
+        "exact_match": 0.15625,
+        "wilson_95": [
+          0.0686442028250571,
+          0.3175414959753039
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.15625,
+        "format_valid": 0.96875,
+        "needle_recall": 0.15625
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.71875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 4,
+        "exact_match": 0.125,
+        "wilson_95": [
+          0.04970134387480073,
+          0.2806830548165022
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.125,
+        "format_valid": 0.90625,
+        "needle_recall": 0.125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.34375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.75,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 8,
+        "exact_match": 0.25,
+        "wilson_95": [
+          0.1325240091850904,
+          0.4210655899424448
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.25,
+        "format_valid": 0.875,
+        "needle_recall": 0.25
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.34375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.75,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.34375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.84375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 2,
+        "exact_match": 0.0625,
+        "wilson_95": [
+          0.017310567031640967,
+          0.2014712314415458
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0625,
+        "format_valid": 1.0,
+        "needle_recall": 0.0625
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 9,
+        "exact_match": 0.28125,
+        "wilson_95": [
+          0.15564580497742764,
+          0.45374509425916565
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.28125,
+        "format_valid": 0.9375,
+        "needle_recall": 0.28125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 5,
+        "exact_match": 0.15625,
+        "wilson_95": [
+          0.0686442028250571,
+          0.3175414959753039
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.15625,
+        "format_valid": 0.96875,
+        "needle_recall": 0.15625
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 5,
+        "exact_match": 0.15625,
+        "wilson_95": [
+          0.0686442028250571,
+          0.3175414959753039
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.15625,
+        "format_valid": 0.9375,
+        "needle_recall": 0.15625
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 26,
+        "exact_match": 0.8125,
+        "wilson_95": [
+          0.6469084479862404,
+          0.9111045531043405
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.8125,
+        "format_valid": 1.0,
+        "needle_recall": 0.8125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 0.71875,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.40625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 0.84375,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.5625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 3,
+        "exact_match": 0.09375,
+        "wilson_95": [
+          0.032401551298366194,
+          0.24218154728387864
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.09375,
+        "format_valid": 0.84375,
+        "needle_recall": 0.09375
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.46875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 6,
+        "exact_match": 0.1875,
+        "wilson_95": [
+          0.08889544689565954,
+          0.3530915520137596
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.1875,
+        "format_valid": 0.875,
+        "needle_recall": 0.1875
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.5,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 24,
+        "exact_match": 0.75,
+        "wilson_95": [
+          0.5789344100575552,
+          0.8674759908149096
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.75,
+        "format_valid": 0.90625,
+        "needle_recall": 0.75
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.59375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.78125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.53125,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.28125,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 0.96875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 0.5,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.34375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.28125,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.40625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.28125,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 29,
+        "exact_match": 0.90625,
+        "wilson_95": [
+          0.7578184527161212,
+          0.9675984487016337
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.90625,
+        "format_valid": 0.9375,
+        "needle_recall": 0.90625
+      },
+      {
+        "task": "associative_recall",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.28125,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "associative_recall",
+        "condition": "short",
+        "context_budget": null,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": null,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      }
+    ],
+    "multi_needle": [
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.125
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 1.0,
+        "needle_recall": 0.4375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.140625
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.125
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.09375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 2,
+        "exact_match": 0.0625,
+        "wilson_95": [
+          0.017310567031640967,
+          0.2014712314415458
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0625,
+        "format_valid": 1.0,
+        "needle_recall": 0.34375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.125
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.34375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.09375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.28125
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.4375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.4375
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.59375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.203125
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.46875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.421875
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.28125
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.4375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.015625
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.015625
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.015625
+      },
+      {
+        "task": "multi_needle",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "multi_needle",
+        "condition": "short",
+        "context_budget": null,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": null,
+        "total": 32,
+        "correct": 3,
+        "exact_match": 0.09375,
+        "wilson_95": [
+          0.032401551298366194,
+          0.24218154728387864
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.09375,
+        "format_valid": 1.0,
+        "needle_recall": 0.453125
+      }
+    ],
+    "latest_value": [
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 1.0,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.8125,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 8,
+        "exact_match": 0.25,
+        "wilson_95": [
+          0.1325240091850904,
+          0.4210655899424448
+        ],
+        "recognition_accuracy": 0.5,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.25,
+        "format_valid": 0.96875,
+        "needle_recall": 0.25
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.90625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 0.9375,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.84375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 7,
+        "exact_match": 0.21875,
+        "wilson_95": [
+          0.11023836252604186,
+          0.3875499364924353
+        ],
+        "recognition_accuracy": 0.75,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.21875,
+        "format_valid": 0.9375,
+        "needle_recall": 0.21875
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 256,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 21,
+        "exact_match": 0.65625,
+        "wilson_95": [
+          0.4831108797896222,
+          0.7958956207556682
+        ],
+        "recognition_accuracy": 0.96875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.65625,
+        "format_valid": 1.0,
+        "needle_recall": 0.65625
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 256,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.1875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 1.0,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 512,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 14,
+        "exact_match": 0.4375,
+        "wilson_95": [
+          0.2816533111504036,
+          0.6067440886314801
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.4375,
+        "format_valid": 1.0,
+        "needle_recall": 0.4375
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 512,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.90625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 1.0,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 1,
+        "exact_match": 0.03125,
+        "wilson_95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.03125,
+        "format_valid": 0.96875,
+        "needle_recall": 0.03125
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 1024,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 20,
+        "exact_match": 0.625,
+        "wilson_95": [
+          0.4525440735307745,
+          0.7706611269054578
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.625,
+        "format_valid": 0.9375,
+        "needle_recall": 0.625
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 1024,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.96875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.59375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.1875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.6875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.4375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.90625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.25,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.21875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.6875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.40625,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.9375,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.5,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.25,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.71875,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 3,
+        "exact_match": 0.09375,
+        "wilson_95": [
+          0.032401551298366194,
+          0.24218154728387864
+        ],
+        "recognition_accuracy": 0.6875,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.09375,
+        "format_valid": 0.90625,
+        "needle_recall": 0.09375
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 0.75,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.3125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.65625,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "present",
+        "context_budget": 2048,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 32,
+        "exact_match": 1.0,
+        "wilson_95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "recognition_accuracy": 1.0,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 1.0,
+        "format_valid": 1.0,
+        "needle_recall": 1.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "absent",
+        "context_budget": 2048,
+        "primary_metric": "unsupported_target_hit",
+        "requested_depth": 1.0,
+        "total": 32,
+        "correct": 0,
+        "exact_match": 0.0,
+        "wilson_95": [
+          0.0,
+          0.1071791982550706
+        ],
+        "recognition_accuracy": 0.28125,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.0,
+        "format_valid": 0.75,
+        "needle_recall": 0.0
+      },
+      {
+        "task": "latest_value",
+        "condition": "short",
+        "context_budget": null,
+        "primary_metric": "exact_retrieval",
+        "requested_depth": null,
+        "total": 32,
+        "correct": 25,
+        "exact_match": 0.78125,
+        "wilson_95": [
+          0.6124500635075647,
+          0.8897616374739581
+        ],
+        "recognition_accuracy": 0.9375,
+        "recognition_chance": 0.25,
+        "target_prefix_match": 0.78125,
+        "format_valid": 1.0,
+        "needle_recall": 0.78125
+      }
+    ]
+  },
+  "dataset_metadata": {
+    "protocol": "algebraic-recall-greedy-16-token-budget",
+    "generator_sha256": "cbc90854c97c415a45316fdf8e39196fd1be82b882f5b4bd80acfee03bb42c8a",
+    "config_sha256": "69cbac354c440591766cad7af5200e8606e918a5a76c98b3c8b8031c5e94ccb0",
+    "spec": {
+      "tasks": [
+        "needle_passkey",
+        "associative_recall",
+        "multi_needle",
+        "latest_value"
+      ],
+      "dataset_seed": 20261012,
+      "context_budgets": [
+        256,
+        512,
+        1024,
+        2048
+      ],
+      "depths": [
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "trials_per_cell": 32,
+      "max_new_tokens": 16,
+      "format_demonstrations": 1,
+      "absent_evidence_controls": true,
+      "short_context_controls": true
+    },
+    "tokenizer": "llama32k",
+    "created_at": "2026-10-18T08:09:28Z",
+    "datasets": {
+      "needle_passkey": {
+        "rows": 1312,
+        "sha256": "c59f0a879e10c1dfc619b4d78331909e526710073e3b8573801242b95ef90543",
+        "limited": false
+      },
+      "associative_recall": {
+        "rows": 1312,
+        "sha256": "432faedd732228bd37d64d8fedf28a034e251658cf85590727e99059561891d9",
+        "limited": false
+      },
+      "multi_needle": {
+        "rows": 1312,
+        "sha256": "6cf44da8e44d69fe95f50ddab45bb0fe35dd83be4cc2b692dd3294f4f64ceb58",
+        "limited": false
+      },
+      "latest_value": {
+        "rows": 1312,
+        "sha256": "e7febf51c625ffb900f5135cce7b045bc47b8ce66e0beb13a3fe0b1a08c996af",
+        "limited": false
+      }
+    }
+  },
+  "limited": false,
+  "limit": null,
+  "seconds": 1667.9329376459937,
+  "decoding": {
+    "temperature": 0,
+    "beam_size": 1,
+    "kv_cache": false,
+    "context_extension": false,
+    "evidence_truncation": false,
+    "answer_parser": "leading requested six-digit codes; trailing prose allowed"
+  },
+  "run": "/home/tasma/algebraic-transformer/runs/main_1b/standard_s42",
+  "protocol": "algebraic-recall-greedy-16-token-budget",
+  "checkpoint": {
+    "params_sha256": "e68cb937fa6bb6df93452aa7c83c1df2743a20154a4086613ab7a7038e374c45",
+    "meta_sha256": "ebd30c548dbee18b8e5897d521f4c25ade12baab9a06e16c1b49950c7b3ca0b0",
+    "result_sha256": "cea0da644d5a3081fdfb2f06dc27706a5bf7209709bca396d4049af058fc2a42",
+    "config": {
+      "vocab_size": 32768,
+      "d_model": 1536,
+      "n_layers": 32,
+      "n_heads": 24,
+      "d_ff": 4224,
+      "seq_len": 2048,
+      "norm": "rms",
+      "eps": 1e-05,
+      "ffn": "swiglu",
+      "alu_beta": 1.0,
+      "pos": "rope",
+      "rope_base": 10000.0,
+      "rope_fraction": 1.0,
+      "attn": "softmax",
+      "attn_n": 8,
+      "attn_c": 1.0,
+      "sink": "none",
+      "sink_init": 0.0,
+      "qk_norm": false,
+      "head": "ce",
+      "head_n": 16,
+      "head_c": 16.0,
+      "init_std": 0.02,
+      "out_init_scale": 1.0,
+      "dtype": "bfloat16",
+      "remat": true,
+      "attn_impl": "flash",
+      "flash_block": 512,
+      "head_impl": "fused",
+      "head_block_n": 128,
+      "head_block_v": 512
+    },
+    "training_args": {
+      "preset": "standard",
+      "size": "1b",
+      "set": [
+        "vocab_size=32768",
+        "attn_impl=flash",
+        "head_impl=fused",
+        "flash_block=512",
+        "head_block_n=128",
+        "head_block_v=512"
+      ],
+      "train": "/home/tasma/data/fw20b/fineweb_train_20B.npy",
+      "valid": "/home/tasma/data/fw20b/fineweb_valid.npy",
+      "seq_len": 2048,
+      "batch": 512,
+      "micro": 1,
+      "steps": 0,
+      "tokens": 20000000000.0,
+      "lr": 0.0012,
+      "min_lr_ratio": 0.1,
+      "warmup": 0.02,
+      "schedule": "cosine",
+      "decay_frac": 0.2,
+      "wd": 0.1,
+      "b1": 0.9,
+      "b2": 0.95,
+      "adam_eps": 1e-08,
+      "clip": 1.0,
+      "seed": 42,
+      "data_seed": null,
+      "eval_every": 250,
+      "eval_tokens": 8000000.0,
+      "eval_batch": 1,
+      "log_every": 25,
+      "out": "/home/tasma/algebraic-transformer/runs/main_1b/standard_s42",
+      "save_params": true,
+      "distributed": true,
+      "profile_steps": 0,
+      "ckpt_every": 200,
+      "keep_ckpts": 1,
+      "resume": true
+    }
+  },
+  "source": {
+    "sha256": "b91df430dcdf03d6a7994393bd84c70656748d8478f1771c453e6b9ad3653357",
+    "git_revision": "2c36f4a3476e2bef3a0cdbf23b6b1c5c375fc3eb"
+  },
+  "execution_config": {
+    "vocab_size": 32768,
+    "d_model": 1536,
+    "n_layers": 32,
+    "n_heads": 24,
+    "d_ff": 4224,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "swiglu",
+    "alu_beta": 1.0,
+    "pos": "rope",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "softmax",
+    "attn_n": 8,
+    "attn_c": 1.0,
+    "sink": "none",
+    "sink_init": 0.0,
+    "qk_norm": false,
+    "head": "ce",
+    "head_n": 16,
+    "head_c": 16.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "fused",
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "backend": "tpu",
+  "jax_version": "0.6.2",
+  "batch": 8,
+  "tokenizer": "llama32k",
+  "training_metrics": {
+    "final_eval_nll": 2.296088373074766,
+    "final_eval_ppl": 9.935243381381296,
+    "train_seconds": 90952.55630755424,
+    "mean_tok_per_s": 219951.49911807466
+  },
+  "config": {
+    "vocab_size": 32768,
+    "d_model": 1536,
+    "n_layers": 32,
+    "n_heads": 24,
+    "d_ff": 4224,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "swiglu",
+    "alu_beta": 1.0,
+    "pos": "rope",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "softmax",
+    "attn_n": 8,
+    "attn_c": 1.0,
+    "sink": "none",
+    "sink_init": 0.0,
+    "qk_norm": false,
+    "head": "ce",
+    "head_n": 16,
+    "head_c": 16.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "fused",
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "predictions": "/home/tasma/algebraic-transformer/results/main_1b/standard_s42_recall.predictions.jsonl",
+  "predictions_sha256": "f533ef6c94c604e5b3ad0a32c332ac0d536f601cfe6cf6c12d615f6814dc9c4c"
+}

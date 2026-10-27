@@ -1,0 +1,287 @@
+{
+  "results": {
+    "arc_easy": {
+      "correct": 1309,
+      "total": 2376,
+      "accuracy": 0.5509259259259259,
+      "truncated_pairs": 0
+    },
+    "arc_challenge": {
+      "correct": 358,
+      "total": 1172,
+      "accuracy": 0.3054607508532423,
+      "truncated_pairs": 0
+    },
+    "hellaswag": {
+      "correct": 4661,
+      "total": 10042,
+      "accuracy": 0.46415056761601275,
+      "truncated_pairs": 0
+    },
+    "piqa": {
+      "correct": 1288,
+      "total": 1838,
+      "accuracy": 0.7007616974972797,
+      "truncated_pairs": 0
+    },
+    "openbookqa": {
+      "correct": 175,
+      "total": 500,
+      "accuracy": 0.35,
+      "truncated_pairs": 0
+    },
+    "winogrande": {
+      "correct": 680,
+      "total": 1267,
+      "accuracy": 0.5367008681925809,
+      "truncated_pairs": 0
+    },
+    "boolq": {
+      "correct": 2036,
+      "total": 3270,
+      "accuracy": 0.6226299694189602,
+      "truncated_pairs": 0
+    },
+    "lambada": {
+      "correct": 1672,
+      "total": 5153,
+      "accuracy": 0.3244711818358238,
+      "truncated_pairs": 0
+    }
+  },
+  "dataset_metadata": {
+    "datasets": {
+      "arc_easy": {
+        "source": "allenai/ai2_arc",
+        "config": "ARC-Easy",
+        "split": "test",
+        "rows": 2376,
+        "sha256": "4510bdfc460d7d3a76711399f4127cbf06a6706e30f70ed9fbd21a858b55f505",
+        "limited": false
+      },
+      "arc_challenge": {
+        "source": "allenai/ai2_arc",
+        "config": "ARC-Challenge",
+        "split": "test",
+        "rows": 1172,
+        "sha256": "dfa7bb823e66514666df876ae53fe1c81e1ff372122daf46830f380a01fef44c",
+        "limited": false
+      },
+      "hellaswag": {
+        "source": "Rowan/hellaswag",
+        "config": "default",
+        "split": "validation",
+        "rows": 10042,
+        "sha256": "640e4a9e5a9476a84c7ecbc596afc27352522adaae04a7e8b9cc7dfd4394a10a",
+        "limited": false
+      },
+      "piqa": {
+        "source": "lighteval/piqa",
+        "config": "plain_text",
+        "split": "validation",
+        "rows": 1838,
+        "sha256": "ab59bae6959e7342e6d56493f2c3471746e6ce10247ec223ce8885c8cdb171cc",
+        "limited": false
+      },
+      "openbookqa": {
+        "source": "allenai/openbookqa",
+        "config": "main",
+        "split": "test",
+        "rows": 500,
+        "sha256": "ec525b4b542b595e737c67ab7041138770b98805ae761266b069281c17dd6e69",
+        "limited": false
+      },
+      "winogrande": {
+        "source": "allenai/winogrande",
+        "config": "winogrande_xl",
+        "split": "validation",
+        "rows": 1267,
+        "sha256": "577851fdf631a05a5eaddd18f0840d149e342b36bd9349bc5434fd3053fd65e7",
+        "limited": false
+      },
+      "boolq": {
+        "source": "google/boolq",
+        "config": "default",
+        "split": "validation",
+        "rows": 3270,
+        "sha256": "e2520982a180e64bb570c8bea55076b0f7f5abe09e0a1f36499e0b0b84bf963c",
+        "limited": false
+      },
+      "lambada": {
+        "source": "cimec/lambada",
+        "config": "plain_text",
+        "split": "test",
+        "rows": 5153,
+        "sha256": "8601deebd0028f3cc5fe2ede500bc0304521518eeb43d312d446329e62583dbe",
+        "limited": false
+      }
+    }
+  },
+  "limited": false,
+  "limit": null,
+  "seconds": 313.87277948699193,
+  "run": "/home/tasma/algebraic-transformer/runs/main_1b/algebraic_s42",
+  "protocol": "algebraic-zero-shot-mean-continuation-logprob",
+  "checkpoint": {
+    "params_sha256": "670a922286b48f1a1c5d7726670f234540c42e25583e5fd0861cea0f542e3904",
+    "meta_sha256": "f8cd21b466b83791ba4fe7dc7f414dbdbad5791ce10da0fcc6240f2eca8aaeb2",
+    "result_sha256": "d98cb2d645e7460635bb5be6407cca0e1ced40be240b18141fddc766ebd61a6f",
+    "config": {
+      "vocab_size": 32768,
+      "d_model": 1536,
+      "n_layers": 32,
+      "n_heads": 24,
+      "d_ff": 4224,
+      "seq_len": 2048,
+      "norm": "rms",
+      "eps": 1e-05,
+      "ffn": "alu_glu",
+      "alu_beta": 0.5,
+      "pos": "cayley_geo",
+      "rope_base": 10000.0,
+      "rope_fraction": 1.0,
+      "attn": "asinh",
+      "attn_n": 16,
+      "attn_c": 8.0,
+      "sink": "learned",
+      "sink_init": 0.0,
+      "qk_norm": true,
+      "head": "alg_ce",
+      "head_n": 8,
+      "head_c": 2.0,
+      "init_std": 0.02,
+      "out_init_scale": 1.0,
+      "dtype": "bfloat16",
+      "remat": true,
+      "attn_impl": "flash",
+      "flash_block": 512,
+      "head_impl": "fused",
+      "head_block_n": 128,
+      "head_block_v": 512
+    },
+    "training_args": {
+      "preset": "algebraic",
+      "size": "1b",
+      "set": [
+        "vocab_size=32768",
+        "attn_impl=flash",
+        "head_impl=fused",
+        "flash_block=512",
+        "head_block_n=128",
+        "head_block_v=512"
+      ],
+      "train": "/home/tasma/data/fw20b/fineweb_train_20B.npy",
+      "valid": "/home/tasma/data/fw20b/fineweb_valid.npy",
+      "seq_len": 2048,
+      "batch": 512,
+      "micro": 1,
+      "steps": 0,
+      "tokens": 20000000000.0,
+      "lr": 0.0024,
+      "min_lr_ratio": 0.1,
+      "warmup": 0.02,
+      "schedule": "cosine",
+      "decay_frac": 0.2,
+      "wd": 0.1,
+      "b1": 0.9,
+      "b2": 0.95,
+      "adam_eps": 1e-08,
+      "clip": 1.0,
+      "seed": 42,
+      "data_seed": null,
+      "eval_every": 250,
+      "eval_tokens": 8000000.0,
+      "eval_batch": 1,
+      "log_every": 25,
+      "out": "/home/tasma/algebraic-transformer/runs/main_1b/algebraic_s42",
+      "save_params": true,
+      "distributed": true,
+      "profile_steps": 0,
+      "ckpt_every": 200,
+      "keep_ckpts": 1,
+      "resume": true
+    }
+  },
+  "source": {
+    "sha256": "b91df430dcdf03d6a7994393bd84c70656748d8478f1771c453e6b9ad3653357",
+    "git_revision": "2c36f4a3476e2bef3a0cdbf23b6b1c5c375fc3eb"
+  },
+  "execution_config": {
+    "vocab_size": 32768,
+    "d_model": 1536,
+    "n_layers": 32,
+    "n_heads": 24,
+    "d_ff": 4224,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "alu_glu",
+    "alu_beta": 0.5,
+    "pos": "cayley_geo",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "asinh",
+    "attn_n": 16,
+    "attn_c": 8.0,
+    "sink": "learned",
+    "sink_init": 0.0,
+    "qk_norm": true,
+    "head": "alg_ce",
+    "head_n": 8,
+    "head_c": 2.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "fused",
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "backend": "tpu",
+  "jax_version": "0.6.2",
+  "batch": 8,
+  "tokenizer": "llama32k",
+  "training_metrics": {
+    "final_eval_nll": 2.2720663410718323,
+    "final_eval_ppl": 9.69942243615173,
+    "train_seconds": 95886.57241249084,
+    "mean_tok_per_s": 208629.05809528887
+  },
+  "config": {
+    "vocab_size": 32768,
+    "d_model": 1536,
+    "n_layers": 32,
+    "n_heads": 24,
+    "d_ff": 4224,
+    "seq_len": 2048,
+    "norm": "rms",
+    "eps": 1e-05,
+    "ffn": "alu_glu",
+    "alu_beta": 0.5,
+    "pos": "cayley_geo",
+    "rope_base": 10000.0,
+    "rope_fraction": 1.0,
+    "attn": "asinh",
+    "attn_n": 16,
+    "attn_c": 8.0,
+    "sink": "learned",
+    "sink_init": 0.0,
+    "qk_norm": true,
+    "head": "alg_ce",
+    "head_n": 8,
+    "head_c": 2.0,
+    "init_std": 0.02,
+    "out_init_scale": 1.0,
+    "dtype": "bfloat16",
+    "remat": true,
+    "attn_impl": "flash",
+    "flash_block": 512,
+    "head_impl": "fused",
+    "head_block_n": 128,
+    "head_block_v": 512
+  },
+  "predictions": "/home/tasma/algebraic-transformer/results/main_1b/algebraic_s42_zero_shot.predictions.jsonl",
+  "predictions_sha256": "1e096cd086f4e9e80d392b971f04a55b95f48651b5e4960bb24c48468ccf2ee1"
+}

@@ -1,6 +1,6 @@
 # Algebraic Transformer
 
-[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-125M%20%26%20350M%20Models-blue)](https://huggingface.co/tasmaikeni13/algebraic-transformer)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-125M%20%7C%20350M%20%7C%201B%20Models-blue)](https://huggingface.co/tasmaikeni13/algebraic-transformer)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![TPU v4](https://img.shields.io/badge/Hardware-Cloud%20TPU%20v4--32-orange.svg)](https://cloud.google.com/tpu)
 
@@ -16,7 +16,7 @@ To test whether this architecture holds up under real pretraining, I trained mat
 
 Across both scales—spanning an order of magnitude in compute from 1.88e18 to 1.40e19 FLOPs—the algebraic model consistently achieves a lower cross-entropy loss by about **0.04 nats** (an invariant **~3.9% relative perplexity reduction**), while matching or outperforming the standard baseline on public zero-shot benchmarks and long-range needle recall.
 
-All 16 trained model weights, evaluation predictions, and training logs are available on Hugging Face: **[huggingface.co/tasmaikeni13/algebraic-transformer](https://huggingface.co/tasmaikeni13/algebraic-transformer)**.
+All 19 trained model weights, evaluation predictions, and training logs are available on Hugging Face: **[huggingface.co/tasmaikeni13/algebraic-transformer](https://huggingface.co/tasmaikeni13/algebraic-transformer)**.
 
 ---
 
@@ -128,6 +128,46 @@ Trained on 2.5B tokens of FineWeb-Edu across 5 independent seeds (`42, 43, 44, 4
 
 ---
 
+## 1B Results (20B Tokens, Seed 42)
+
+Three matched 1B runs were trained on 20B FineWeb-Edu tokens with a 32k LLaMA-style tokenizer, sequence length 2,048, and batch size 512 on a TPU v4-32 across four workers. The completed sweep selected LR `0.0012` for Standard and `0.0024` for Algebraic; an additional Algebraic run at LR `0.0012` provides an LR sensitivity comparison. Results are single-seed measurements.
+
+### Training and held-out validation
+
+| Run | LR | Final train loss | Train PPL* | Validation NLL | Validation PPL |
+|---|---:|---:|---:|---:|---:|
+| Standard 1B | 0.0012 | 2.2864 | 9.8398 | 2.2961 | 9.9352 |
+| Algebraic 1B | 0.0024 | 2.2635 | 9.6164 | 2.2721 | 9.6994 |
+| Algebraic 1B | 0.0012 | 2.2606 | 9.5890 | **2.2711** | **9.6897** |
+
+*Train PPL is `exp(final train loss)`; validation PPL is from the final held-out evaluation.
+
+### Zero-shot accuracy
+
+| Benchmark | Standard 1B | Algebraic 1B (LR 0.0024) | Algebraic 1B (LR 0.0012) |
+|---|---:|---:|---:|
+| ARC-Easy | 54.71% | **55.09%** | 54.34% |
+| ARC-Challenge | 30.03% | 30.55% | **31.06%** |
+| HellaSwag | 44.27% | **46.42%** | 45.66% |
+| PIQA | 69.97% | 70.08% | **70.67%** |
+| OpenBookQA | 31.60% | **35.00%** | 33.00% |
+| WinoGrande | 51.70% | **53.67%** | 52.57% |
+| BoolQ | 57.37% | **62.26%** | 54.92% |
+| LAMBADA | 29.30% | **32.45%** | 32.35% |
+
+### Recall
+
+Present-evidence exact retrieval and short-control exact retrieval are reported below. Absent-evidence unsupported target hits were zero for every task and run. Each task used 640 present, 640 absent, and 32 short examples.
+
+| Task | Present exact: Standard / Algebraic 0.0024 / Algebraic 0.0012 | Short exact: same order |
+|---|---:|---:|
+| Needle Passkey | 72.03% / **77.34%** / 49.38% | 100.00% / 100.00% / 100.00% |
+| Associative Recall | 25.31% / 25.31% / **26.41%** | 100.00% / 100.00% / 100.00% |
+| Multi-Needle | 0.47% / 0.47% / **0.78%** | 9.38% / 0.00% / 0.00% |
+| Latest Value | 17.03% / **17.81%** / 15.78% | 78.12% / 50.00% / **90.62%** |
+
+The full metrics, per-example predictions, and per-condition/per-depth recall details are in [`all_runs_comparison.md`](https://github.com/tasmaikeni13/algebraic-transformer/blob/main/results/main_1b/all_runs_comparison.md), [`all_runs_comparison.json`](https://github.com/tasmaikeni13/algebraic-transformer/blob/main/results/main_1b/all_runs_comparison.json), and [`results/main_1b/`](https://github.com/tasmaikeni13/algebraic-transformer/tree/main/results/main_1b/). The trained checkpoints are in the Hugging Face [`1B/`](https://huggingface.co/tasmaikeni13/algebraic-transformer/tree/main/1B) folder.
+
 ## Why Eliminate Transcendentals?
 
 In modern GPUs and TPUs, transcendental functions do not run on the primary matrix multiplication units. They execute on **Special Function Units (SFUs)** using multi-cycle polynomial approximations (Chebyshev/minimax) or lookup tables:
@@ -145,17 +185,21 @@ By demonstrating that language models train stably and reach lower loss without 
 
 Checkpoints, evaluation outputs, and step logs are organized under [`tasmaikeni13/algebraic-transformer`](https://huggingface.co/tasmaikeni13/algebraic-transformer):
 
-```
+```text
 algebraic-transformer/
 ├── README.md                      # Model card and scaling report
 ├── 125M/                          # 125M models (2.5B tokens, 5 seeds)
-│   ├── standard_s42/ ... s46/     # Model weights (params.npz), meta.json, result.json, log.jsonl
-│   ├── algebraic_s42/ ... s46/    # Model weights (params.npz), meta.json, result.json, log.jsonl
-│   └── evaluations/               # comparison.md, comparison.json, needle_recall.png, etc.
-└── 350m/                          # 350M models (7.0B tokens, 3 seeds)
-    ├── standard_s42/ ... s44/     # Model weights (params.npz), meta.json, result.json, log.jsonl
-    ├── algebraic_s42/ ... s44/    # Model weights (params.npz), meta.json, result.json, log.jsonl
-    └── evaluations/               # comparison.md, comparison.json, recall_cells.csv, needle_recall.png, etc.
+│   ├── standard_s42/ ... s46/     # Weights and training metadata
+│   ├── algebraic_s42/ ... s46/    # Weights and training metadata
+│   └── evaluations/               # Comparisons and benchmark outputs
+├── 350m/                          # 350M models (7.0B tokens, 3 seeds)
+│   ├── standard_s42/ ... s44/     # Weights and training metadata
+│   ├── algebraic_s42/ ... s44/    # Weights and training metadata
+│   └── evaluations/               # Comparisons and benchmark outputs
+└── 1B/                            # 1B models (20B tokens, seed 42)
+    ├── standard_s42/              # Standard model, results, and evaluations
+    ├── algebraic_s42/             # Algebraic model, LR 0.0024
+    └── algebraic_s42_lr0p0012/    # Algebraic LR sensitivity run
 ```
 
 ---

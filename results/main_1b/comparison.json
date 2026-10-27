@@ -1,0 +1,6535 @@
+{
+  "architectures": [
+    "standard",
+    "algebraic"
+  ],
+  "training_seeds": [
+    42
+  ],
+  "training_metrics": {
+    "final_eval_nll": {
+      "standard": {
+        "mean": 2.296088373074766,
+        "sd": null,
+        "seed_values": [
+          2.296088373074766
+        ]
+      },
+      "algebraic": {
+        "mean": 2.2720663410718323,
+        "sd": null,
+        "seed_values": [
+          2.2720663410718323
+        ]
+      }
+    },
+    "final_eval_ppl": {
+      "standard": {
+        "mean": 9.935243381381296,
+        "sd": null,
+        "seed_values": [
+          9.935243381381296
+        ]
+      },
+      "algebraic": {
+        "mean": 9.69942243615173,
+        "sd": null,
+        "seed_values": [
+          9.69942243615173
+        ]
+      }
+    },
+    "train_seconds": {
+      "standard": {
+        "mean": 90952.55630755424,
+        "sd": null,
+        "seed_values": [
+          90952.55630755424
+        ]
+      },
+      "algebraic": {
+        "mean": 95886.57241249084,
+        "sd": null,
+        "seed_values": [
+          95886.57241249084
+        ]
+      }
+    },
+    "mean_tok_per_s": {
+      "standard": {
+        "mean": 219951.49911807466,
+        "sd": null,
+        "seed_values": [
+          219951.49911807466
+        ]
+      },
+      "algebraic": {
+        "mean": 208629.05809528887,
+        "sd": null,
+        "seed_values": [
+          208629.05809528887
+        ]
+      }
+    }
+  },
+  "training": {
+    "size": "1b",
+    "tokens": 20000000000.0,
+    "seq_len": 2048,
+    "batch": 512
+  },
+  "comparison_complete": true,
+  "uncertainty": "sample SD across training seeds; paired deltas use the same seed and examples; descriptive only",
+  "metrics": [
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "absent",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "absent",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.2859375,
+          "sd": null,
+          "seed_values": [
+            0.2859375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.2671875,
+          "sd": null,
+          "seed_values": [
+            0.2671875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -1.874999999999999,
+          "sd": null,
+          "seed_values": [
+            -1.874999999999999
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "absent",
+      "metric": "unsupported_target_hit",
+      "architectures": {
+        "standard": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        },
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "present",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 0.253125,
+          "sd": null,
+          "seed_values": [
+            0.253125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.253125,
+          "sd": null,
+          "seed_values": [
+            0.253125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "present",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.253125,
+          "sd": null,
+          "seed_values": [
+            0.253125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.253125,
+          "sd": null,
+          "seed_values": [
+            0.253125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "present",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.9875,
+          "sd": null,
+          "seed_values": [
+            0.9875
+          ]
+        },
+        "algebraic": {
+          "mean": 0.990625,
+          "sd": null,
+          "seed_values": [
+            0.990625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.31249999999999334,
+          "sd": null,
+          "seed_values": [
+            0.31249999999999334
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "short",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "short",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "associative_recall",
+      "condition": "short",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "absent",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "absent",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.2390625,
+          "sd": null,
+          "seed_values": [
+            0.2390625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.2265625,
+          "sd": null,
+          "seed_values": [
+            0.2265625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -1.250000000000001,
+          "sd": null,
+          "seed_values": [
+            -1.250000000000001
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "absent",
+      "metric": "unsupported_target_hit",
+      "architectures": {
+        "standard": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        },
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "present",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 0.1703125,
+          "sd": null,
+          "seed_values": [
+            0.1703125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.178125,
+          "sd": null,
+          "seed_values": [
+            0.178125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.78125,
+          "sd": null,
+          "seed_values": [
+            0.78125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "present",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.1703125,
+          "sd": null,
+          "seed_values": [
+            0.1703125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.178125,
+          "sd": null,
+          "seed_values": [
+            0.178125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.78125,
+          "sd": null,
+          "seed_values": [
+            0.78125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "present",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.50625,
+          "sd": null,
+          "seed_values": [
+            0.50625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.4984375,
+          "sd": null,
+          "seed_values": [
+            0.4984375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -0.78125,
+          "sd": null,
+          "seed_values": [
+            -0.78125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "short",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 0.78125,
+          "sd": null,
+          "seed_values": [
+            0.78125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5,
+          "sd": null,
+          "seed_values": [
+            0.5
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -28.125,
+          "sd": null,
+          "seed_values": [
+            -28.125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "short",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.78125,
+          "sd": null,
+          "seed_values": [
+            0.78125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5,
+          "sd": null,
+          "seed_values": [
+            0.5
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -28.125,
+          "sd": null,
+          "seed_values": [
+            -28.125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "latest_value",
+      "condition": "short",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.9375,
+          "sd": null,
+          "seed_values": [
+            0.9375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.90625,
+          "sd": null,
+          "seed_values": [
+            0.90625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "absent",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "absent",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.25625,
+          "sd": null,
+          "seed_values": [
+            0.25625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.2765625,
+          "sd": null,
+          "seed_values": [
+            0.2765625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 2.031250000000001,
+          "sd": null,
+          "seed_values": [
+            2.031250000000001
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "absent",
+      "metric": "unsupported_target_hit",
+      "architectures": {
+        "standard": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        },
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "present",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 0.0046875,
+          "sd": null,
+          "seed_values": [
+            0.0046875
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0046875,
+          "sd": null,
+          "seed_values": [
+            0.0046875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "present",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.19375,
+          "sd": null,
+          "seed_values": [
+            0.19375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.33203125,
+          "sd": null,
+          "seed_values": [
+            0.33203125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 13.828125,
+          "sd": null,
+          "seed_values": [
+            13.828125
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "present",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "short",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        },
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -9.375,
+          "sd": null,
+          "seed_values": [
+            -9.375
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "short",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.453125,
+          "sd": null,
+          "seed_values": [
+            0.453125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5,
+          "sd": null,
+          "seed_values": [
+            0.5
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 4.6875,
+          "sd": null,
+          "seed_values": [
+            4.6875
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "multi_needle",
+      "condition": "short",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "absent",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "absent",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.2734375,
+          "sd": null,
+          "seed_values": [
+            0.2734375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.29375,
+          "sd": null,
+          "seed_values": [
+            0.29375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 2.031250000000001,
+          "sd": null,
+          "seed_values": [
+            2.031250000000001
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "absent",
+      "metric": "unsupported_target_hit",
+      "architectures": {
+        "standard": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        },
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "present",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 0.7203125,
+          "sd": null,
+          "seed_values": [
+            0.7203125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.7734375,
+          "sd": null,
+          "seed_values": [
+            0.7734375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 5.312499999999998,
+          "sd": null,
+          "seed_values": [
+            5.312499999999998
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "present",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 0.7203125,
+          "sd": null,
+          "seed_values": [
+            0.7203125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.7734375,
+          "sd": null,
+          "seed_values": [
+            0.7734375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 5.312499999999998,
+          "sd": null,
+          "seed_values": [
+            5.312499999999998
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "present",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "short",
+      "metric": "exact_retrieval",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "short",
+      "metric": "needle_recall",
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "recall",
+      "task": "needle_passkey",
+      "condition": "short",
+      "metric": "recognition_accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        },
+        "algebraic": {
+          "mean": 1,
+          "sd": null,
+          "seed_values": [
+            1
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0,
+          "sd": null,
+          "seed_values": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "arc_challenge",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.3003412969283277,
+          "sd": null,
+          "seed_values": [
+            0.3003412969283277
+          ]
+        },
+        "algebraic": {
+          "mean": 0.3054607508532423,
+          "sd": null,
+          "seed_values": [
+            0.3054607508532423
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.5119453924914641,
+          "sd": null,
+          "seed_values": [
+            0.5119453924914641
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "arc_easy",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.5471380471380471,
+          "sd": null,
+          "seed_values": [
+            0.5471380471380471
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5509259259259259,
+          "sd": null,
+          "seed_values": [
+            0.5509259259259259
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.37878787878787845,
+          "sd": null,
+          "seed_values": [
+            0.37878787878787845
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "boolq",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.5737003058103975,
+          "sd": null,
+          "seed_values": [
+            0.5737003058103975
+          ]
+        },
+        "algebraic": {
+          "mean": 0.6226299694189602,
+          "sd": null,
+          "seed_values": [
+            0.6226299694189602
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 4.892966360856265,
+          "sd": null,
+          "seed_values": [
+            4.892966360856265
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "hellaswag",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.4427404899422426,
+          "sd": null,
+          "seed_values": [
+            0.4427404899422426
+          ]
+        },
+        "algebraic": {
+          "mean": 0.46415056761601275,
+          "sd": null,
+          "seed_values": [
+            0.46415056761601275
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 2.141007767377018,
+          "sd": null,
+          "seed_values": [
+            2.141007767377018
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "lambada",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.29303318455268773,
+          "sd": null,
+          "seed_values": [
+            0.29303318455268773
+          ]
+        },
+        "algebraic": {
+          "mean": 0.3244711818358238,
+          "sd": null,
+          "seed_values": [
+            0.3244711818358238
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.1437997283136063,
+          "sd": null,
+          "seed_values": [
+            3.1437997283136063
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "openbookqa",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.316,
+          "sd": null,
+          "seed_values": [
+            0.316
+          ]
+        },
+        "algebraic": {
+          "mean": 0.35,
+          "sd": null,
+          "seed_values": [
+            0.35
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.3999999999999977,
+          "sd": null,
+          "seed_values": [
+            3.3999999999999977
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "piqa",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.6996735582154516,
+          "sd": null,
+          "seed_values": [
+            0.6996735582154516
+          ]
+        },
+        "algebraic": {
+          "mean": 0.7007616974972797,
+          "sd": null,
+          "seed_values": [
+            0.7007616974972797
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.10881392818280489,
+          "sd": null,
+          "seed_values": [
+            0.10881392818280489
+          ]
+        }
+      }
+    },
+    {
+      "suite": "zero_shot",
+      "task": "winogrande",
+      "condition": "all",
+      "metric": "accuracy",
+      "architectures": {
+        "standard": {
+          "mean": 0.5169692186266772,
+          "sd": null,
+          "seed_values": [
+            0.5169692186266772
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5367008681925809,
+          "sd": null,
+          "seed_values": [
+            0.5367008681925809
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 1.9731649565903675,
+          "sd": null,
+          "seed_values": [
+            1.9731649565903675
+          ]
+        }
+      }
+    }
+  ],
+  "recall_cells": [
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.15625,
+          "sd": null,
+          "seed_values": [
+            0.15625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.15625,
+          "sd": null,
+          "seed_values": [
+            0.15625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.125,
+          "sd": null,
+          "seed_values": [
+            0.125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.125,
+          "sd": null,
+          "seed_values": [
+            0.125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.25,
+          "sd": null,
+          "seed_values": [
+            0.25
+          ]
+        },
+        "algebraic": {
+          "mean": 0.125,
+          "sd": null,
+          "seed_values": [
+            0.125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -12.5,
+          "sd": null,
+          "seed_values": [
+            -12.5
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -6.25,
+          "sd": null,
+          "seed_values": [
+            -6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.28125,
+          "sd": null,
+          "seed_values": [
+            0.28125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -18.75,
+          "sd": null,
+          "seed_values": [
+            -18.75
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.15625,
+          "sd": null,
+          "seed_values": [
+            0.15625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.21875,
+          "sd": null,
+          "seed_values": [
+            0.21875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.15625,
+          "sd": null,
+          "seed_values": [
+            0.15625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.1875,
+          "sd": null,
+          "seed_values": [
+            0.1875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.8125,
+          "sd": null,
+          "seed_values": [
+            0.8125
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 18.75,
+          "sd": null,
+          "seed_values": [
+            18.75
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.1875,
+          "sd": null,
+          "seed_values": [
+            0.1875
+          ]
+        },
+        "algebraic": {
+          "mean": 0.15625,
+          "sd": null,
+          "seed_values": [
+            0.15625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.75,
+          "sd": null,
+          "seed_values": [
+            0.75
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 25.0,
+          "sd": null,
+          "seed_values": [
+            25.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.90625,
+          "sd": null,
+          "seed_values": [
+            0.90625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.71875,
+          "sd": null,
+          "seed_values": [
+            0.71875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -18.75,
+          "sd": null,
+          "seed_values": [
+            -18.75
+          ]
+        }
+      }
+    },
+    {
+      "task": "associative_recall",
+      "condition": "short",
+      "context_budget": null,
+      "requested_depth": null,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.25,
+          "sd": null,
+          "seed_values": [
+            0.25
+          ]
+        },
+        "algebraic": {
+          "mean": 0.1875,
+          "sd": null,
+          "seed_values": [
+            0.1875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -6.25,
+          "sd": null,
+          "seed_values": [
+            -6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.21875,
+          "sd": null,
+          "seed_values": [
+            0.21875
+          ]
+        },
+        "algebraic": {
+          "mean": 0.375,
+          "sd": null,
+          "seed_values": [
+            0.375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 15.625,
+          "sd": null,
+          "seed_values": [
+            15.625
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.65625,
+          "sd": null,
+          "seed_values": [
+            0.65625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.875,
+          "sd": null,
+          "seed_values": [
+            0.875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 21.875,
+          "sd": null,
+          "seed_values": [
+            21.875
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.15625,
+          "sd": null,
+          "seed_values": [
+            0.15625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 15.625,
+          "sd": null,
+          "seed_values": [
+            15.625
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.4375,
+          "sd": null,
+          "seed_values": [
+            0.4375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.71875,
+          "sd": null,
+          "seed_values": [
+            0.71875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 28.125,
+          "sd": null,
+          "seed_values": [
+            28.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.625,
+          "sd": null,
+          "seed_values": [
+            0.625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5,
+          "sd": null,
+          "seed_values": [
+            0.5
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -12.5,
+          "sd": null,
+          "seed_values": [
+            -12.5
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -6.25,
+          "sd": null,
+          "seed_values": [
+            -6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.375,
+          "sd": null,
+          "seed_values": [
+            0.375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -62.5,
+          "sd": null,
+          "seed_values": [
+            -62.5
+          ]
+        }
+      }
+    },
+    {
+      "task": "latest_value",
+      "condition": "short",
+      "context_budget": null,
+      "requested_depth": null,
+      "architectures": {
+        "standard": {
+          "mean": 0.78125,
+          "sd": null,
+          "seed_values": [
+            0.78125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.5,
+          "sd": null,
+          "seed_values": [
+            0.5
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -28.125,
+          "sd": null,
+          "seed_values": [
+            -28.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -6.25,
+          "sd": null,
+          "seed_values": [
+            -6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "multi_needle",
+      "condition": "short",
+      "context_budget": null,
+      "requested_depth": null,
+      "architectures": {
+        "standard": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -9.375,
+          "sd": null,
+          "seed_values": [
+            -9.375
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "absent",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0625,
+          "sd": null,
+          "seed_values": [
+            0.0625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.40625,
+          "sd": null,
+          "seed_values": [
+            0.40625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 34.375,
+          "sd": null,
+          "seed_values": [
+            34.375
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.6875,
+          "sd": null,
+          "seed_values": [
+            0.6875
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 31.25,
+          "sd": null,
+          "seed_values": [
+            31.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 256,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.125,
+          "sd": null,
+          "seed_values": [
+            0.125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -12.5,
+          "sd": null,
+          "seed_values": [
+            -12.5
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.625,
+          "sd": null,
+          "seed_values": [
+            0.625
+          ]
+        },
+        "algebraic": {
+          "mean": 0.84375,
+          "sd": null,
+          "seed_values": [
+            0.84375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 21.875,
+          "sd": null,
+          "seed_values": [
+            21.875
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.9375,
+          "sd": null,
+          "seed_values": [
+            0.9375
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 6.25,
+          "sd": null,
+          "seed_values": [
+            6.25
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 512,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.03125,
+          "sd": null,
+          "seed_values": [
+            0.03125
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.59375,
+          "sd": null,
+          "seed_values": [
+            0.59375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.625,
+          "sd": null,
+          "seed_values": [
+            0.625
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 3.125,
+          "sd": null,
+          "seed_values": [
+            3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 1024,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.0,
+      "architectures": {
+        "standard": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.09375,
+          "sd": null,
+          "seed_values": [
+            0.09375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 9.375,
+          "sd": null,
+          "seed_values": [
+            9.375
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.25,
+      "architectures": {
+        "standard": {
+          "mean": 0.59375,
+          "sd": null,
+          "seed_values": [
+            0.59375
+          ]
+        },
+        "algebraic": {
+          "mean": 0.875,
+          "sd": null,
+          "seed_values": [
+            0.875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 28.125,
+          "sd": null,
+          "seed_values": [
+            28.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.5,
+      "architectures": {
+        "standard": {
+          "mean": 0.78125,
+          "sd": null,
+          "seed_values": [
+            0.78125
+          ]
+        },
+        "algebraic": {
+          "mean": 0.6875,
+          "sd": null,
+          "seed_values": [
+            0.6875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -9.375,
+          "sd": null,
+          "seed_values": [
+            -9.375
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 0.75,
+      "architectures": {
+        "standard": {
+          "mean": 0.96875,
+          "sd": null,
+          "seed_values": [
+            0.96875
+          ]
+        },
+        "algebraic": {
+          "mean": 0.9375,
+          "sd": null,
+          "seed_values": [
+            0.9375
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "present",
+      "context_budget": 2048,
+      "requested_depth": 1.0,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 0.96875,
+          "sd": null,
+          "seed_values": [
+            0.96875
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": -3.125,
+          "sd": null,
+          "seed_values": [
+            -3.125
+          ]
+        }
+      }
+    },
+    {
+      "task": "needle_passkey",
+      "condition": "short",
+      "context_budget": null,
+      "requested_depth": null,
+      "architectures": {
+        "standard": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        },
+        "algebraic": {
+          "mean": 1.0,
+          "sd": null,
+          "seed_values": [
+            1.0
+          ]
+        }
+      },
+      "paired_delta_vs_standard_pp": {
+        "algebraic": {
+          "mean": 0.0,
+          "sd": null,
+          "seed_values": [
+            0.0
+          ]
+        }
+      }
+    }
+  ]
+}
