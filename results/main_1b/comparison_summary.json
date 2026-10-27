@@ -1,0 +1,32 @@
+{
+  "completed_at_ist": "2026-10-26 14:13:05 IST",
+  "scale": "1b",
+  "tokens_per_run": 20000000000,
+  "seeds": [
+    42
+  ],
+  "results": {
+    "standard": {
+      "seeds": [
+        42
+      ],
+      "nll_per_seed": [
+        2.296088373074766
+      ],
+      "mean_nll": 2.296088373074766,
+      "mean_ppl": 9.935243381381296,
+      "selected_lr": 0.0012
+    },
+    "algebraic": {
+      "seeds": [
+        42
+      ],
+      "nll_per_seed": [
+        2.2720663410718323
+      ],
+      "mean_nll": 2.2720663410718323,
+      "mean_ppl": 9.69942243615173,
+      "selected_lr": 0.0024
+    }
+  }
+}
