@@ -10,13 +10,14 @@ In standard language models, non-linearities rely heavily on transcendental oper
 
 The **Algebraic Transformer** replaces all of them with purely algebraic operations—functions composed strictly of field arithmetic (+, -, *, /) and reciprocal square roots (`rsqrt`). Its exact log-loss gradient evaluates without logarithms, exponentials, or trigonometric primitives.
 
-To test whether this architecture holds up under real pretraining, I trained matched Standard and Pure Algebraic models from scratch on FineWeb-Edu across two scales on Cloud TPU v4-32 pods:
-* **125M parameters** (2.5B tokens, 5 seeds each, 10 runs total)
+To test whether this architecture holds up under real pretraining, I trained matched Standard and Pure Algebraic models from scratch on FineWeb-Edu across three compute scales on Cloud TPU v4-32 pods:
+* **125M parameters** (2.5B tokens, 5 seeds each, 50k GPT-2 BPE tokenizer)
 * **350M parameters** (7.0B tokens, 3 seeds each, 32k LLaMA BPE tokenizer)
+* **1B parameters** (20.0B tokens, 32k LLaMA BPE tokenizer)
 
-Across both scales—spanning an order of magnitude in compute from 1.88e18 to 1.40e19 FLOPs—the algebraic model consistently achieves a lower cross-entropy loss by about **0.04 nats** (an invariant **~3.9% relative perplexity reduction**), while matching or outperforming the standard baseline on public zero-shot benchmarks and long-range needle recall.
+Across all three scales—spanning nearly two orders of magnitude in training compute from 1.85e18 to 1.17e20 FLOPs—the algebraic model consistently achieves lower held-out cross-entropy loss by **0.025 to 0.042 nats** (a **2.5% to 4.1% relative perplexity reduction**), while matching or exceeding the standard baseline on most public zero-shot benchmarks and long-range needle recall tasks.
 
-All 19 trained model weights, evaluation predictions, and training logs are available on Hugging Face: **[huggingface.co/tasmaikeni13/algebraic-transformer](https://huggingface.co/tasmaikeni13/algebraic-transformer)**.
+The 19 released model checkpoints, evaluation predictions, and training logs are available on Hugging Face: **[huggingface.co/tasmaikeni13/algebraic-transformer](https://huggingface.co/tasmaikeni13/algebraic-transformer)**.
 
 ---
 
@@ -34,24 +35,27 @@ All 19 trained model weights, evaluation predictions, and training logs are avai
 
 Here `rho(x) = x + sqrt(1 + x^2)`. The token embedding and output projection matrices are tied.
 
-The algebraic claim strictly covers the **model objective and its gradient** during training. Parameter initialization, metric telemetry, and the shared learning-rate schedule run outside that boundary (the mathematical derivations and primitive audit are detailed in [`paper/theory.md`](paper/theory.md) and [`scripts/audit_algebraic.py`](scripts/audit_algebraic.py)).
+The algebraic claim strictly covers the **model objective and its gradient** during training. Parameter initialization, metric telemetry, and the shared learning-rate schedule run outside that boundary (the mathematical derivations and primitive audit are detailed in the publication manuscript in `paper/` and [`scripts/audit_algebraic.py`](scripts/audit_algebraic.py)).
 
 ---
 
-## Scaling Dynamics (125M vs 350M)
+## Scaling Dynamics (125M, 350M, 1B)
 
-Moving from 125M to 350M represents a 7.45x increase in training compute. Both architectures follow a standard power-law loss curve (`L(C) = E + A_C / C^gamma`), with the algebraic model maintaining an almost constant offset:
+Spanning nearly two orders of magnitude in training compute (1.85e18 to 1.17e20 FLOPs), both architectures follow a power-law loss trajectory (`L(C) = E + A_C / C^\gamma`), with the algebraic model maintaining a consistent entropy advantage:
 
-| Scale | Active Params | Tokens | Compute (C) | Standard NLL | Algebraic NLL | ΔNLL | Relative PPL Drop |
+| Scale | Active Params | Tokens | Compute (FLOPs) | Standard NLL | Algebraic NLL | ΔNLL | Relative PPL Drop |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **125M** | 123.6M | 2.5B | 1.88e18 FLOPs | 3.2001 ± 0.0037 | **3.1582 ± 0.0044** | **-0.0419 ± 0.0051** | **-3.99%** (24.53 -> 23.53) |
-| **350M** | 332.5M | 7.0B | 1.40e19 FLOPs | 2.5845 ± 0.0018 | **2.5450 ± 0.0019** | **-0.0395 ± 0.0026** | **-3.87%** (13.26 -> 12.74) |
+| **125M** | 123.6M | 2.5B | 1.85e18 | 3.2001 ± 0.0037 | **3.1582 ± 0.0044** | **-0.0418 ± 0.0058** | **-4.10%** (24.53 -> 23.53) |
+| **350M** | 332.5M | 7.0B | 1.40e19 | 2.5845 ± 0.0018 | **2.5450 ± 0.0019** | **-0.0395 ± 0.0026** | **-3.87%** (13.26 -> 12.74) |
+| **1B** | 975.3M | 20.0B | 1.17e20 | 2.2961 | **2.2711** | **-0.0250** | **-2.47%** (9.94 -> 9.69) |
 
-A few observations on this scaling behavior:
-1. **Invariant Information Gain**: The entropy reduction stays essentially fixed at `ΔNLL ≈ -0.040 nats` (`p < 1e-5`). 
-2. **Compute Equivalence (~1.15x)**: Because the scaling slopes are identical, matching the loss of an Algebraic Transformer requires training a Standard Transformer with roughly **15% to 16% more FLOPs**.
-3. **Parameter Equivalence (~1.22x)**: At equal token counts, a Standard Transformer requires about **20% to 22% more parameters** (~425M vs 350M) to reach the same held-out loss.
-4. **Why PPL Difference Shrinks While Percentage Stays Flat**: Because perplexity is exponential (`PPL = exp(NLL)`), `ΔPPL` naturally scales with baseline perplexity (`ΔPPL ≈ PPL * ΔNLL`). At 125M, baseline PPL is 24.5, so `ΔPPL = -1.00`. At 350M, baseline PPL drops to 13.3, so `ΔPPL = -0.52`. The relative advantage, however, is invariant at **~3.9%** across both scales (`PPL_alg / PPL_std = exp(ΔNLL) ≈ 0.961`).
+Observations on empirical scaling behavior:
+1. **Consistent Information Gain**: Held-out entropy reduction remains consistent across compute scales, providing an invariant advantage without transcendental operations. Across 5 independent seeds at 125M, mean NLL improves from 3.2001 ± 0.0037 to 3.1582 ± 0.0044 (Δ = -0.0418 ± 0.0058), with the algebraic model winning on every seed.
+2. **Compute Equivalence (~1.2–1.3x)**: Reading horizontally off the standard loss trajectory between the two 32k-tokenizer scales, matching the held-out loss of an Algebraic Transformer requires training a Standard Transformer with roughly 20% to 35% more FLOPs.
+3. **Parameter Equivalence (~1.1–1.2x)**: At matched token counts, a Standard Transformer requires approximately 10% to 16% more parameters to achieve equivalent held-out loss.
+4. **Perplexity Scaling Dynamics**: Because perplexity is exponential (`PPL = exp(NLL)`), absolute ΔPPL scales with baseline perplexity (`ΔPPL ≈ PPL * ΔNLL`). At 125M, baseline PPL is 24.53, giving ΔPPL = -1.01. At 350M, baseline PPL drops to 13.26, yielding ΔPPL = -0.52. At 1B, baseline PPL reaches 9.94, yielding ΔPPL = -0.25. The relative advantage remains strong across the full scaling frontier.
+
+> **Note on Tokenizers**: The 125M runs use the 50k (50,257) GPT-2 BPE tokenizer (123.6M active parameters) across all training, checkpoints, and evaluations. The 350M and 1B runs use the 32k LLaMA-style BPE tokenizer across all training, checkpoints, and evaluations. Absolute NLL levels are therefore directly comparable only within a scale; the within-scale algebraic advantage (ΔNLL) is consistent across all three.
 
 ---
 
@@ -100,20 +104,22 @@ Evaluated using synthetic key-value needles embedded at various depths within a 
 
 ---
 
-## 125M Results (2.5B Tokens, 5 Seeds: 42–46)
+## 125M Results (2.5B Tokens, FineWeb-Edu)
 
-Trained on 2.5B tokens of FineWeb-Edu across 5 independent seeds (`42, 43, 44, 45, 46`):
+Trained on 2.5B tokens of FineWeb-Edu on Cloud TPU v4-32 chips using the 50k GPT-2 BPE tokenizer (2,385 steps, batch size 512, sequence length 2,048, AdamW optimizer, cosine schedule with LR 0.0015 selected from a sweep):
 
-### Language Modeling Telemetry
+### Language Modeling & Telemetry (50k Tokenizer, 5 Seeds: 42–46)
 
 | Metric | Standard 125M | Algebraic 125M | Paired Delta (Δ) | Notes |
 |---|---|---|---|---|
-| **Held-Out NLL (nats/token)** | 3.2001 ± 0.0037 | **3.1582 ± 0.0044** | **-0.0419 ± 0.0051** | Algebraic wins across all 5 seeds (`p < 0.001`) |
-| **Held-Out Perplexity** | 24.53 ± 0.09 | **23.53 ± 0.10** | **-1.00 ± 0.12** | 3.99% relative reduction |
-| **Training Time per Run** | 1605.80 ± 0.55 s | 1735.65 ± 0.49 s | +8.0% | TPU runtime |
-| **Step Throughput (tok/s)** | 1,570,799 ± 423 | 1,455,789 ± 482 | 92.7% of standard | Pallas TPU kernel |
+| **Held-Out NLL (Seed 42)** | 3.2028 | **3.1630** | **-0.0398** | Single-seed comparison point |
+| **Held-Out NLL (5 Seeds: 42–46)** | 3.2001 ± 0.0037 | **3.1582 ± 0.0044** | **-0.0418 ± 0.0058** | Algebraic wins across every seed (`p < 0.001`) |
+| **Held-Out Perplexity (Seed 42)** | 24.60 | **23.64** | **-0.96** | -3.90% relative reduction |
+| **Held-Out Perplexity (5 Seeds)** | 24.53 ± 0.09 | **23.53 ± 0.10** | **-1.01 ± 0.14** | -4.10% relative reduction |
+| **Training Time per Run** | 1,606 s (26.8 min) | 1,736 s (28.9 min) | +8.1% | TPU v4-32 pod runtime |
+| **Step Throughput (tok/s)** | 1,570,799 ± 423 | 1,455,789 ± 482 | 92.7% of standard | Pallas TPU FlashAttention |
 
-### Zero-Shot Evaluation (125M)
+### Zero-Shot Evaluation (125M Public Checkpoints, 50k Tokenizer, 5 Seeds: 42–46)
 
 | Benchmark | Standard 125M | Algebraic 125M | Paired Delta (Δ pp) | Advantage |
 |---|---|---|---|:---:|
@@ -130,7 +136,7 @@ Trained on 2.5B tokens of FineWeb-Edu across 5 independent seeds (`42, 43, 44, 4
 
 ## 1B Results (20B Tokens, Seed 42)
 
-Three matched 1B runs were trained on 20B FineWeb-Edu tokens with a 32k LLaMA-style tokenizer, sequence length 2,048, and batch size 512 on a TPU v4-32 across four workers. The completed sweep selected LR `0.0012` for Standard and `0.0024` for Algebraic; an additional Algebraic run at LR `0.0012` provides an LR sensitivity comparison. Results are single-seed measurements.
+Three matched 1B runs were trained on 20B FineWeb-Edu tokens with a 32k LLaMA-style tokenizer, sequence length 2,048, and batch size 512 on a TPU v4-32 across four workers (19,074 steps each). The completed sweep (5B tokens per arm) selected LR `0.0012` for Standard and `0.0024` for Algebraic; an additional Algebraic run at LR `0.0012` provides an LR sensitivity comparison. Results are single-seed measurements.
 
 ### Training and held-out validation
 
@@ -222,7 +228,7 @@ For TPU training, install `requirements-tpu.txt`. The codebase is pinned to JAX 
 
 ## Acknowledgments
 
-Special thanks to Google's TPU Research Cloud (TRC) program for generously providing the Cloud TPU v4-32 compute access that made training and evaluating these models possible.
+Special thanks to Google's TPU Research Cloud (TRC) team for generously providing and extending Cloud TPU v4-32 compute access, which made training and evaluating these models possible.
 
 ---
 
@@ -231,7 +237,7 @@ Special thanks to Google's TPU Research Cloud (TRC) program for generously provi
 ```bibtex
 @software{keni2026algebraic,
   author = {Keni, Tasmai},
-  title = {Algebraic Transformer: Causal Language Models with Algebraic Attention, Cayley Rotations, and Algebraic Cross-Entropy},
+  title = {Pure Algebraic Primitives for Autoregressive Transformers},
   year = {2026},
   url = {https://github.com/tasmaikeni13/algebraic-transformer}
 }

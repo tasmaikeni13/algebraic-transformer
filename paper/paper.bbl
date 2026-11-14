@@ -1,0 +1,196 @@
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bisk et~al.(2020)Bisk, Zellers, Bras, Gao, and Choi]{bisk2020piqa}
+Yonatan Bisk, Rowan Zellers, Ronan~Le Bras, Jianfeng Gao, and Yejin Choi.
+\newblock {PIQA}: Reasoning about physical commonsense in natural language.
+\newblock In \emph{AAAI Conference on Artificial Intelligence (AAAI)},
+  volume~34, pages 7432--7439, 2020.
+
+\bibitem[Cayley(1846)]{cayley1846sur}
+Arthur Cayley.
+\newblock Sur quelques propri{\'e}t{\'e}s des d{\'e}terminants gauches.
+\newblock \emph{Journal f{\"u}r die reine und angewandte Mathematik (Crelle's
+  Journal)}, 32:\penalty0 119--123, 1846.
+
+\bibitem[Chami et~al.(2019)Chami, Ying, R{\'e}, and
+  Leskovec]{chami2019hyperbolic}
+Ines Chami, Zhitao Ying, Christopher R{\'e}, and Jure Leskovec.
+\newblock Hyperbolic graph convolutional neural networks.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~32, pages 4868--4879, 2019.
+
+\bibitem[Clark et~al.(2019)Clark, Lee, Chang, Kwiatkowski, Collins, and
+  Toutanova]{clark2019boolq}
+Christopher Clark, Kenton Lee, Ming-Wei Chang, Tom Kwiatkowski, Michael
+  Collins, and Kristina Toutanova.
+\newblock {BoolQ}: Exploring the surprising difficulty of natural questions.
+\newblock In \emph{Annual Conference of the North American Chapter of the
+  Association for Computational Linguistics (NAACL-HLT)}, pages 733--747, 2019.
+
+\bibitem[Clark et~al.(2018)Clark, Cowhey, Etzioni, Khot, Sabharwal, Schoenick,
+  and Tafjord]{clark2018arc}
+Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa
+  Schoenick, and Oyvind Tafjord.
+\newblock Think you have solved question answering? try {ARC}, the {AI2}
+  reasoning challenge.
+\newblock \emph{arXiv preprint arXiv:1803.05457}, 2018.
+
+\bibitem[Dao(2024)]{dao2023flashattention2}
+Tri Dao.
+\newblock Flashattention-2: Faster attention with better parallelism and work
+  partitioning.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2024.
+
+\bibitem[Dao et~al.(2022)Dao, Fu, Ermon, Rudra, and
+  R{\'e}]{dao2022flashattention}
+Tri Dao, Daniel~Y. Fu, Stefano Ermon, Atri Rudra, and Christopher R{\'e}.
+\newblock Flashattention: Fast and memory-efficient exact attention with
+  {IO}-awareness.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~35, pages 16344--16359, 2022.
+
+\bibitem[Dauphin et~al.(2017)Dauphin, Fan, Auli, and
+  Grangier]{dauphin2017language}
+Yann~N. Dauphin, Angela Fan, Michael Auli, and David Grangier.
+\newblock Language modeling with gated convolutional networks.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, pages
+  933--941, 2017.
+
+\bibitem[de~Moura and Ullrich(2021)]{demoura2021lean4}
+Leonardo de~Moura and Sebastian Ullrich.
+\newblock The {Lean 4} theorem prover and programming language.
+\newblock In \emph{International Conference on Automated Deduction (CADE)},
+  pages 625--635, 2021.
+
+\bibitem[Dehghani et~al.(2023)Dehghani, Djolonga, Mustafa, Padlewski, Heek,
+  Houlsby, Weissenborn, and Beyer]{dehghani2023scaling}
+Mostafa Dehghani, Josip Djolonga, Basil Mustafa, Piotr Padlewski, Jonathan
+  Heek, Neil Houlsby, Dirk Weissenborn, and Lucas Beyer.
+\newblock Scaling vision transformers to 22 billion parameters.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, pages
+  7480--7512, 2023.
+
+\bibitem[Ganea et~al.(2018)Ganea, B{\'e}cigneul, and
+  Hofmann]{ganea2018hyperbolic}
+Octavian Ganea, Gary B{\'e}cigneul, and Thomas Hofmann.
+\newblock Hyperbolic neural networks.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~31, pages 5345--5355, 2018.
+
+\bibitem[Jouppi et~al.(2023)Jouppi, Kurian, Li, Ma, Nagarajan, Nai, Patil,
+  Subramanian, Swing, Towles, Young, Zhou, Zhou, and Patterson]{jouppi2023tpu4}
+Norman~P. Jouppi, George Kurian, Sheng Li, Peter Ma, Rahul Nagarajan, Lifeng
+  Nai, Nishant Patil, Suvinay Subramanian, Andy Swing, Brian Towles, Clifford
+  Young, Xiang Zhou, Zongwei Zhou, and David~A. Patterson.
+\newblock {TPU} v4: An optically reconfigurable supercomputer for machine
+  learning with hardware support for embeddings.
+\newblock In \emph{ACM/IEEE International Symposium on Computer Architecture
+  (ISCA)}, pages 1--14, 2023.
+
+\bibitem[Kamradt(2023)]{kamradt2023needle}
+Greg Kamradt.
+\newblock Needle in a haystack - pressure testing {LLMs}.
+\newblock \url{https://github.com/gkamradt/LLMTest_NeedleInAHaystack}, 2023.
+
+\bibitem[Mathieu et~al.(2019)Mathieu, Lan, Maddison, Tomioka, and
+  Teh]{mathieu2019continuous}
+Emile Mathieu, Charline~Le Lan, Chris~J. Maddison, Ryota Tomioka, and Yee~Whye
+  Teh.
+\newblock Continuous hierarchical representations with {P}oincar{\'e}
+  variational auto-encoders.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~32, pages 12565--12576, 2019.
+
+\bibitem[mathlib Community(2020)]{mathlib2020}
+The mathlib Community.
+\newblock The {Lean} mathematical library.
+\newblock In \emph{Proceedings of the 9th ACM SIGPLAN International Conference
+  on Certified Programs and Proofs (CPP)}, pages 367--381, 2020.
+
+\bibitem[Mihaylov et~al.(2018)Mihaylov, Clark, Khot, and
+  Sabharwal]{mihaylov2018openbookqa}
+Todor Mihaylov, Peter Clark, Tushar Khot, and Ashish Sabharwal.
+\newblock Can a suit of armor conduct electricity? a new dataset for open book
+  question answering.
+\newblock In \emph{Conference on Empirical Methods in Natural Language
+  Processing (EMNLP)}, pages 2381--2391, 2018.
+
+\bibitem[Nickel and Kiela(2017)]{nickel2017poincare}
+Maximilian Nickel and Douwe Kiela.
+\newblock Poincar{\'e} embeddings for learning hierarchical representations.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~30, pages 6338--6347, 2017.
+
+\bibitem[Paperno et~al.(2016)Paperno, Kruszewski, Lazaridou, Pham, Bernardi,
+  Pezzelle, Baroni, Boleda, and Fern{\'a}ndez]{paperno2016lambada}
+Denis Paperno, Germ{\'a}n Kruszewski, Angeliki Lazaridou, Quan~Ngoc Pham,
+  Raffaella Bernardi, Sandro Pezzelle, Marco Baroni, Gemma Boleda, and Raquel
+  Fern{\'a}ndez.
+\newblock The {LAMBADA} dataset: Word prediction requiring a broad context.
+\newblock In \emph{Annual Meeting of the Association for Computational
+  Linguistics (ACL)}, pages 1525--1534, 2016.
+
+\bibitem[Penedo et~al.(2024)Penedo, Kydl{\'i}{\v{c}}ek, Allal, Lozhkov,
+  Mitchell, Raffel, von Werra, and Wolf]{penedo2024fineweb}
+Guilherme Penedo, Hynek Kydl{\'i}{\v{c}}ek, Loubna~Ben Allal, Anton Lozhkov,
+  Margaret Mitchell, Colin Raffel, Leandro von Werra, and Thomas Wolf.
+\newblock The {FineWeb} datasets: Decanting the web for the finest text data at
+  scale.
+\newblock \emph{arXiv preprint arXiv:2406.17557}, 2024.
+
+\bibitem[Sakaguchi et~al.(2021)Sakaguchi, Bras, Bhagavatula, and
+  Choi]{sakaguchi2021winogrande}
+Keisuke Sakaguchi, Ronan~Le Bras, Chandra Bhagavatula, and Yejin Choi.
+\newblock {WinoGrande}: An adversarial {W}inograd schema challenge at scale.
+\newblock \emph{Communications of the ACM}, 64\penalty0 (9):\penalty0 99--106,
+  2021.
+
+\bibitem[Shazeer(2020)]{shazeer2020glu}
+Noam Shazeer.
+\newblock {GLU} variants improve transformer.
+\newblock \emph{arXiv preprint arXiv:2002.05202}, 2020.
+
+\bibitem[Su et~al.(2024)Su, Ahmed, Lu, Pan, Bo, and Liu]{su2024roformer}
+Jianlin Su, Murtadha Ahmed, Yu~Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu.
+\newblock Roformer: Enhanced transformer with rotary position embedding.
+\newblock \emph{Neurocomputing}, 568:\penalty0 127063, 2024.
+
+\bibitem[Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux,
+  Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, Rodriguez, Joulin, Grave, and
+  Lample]{touvron2023llama}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne
+  Lachaux, Timoth{\'e}e Lacroix, Baptiste Rozi{\`e}re, Naman Goyal, Eric
+  Hambro, Faisal Azhar, Aurelien Rodriguez, Armand Joulin, Edouard Grave, and
+  Guillaume Lample.
+\newblock {LLaMA}: Open and efficient foundation language models.
+\newblock \emph{arXiv preprint arXiv:2302.13971}, 2023.
+
+\bibitem[Ungar(2001)]{ungar2001hyperbolic}
+Abraham~A. Ungar.
+\newblock Hyperbolic trigonometry and its application in the {P}oincar{\'e}
+  ball model of hyperbolic geometry.
+\newblock \emph{Computers \& Mathematics with Applications}, 41\penalty0
+  (1--2):\penalty0 135--147, 2001.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N. Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock \emph{Advances in Neural Information Processing Systems (NeurIPS)},
+  30:\penalty0 5998--6008, 2017.
+
+\bibitem[Zellers et~al.(2019)Zellers, Holtzman, Bisk, Farhadi, and
+  Choi]{zellers2019hellaswag}
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi.
+\newblock {HellaSwag}: Can a machine really finish your sentence?
+\newblock In \emph{Annual Meeting of the Association for Computational
+  Linguistics (ACL)}, pages 4791--4800, 2019.
+
+\end{thebibliography}

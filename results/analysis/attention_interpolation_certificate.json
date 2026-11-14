@@ -1,0 +1,1344 @@
+{
+  "schema": 1,
+  "degree": 5,
+  "domain": [
+    -4,
+    4
+  ],
+  "bins": 128,
+  "sqrt_enclosure_bits": 90,
+  "arithmetic": "exact Python fractions until conservative float output rounding",
+  "assumptions": [
+    "classical C6 Hermite remainder with repeated endpoint nodes",
+    "centered degree-5 Taylor remainder for the derivative bound",
+    "analytic recurrence f^(k+1)/f = D(f^k/f)+16*r*(f^k/f)"
+  ],
+  "basis_certificate": {
+    "exact_rational_subintervals": 448,
+    "bounds": [
+      "15/4",
+      "1",
+      "1/10"
+    ],
+    "minimum_bernstein_margin": 0.0,
+    "passed": true
+  },
+  "sixth_derivative_terms": [
+    {
+      "x_power": 0,
+      "r_power": 6,
+      "coefficient": 15482880
+    },
+    {
+      "x_power": 1,
+      "r_power": 7,
+      "coefficient": -14933520
+    },
+    {
+      "x_power": 2,
+      "r_power": 8,
+      "coefficient": 6693120
+    },
+    {
+      "x_power": 3,
+      "r_power": 9,
+      "coefficient": -1703520
+    },
+    {
+      "x_power": 4,
+      "r_power": 10,
+      "coefficient": 241920
+    },
+    {
+      "x_power": 5,
+      "r_power": 11,
+      "coefficient": -15120
+    }
+  ],
+  "weight_max_relative_bound": 6.141174580524108e-05,
+  "derivative_max_relative_bound": 0.0024851115835229864,
+  "machine_evaluation_certified": false,
+  "lean_imported": false,
+  "intervals": [
+    {
+      "index": 0,
+      "domain": [
+        -4.0,
+        -3.9375
+      ],
+      "weight_relative_bound": 3.157907155827893e-08,
+      "derivative_relative_bound": 2.3322489416123217e-06,
+      "coefficient_weight_relative_bound": 1.7419002696051296e-08
+    },
+    {
+      "index": 1,
+      "domain": [
+        -3.9375,
+        -3.875
+      ],
+      "weight_relative_bound": 1.6622235942646348e-08,
+      "derivative_relative_bound": 2.5178296247475868e-06,
+      "coefficient_weight_relative_bound": 1.0800702674037972e-09
+    },
+    {
+      "index": 2,
+      "domain": [
+        -3.875,
+        -3.8125
+      ],
+      "weight_relative_bound": 6.342424648159238e-08,
+      "derivative_relative_bound": 2.7578607583381136e-06,
+      "coefficient_weight_relative_bound": 4.63419378170401e-08
+    },
+    {
+      "index": 3,
+      "domain": [
+        -3.8125,
+        -3.75
+      ],
+      "weight_relative_bound": 2.7918255771749838e-08,
+      "derivative_relative_bound": 2.9828988043098135e-06,
+      "coefficient_weight_relative_bound": 9.117027543835949e-09
+    },
+    {
+      "index": 4,
+      "domain": [
+        -3.75,
+        -3.6875
+      ],
+      "weight_relative_bound": 4.8203834881444375e-08,
+      "derivative_relative_bound": 3.2313172027062457e-06,
+      "coefficient_weight_relative_bound": 2.748111211039712e-08
+    },
+    {
+      "index": 5,
+      "domain": [
+        -3.6875,
+        -3.625
+      ],
+      "weight_relative_bound": 2.8824403349120488e-08,
+      "derivative_relative_bound": 3.4995058110434915e-06,
+      "coefficient_weight_relative_bound": 5.95023913297324e-09
+    },
+    {
+      "index": 6,
+      "domain": [
+        -3.625,
+        -3.5625
+      ],
+      "weight_relative_bound": 6.417437990940826e-08,
+      "derivative_relative_bound": 3.818506553756446e-06,
+      "coefficient_weight_relative_bound": 3.8887284707276925e-08
+    },
+    {
+      "index": 7,
+      "domain": [
+        -3.5625,
+        -3.5
+      ],
+      "weight_relative_bound": 5.929590389602272e-08,
+      "derivative_relative_bound": 4.1407756700566795e-06,
+      "coefficient_weight_relative_bound": 3.1297967790723943e-08
+    },
+    {
+      "index": 8,
+      "domain": [
+        -3.5,
+        -3.4375
+      ],
+      "weight_relative_bound": 7.718935088020565e-08,
+      "derivative_relative_bound": 4.530011454736231e-06,
+      "coefficient_weight_relative_bound": 4.614052699950739e-08
+    },
+    {
+      "index": 9,
+      "domain": [
+        -3.4375,
+        -3.375
+      ],
+      "weight_relative_bound": 8.355575821644539e-08,
+      "derivative_relative_bound": 4.9325012602516955e-06,
+      "coefficient_weight_relative_bound": 4.90671487350223e-08
+    },
+    {
+      "index": 10,
+      "domain": [
+        -3.375,
+        -3.3125
+      ],
+      "weight_relative_bound": 8.936266711883147e-08,
+      "derivative_relative_bound": 5.395199544498323e-06,
+      "coefficient_weight_relative_bound": 5.0988620648765965e-08
+    },
+    {
+      "index": 11,
+      "domain": [
+        -3.3125,
+        -3.25
+      ],
+      "weight_relative_bound": 6.16003916795777e-08,
+      "derivative_relative_bound": 5.902438324282893e-06,
+      "coefficient_weight_relative_bound": 1.8829181016401864e-08
+    },
+    {
+      "index": 12,
+      "domain": [
+        -3.25,
+        -3.1875
+      ],
+      "weight_relative_bound": 1.0235815098381744e-07,
+      "derivative_relative_bound": 6.497117292505476e-06,
+      "coefficient_weight_relative_bound": 5.460095139932832e-08
+    },
+    {
+      "index": 13,
+      "domain": [
+        -3.1875,
+        -3.125
+      ],
+      "weight_relative_bound": 8.619583204560851e-08,
+      "derivative_relative_bound": 7.118039814726601e-06,
+      "coefficient_weight_relative_bound": 3.2773660473482395e-08
+    },
+    {
+      "index": 14,
+      "domain": [
+        -3.125,
+        -3.0625
+      ],
+      "weight_relative_bound": 6.780386978598125e-08,
+      "derivative_relative_bound": 7.818150499855888e-06,
+      "coefficient_weight_relative_bound": 7.932071660008012e-09
+    },
+    {
+      "index": 15,
+      "domain": [
+        -3.0625,
+        -3.0
+      ],
+      "weight_relative_bound": 7.919967135653968e-08,
+      "derivative_relative_bound": 8.650048082921605e-06,
+      "coefficient_weight_relative_bound": 1.1969451185250689e-08
+    },
+    {
+      "index": 16,
+      "domain": [
+        -3.0,
+        -2.9375
+      ],
+      "weight_relative_bound": 1.2057461086801434e-07,
+      "derivative_relative_bound": 9.51844156037823e-06,
+      "coefficient_weight_relative_bound": 4.4930990659916094e-08
+    },
+    {
+      "index": 17,
+      "domain": [
+        -2.9375,
+        -2.875
+      ],
+      "weight_relative_bound": 1.2237048097320872e-07,
+      "derivative_relative_bound": 1.0567546834830592e-05,
+      "coefficient_weight_relative_bound": 3.7085932080753345e-08
+    },
+    {
+      "index": 18,
+      "domain": [
+        -2.875,
+        -2.8125
+      ],
+      "weight_relative_bound": 1.36916569674949e-07,
+      "derivative_relative_bound": 1.1698422929082776e-05,
+      "coefficient_weight_relative_bound": 4.055939185692653e-08
+    },
+    {
+      "index": 19,
+      "domain": [
+        -2.8125,
+        -2.75
+      ],
+      "weight_relative_bound": 1.657476491755596e-07,
+      "derivative_relative_bound": 1.2992499270983001e-05,
+      "coefficient_weight_relative_bound": 5.6643957320949106e-08
+    },
+    {
+      "index": 20,
+      "domain": [
+        -2.75,
+        -2.6875
+      ],
+      "weight_relative_bound": 1.314243072879655e-07,
+      "derivative_relative_bound": 1.4424945776416767e-05,
+      "coefficient_weight_relative_bound": 7.612220765190402e-09
+    },
+    {
+      "index": 21,
+      "domain": [
+        -2.6875,
+        -2.625
+      ],
+      "weight_relative_bound": 1.581938731146151e-07,
+      "derivative_relative_bound": 1.6081163527314012e-05,
+      "coefficient_weight_relative_bound": 1.7368171845712355e-08
+    },
+    {
+      "index": 22,
+      "domain": [
+        -2.625,
+        -2.5625
+      ],
+      "weight_relative_bound": 1.7083272879162026e-07,
+      "derivative_relative_bound": 1.7941426212910627e-05,
+      "coefficient_weight_relative_bound": 1.0277827214178801e-08
+    },
+    {
+      "index": 23,
+      "domain": [
+        -2.5625,
+        -2.5
+      ],
+      "weight_relative_bound": 2.0132368933974634e-07,
+      "derivative_relative_bound": 2.00810849797025e-05,
+      "coefficient_weight_relative_bound": 1.7832263444833168e-08
+    },
+    {
+      "index": 24,
+      "domain": [
+        -2.5,
+        -2.4375
+      ],
+      "weight_relative_bound": 2.3465723348791272e-07,
+      "derivative_relative_bound": 2.2555734563256677e-05,
+      "coefficient_weight_relative_bound": 2.443119082728253e-08
+    },
+    {
+      "index": 25,
+      "domain": [
+        -2.4375,
+        -2.375
+      ],
+      "weight_relative_bound": 2.538789921281949e-07,
+      "derivative_relative_bound": 2.5322916943880836e-05,
+      "coefficient_weight_relative_bound": 1.240866723349589e-08
+    },
+    {
+      "index": 26,
+      "domain": [
+        -2.375,
+        -2.3125
+      ],
+      "weight_relative_bound": 3.469590605066312e-07,
+      "derivative_relative_bound": 2.8529659868627717e-05,
+      "coefficient_weight_relative_bound": 6.887550773393577e-08
+    },
+    {
+      "index": 27,
+      "domain": [
+        -2.3125,
+        -2.25
+      ],
+      "weight_relative_bound": 3.326988451135074e-07,
+      "derivative_relative_bound": 3.2178440091586934e-05,
+      "coefficient_weight_relative_bound": 1.159283710971141e-08
+    },
+    {
+      "index": 28,
+      "domain": [
+        -2.25,
+        -2.1875
+      ],
+      "weight_relative_bound": 3.93274549277746e-07,
+      "derivative_relative_bound": 3.6427994135700934e-05,
+      "coefficient_weight_relative_bound": 2.1474310405430607e-08
+    },
+    {
+      "index": 29,
+      "domain": [
+        -2.1875,
+        -2.125
+      ],
+      "weight_relative_bound": 4.676569794316198e-07,
+      "derivative_relative_bound": 4.1332757530046677e-05,
+      "coefficient_weight_relative_bound": 3.5954715168890685e-08
+    },
+    {
+      "index": 30,
+      "domain": [
+        -2.125,
+        -2.0625
+      ],
+      "weight_relative_bound": 5.387986940472405e-07,
+      "derivative_relative_bound": 4.699369649982848e-05,
+      "coefficient_weight_relative_bound": 3.611353145757155e-08
+    },
+    {
+      "index": 31,
+      "domain": [
+        -2.0625,
+        -2.0
+      ],
+      "weight_relative_bound": 6.181349356711247e-07,
+      "derivative_relative_bound": 5.3511784239691806e-05,
+      "coefficient_weight_relative_bound": 3.109686495790005e-08
+    },
+    {
+      "index": 32,
+      "domain": [
+        -2.0,
+        -1.9375
+      ],
+      "weight_relative_bound": 7.259197064961063e-07,
+      "derivative_relative_bound": 6.112613800418443e-05,
+      "coefficient_weight_relative_bound": 3.835539725668266e-08
+    },
+    {
+      "index": 33,
+      "domain": [
+        -1.9375,
+        -1.875
+      ],
+      "weight_relative_bound": 8.604546419079579e-07,
+      "derivative_relative_bound": 7.005504044324483e-05,
+      "coefficient_weight_relative_bound": 5.27514845825126e-08
+    },
+    {
+      "index": 34,
+      "domain": [
+        -1.875,
+        -1.8125
+      ],
+      "weight_relative_bound": 9.56915067744593e-07,
+      "derivative_relative_bound": 8.04075385110085e-05,
+      "coefficient_weight_relative_bound": 5.234357497427113e-09
+    },
+    {
+      "index": 35,
+      "domain": [
+        -1.8125,
+        -1.75
+      ],
+      "weight_relative_bound": 1.1662220982353384e-06,
+      "derivative_relative_bound": 9.257251710787737e-05,
+      "coefficient_weight_relative_bound": 4.152587196817047e-08
+    },
+    {
+      "index": 36,
+      "domain": [
+        -1.75,
+        -1.6875
+      ],
+      "weight_relative_bound": 1.3727051781199752e-06,
+      "derivative_relative_bound": 0.00010685579131977057,
+      "coefficient_weight_relative_bound": 3.955386202285282e-08
+    },
+    {
+      "index": 37,
+      "domain": [
+        -1.6875,
+        -1.625
+      ],
+      "weight_relative_bound": 1.6402221901655537e-06,
+      "derivative_relative_bound": 0.00012362923661994642,
+      "coefficient_weight_relative_bound": 5.529211385030418e-08
+    },
+    {
+      "index": 38,
+      "domain": [
+        -1.625,
+        -1.5625
+      ],
+      "weight_relative_bound": 1.916524010662184e-06,
+      "derivative_relative_bound": 0.00014335995840419156,
+      "coefficient_weight_relative_bound": 2.6785498315200744e-08
+    },
+    {
+      "index": 39,
+      "domain": [
+        -1.5625,
+        -1.5
+      ],
+      "weight_relative_bound": 2.282637155976155e-06,
+      "derivative_relative_bound": 0.00016665295757521892,
+      "coefficient_weight_relative_bound": 2.312633147848125e-08
+    },
+    {
+      "index": 40,
+      "domain": [
+        -1.5,
+        -1.4375
+      ],
+      "weight_relative_bound": 2.7533047009801963e-06,
+      "derivative_relative_bound": 0.0001941479415675877,
+      "coefficient_weight_relative_bound": 4.441718429319884e-08
+    },
+    {
+      "index": 41,
+      "domain": [
+        -1.4375,
+        -1.375
+      ],
+      "weight_relative_bound": 3.3212849040708566e-06,
+      "derivative_relative_bound": 0.00022666289363769589,
+      "coefficient_weight_relative_bound": 6.552035117475721e-08
+    },
+    {
+      "index": 42,
+      "domain": [
+        -1.375,
+        -1.3125
+      ],
+      "weight_relative_bound": 3.953840617493543e-06,
+      "derivative_relative_bound": 0.0002650811733396775,
+      "coefficient_weight_relative_bound": 3.1938591835629294e-08
+    },
+    {
+      "index": 43,
+      "domain": [
+        -1.3125,
+        -1.25
+      ],
+      "weight_relative_bound": 4.7725867026033425e-06,
+      "derivative_relative_bound": 0.00031051209608714685,
+      "coefficient_weight_relative_bound": 3.902439849570994e-08
+    },
+    {
+      "index": 44,
+      "domain": [
+        -1.25,
+        -1.1875
+      ],
+      "weight_relative_bound": 5.765667072273504e-06,
+      "derivative_relative_bound": 0.0003641345847298338,
+      "coefficient_weight_relative_bound": 4.3549306290807004e-08
+    },
+    {
+      "index": 45,
+      "domain": [
+        -1.1875,
+        -1.125
+      ],
+      "weight_relative_bound": 6.979973091037555e-06,
+      "derivative_relative_bound": 0.000427357834816117,
+      "coefficient_weight_relative_bound": 5.545055216686427e-08
+    },
+    {
+      "index": 46,
+      "domain": [
+        -1.125,
+        -1.0625
+      ],
+      "weight_relative_bound": 8.4108553234205e-06,
+      "derivative_relative_bound": 0.000501645478592874,
+      "coefficient_weight_relative_bound": 2.7378804714309317e-08
+    },
+    {
+      "index": 47,
+      "domain": [
+        -1.0625,
+        -1.0
+      ],
+      "weight_relative_bound": 1.0166385294127084e-05,
+      "derivative_relative_bound": 0.0005885405433808638,
+      "coefficient_weight_relative_bound": 1.936526713661133e-08
+    },
+    {
+      "index": 48,
+      "domain": [
+        -1.0,
+        -0.9375
+      ],
+      "weight_relative_bound": 1.231374343734163e-05,
+      "derivative_relative_bound": 0.0006896483007188786,
+      "coefficient_weight_relative_bound": 4.655818411322967e-08
+    },
+    {
+      "index": 49,
+      "domain": [
+        -0.9375,
+        -0.875
+      ],
+      "weight_relative_bound": 1.4822308947288437e-05,
+      "derivative_relative_bound": 0.0008062548347472177,
+      "coefficient_weight_relative_bound": 2.5100811576069427e-08
+    },
+    {
+      "index": 50,
+      "domain": [
+        -0.875,
+        -0.8125
+      ],
+      "weight_relative_bound": 1.7819846835698858e-05,
+      "derivative_relative_bound": 0.0009395277131121597,
+      "coefficient_weight_relative_bound": 3.314371373120614e-08
+    },
+    {
+      "index": 51,
+      "domain": [
+        -0.8125,
+        -0.75
+      ],
+      "weight_relative_bound": 2.134158641986475e-05,
+      "derivative_relative_bound": 0.0010896812144088192,
+      "coefficient_weight_relative_bound": 6.740095081993156e-08
+    },
+    {
+      "index": 52,
+      "domain": [
+        -0.75,
+        -0.6875
+      ],
+      "weight_relative_bound": 2.53045716194159e-05,
+      "derivative_relative_bound": 0.0012559862986951582,
+      "coefficient_weight_relative_bound": 2.8078763341719773e-08
+    },
+    {
+      "index": 53,
+      "domain": [
+        -0.6875,
+        -0.625
+      ],
+      "weight_relative_bound": 2.9812090536682886e-05,
+      "derivative_relative_bound": 0.0014363255056125024,
+      "coefficient_weight_relative_bound": 3.694397541364224e-08
+    },
+    {
+      "index": 54,
+      "domain": [
+        -0.625,
+        -0.5625
+      ],
+      "weight_relative_bound": 3.474423950453276e-05,
+      "derivative_relative_bound": 0.001626639212498164,
+      "coefficient_weight_relative_bound": 4.36014461655574e-08
+    },
+    {
+      "index": 55,
+      "domain": [
+        -0.5625,
+        -0.5
+      ],
+      "weight_relative_bound": 3.996146090932964e-05,
+      "derivative_relative_bound": 0.0018205339363722426,
+      "coefficient_weight_relative_bound": 4.438481071137758e-08
+    },
+    {
+      "index": 56,
+      "domain": [
+        -0.5,
+        -0.4375
+      ],
+      "weight_relative_bound": 4.525590186637694e-05,
+      "derivative_relative_bound": 0.0020093298167612036,
+      "coefficient_weight_relative_bound": 4.45097223520484e-08
+    },
+    {
+      "index": 57,
+      "domain": [
+        -0.4375,
+        -0.375
+      ],
+      "weight_relative_bound": 5.036891190165873e-05,
+      "derivative_relative_bound": 0.0021821474847537633,
+      "coefficient_weight_relative_bound": 7.612018340396219e-08
+    },
+    {
+      "index": 58,
+      "domain": [
+        -0.375,
+        -0.3125
+      ],
+      "weight_relative_bound": 5.488919907218216e-05,
+      "derivative_relative_bound": 0.0023268575807885855,
+      "coefficient_weight_relative_bound": 8.086546747235137e-08
+    },
+    {
+      "index": 59,
+      "domain": [
+        -0.3125,
+        -0.25
+      ],
+      "weight_relative_bound": 5.840269870450008e-05,
+      "derivative_relative_bound": 0.002431241577687182,
+      "coefficient_weight_relative_bound": 2.445176348425482e-08
+    },
+    {
+      "index": 60,
+      "domain": [
+        -0.25,
+        -0.1875
+      ],
+      "weight_relative_bound": 6.071974497118583e-05,
+      "derivative_relative_bound": 0.0024851115835229864,
+      "coefficient_weight_relative_bound": 7.04689367971011e-08
+    },
+    {
+      "index": 61,
+      "domain": [
+        -0.1875,
+        -0.125
+      ],
+      "weight_relative_bound": 6.141174580524108e-05,
+      "derivative_relative_bound": 0.002481480732012171,
+      "coefficient_weight_relative_bound": 5.4807010841681134e-08
+    },
+    {
+      "index": 62,
+      "domain": [
+        -0.125,
+        -0.0625
+      ],
+      "weight_relative_bound": 6.045543041708145e-05,
+      "derivative_relative_bound": 0.0024188815398366813,
+      "coefficient_weight_relative_bound": 7.438923492778246e-08
+    },
+    {
+      "index": 63,
+      "domain": [
+        -0.0625,
+        0.0
+      ],
+      "weight_relative_bound": 5.781646811893524e-05,
+      "derivative_relative_bound": 0.002301138322567403,
+      "coefficient_weight_relative_bound": 3.941763397668527e-08
+    },
+    {
+      "index": 64,
+      "domain": [
+        0.0,
+        0.0625
+      ],
+      "weight_relative_bound": 5.777799998475318e-05,
+      "derivative_relative_bound": 0.0023011228355715005,
+      "coefficient_weight_relative_bound": 9.49499794620803e-10
+    },
+    {
+      "index": 65,
+      "domain": [
+        0.0625,
+        0.125
+      ],
+      "weight_relative_bound": 6.041915150493424e-05,
+      "derivative_relative_bound": 0.002418866253555536,
+      "coefficient_weight_relative_bound": 3.811032278057563e-08
+    },
+    {
+      "index": 66,
+      "domain": [
+        0.125,
+        0.1875
+      ],
+      "weight_relative_bound": 6.140026126548685e-05,
+      "derivative_relative_bound": 0.002481486793011148,
+      "coefficient_weight_relative_bound": 4.332247108745739e-08
+    },
+    {
+      "index": 67,
+      "domain": [
+        0.1875,
+        0.25
+      ],
+      "weight_relative_bound": 6.071737283774261e-05,
+      "derivative_relative_bound": 0.0024850850336563396,
+      "coefficient_weight_relative_bound": 6.809680335388611e-08
+    },
+    {
+      "index": 68,
+      "domain": [
+        0.25,
+        0.3125
+      ],
+      "weight_relative_bound": 5.841434871030254e-05,
+      "derivative_relative_bound": 0.0024312540294844083,
+      "coefficient_weight_relative_bound": 3.610176928671335e-08
+    },
+    {
+      "index": 69,
+      "domain": [
+        0.3125,
+        0.375
+      ],
+      "weight_relative_bound": 5.4869475027774765e-05,
+      "derivative_relative_bound": 0.0023268579558484576,
+      "coefficient_weight_relative_bound": 6.114142306495204e-08
+    },
+    {
+      "index": 70,
+      "domain": [
+        0.375,
+        0.4375
+      ],
+      "weight_relative_bound": 5.035228889373267e-05,
+      "derivative_relative_bound": 0.0021821390842013014,
+      "coefficient_weight_relative_bound": 5.9497175477905815e-08
+    },
+    {
+      "index": 71,
+      "domain": [
+        0.4375,
+        0.5
+      ],
+      "weight_relative_bound": 4.5249830198939434e-05,
+      "derivative_relative_bound": 0.0020093358357333876,
+      "coefficient_weight_relative_bound": 3.843805491454325e-08
+    },
+    {
+      "index": 72,
+      "domain": [
+        0.5,
+        0.5625
+      ],
+      "weight_relative_bound": 3.995315666576046e-05,
+      "derivative_relative_bound": 0.001820528379012821,
+      "coefficient_weight_relative_bound": 3.608056714219278e-08
+    },
+    {
+      "index": 73,
+      "domain": [
+        0.5625,
+        0.625
+      ],
+      "weight_relative_bound": 3.473416801340734e-05,
+      "derivative_relative_bound": 0.001626645310440654,
+      "coefficient_weight_relative_bound": 3.3529955040135014e-08
+    },
+    {
+      "index": 74,
+      "domain": [
+        0.625,
+        0.6875
+      ],
+      "weight_relative_bound": 2.9831988969141263e-05,
+      "derivative_relative_bound": 0.0014363432599120785,
+      "coefficient_weight_relative_bound": 5.684240787201893e-08
+    },
+    {
+      "index": 75,
+      "domain": [
+        0.6875,
+        0.75
+      ],
+      "weight_relative_bound": 2.5341330386177384e-05,
+      "derivative_relative_bound": 0.0012559905303143597,
+      "coefficient_weight_relative_bound": 6.483753010320439e-08
+    },
+    {
+      "index": 76,
+      "domain": [
+        0.75,
+        0.8125
+      ],
+      "weight_relative_bound": 2.1288231441363036e-05,
+      "derivative_relative_bound": 0.00108961549363346,
+      "coefficient_weight_relative_bound": 1.4045972318219232e-08
+    },
+    {
+      "index": 77,
+      "domain": [
+        0.8125,
+        0.875
+      ],
+      "weight_relative_bound": 1.7820734285139e-05,
+      "derivative_relative_bound": 0.0009394882140004836,
+      "coefficient_weight_relative_bound": 3.4031163171349416e-08
+    },
+    {
+      "index": 78,
+      "domain": [
+        0.875,
+        0.9375
+      ],
+      "weight_relative_bound": 1.4840441197805417e-05,
+      "derivative_relative_bound": 0.0008062826149984354,
+      "coefficient_weight_relative_bound": 4.32330620930492e-08
+    },
+    {
+      "index": 79,
+      "domain": [
+        0.9375,
+        1.0
+      ],
+      "weight_relative_bound": 1.2296353535232187e-05,
+      "derivative_relative_bound": 0.0006896484084218604,
+      "coefficient_weight_relative_bound": 2.9168282003787882e-08
+    },
+    {
+      "index": 80,
+      "domain": [
+        1.0,
+        1.0625
+      ],
+      "weight_relative_bound": 1.0147826718783613e-05,
+      "derivative_relative_bound": 0.0005885138633640929,
+      "coefficient_weight_relative_bound": 8.066917931406612e-10
+    },
+    {
+      "index": 81,
+      "domain": [
+        1.0625,
+        1.125
+      ],
+      "weight_relative_bound": 8.415002227916905e-06,
+      "derivative_relative_bound": 0.0005016395267935771,
+      "coefficient_weight_relative_bound": 3.152570921071543e-08
+    },
+    {
+      "index": 82,
+      "domain": [
+        1.125,
+        1.1875
+      ],
+      "weight_relative_bound": 6.981964974686018e-06,
+      "derivative_relative_bound": 0.000427356222799278,
+      "coefficient_weight_relative_bound": 5.7442435815327725e-08
+    },
+    {
+      "index": 83,
+      "domain": [
+        1.1875,
+        1.25
+      ],
+      "weight_relative_bound": 5.757854759936768e-06,
+      "derivative_relative_bound": 0.0003641392899071326,
+      "coefficient_weight_relative_bound": 3.57369939540709e-08
+    },
+    {
+      "index": 84,
+      "domain": [
+        1.25,
+        1.3125
+      ],
+      "weight_relative_bound": 4.7998333187896e-06,
+      "derivative_relative_bound": 0.0003105157945712545,
+      "coefficient_weight_relative_bound": 6.627101468196727e-08
+    },
+    {
+      "index": 85,
+      "domain": [
+        1.3125,
+        1.375
+      ],
+      "weight_relative_bound": 3.970640257562498e-06,
+      "derivative_relative_bound": 0.0002651093936072026,
+      "coefficient_weight_relative_bound": 4.8738231904584555e-08
+    },
+    {
+      "index": 86,
+      "domain": [
+        1.375,
+        1.4375
+      ],
+      "weight_relative_bound": 3.3027136210714586e-06,
+      "derivative_relative_bound": 0.0002266787543749218,
+      "coefficient_weight_relative_bound": 4.69490681753593e-08
+    },
+    {
+      "index": 87,
+      "domain": [
+        1.4375,
+        1.5
+      ],
+      "weight_relative_bound": 2.7337044846378297e-06,
+      "derivative_relative_bound": 0.0001941680028585914,
+      "coefficient_weight_relative_bound": 2.481696795083237e-08
+    },
+    {
+      "index": 88,
+      "domain": [
+        1.5,
+        1.5625
+      ],
+      "weight_relative_bound": 2.27982786635777e-06,
+      "derivative_relative_bound": 0.00016665741641885495,
+      "coefficient_weight_relative_bound": 2.0317041860096696e-08
+    },
+    {
+      "index": 89,
+      "domain": [
+        1.5625,
+        1.625
+      ],
+      "weight_relative_bound": 1.9064924751870632e-06,
+      "derivative_relative_bound": 0.00014335148792720776,
+      "coefficient_weight_relative_bound": 1.675396284008007e-08
+    },
+    {
+      "index": 90,
+      "domain": [
+        1.625,
+        1.6875
+      ],
+      "weight_relative_bound": 1.6004717588451485e-06,
+      "derivative_relative_bound": 0.00012360832952565184,
+      "coefficient_weight_relative_bound": 1.5541682529898997e-08
+    },
+    {
+      "index": 91,
+      "domain": [
+        1.6875,
+        1.75
+      ],
+      "weight_relative_bound": 1.3621321001666944e-06,
+      "derivative_relative_bound": 0.00010684525032053035,
+      "coefficient_weight_relative_bound": 2.8980784069572203e-08
+    },
+    {
+      "index": 92,
+      "domain": [
+        1.75,
+        1.8125
+      ],
+      "weight_relative_bound": 1.1545168242310784e-06,
+      "derivative_relative_bound": 9.26008354788358e-05,
+      "coefficient_weight_relative_bound": 2.982059796391031e-08
+    },
+    {
+      "index": 93,
+      "domain": [
+        1.8125,
+        1.875
+      ],
+      "weight_relative_bound": 1.0037338690542279e-06,
+      "derivative_relative_bound": 8.044044139358913e-05,
+      "coefficient_weight_relative_bound": 5.2053158807062125e-08
+    },
+    {
+      "index": 94,
+      "domain": [
+        1.875,
+        1.9375
+      ],
+      "weight_relative_bound": 8.119902395671074e-07,
+      "derivative_relative_bound": 7.001818017873666e-05,
+      "coefficient_weight_relative_bound": 4.287082241662051e-09
+    },
+    {
+      "index": 95,
+      "domain": [
+        1.9375,
+        2.0
+      ],
+      "weight_relative_bound": 7.238690093256496e-07,
+      "derivative_relative_bound": 6.117061381577483e-05,
+      "coefficient_weight_relative_bound": 3.630470008622608e-08
+    },
+    {
+      "index": 96,
+      "domain": [
+        2.0,
+        2.0625
+      ],
+      "weight_relative_bound": 5.94170448031851e-07,
+      "derivative_relative_bound": 5.3505618652907904e-05,
+      "coefficient_weight_relative_bound": 7.132377318626421e-09
+    },
+    {
+      "index": 97,
+      "domain": [
+        2.0625,
+        2.125
+      ],
+      "weight_relative_bound": 5.296646064453896e-07,
+      "derivative_relative_bound": 4.6934493149853725e-05,
+      "coefficient_weight_relative_bound": 2.6979443855720738e-08
+    },
+    {
+      "index": 98,
+      "domain": [
+        2.125,
+        2.1875
+      ],
+      "weight_relative_bound": 4.4658372837758033e-07,
+      "derivative_relative_bound": 4.130045966698129e-05,
+      "coefficient_weight_relative_bound": 1.4881464114851202e-08
+    },
+    {
+      "index": 99,
+      "domain": [
+        2.1875,
+        2.25
+      ],
+      "weight_relative_bound": 4.356368608892469e-07,
+      "derivative_relative_bound": 3.6432159941975496e-05,
+      "coefficient_weight_relative_bound": 6.383662201693152e-08
+    },
+    {
+      "index": 100,
+      "domain": [
+        2.25,
+        2.3125
+      ],
+      "weight_relative_bound": 3.4438412854559087e-07,
+      "derivative_relative_bound": 3.217068499153398e-05,
+      "coefficient_weight_relative_bound": 2.3278120541794914e-08
+    },
+    {
+      "index": 101,
+      "domain": [
+        2.3125,
+        2.375
+      ],
+      "weight_relative_bound": 3.0277226638132133e-07,
+      "derivative_relative_bound": 2.8542899125705495e-05,
+      "coefficient_weight_relative_bound": 2.4688713608625864e-08
+    },
+    {
+      "index": 102,
+      "domain": [
+        2.375,
+        2.4375
+      ],
+      "weight_relative_bound": 2.7334841025778463e-07,
+      "derivative_relative_bound": 2.5336642202959942e-05,
+      "coefficient_weight_relative_bound": 3.187808536308563e-08
+    },
+    {
+      "index": 103,
+      "domain": [
+        2.4375,
+        2.5
+      ],
+      "weight_relative_bound": 2.409189881998326e-07,
+      "derivative_relative_bound": 2.2546394193119733e-05,
+      "coefficient_weight_relative_bound": 3.0692945539202415e-08
+    },
+    {
+      "index": 104,
+      "domain": [
+        2.5,
+        2.5625
+      ],
+      "weight_relative_bound": 2.409868866473101e-07,
+      "derivative_relative_bound": 2.0102207187796855e-05,
+      "coefficient_weight_relative_bound": 5.749546075239692e-08
+    },
+    {
+      "index": 105,
+      "domain": [
+        2.5625,
+        2.625
+      ],
+      "weight_relative_bound": 1.9359490747078558e-07,
+      "derivative_relative_bound": 1.7956644529711532e-05,
+      "coefficient_weight_relative_bound": 3.304000589334412e-08
+    },
+    {
+      "index": 106,
+      "domain": [
+        2.625,
+        2.6875
+      ],
+      "weight_relative_bound": 1.8715237062500417e-07,
+      "derivative_relative_bound": 1.607125341015096e-05,
+      "coefficient_weight_relative_bound": 4.632666935610141e-08
+    },
+    {
+      "index": 107,
+      "domain": [
+        2.6875,
+        2.75
+      ],
+      "weight_relative_bound": 1.530534190032748e-07,
+      "derivative_relative_bound": 1.443451457246909e-05,
+      "coefficient_weight_relative_bound": 2.9241332480499682e-08
+    },
+    {
+      "index": 108,
+      "domain": [
+        2.75,
+        2.8125
+      ],
+      "weight_relative_bound": 1.668881330787629e-07,
+      "derivative_relative_bound": 1.295629925655715e-05,
+      "coefficient_weight_relative_bound": 5.7784441224152395e-08
+    },
+    {
+      "index": 109,
+      "domain": [
+        2.8125,
+        2.875
+      ],
+      "weight_relative_bound": 1.2019396498290878e-07,
+      "derivative_relative_bound": 1.1669610067909989e-05,
+      "coefficient_weight_relative_bound": 2.383678716488631e-08
+    },
+    {
+      "index": 110,
+      "domain": [
+        2.875,
+        2.9375
+      ],
+      "weight_relative_bound": 1.123611534683928e-07,
+      "derivative_relative_bound": 1.0549824131683299e-05,
+      "coefficient_weight_relative_bound": 2.7076604575937446e-08
+    },
+    {
+      "index": 111,
+      "domain": [
+        2.9375,
+        3.0
+      ],
+      "weight_relative_bound": 1.17123637748782e-07,
+      "derivative_relative_bound": 9.521826756996096e-06,
+      "coefficient_weight_relative_bound": 4.1480017540683775e-08
+    },
+    {
+      "index": 112,
+      "domain": [
+        3.0,
+        3.0625
+      ],
+      "weight_relative_bound": 1.0056711793625702e-07,
+      "derivative_relative_bound": 8.663633299908129e-06,
+      "coefficient_weight_relative_bound": 3.3336897764968034e-08
+    },
+    {
+      "index": 113,
+      "domain": [
+        3.0625,
+        3.125
+      ],
+      "weight_relative_bound": 8.804547996792424e-08,
+      "derivative_relative_bound": 7.847676220038887e-06,
+      "coefficient_weight_relative_bound": 2.817368184195099e-08
+    },
+    {
+      "index": 114,
+      "domain": [
+        3.125,
+        3.1875
+      ],
+      "weight_relative_bound": 9.741539234400952e-08,
+      "derivative_relative_bound": 7.147009271835348e-06,
+      "coefficient_weight_relative_bound": 4.39932207718834e-08
+    },
+    {
+      "index": 115,
+      "domain": [
+        3.1875,
+        3.25
+      ],
+      "weight_relative_bound": 1.0036400896941845e-07,
+      "derivative_relative_bound": 6.481827272774953e-06,
+      "coefficient_weight_relative_bound": 5.260680938492934e-08
+    },
+    {
+      "index": 116,
+      "domain": [
+        3.25,
+        3.3125
+      ],
+      "weight_relative_bound": 7.936393860066066e-08,
+      "derivative_relative_bound": 5.893022736912932e-06,
+      "coefficient_weight_relative_bound": 3.6592727937484834e-08
+    },
+    {
+      "index": 117,
+      "domain": [
+        3.3125,
+        3.375
+      ],
+      "weight_relative_bound": 1.0327384843147793e-07,
+      "derivative_relative_bound": 5.419807586809279e-06,
+      "coefficient_weight_relative_bound": 6.489980196141244e-08
+    },
+    {
+      "index": 118,
+      "domain": [
+        3.375,
+        3.4375
+      ],
+      "weight_relative_bound": 7.692684926520623e-08,
+      "derivative_relative_bound": 4.947492264262033e-06,
+      "coefficient_weight_relative_bound": 4.2438239783783144e-08
+    },
+    {
+      "index": 119,
+      "domain": [
+        3.4375,
+        3.5
+      ],
+      "weight_relative_bound": 5.653899381791902e-08,
+      "derivative_relative_bound": 4.512338538741788e-06,
+      "coefficient_weight_relative_bound": 2.549016993722076e-08
+    },
+    {
+      "index": 120,
+      "domain": [
+        3.5,
+        3.5625
+      ],
+      "weight_relative_bound": 6.610579410547714e-08,
+      "derivative_relative_bound": 4.156859328763753e-06,
+      "coefficient_weight_relative_bound": 3.8107858000178354e-08
+    },
+    {
+      "index": 121,
+      "domain": [
+        3.5625,
+        3.625
+      ],
+      "weight_relative_bound": 5.2406776383897674e-08,
+      "derivative_relative_bound": 3.7884178406208823e-06,
+      "coefficient_weight_relative_bound": 2.7119681181766344e-08
+    },
+    {
+      "index": 122,
+      "domain": [
+        3.625,
+        3.6875
+      ],
+      "weight_relative_bound": 3.894585032890281e-08,
+      "derivative_relative_bound": 3.514219932725083e-06,
+      "coefficient_weight_relative_bound": 1.6071686112755563e-08
+    },
+    {
+      "index": 123,
+      "domain": [
+        3.6875,
+        3.75
+      ],
+      "weight_relative_bound": 3.060058610122487e-08,
+      "derivative_relative_bound": 3.2173767351422773e-06,
+      "coefficient_weight_relative_bound": 9.877863330177604e-09
+    },
+    {
+      "index": 124,
+      "domain": [
+        3.75,
+        3.8125
+      ],
+      "weight_relative_bound": 4.0805205645111347e-08,
+      "derivative_relative_bound": 2.976868710070895e-06,
+      "coefficient_weight_relative_bound": 2.2003977417197455e-08
+    },
+    {
+      "index": 125,
+      "domain": [
+        3.8125,
+        3.875
+      ],
+      "weight_relative_bound": 3.3718701352441456e-08,
+      "derivative_relative_bound": 2.735379698164099e-06,
+      "coefficient_weight_relative_bound": 1.6636392687889178e-08
+    },
+    {
+      "index": 126,
+      "domain": [
+        3.875,
+        3.9375
+      ],
+      "weight_relative_bound": 3.894153515304292e-08,
+      "derivative_relative_bound": 2.5327564105028853e-06,
+      "coefficient_weight_relative_bound": 2.339936947780037e-08
+    },
+    {
+      "index": 127,
+      "domain": [
+        3.9375,
+        4.0
+      ],
+      "weight_relative_bound": 1.51056076479574e-08,
+      "derivative_relative_bound": 2.327635374756375e-06,
+      "coefficient_weight_relative_bound": 9.455387857297657e-10
+    }
+  ]
+}
