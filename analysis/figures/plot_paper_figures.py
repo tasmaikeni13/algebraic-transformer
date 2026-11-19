@@ -2,10 +2,12 @@
 """
 Publication Figure Generation Script for Algebraic Transformer Paper.
 
-Generates three publication-quality figures in both vector PDF and raster PNG formats (300+ DPI):
+Generates five publication-quality figures in both vector PDF and raster PNG formats (300+ DPI):
 1. Figure 1: Scaling Laws (NLL vs Compute on log scale, FLOPs and parameter equivalence)
 2. Figure 2: Architecture Diagram (Side-by-side computation graphs, component replacements)
 3. Figure 3: Needle Recall Heatmap (Context budget vs depth retrieval accuracy across tasks)
+4. Figure 4: Factorial Hybrid Ablation (16-architecture NLL ranking, 125M scale)
+5. Figure 5: Cubic Schedule (cosine vs pure-algebraic cubic Hermite shape and outcome)
 
 Styling: Academic publication quality, readable typography, colorblind-accessible palettes,
 zero AI clichés in labels.
@@ -550,6 +552,154 @@ def plot_figure_4_needle_recall(out_dir: Path):
 
 
 # ==============================================================================
+# Figure 4: Factorial Hybrid Ablation (16-Architecture NLL Ranking)
+# ==============================================================================
+
+def plot_figure_5_hybrid_ablation(out_dir: Path):
+    """
+    Figure 4: Controlled 16-architecture factorial ablation (2^4 component swaps)
+    at 125M scale (32k tokenizer, 110M active params, cosine schedule, seed 42).
+    Seed-42 NLLs from the companion supplementary run archive. Deltas in the
+    labels are computed from the rounded display values vs. the standard
+    baseline (2.9136), matching the reported tables.
+    """
+    std_s42 = 2.9136062723691345
+    alg_s42 = 2.8756507381063994
+    hybrids = [
+        ("H01", 2.9176833356013065, "softmax", "ce"),
+        ("H02", 2.916362699915151, "softmax", "ce"),
+        ("H03", 2.897439260951808, "asinh", "ce"),
+        ("H04", 2.9012855623589187, "softmax", "alg_ce"),
+        ("H05", 2.915969922894337, "softmax", "ce"),
+        ("H06", 2.8968312036795694, "asinh", "ce"),
+        ("H07", 2.8966443030560605, "softmax", "alg_ce"),
+        ("H08", 2.8967776611203053, "asinh", "ce"),
+        ("H09", 2.8958575373790305, "softmax", "alg_ce"),
+        ("H10", 2.875164586989606, "asinh", "alg_ce"),
+        ("H11", 2.8750371229453164, "asinh", "alg_ce"),
+        ("H12", 2.874593691747697, "asinh", "alg_ce"),
+        ("H13", 2.897832444456757, "softmax", "alg_ce"),
+        ("H14", 2.8967839459903906, "asinh", "ce"),
+    ]
+    rows = [(hid, nll, attn, head) for hid, nll, attn, head in hybrids]
+    rows += [("Standard (base)", std_s42, "softmax", "ce"),
+             ("Algebraic (base)", alg_s42, "asinh", "alg_ce")]
+    rows.sort(key=lambda r: r[1])
+    labels = [r[0] for r in rows]
+    nlls = np.array([r[1] for r in rows])
+    colors = []
+    for hid, nll, attn, head in rows:
+        if hid.startswith("Standard"):
+            colors.append(COLORS["standard"])
+        elif hid.startswith("Algebraic"):
+            colors.append(COLORS["algebraic"])
+        elif attn == "asinh" and head == "alg_ce":
+            colors.append(COLORS["highlight"])
+        elif attn == "asinh" or head == "alg_ce":
+            colors.append(COLORS["synergy"])
+        else:
+            colors.append("#94a3b8")
+    y = np.arange(len(rows))
+    fig, ax = plt.subplots(figsize=(11.5, 6.4))
+    ax.barh(y, nlls - 2.870, left=2.870, color=colors, edgecolor="#ffffff", lw=0.8, zorder=3)
+    ax.axvline(std_s42, color=COLORS["standard"], linestyle=":", lw=1.2, alpha=0.9)
+    ax.axvline(alg_s42, color=COLORS["algebraic"], linestyle=":", lw=1.2, alpha=0.9)
+    ax.set_yticks(y)
+    ax.set_yticklabels(labels, fontsize=8.5)
+    ax.invert_yaxis()
+    ax.set_xlabel("Held-out validation NLL (nats/token), FineWeb-Edu eval", labelpad=6)
+    ax.set_title("Factorial Hybrid Ablation: 16-Architecture NLL Ranking (125M Scale, Seed 42)",
+                 loc="left", pad=10)
+    ax.set_xlim(2.870, 2.931)
+    for yi, nll in zip(y, nlls):
+        disp = round(float(nll), 4)
+        d = disp - round(float(std_s42), 4)
+        sign = "+" if d >= 0 else "\u2212"
+        ax.text(float(nll) + 0.0009, yi, f"{disp:.4f} ({sign}{abs(d):.4f})",
+                va="center", ha="left", fontsize=7.6, color=COLORS["neutral_dark"])
+    ax.text(std_s42, -0.9, "standard  ", va="center", ha="right",
+            fontsize=8.0, color=COLORS["standard"], style="italic")
+    ax.text(alg_s42, -0.9, "  algebraic", va="center", ha="left",
+            fontsize=8.0, color=COLORS["algebraic"], style="italic")
+    from matplotlib.patches import Patch
+    legend_elems = [
+        Patch(facecolor=COLORS["highlight"], label="Asinh + Alg-CE (both algebraic)"),
+        Patch(facecolor=COLORS["synergy"], label="Exactly one of Asinh / Alg-CE"),
+        Patch(facecolor="#94a3b8", label="Softmax + CE (both standard)"),
+        Patch(facecolor=COLORS["standard"], label="Standard baseline"),
+        Patch(facecolor=COLORS["algebraic"], label="Algebraic baseline"),
+    ]
+    ax.legend(handles=legend_elems, loc="upper right", framealpha=0.95,
+              facecolor="#ffffff", edgecolor=COLORS["border"], fontsize=8.0)
+    ax.grid(True, axis="x")
+    fig.text(0.5, -0.015,
+             "Controlled 2.5B-token ablation at 125M scale (32k tokenizer, 110M active params, "
+             "cosine schedule, seed 42). Deltas in parentheses are vs. the standard baseline (2.9136).",
+             ha="center", fontsize=8.2, color=COLORS["neutral_mid"], style="italic")
+    fig.tight_layout()
+    save_figure(fig, out_dir, "hybrid_ablation")
+
+
+# ==============================================================================
+# Figure 5: Cubic Hermite Schedule vs Cosine
+# ==============================================================================
+
+def plot_figure_6_cubic_schedule(out_dir: Path):
+    """
+    Figure 5: Pure-algebraic cubic Hermite schedule vs transcendental cosine.
+    Left: schedule shape over training progress. Right: held-out NLL outcome at
+    the matched 2.5B-token budget (125M scale, seed 42, 32k-tokenizer config).
+    """
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.5, 4.8),
+                                   gridspec_kw={"width_ratios": [1.0, 1.15]})
+    u = np.linspace(0, 1, 200)
+    cosine = 0.5 * (1 + np.cos(np.pi * u))
+    cubic = (1 - u) ** 2 * (1 + 2 * u)
+    ax1.plot(u, cosine, color=COLORS["standard"], lw=2.0,
+             label="Cosine: (1+cos(pi u))/2 (transcendental)")
+    ax1.plot(u, cubic, color=COLORS["algebraic"], lw=2.0,
+             label="Cubic Hermite: (1-u)^2(1+2u) (algebraic)")
+    ax1.set_xlabel("Training progress u (0 = start, 1 = end)", labelpad=6)
+    ax1.set_ylabel("LR multiplier S(u)", labelpad=6)
+    ax1.set_title("A. Schedule Shape: Cosine vs Cubic", loc="left", pad=10)
+    ax1.set_xlim(0, 1)
+    ax1.set_ylim(-0.05, 1.05)
+    ax1.legend(loc="lower left", framealpha=0.95, facecolor="#ffffff",
+               edgecolor=COLORS["border"], fontsize=8.2)
+    ax1.grid(True)
+    cats = ["Standard\n+ Cosine", "Standard\n+ Cubic", "Algebraic\n+ Cosine", "Algebraic\n+ Cubic"]
+    nlls = np.array([2.9136, 2.9142, 2.8757, 2.8614])
+    cols = [COLORS["standard"], "#93c5fd", "#fdba74", COLORS["algebraic"]]
+    x = np.arange(len(cats))
+    ax2.bar(x, nlls, color=cols, edgecolor="#ffffff", lw=1.0, zorder=3, width=0.62)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(cats, fontsize=8.5)
+    ax2.set_ylabel("Held-out validation NLL (nats/token)", labelpad=6)
+    ax2.set_title("B. Schedule Outcome at Matched 2.5B Budget", loc="left", pad=10)
+    ax2.set_ylim(2.83, 2.935)
+    for xi, nll in zip(x, nlls):
+        ax2.text(xi, nll - 0.0090, f"{nll:.4f}", ha="center", va="top",
+                 fontsize=8.6, weight="bold", color="#ffffff")
+    ax2.annotate("", xy=(1, 2.9142), xytext=(0, 2.9136),
+                 arrowprops=dict(arrowstyle="<->", color=COLORS["neutral_mid"], lw=1.2))
+    ax2.text(0.5, 2.9185, "+0.0006", ha="center", fontsize=8.0, color=COLORS["neutral_mid"])
+    ax2.annotate("", xy=(3, 2.8614), xytext=(2, 2.8757),
+                 arrowprops=dict(arrowstyle="<->", color=COLORS["algebraic"], lw=1.4))
+    ax2.text(2.5, 2.8800, "\u22120.0143", ha="center", fontsize=8.6, weight="bold",
+             color=COLORS["algebraic"],
+             bbox=dict(boxstyle="round,pad=0.2", facecolor="#fef0e7",
+                       edgecolor=COLORS["algebraic"], lw=0.6))
+    ax2.grid(True, axis="y")
+    fig.text(0.5, -0.04,
+             "125M scale, 2.5B FineWeb-Edu tokens, seed 42 (32k-tokenizer ablation config). "
+             "Algebraic cubic improves the algebraic model by 0.0143 nats over cosine; "
+             "standard is schedule-neutral (+0.0006).",
+             ha="center", fontsize=8.5, color=COLORS["neutral_mid"], style="italic")
+    fig.tight_layout()
+    save_figure(fig, out_dir, "cubic_schedule")
+
+
+# ==============================================================================
 # Master Pipeline & Integrity Verification
 # ==============================================================================
 
@@ -561,7 +711,7 @@ def main():
     args = parser.parse_args()
     
     out_dir = args.out_dir
-    print(f"Generating all 3 publication figures into: {out_dir}")
+    print(f"Generating all 5 publication figures into: {out_dir}")
     out_dir.mkdir(parents=True, exist_ok=True)
     
     # 1. Scaling Laws
@@ -576,11 +726,21 @@ def main():
     print("\n--- Generating Figure 3: Needle Recall Heatmap ---")
     plot_figure_4_needle_recall(out_dir)
 
+    # 4. Factorial Hybrid Ablation
+    print("\n--- Generating Figure 4: Factorial Hybrid Ablation ---")
+    plot_figure_5_hybrid_ablation(out_dir)
+
+    # 5. Cubic Hermite Schedule
+    print("\n--- Generating Figure 5: Cubic Hermite Schedule ---")
+    plot_figure_6_cubic_schedule(out_dir)
+
     # Verification check
     expected_files = [
         "scaling_laws.pdf", "scaling_laws.png",
         "architecture_diagram.pdf", "architecture_diagram.png",
-        "needle_recall.pdf", "needle_recall.png"
+        "needle_recall.pdf", "needle_recall.png",
+        "hybrid_ablation.pdf", "hybrid_ablation.png",
+        "cubic_schedule.pdf", "cubic_schedule.png"
     ]
     
     print("\n--- Verification Summary ---")

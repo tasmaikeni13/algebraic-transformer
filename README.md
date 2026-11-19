@@ -39,6 +39,52 @@ The algebraic claim strictly covers the **model objective and its gradient** dur
 
 ---
 
+## Component Attribution: 16-Architecture Factorial Ablation
+
+To determine which substitutions carry the advantage, I evaluate all 16 combinatorial permutations ($2^4$) of the four architectural components in a controlled study at 125M scale on 2.5B FineWeb-Edu tokens (32k LLaMA-style tokenizer, 110M active parameters, cosine schedule, seed 42, AdamW). The full registry, per-seed logs, and replication scripts are archived in the companion repository **[algebraic-supplementary](https://github.com/tasmaikeni13/algebraic-supplementary)**.
+
+| ID | Position | FFN | Attention | Head | Eval NLL | ΔNLL vs Standard |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Standard** | RoPE | SwiGLU | Softmax | CE | 2.9136 | *baseline* |
+| **H01** | Cayley | SwiGLU | Softmax | CE | 2.9177 | +0.0041 |
+| **H02** | RoPE | ALU-GLU | Softmax | CE | 2.9164 | +0.0028 |
+| **H03** | RoPE | SwiGLU | Asinh | CE | 2.8974 | **-0.0162** |
+| **H04** | RoPE | SwiGLU | Softmax | Alg-CE | 2.9013 | **-0.0123** |
+| **H05** | Cayley | ALU-GLU | Softmax | CE | 2.9160 | +0.0024 |
+| **H06** | Cayley | SwiGLU | Asinh | CE | 2.8968 | **-0.0168** |
+| **H07** | Cayley | SwiGLU | Softmax | Alg-CE | 2.8966 | **-0.0170** |
+| **H08** | RoPE | ALU-GLU | Asinh | CE | 2.8968 | **-0.0168** |
+| **H09** | RoPE | ALU-GLU | Softmax | Alg-CE | 2.8959 | **-0.0177** |
+| **H10** | RoPE | SwiGLU | Asinh | Alg-CE | 2.8752 | **-0.0384** |
+| **H11** | RoPE | ALU-GLU | Asinh | Alg-CE | 2.8750 | **-0.0386** |
+| **H12** | Cayley | SwiGLU | Asinh | Alg-CE | 2.8746 | **-0.0390** |
+| **H13** | Cayley | ALU-GLU | Softmax | Alg-CE | 2.8978 | **-0.0158** |
+| **H14** | Cayley | ALU-GLU | Asinh | CE | 2.8968 | **-0.0168** |
+| **Algebraic** | Cayley | ALU-GLU | Asinh | Alg-CE | 2.8757 | **-0.0379** |
+
+![Factorial hybrid ablation: 16-architecture NLL ranking](paper/figures/hybrid_ablation.png)
+
+The ablation attributes the advantage primarily to two components. Asinh attention alone (**H03**: -0.0162 NLL) accounts for 42.6% of the total gain in isolation, and the Alg-CE head alone (**H04**: -0.0123 NLL) accounts for 32.5%. Combined (**H10**: -0.0384 NLL), they exceed their linear sum (-0.0285 NLL) by a super-additive synergy of -0.0099 nats. The best hybrid (**H12**: 2.8746 NLL) pairs Cayley rotations with asinh attention and the Alg-CE head, and every configuration combining asinh attention with Alg-CE matches or beats the pure algebraic baseline. Cayley rotations and ALU-GLU are approximately neutral in isolation alongside standard softmax but combine cleanly with the other algebraic components. Asinh arms train at ~530k tok/s versus ~750k tok/s for softmax arms on the TPU v4-32 slice (Pallas kernel overhead).
+
+---
+
+## Learning-Rate Schedule: Cosine vs Pure-Algebraic Cubic
+
+The main scaling runs share a transcendental cosine decay, which runs outside the algebraic boundary. To close that gap, I compare cosine decay against a pure-algebraic cubic Hermite schedule, `S(u) = (1 - u)^2 (1 + 2u)` over normalized training progress `u`, at a matched 2.5B-token budget (125M scale, seed 42, same 32k-tokenizer ablation configuration as above):
+
+| Architecture | Schedule | Schedule Math | Eval NLL | ΔNLL vs Cosine |
+|:---|:---|:---|:---:|:---:|
+| Standard | Cosine | `(1 + cos(πu)) / 2` | 2.9136 | *baseline* |
+| Standard | **Cubic** | **`(1 - u)^2 (1 + 2u)`** | 2.9142 | +0.0006 |
+| Algebraic | Cosine | `(1 + cos(πu)) / 2` | 2.8757 | *baseline* |
+| Algebraic | **Cubic** | **`(1 - u)^2 (1 + 2u)`** | **2.8614** | **-0.0143** |
+
+![Cosine vs cubic Hermite schedule shape and outcome](paper/figures/cubic_schedule.png)
+
+The cubic Hermite decay matches cosine on the standard architecture (+0.0006 NLL, schedule-neutral) while improving the algebraic model by an additional -0.0143 NLL over its cosine baseline (-0.0147 against the 4-seed cosine mean of 2.8761), demonstrating that the learning-rate schedule itself can operate without transcendental functions. Sweep details and per-seed logs are in **[algebraic-supplementary](https://github.com/tasmaikeni13/algebraic-supplementary)**.
+
+---
+
 ## Scaling Dynamics (125M, 350M, 1B)
 
 Spanning nearly two orders of magnitude in training compute (1.85e18 to 1.17e20 FLOPs), both architectures follow a power-law loss trajectory (`L(C) = E + A_C / C^\gamma`), with the algebraic model maintaining a consistent entropy advantage:
