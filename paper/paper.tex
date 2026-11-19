@@ -57,7 +57,7 @@
 \maketitle
 
 \begin{abstract}
-Standard transformer architectures depend fundamentally on transcendental functions: softmax attention computes exponentials, rotary position embeddings evaluate trigonometric functions, feed-forward networks evaluate sigmoidal activations, and output heads evaluate LogSumExp. On modern hardware accelerators, these operations demand specialized function units, extensive look-up tables, or polynomial series approximations that consume disproportionate silicon area, introduce precision asymmetries, and incur memory traffic. I present the \emph{Algebraic Transformer}, an autoregressive sequence model whose training objective and gradient are completely devoid of transcendental operations. Rooted in hyperbolic geometry, this architecture establishes: (i) an exact hyperbolic attention mechanism parameterized by the birational link $\rho(x) = x + \sqrt{1+x^2} = \exp(\operatorname{asinh}(x))$, satisfying an Abelian rapidity group law $\rho(x \oplus y) = \rho(x)\rho(y)$; (ii) rational position rotations on $\SO(d)$ constructed via the birational Cayley transform with frequencies initialized through successive square roots; (iii) the Algebraic Linear Unit ($\operatorname{ALU}$), a cancellation-free gated activation with a division-free vector-Jacobian product; and (iv) Alg-CE, a purely algebraic maximum-likelihood head with an exact rational-radical gradient and intrinsic Lorentzian logit regularization. I formally verify the mathematical foundations of this architecture in Lean~4, certifying 76 theorems across 11 modules with zero unproven axioms and establishing a dimension-independent $1$-Lipschitz bound $\|J\| \le 1$ on the attention operator. Pretrained from scratch on FineWeb-Edu across three compute scales (125M, 350M, and 1B parameters), the Algebraic Transformer consistently achieves lower held-out cross-entropy loss by $0.025$ to $0.042$~nats ($2.5\%$ to $4.1\%$ relative perplexity reduction) compared to standard transformer controls, while matching or exceeding baseline accuracy on most of 8 public zero-shot tasks and 4 long-range needle recall suites at every scale. A controlled factorial ablation over all 16 component permutations attributes the advantage primarily to asinh attention and the Alg-CE likelihood head, which interact super-additively, and a pure-algebraic cubic Hermite schedule matches or improves on transcendental cosine decay at a matched token budget. Custom fused Pallas kernels on Cloud TPU~v4 achieve forward latency within $3.6\%$ of standard FlashAttention at sequence length $T=2048$ while eliminating 384~MiB of intermediate memory traffic per backward step.
+Standard transformer architectures depend fundamentally on transcendental functions: softmax attention computes exponentials, rotary position embeddings evaluate trigonometric functions, feed-forward networks evaluate sigmoidal activations, and output heads evaluate LogSumExp. On modern hardware accelerators, these operations demand specialized function units, extensive look-up tables, or polynomial series approximations that consume disproportionate silicon area, introduce precision asymmetries, and incur memory traffic. I present the \emph{Algebraic Transformer}, an autoregressive sequence model whose training objective and gradient are completely devoid of transcendental operations. Rooted in hyperbolic geometry, this architecture establishes: (i) an exact hyperbolic attention mechanism parameterized by the birational link $\rho(x) = x + \sqrt{1+x^2} = \exp(\operatorname{asinh}(x))$, satisfying an Abelian rapidity group law $\rho(x \oplus y) = \rho(x)\rho(y)$; (ii) rational position rotations on $\SO(d)$ constructed via the birational Cayley transform with frequencies initialized through successive square roots; (iii) the Algebraic Linear Unit ($\operatorname{ALU}$), a cancellation-free gated activation with a division-free vector-Jacobian product; and (iv) Alg-CE, a purely algebraic maximum-likelihood head with an exact rational-radical gradient and intrinsic Lorentzian logit regularization. I formally verify the mathematical foundations of this architecture in Lean~4, certifying 76 theorems across 11 modules with zero unproven axioms, and further proving on paper a dimension-independent $1$-Lipschitz bound $\|J\| \le 1$ on the attention operator. Pretrained from scratch on FineWeb-Edu across three compute scales (125M, 350M, and 1B parameters), the Algebraic Transformer consistently achieves lower held-out cross-entropy loss by $0.025$ to $0.042$~nats ($2.5\%$ to $4.1\%$ relative perplexity reduction) compared to standard transformer controls, while matching or exceeding baseline accuracy on most of 8 public zero-shot tasks and 4 long-range needle recall suites at every scale. A controlled factorial ablation over all 16 component permutations attributes the advantage primarily to asinh attention and the Alg-CE likelihood head, which interact super-additively, and a pure-algebraic cubic Hermite schedule matches or improves on transcendental cosine decay at a matched token budget. Custom fused Pallas kernels on Cloud TPU~v4 achieve forward latency within $3.6\%$ of standard FlashAttention at sequence length $T=2048$, with a whole-head resident backward kernel measured at $2.783$~ms at the same sequence length.
 \end{abstract}
 
 \section{Introduction}
@@ -83,12 +83,12 @@ The primary contributions of this paper are summarized as follows:
     \item \textbf{Hyperbolic Foundation of Algebraic Attention}: I derive an exact positive link function $\rho(x) = x + \sqrt{1+x^2} = \exp(\operatorname{asinh}(x))$ from the Lorentz hyperboloid model $\mathbb{H}^1 \subset \mathbb{R}^{1,1}$, proving that it satisfies an Abelian rapidity group law $\rho(x \oplus y) = \rho(x)\rho(y)$ and inversion symmetry $\rho(-x) = \rho(x)^{-1}$. Augmented with a learned background sink logit $b$, this mechanism provides adaptive normalizer capacity.
     \item \textbf{Birational Cayley Position Encodings}: I replace transcendental RoPE rotations with the birational Cayley transform $R(A) = (I-A)(I+A)^{-1}$ on $\SO(d)$. I show that planar generator frequencies can be initialized using five successive square roots without logarithms, while position powers are accumulated via binary exponentiation normalized by inverse square roots.
     \item \textbf{Algebraic Components ($\operatorname{ALU}$ and Alg-CE)}: I design the Algebraic Linear Unit ($\operatorname{ALU}$), establishing a numerically cancellation-free formulation for negative arguments and an exact division-free Vector-Jacobian Product (VJP). For token prediction, I develop Alg-CE, an algebraic likelihood head whose exact gradient $\frac{\partial \mathcal{L}}{\partial z_j} = \frac{4(p_j - y_j)}{\sqrt{1+(z_j/2)^2}}$ eliminates LogSumExp and provides intrinsic Lorentzian logit regularization.
-    \item \textbf{Machine-Checked Formal Verification in Lean~4}: I formalize the complete theoretical system in the Lean~4 proof assistant. Across 11 modules and 76 certified theorems, I formally prove the absence of negative cancellation, derivative correctness, and a dimension-independent $1$-Lipschitz operator norm bound $\|J\| \le 1$ via the Schur test, with zero \texttt{sorry} placeholders or unproven axioms.
+    \item \textbf{Machine-Checked Formal Verification in Lean~4}: I formalize the complete theoretical system in the Lean~4 proof assistant. Across 11 modules and 76 certified theorems, I formally prove the absence of negative cancellation and derivative correctness, including the Jacobian entries underlying the attention vector-Jacobian product, with zero \texttt{sorry} placeholders or unproven axioms. Building on these certified identities, I prove on paper a dimension-independent $1$-Lipschitz operator norm bound $\|J\| \le 1$ via the Schur test.
     \item \textbf{Four Concrete Algorithmic Specifications}: I provide complete pseudocode for: (1) whole-head resident forward attention; (2) whole-head resident backward attention; (3) fused Alg-CE loss computation; and (4) Cayley position table generation.
     \item \textbf{Multi-Scale Pretraining}: I train standard and algebraic models from scratch on FineWeb-Edu at 125M (2.5B tokens), 350M (7.0B tokens), and 1B parameters (20.0B tokens). The algebraic model achieves a persistent $0.025$ to $0.042$~nats held-out loss reduction ($2.5\%$ to $4.1\%$ relative perplexity drop) across all scales.
     \item \textbf{Factorial Component Attribution}: I evaluate all 16 combinatorial permutations of the four architectural components in a controlled 125M-scale study. Asinh attention and the Alg-CE likelihood head account for $42.6\%$ and $32.5\%$ of the total gain in isolation and interact super-additively ($-0.0099$~nats beyond their linear sum) when combined.
     \item \textbf{Algebraic Learning-Rate Schedule}: I compare the transcendental cosine decay against a pure-algebraic cubic Hermite schedule $S(u) = (1-u)^2(1+2u)$ at a matched token budget. The cubic schedule is neutral on the standard architecture ($+0.0006$~nats) while improving the algebraic model by $-0.0143$~nats over cosine.
-    \item \textbf{Hardware Acceleration \& Open Benchmarks}: Custom Pallas TPU kernels on Cloud TPU~v4 achieve forward latency within $3.6\%$ of standard FlashAttention at $T=2048$ while eliminating 384~MiB of intermediate memory traffic per backward step. Evaluated across 8 standard zero-shot benchmarks and 4 synthetic long-range needle recall suites, the algebraic model matches or exceeds standard transformer controls on most tasks at every scale.
+    \item \textbf{Hardware Acceleration \& Open Benchmarks}: Custom Pallas TPU kernels on Cloud TPU~v4 achieve forward latency within $3.6\%$ of standard FlashAttention at $T=2048$, with a whole-head resident backward kernel measured at $2.783$~ms at the same sequence length. Evaluated across 8 standard zero-shot benchmarks and 4 synthetic long-range needle recall suites, the algebraic model matches or exceeds standard transformer controls on most tasks at every scale.
 \end{enumerate}
 
 \section{Related Work}
@@ -336,7 +336,7 @@ In standard softmax cross-entropy, the gradient is $p_j - y_j$. If an incorrect 
 \begin{equation}
 \left| \frac{\partial \mathcal{L}}{\partial z_j} \right| \le \frac{n}{c} = 4, \quad \forall z_j \in \mathbb{R}.
 \end{equation}
-This property eliminates the necessity of LogSumExp stabilization and enforces Lipschitz continuity throughout pretraining.
+This property eliminates the necessity of LogSumExp stabilization and keeps the loss-head gradient globally bounded.
 
 \section{Formal Verification in Lean~4}
 \label{sec:formal}
@@ -361,26 +361,27 @@ The formal proof suite is organized across 11 modules in \texttt{formal/Algebrai
     \item \textbf{RMSGain} (3 theorems): Formulates learned RMS gain derivatives and row-partitioned gradient accumulation.
 \end{itemize}
 
-\subsection{Certified Dimension-Independent 1-Lipschitz Stability}
+\subsection{Dimension-Independent 1-Lipschitz Stability}
 \label{subsec:lipschitz}
 
 A critical requirement for stable deep transformer training is bounding the sensitivity of the attention map with respect to input score perturbations.
 
 \begin{theorem}[Dimension-Independent 1-Lipschitz Attention Map]
-Let $p_i = \rho(s_i / c)^n / Z$ denote the attention probabilities with $c=8, n=16$. Let $J \in \mathbb{R}^{N \times N}$ be the Jacobian matrix with entries $J_{ij} = \frac{\partial p_i}{\partial s_j}$. Then the induced operator norms satisfy:
+Let $p_i = \rho(s_i / c)^n / Z$ denote the attention probabilities with $c=8, n=16$, where the normalizer $Z$ includes the learned background sink. Let $J \in \mathbb{R}^{N \times N}$ be the Jacobian matrix with entries $J_{ij} = \frac{\partial p_i}{\partial s_j}$. Then the induced operator norms satisfy:
 \begin{equation}
 \|J\|_1 \le 1, \quad \|J\|_\infty \le 1, \quad \|J\|_2 \le 1.
 \end{equation}
 \end{theorem}
+The Jacobian entries used below are Lean-certified; the Schur-test composition step is proved here, not machine-checked.
 \begin{proof}
 Let $a_j = \frac{n/c}{\sqrt{1 + (s_j/c)^2}}$ denote the logarithmic derivative. Since $s_j \in \mathbb{R}$, $0 < a_j \le \beta = n/c = 16/8 = 2$. The Jacobian entries evaluate to:
 \begin{equation}
 J_{ij} = p_i (\delta_{ij} - p_j) a_j.
 \end{equation}
-Computing the absolute row sums:
+Computing the absolute row sums (visible probabilities sum to at most one, since the sink absorbs the remainder):
 \begin{align}
 \sum_{j=1}^N |J_{ij}| &= |J_{ii}| + \sum_{j \ne i} |J_{ij}| = a_i p_i (1 - p_i) + \sum_{j \ne i} a_j p_i p_j \nonumber \\
-&\le \beta p_i (1 - p_i) + \beta p_i \sum_{j \ne i} p_j = \beta p_i (1 - p_i) + \beta p_i (1 - p_i) = 2 \beta p_i (1 - p_i).
+&\le \beta p_i (1 - p_i) + \beta p_i \sum_{j \ne i} p_j \le \beta p_i (1 - p_i) + \beta p_i (1 - p_i) = 2 \beta p_i (1 - p_i).
 \end{align}
 Because $p_i \in [0, 1]$, the quadratic $p_i(1 - p_i)$ attains its maximum at $p_i = 1/2$, where $p_i(1 - p_i) \le 1/4$. Thus:
 \begin{equation}
@@ -388,7 +389,7 @@ Because $p_i \in [0, 1]$, the quadratic $p_i(1 - p_i)$ attains its maximum at $p
 \end{equation}
 Similarly, computing the absolute column sums:
 \begin{equation}
-\sum_{i=1}^N |J_{ij}| = a_j p_j (1 - p_j) + \sum_{i \ne j} a_j p_i p_j = a_j p_j (1 - p_j) + a_j p_j (1 - p_j) = 2 a_j p_j (1 - p_j) \le \frac{\beta}{2}.
+\sum_{i=1}^N |J_{ij}| = a_j p_j (1 - p_j) + \sum_{i \ne j} a_j p_i p_j \le a_j p_j (1 - p_j) + a_j p_j (1 - p_j) = 2 a_j p_j (1 - p_j) \le \frac{\beta}{2}.
 \end{equation}
 By the Schur test (or Riesz-Thorin interpolation), the induced $\ell_2$ matrix operator norm is bounded by the geometric mean of the $\ell_1$ and $\ell_\infty$ norms:
 \begin{equation}
@@ -698,7 +699,7 @@ I probe in-context associative memory using four synthetic needle recall tasks a
 
 \begin{table}[t]
 \centering
-\caption{\textbf{Synthetic Long-Range Needle Recall Benchmarks.} Retrieval accuracy on evidence-present trials across context windows up to 2048 tokens (5,248 total evaluation trials; 125M reports the 5-seed 50k tokenizer checkpoints; 350M and 1B report the 32k tokenizer models). 1B Algebraic reports the primary LR 0.0024 run; under matched LR 0.0012, Associative Recall reached 26.41\% and Multi-Needle reached 0.78\%.}
+\caption{\textbf{Synthetic Long-Range Needle Recall Benchmarks.} Retrieval accuracy on evidence-present trials across context windows up to 2048 tokens (5,248 evaluation trials per run; 125M reports the 5-seed 50k tokenizer checkpoints; 350M and 1B report the 32k tokenizer models). 1B Algebraic reports the primary LR 0.0024 run; under matched LR 0.0012, Associative Recall reached 26.41\% and Multi-Needle reached 0.78\%.}
 \label{tab:needle}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lcccccc}
@@ -713,7 +714,7 @@ I probe in-context associative memory using four synthetic needle recall tasks a
 \textbf{Multi-Needle} & 0.00\% & 0.00\% & 0.00\% & \textbf{0.10\%} & 0.47\% & 0.47\% \\
 \midrule
 \textbf{Absent-Evidence Controls} & 0.00\% & 0.00\% & 0.00\% & 0.00\% & 0.00\% & 0.00\% \\
-\textbf{Short-Control Recognition} & 100.0\% & 100.0\% & 100.0\% & 100.0\% & 100.0\% & 100.0\% \\
+\textbf{Short-Control Recognition (task mean)} & 91.25\% & \textbf{91.41\%} & \textbf{96.61\%} & 95.31\% & \textbf{98.44\%} & 97.66\% \\
 \bottomrule
 \end{tabular}%
 }
@@ -758,8 +759,8 @@ I implement custom FlashAttention kernels in Google Pallas~\citep{jouppi2023tpu4
 \paragraph{Forward Pass Latency Parity.}
 As detailed in \Cref{tab:hardware}, at full sequence length $T=2048$, the Algebraic Attention forward pass executes in \textbf{1.773~ms} (29.08 TFLOPS) compared to \textbf{1.711~ms} (30.12 TFLOPS) for standard softmax attention. This represents forward pass speed parity within \textbf{3.6\%}, establishing that algebraic attention can be executed without substantial forward latency overhead.
 
-\paragraph{Elimination of 384~MiB dQ Memory Traffic via Whole-Head Residency.}
-A standard backward FlashAttention schedule buffers per-key-block partial accumulators in High-Bandwidth Memory (HBM). For the benchmark shape ($T=2048, D=64, B=8, H=12$) with $512$-wide key blocks, the four FP32 $dQ$ partials occupy $4 \times 48 = 192$~MiB, written once and read back for reduction. My custom Pallas backward kernel instead retains $Q, K, V$ directly within on-chip Vector Memory (VMEM) across static $128 \times 512$ tiles and accumulates $dQ$ before its single write, completely eliminating \textbf{384~MiB of intermediate memory traffic per attention backward step}. The measured resident backward kernel time at $T=2048$ is $2.783$~ms (Table~\ref{tab:hardware}).
+\paragraph{Whole-Head Resident Backward Kernel.}
+A standard backward FlashAttention schedule buffers per-key-block partial accumulators in High-Bandwidth Memory (HBM), written once and read back for reduction. My custom Pallas backward kernel instead retains $Q, K, V$ directly within on-chip Vector Memory (VMEM) across static $128 \times 512$ tiles and accumulates $dQ$ before its single write. The measured resident backward kernel time at $T=2048$ is $2.783$~ms (Table~\ref{tab:hardware}).
 
 \paragraph{Single-Chip Full-Model Step Microbenchmark.}
 On one TPU~v4 chip, a synthetic full-model forward-plus-backward step for the 125M configuration (batch $4 \times 2048$ tokens, no optimizer update or multi-host pipeline) runs in $74.37$~ms for the standard model vs. $79.99$~ms for the algebraic model ($+7.6\%$). The Algebraic Transformer hence achieves \textbf{93.0\% of the standard step throughput} ($102,407$ vs. $110,155$ tokens/s) in this controlled microbenchmark.
@@ -777,7 +778,7 @@ The elimination of transcendental functions carries profound implications for bo
 \section{Conclusion}
 \label{sec:conclusion}
 
-I introduced the Algebraic Transformer, a rigorous autoregressive sequence model whose training objective and gradient are constructed without transcendental functions. By grounding attention in hyperbolic Lorentz geometry, positional encodings in birational Cayley rotations on $\SO(d)$, feed-forward networks in algebraic gating units, and loss projections in Lorentzian-regularized likelihood heads, I demonstrated that transcendental mathematics is not required for state-of-the-art language modeling. Verified by 76 machine-checked Lean~4 theorems certifying dimension-independent $1$-Lipschitz stability and validated across pretraining runs spanning nearly two orders of magnitude in compute, the Algebraic Transformer achieves superior held-out entropy, enhanced zero-shot accuracy, and competitive hardware throughput.
+I introduced the Algebraic Transformer, a rigorous autoregressive sequence model whose training objective and gradient are constructed without transcendental functions. By grounding attention in hyperbolic Lorentz geometry, positional encodings in birational Cayley rotations on $\SO(d)$, feed-forward networks in algebraic gating units, and loss projections in Lorentzian-regularized likelihood heads, I demonstrated that transcendental mathematics is not required for state-of-the-art language modeling. Verified by 76 machine-checked Lean~4 theorems covering the attention, normalization, and accumulation identities, and by a paper proof of dimension-independent $1$-Lipschitz stability of the attention map, and validated across pretraining runs spanning nearly two orders of magnitude in compute, the Algebraic Transformer achieves superior held-out entropy, enhanced zero-shot accuracy, and competitive hardware throughput.
 
 \section*{Acknowledgments}
 I gratefully acknowledge the Google TPU Research Cloud (TRC) team for generously providing and extending Cloud TPU v4-32 hardware accelerator compute access, which made pretraining, scaling sweeps, and architectural evaluations throughout this work possible.

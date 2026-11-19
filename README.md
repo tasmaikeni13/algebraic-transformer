@@ -35,6 +35,8 @@ The 19 released model checkpoints, evaluation predictions, and training logs are
 
 Here `rho(x) = x + sqrt(1 + x^2)`. The token embedding and output projection matrices are tied.
 
+![Architecture comparison: standard vs pure algebraic Transformer](paper/figures/architecture_diagram.png)
+
 The algebraic claim strictly covers the **model objective and its gradient** during training. Parameter initialization, metric telemetry, and the shared learning-rate schedule run outside that boundary (the mathematical derivations and primitive audit are detailed in the publication manuscript in `paper/` and [`scripts/audit_algebraic.py`](scripts/audit_algebraic.py)).
 
 ---
@@ -95,6 +97,8 @@ Spanning nearly two orders of magnitude in training compute (1.85e18 to 1.17e20 
 | **350M** | 332.5M | 7.0B | 1.40e19 | 2.5845 ± 0.0018 | **2.5450 ± 0.0019** | **-0.0395 ± 0.0026** | **-3.87%** (13.26 -> 12.74) |
 | **1B** | 975.3M | 20.0B | 1.17e20 | 2.2961 | **2.2711** | **-0.0250** | **-2.47%** (9.94 -> 9.69) |
 
+![Scaling dynamics: validation loss vs compute and parameters](paper/figures/scaling_laws.png)
+
 Observations on empirical scaling behavior:
 1. **Consistent Information Gain**: Held-out entropy reduction remains consistent across compute scales, providing an invariant advantage without transcendental operations. Across 5 independent seeds at 125M, mean NLL improves from 3.2001 ± 0.0037 to 3.1582 ± 0.0044 (Δ = -0.0418 ± 0.0058), with the algebraic model winning on every seed.
 2. **Compute Equivalence (~1.2–1.3x)**: Reading horizontally off the standard loss trajectory between the two 32k-tokenizer scales, matching the held-out loss of an Algebraic Transformer requires training a Standard Transformer with roughly 20% to 35% more FLOPs.
@@ -147,6 +151,8 @@ Evaluated using synthetic key-value needles embedded at various depths within a 
 | **Associative Recall** (Present / Exact Retrieval) | 2.45% ± 0.80 | **3.02% ± 0.72** | **+0.57 ± 1.42** | Algebraic |
 | **Multi-Needle** (Present / Exact Retrieval) | 0.00% ± 0.00 | **0.10% ± 0.09** | **+0.10 ± 0.09** | Algebraic |
 | **Absent-Evidence Controls** (Unsupported Hits) | 0.00% ± 0.00 | 0.00% ± 0.00 | 0.00 | No hallucination |
+
+![Needle passkey recall across context budgets and depths (350M)](paper/figures/needle_recall.png)
 
 ---
 

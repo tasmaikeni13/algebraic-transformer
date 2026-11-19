@@ -108,7 +108,7 @@ Generates publication-quality plots and tabular metrics from recorded pretrainin
 ### 2. `analysis.kernels`
 Probes and benchmarks TPU Pallas kernels, VMEM resident memory schedules, and gradient caching:
 * `attention_performance.py`: Benchmarks forward and backward causal attention passes against FlashAttention / Splash baselines.
-* `attention_resident_probe.py`: Evaluates VMEM-resident K/V schedules avoiding dQ intermediate HBM writes (saving 384 MiB memory traffic per step at 125M).
+* `attention_resident_probe.py`: Evaluates VMEM-resident K/V schedules avoiding dQ intermediate HBM writes.
 * `attention_head_resident_probe.py`: Sweeps score tile dimensions ($128 \times 512$) for whole-head residency.
 * `attention_streamed_probe.py`, `attention_backward_schedule_probe.py`: Evaluates MXU/VPU overlap and query-streamed schedules.
 * `attention_checkpoint_probe.py`, `attention_segmented_probe.py`: Synthetic optimizer step tests with selective residual saving.

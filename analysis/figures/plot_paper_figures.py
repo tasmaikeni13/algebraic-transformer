@@ -164,36 +164,44 @@ def plot_figure_1_scaling_laws(out_dir: Path):
                  markersize=8, markeredgewidth=1.6, markerfacecolor="none",
                  zorder=5)
 
-    # Annotate scale points and delta nats
+    # Annotate scale points and delta nats (offsets tuned to clear markers and fit lines)
     delta_labels = ["-0.0418 nats", "-0.0395 nats", "-0.0250 nats"]
+    tag_labels = ["125M (50k tok)\n(1.9E18 FLOPs)", "350M\n(14.0E18 FLOPs)", "1B\n(1.2E20 FLOPs)"]
 
-    for i, (f, sn, an, sc, dl) in enumerate(zip(flops, std_nll, alg_nll, scales, delta_labels)):
-        # Model scale label
-        tag = f"{sc} (50k tok)" if sc == "125M" else sc
-        ax1.annotate(f"{tag}\n({f/1e18:.1f}E18 FLOPs)" if f < 1e20 else f"{tag}\n({f/1e20:.1f}E20 FLOPs)",
-                     (f, sn), textcoords="offset points", xytext=(0, 12),
+    for i, (f, sn, an, dl) in enumerate(zip(flops, std_nll, alg_nll, delta_labels)):
+        # Model scale label above the standard marker
+        ax1.annotate(tag_labels[i], (f, sn), textcoords="offset points", xytext=(0, 14),
                      ha="center", fontsize=8.5, weight="semibold", color=COLORS["neutral_dark"])
-        
+
         # Vertical delta arrow between Standard and Algebraic
         mid_y = (sn + an) / 2.0
         ax1.annotate("", xy=(f, an + 0.004), xytext=(f, sn - 0.004),
                      arrowprops=dict(arrowstyle="<->", color=COLORS["neutral_mid"], lw=1.2))
-        ax1.text(f * 1.15, mid_y, dl, ha="left", va="center", fontsize=8.0,
-                 weight="bold", color=COLORS["algebraic"],
-                 bbox=dict(boxstyle="round,pad=0.2", facecolor=COLORS["algebraic_light"],
-                           edgecolor=COLORS["algebraic"], alpha=0.9, lw=0.6))
-    
+        delta_box = dict(boxstyle="round,pad=0.2", facecolor=COLORS["algebraic_light"],
+                         edgecolor=COLORS["algebraic"], alpha=0.9, lw=0.6)
+        if i == 0:
+            # Below the markers: the fit lines run well underneath at this compute
+            ax1.text(f, an - 0.060, dl, ha="center", va="top", fontsize=8.0,
+                     weight="bold", color=COLORS["algebraic"], bbox=delta_box)
+        elif i == 1:
+            ax1.text(f * 0.72, mid_y, dl, ha="right", va="center", fontsize=8.0,
+                     weight="bold", color=COLORS["algebraic"], bbox=delta_box)
+        else:
+            # Right of the markers, lifted above the descending fit lines
+            ax1.text(f * 1.18, mid_y + 0.015, dl, ha="left", va="center", fontsize=8.0,
+                     weight="bold", color=COLORS["algebraic"], bbox=delta_box)
+
     # Compute Equivalence Horizontal Arrow (at 350M level)
     target_loss = 2.5450
     equiv_log_c = (target_loss - std_poly[1]) / std_poly[0]
     equiv_c = 10 ** equiv_log_c
     ax1.plot([flops[1], equiv_c], [target_loss, target_loss], color="#6b7280", linestyle=":", lw=1.4)
     ax1.scatter([equiv_c], [target_loss], marker="x", color=COLORS["standard"], s=50, zorder=6)
-    ax1.annotate("~1.3x Compute Equivalence\n(equal loss at ~25% fewer FLOPs)",
-                 xy=((flops[1] + equiv_c)/2, target_loss), xytext=(0, -22),
-                 textcoords="offset points", ha="center", fontsize=8.0, weight="medium",
-                 color=COLORS["neutral_dark"],
-                 arrowprops=dict(arrowstyle="->", color="#6b7280", lw=0.8))
+    ax1.text((flops[1] + equiv_c) / 2, target_loss - 0.090, "~1.3x Compute Equivalence",
+             ha="center", va="top", fontsize=8.0, weight="medium",
+             color=COLORS["neutral_dark"],
+             bbox=dict(boxstyle="round,pad=0.25", facecolor="#ffffff",
+                       edgecolor=COLORS["border"], alpha=0.95, lw=0.6))
 
     ax1.set_xscale("log")
     ax1.set_xlim(8.0e17, 2.5e20)
@@ -225,17 +233,29 @@ def plot_figure_1_scaling_laws(out_dir: Path):
                  markersize=8, markeredgewidth=1.6, markerfacecolor="none",
                  zorder=5)
 
-    # Annotate PPL values and relative drops
+    # Annotate PPL values and relative drops (offsets tuned to clear markers and lines)
     ppl_drops = ["-4.10%", "-3.87%", "-2.47%"]
-    for i, (p, sp, ap, sc, drop) in enumerate(zip(params, std_ppl, alg_ppl, scales, ppl_drops)):
-        x_off_std = -20 if i == 2 else -16
-        y_off_std = 12 if i == 2 else 8
-        ax2.annotate(f"{sp:.2f}", (p, sp), textcoords="offset points", xytext=(x_off_std, y_off_std),
-                     ha="center", fontsize=8.0, color=COLORS["standard"], weight="semibold")
-        ax2.annotate(f"{ap:.2f}", (p, ap), textcoords="offset points", xytext=(16, -14),
-                     ha="center", fontsize=8.0, color=COLORS["algebraic"], weight="semibold")
-        ax2.text(p * 1.15, (sp + ap)/2, drop, ha="left", va="center", fontsize=8.0,
-                 weight="bold", color=COLORS["algebraic"])
+    for i, (p, sp, ap, drop) in enumerate(zip(params, std_ppl, alg_ppl, ppl_drops)):
+        if i == 1:
+            # 350M: the trajectory line passes through the markers, so label sideways
+            ax2.annotate(f"{sp:.2f}", (p, sp), textcoords="offset points", xytext=(-12, 0),
+                         ha="right", va="center", fontsize=8.0,
+                         color=COLORS["standard"], weight="semibold")
+            ax2.annotate(f"{ap:.2f}", (p, ap), textcoords="offset points", xytext=(12, 0),
+                         ha="left", va="center", fontsize=8.0,
+                         color=COLORS["algebraic"], weight="semibold")
+            ax2.text(p * 1.34, (sp + ap) / 2 + 0.35, drop, ha="left", va="center", fontsize=8.0,
+                     weight="bold", color=COLORS["algebraic"])
+        else:
+            x_off_std = -20 if i == 2 else 0
+            y_off_std = 12 if i == 2 else 11
+            ax2.annotate(f"{sp:.2f}", (p, sp), textcoords="offset points", xytext=(x_off_std, y_off_std),
+                         ha="center", fontsize=8.0, color=COLORS["standard"], weight="semibold")
+            ax2.annotate(f"{ap:.2f}", (p, ap), textcoords="offset points", xytext=(0, -15),
+                         ha="center", fontsize=8.0, color=COLORS["algebraic"], weight="semibold")
+            x_drop = p * 1.30 if i == 0 else p * 1.15
+            ax2.text(x_drop, (sp + ap) / 2, drop, ha="left", va="center", fontsize=8.0,
+                     weight="bold", color=COLORS["algebraic"])
     
     # Parameter Equivalence Callout (shifted to avoid colliding with data labels)
     ax2.annotate("~1.1-1.2x Parameter Equivalence\n(equivalent loss at ~9-14% fewer params)",
